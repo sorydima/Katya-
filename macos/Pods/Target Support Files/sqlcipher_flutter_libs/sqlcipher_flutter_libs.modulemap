@@ -1,0 +1,6 @@
+framework module sqlcipher_flutter_libs {
+  umbrella header "sqlcipher_flutter_libs-umbrella.h"
+
+  export *
+  module * { export * }
+}

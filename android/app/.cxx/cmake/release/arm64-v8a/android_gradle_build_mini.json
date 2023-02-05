@@ -1,0 +1,28 @@
+{
+  "buildFiles": [
+    "/Users/olga/katya/android/olm/CMakeLists.txt",
+    "/Users/olga/katya/android/olm/cmake/OlmConfig.cmake.in"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/olga/Library/Android/sdk/cmake/3.18.1/bin/ninja",
+      "-C",
+      "/Users/olga/katya/android/app/.cxx/cmake/release/arm64-v8a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/olga/Library/Android/sdk/cmake/3.18.1/bin/ninja",
+    "-C",
+    "/Users/olga/katya/android/app/.cxx/cmake/release/arm64-v8a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "olm::@6890427a1f51a3e7e1df": {
+      "artifactName": "olm",
+      "abi": "arm64-v8a",
+      "output": "/Users/olga/katya/android/app/.cxx/cmake/release/arm64-v8a/libolm.so",
+      "runtimeFiles": []
+    }
+  }
+}

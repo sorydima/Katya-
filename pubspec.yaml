@@ -1,0 +1,245 @@
+name: katya
+description: Katya ®! An AI multifunctional social blockchain platform!
+version: 0.3.13+1010
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+  flutter: 3.3.10
+
+scripts:
+  start: flutter run # -d <device_id>
+  start-fresh: flutter run --no-fast-start # -d <device_id>
+  devices: flutter devices
+  install: flutter pub get
+  build: flutter pub run build_runner build --delete-conflicting-outputs
+  watch: flutter pub run build_runner watch --delete-conflicting-outputs
+  uninstall: adb shell && pm uninstall com.katya.wtf # (sometimes doesn't uninstall when debugging?)
+  format: flutter dartfmt --line-length=120 .
+
+  build-release-ios: flutter build ipa  --release # open under xcworkspace, not xcodeproj
+  build-release-macos: flutter pub run build_runner build --delete-conflicting-outputs && flutter build macos --release
+  build-release-android: flutter pub run build_runner build --delete-conflicting-outputs && flutter build apk --release
+
+  # mobile development commands
+  setup-ios: pod install && flutter precache --ios
+  clean-ios: xcrun simctl delete unavailable
+  list-ios: xcrun simctl list devices
+  boot-ios: xcrun simctl boot #<device_id>
+  list-android: emulator -list-avds
+  boot-android: emulator -avd #<device_id>
+  inspect-android: adb shell && run-as com.katya.wtf # cache inspection
+  log-android: adb logcat ActivityManager:I flutter:I *:S
+
+  # configuration and troubleshooting
+  init-repo: git submodule update --init --recursive
+  reset-xcode: defaults delete com.apple.dt.Xcode
+  dev-tools: flutter pub global run devtools
+  cache-clean: pub cache repair && flutter pub cache repair
+  upgrade-deps: flutter pub upgrade --major-versions
+  init-platform-dirs: flutter create --com.katya.wtf
+  enable-desktop: flutter config --enable-macos-desktop --enable-linux-desktop # --no-enable-<type>-desktop
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  ### state
+  equatable: ^2.0.0
+  expandable: ^5.0.1
+  convert: ^3.0.0
+  device_info: ^2.0.0
+  redux: ^5.0.0
+  redux_thunk: ^0.4.0
+  redux_persist: ^0.9.0
+  redux_persist_flutter: ^0.9.0
+  flutter_redux: ^0.8.2
+  mime: ^1.0.0
+  path: ^1.8.0
+  path_provider: 2.0.9
+  package_info: ^2.0.0
+
+  ### encryption
+  olm: ^2.0.0
+  crypto: ^3.0.1
+  encrypt: ^5.0.0
+  cryptography: ^2.0.5
+  canonical_json: 1.1.0
+
+  ### cache/storage
+  sembast: ^3.0.1
+  sqflite: ^2.0.0+3
+  sembast_sqflite: ^2.0.0+1
+  sqflite_common_ffi: ^2.0.0
+  sqlcipher_flutter_libs: ^0.5.1
+  sqlcipher_library_windows: ^1.0.1
+  flutter_secure_storage: ^5.0.2
+  drift: ^1.0.0
+
+  ### services
+  http: ^0.13.1
+  html: ^0.15.0
+  intl: ^0.17.0
+  connectivity_plus: ^2.0.2
+  http_parser: ^4.0.0
+  easy_localization: ^3.0.0
+  flutter_dotenv: ^4.0.0-nullsafety.0
+  android_alarm_manager_plus: ^2.0.3
+  workmanager: 0.5.0 
+  # background_fetch: 1.1.0
+  uni_links: ^0.5.0
+  # flutter_apns: 1.1.0  # TODO: extract only the iOS code and remove
+
+  ### ui
+  swipeable: ^1.1.0
+  cupertino_icons: ^1.0.2
+  url_launcher: ^6.0.3
+  flutter_svg: ^0.22.0
+  flutter_keyboard_visibility: ^5.0.3
+  flutter_markdown: ^0.6.6
+  webview_flutter: ^2.0.13
+  touchable_opacity: ^1.2.0
+  smooth_page_indicator: ^0.3.0-nullsafety.0
+  flutter_local_notifications: ^9.0.0
+  flutter_colorpicker: ^0.6.0
+  palette_generator: ^0.3.0
+  emoji_picker_flutter: ^1.0.3
+  flutter_speed_dial: ^4.2.0
+  fab_circular_menu: ^1.0.2
+  flutter_screen_lock: ^4.0.0
+  photo_view: 0.13.0
+  vector_math: 2.1.2
+  flutter_hooks: 0.18.4
+  font_awesome_flutter: 10.1.0
+  # window_utils: 1.0.2 # TODO: desktop only window sizing
+
+  ## media
+  file_picker: ^4.1.1
+  image_picker: ^0.8.4
+  permission_handler: ^8.3.0
+  local_image_provider: 4.2.0 
+  flutter_image_compress: 1.1.0
+  share_plus: 4.0.3
+
+  ### data
+  uuid: ^3.0.4
+  json_annotation: ^4.0.0
+  collection: ^1.15.0-nullsafety.4
+
+  # TODO: potential overrides
+  sqlite3: ^1.5.1
+  path_provider_linux: ^2.1.5
+  camera: ^0.10.0+1
+
+dev_dependencies:
+  build_config: ^1.0.0
+  build_runner: ^2.1.4
+  drift_dev: ^1.0.2
+  lint: ^1.5.3
+  json_serializable: ^6.1.3
+  flutter_launcher_icons: ^0.9.0
+  test: any
+
+# TODO: remove when similar functionality is merged
+dependency_overrides:
+  platform: ^3.1.0
+  workmanager: # TODO: lower ios deployment target
+    git:
+      url: https://github.com/sorydima/Flutter-Workmanager.git
+      ref: 78fcb2a443149f89fbbaf051fc11f894ed94e626
+  swipeable: # TODO: null saftey version
+    git:
+      url: https://github.com/sorydima/Swipeable.git
+      ref: 96d7e104a1257bb5170f0f5a12591d7a88d526dc
+  fab_circular_menu: # TODO: accesibility and color theme issues
+    git:
+      url: https://github.com/sorydima/FAB-Circular-Menu.git
+      ref: eb537207042649604bc1abacf15c24837acd0952
+  webview_flutter: # TODO: open html as link from as different origins
+    git:
+      url: https://github.com/sorydima/Flutter-Plugins.git
+      path: packages/webview_flutter/webview_flutter
+      ref: 07d959add725ad2299ed0f65416ce6602017c192
+
+# asset generation
+# iOS icons - https://github.com/smallmuou/ios-icon-generator
+#           - run generation script for ios and macos (desktop and mobile)
+# android icons - use Android Studio with generic png
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/current/app_icon_ios.png"
+  adaptive_icon_background: "#34C7B5"
+  adaptive_icon_foreground: "assets/icons/current/app_icon_foreground.png"
+
+# The following section is specific to Flutter.
+flutter:
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # see https://flutter.dev/custom-fonts/#from-packages
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Italic.ttf
+        - asset: assets/fonts/Poppins-Regular.ttf 
+        - asset: assets/fonts/Poppins-Medium.ttf
+        - asset: assets/fonts/Poppins-Light.ttf
+        - asset: assets/fonts/Poppins-Thin.ttf
+    - family: Rubik
+      fonts:
+        - asset: assets/fonts/Rubik-Regular.ttf
+        - asset: assets/fonts/Rubik-Medium.ttf
+        - asset: assets/fonts/Rubik-Light.ttf
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Italic.ttf
+        - asset: assets/fonts/Inter-Regular.ttf
+        - asset: assets/fonts/Inter-Medium.ttf
+        - asset: assets/fonts/Inter-Light.ttf
+
+  # To add assets to your application, add an assets section, like this:
+  # On release, change .env.debug to .env
+  assets:
+    - assets/translations/
+    - assets/payloads/servers.json
+    - assets/payloads/recaptcha.html
+    - assets/graphics/undraw_avatar_male.svg
+    - assets/graphics/undraw_avatar_female.svg
+    - assets/graphics/undraw_sync_files.svg
+    - assets/graphics/undraw_accept_terms.svg
+    - assets/graphics/undraw_mobile_user.svg
+    - assets/graphics/undraw_messaging_fun.svg
+    - assets/graphics/undraw_connection.svg
+    - assets/graphics/undraw_group_chat.svg
+    - assets/graphics/undraw_people.svg
+    - assets/graphics/undraw_site_content.svg
+    - assets/graphics/undraw_escaping.svg
+    - assets/graphics/undraw_message_sent.svg
+    - assets/graphics/undraw_new_message.svg
+    - assets/graphics/undraw_mail_sent.svg
+
+    - assets/graphics/undraw_in_thought.svg
+    - assets/graphics/undraw_profile_data.svg
+    - assets/graphics/undraw_mention.svg
+    - assets/graphics/undraw_not_found.svg
+    - assets/icons/current/app_icon_cyan.svg
+    - assets/icons/current/app_icon_cyan.png
+    - assets/icons/current/app_icon_white.png
+    - assets/icons/global/being-check.svg
+    - assets/icons/global/being-person-add.svg
+    - assets/icons/global/being-group-add.svg
+    - assets/icons/global/being-public-add.svg
+    - assets/icons/global/being-search-public.svg
+    - assets/icons/global/being-search-public-condensed.svg
+    - assets/icons/global/being-message-katya.svg
+    - assets/icons/global/being-send.svg
+    - assets/icons/global/being-send-solid.svg
+    - assets/icons/global/being-send-lock.svg
+    - assets/icons/global/being-send-lock-solid.svg
+    - assets/icons/global/being-send-unlock.svg
+    - assets/icons/global/being-chevrons-right.svg
+    - assets/icons/global/feather-message-circle.svg

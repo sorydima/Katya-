@@ -1,0 +1,112 @@
+[
+{
+  "directory": "/Users/olga/katya/android/app/.cxx/cmake/release/x86_64",
+  "command": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DOLMLIB_VERSION_MAJOR=3 -DOLMLIB_VERSION_MINOR=2 -DOLMLIB_VERSION_PATCH=14 -Dolm_EXPORTS -I/Users/olga/katya/android/olm/include -I/Users/olga/katya/android/olm/lib -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -DNDEBUG  -fPIC -fvisibility=hidden -fvisibility-inlines-hidden -std=gnu++11 -o CMakeFiles/olm.dir/src/account.cpp.o -c /Users/olga/katya/android/olm/src/account.cpp",
+  "file": "/Users/olga/katya/android/olm/src/account.cpp"
+},
+{
+  "directory": "/Users/olga/katya/android/app/.cxx/cmake/release/x86_64",
+  "command": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DOLMLIB_VERSION_MAJOR=3 -DOLMLIB_VERSION_MINOR=2 -DOLMLIB_VERSION_PATCH=14 -Dolm_EXPORTS -I/Users/olga/katya/android/olm/include -I/Users/olga/katya/android/olm/lib -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -DNDEBUG  -fPIC -fvisibility=hidden -fvisibility-inlines-hidden -std=gnu++11 -o CMakeFiles/olm.dir/src/base64.cpp.o -c /Users/olga/katya/android/olm/src/base64.cpp",
+  "file": "/Users/olga/katya/android/olm/src/base64.cpp"
+},
+{
+  "directory": "/Users/olga/katya/android/app/.cxx/cmake/release/x86_64",
+  "command": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DOLMLIB_VERSION_MAJOR=3 -DOLMLIB_VERSION_MINOR=2 -DOLMLIB_VERSION_PATCH=14 -Dolm_EXPORTS -I/Users/olga/katya/android/olm/include -I/Users/olga/katya/android/olm/lib -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -DNDEBUG  -fPIC -fvisibility=hidden -fvisibility-inlines-hidden -std=gnu++11 -o CMakeFiles/olm.dir/src/cipher.cpp.o -c /Users/olga/katya/android/olm/src/cipher.cpp",
+  "file": "/Users/olga/katya/android/olm/src/cipher.cpp"
+},
+{
+  "directory": "/Users/olga/katya/android/app/.cxx/cmake/release/x86_64",
+  "command": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DOLMLIB_VERSION_MAJOR=3 -DOLMLIB_VERSION_MINOR=2 -DOLMLIB_VERSION_PATCH=14 -Dolm_EXPORTS -I/Users/olga/katya/android/olm/include -I/Users/olga/katya/android/olm/lib -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -DNDEBUG  -fPIC -fvisibility=hidden -fvisibility-inlines-hidden -std=gnu++11 -o CMakeFiles/olm.dir/src/crypto.cpp.o -c /Users/olga/katya/android/olm/src/crypto.cpp",
+  "file": "/Users/olga/katya/android/olm/src/crypto.cpp"
+},
+{
+  "directory": "/Users/olga/katya/android/app/.cxx/cmake/release/x86_64",
+  "command": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DOLMLIB_VERSION_MAJOR=3 -DOLMLIB_VERSION_MINOR=2 -DOLMLIB_VERSION_PATCH=14 -Dolm_EXPORTS -I/Users/olga/katya/android/olm/include -I/Users/olga/katya/android/olm/lib -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -DNDEBUG  -fPIC -fvisibility=hidden -fvisibility-inlines-hidden -std=gnu++11 -o CMakeFiles/olm.dir/src/memory.cpp.o -c /Users/olga/katya/android/olm/src/memory.cpp",
+  "file": "/Users/olga/katya/android/olm/src/memory.cpp"
+},
+{
+  "directory": "/Users/olga/katya/android/app/.cxx/cmake/release/x86_64",
+  "command": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DOLMLIB_VERSION_MAJOR=3 -DOLMLIB_VERSION_MINOR=2 -DOLMLIB_VERSION_PATCH=14 -Dolm_EXPORTS -I/Users/olga/katya/android/olm/include -I/Users/olga/katya/android/olm/lib -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -DNDEBUG  -fPIC -fvisibility=hidden -fvisibility-inlines-hidden -std=gnu++11 -o CMakeFiles/olm.dir/src/message.cpp.o -c /Users/olga/katya/android/olm/src/message.cpp",
+  "file": "/Users/olga/katya/android/olm/src/message.cpp"
+},
+{
+  "directory": "/Users/olga/katya/android/app/.cxx/cmake/release/x86_64",
+  "command": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DOLMLIB_VERSION_MAJOR=3 -DOLMLIB_VERSION_MINOR=2 -DOLMLIB_VERSION_PATCH=14 -Dolm_EXPORTS -I/Users/olga/katya/android/olm/include -I/Users/olga/katya/android/olm/lib -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -DNDEBUG  -fPIC -fvisibility=hidden -fvisibility-inlines-hidden -std=gnu++11 -o CMakeFiles/olm.dir/src/pickle.cpp.o -c /Users/olga/katya/android/olm/src/pickle.cpp",
+  "file": "/Users/olga/katya/android/olm/src/pickle.cpp"
+},
+{
+  "directory": "/Users/olga/katya/android/app/.cxx/cmake/release/x86_64",
+  "command": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DOLMLIB_VERSION_MAJOR=3 -DOLMLIB_VERSION_MINOR=2 -DOLMLIB_VERSION_PATCH=14 -Dolm_EXPORTS -I/Users/olga/katya/android/olm/include -I/Users/olga/katya/android/olm/lib -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -DNDEBUG  -fPIC -fvisibility=hidden -fvisibility-inlines-hidden -std=gnu++11 -o CMakeFiles/olm.dir/src/ratchet.cpp.o -c /Users/olga/katya/android/olm/src/ratchet.cpp",
+  "file": "/Users/olga/katya/android/olm/src/ratchet.cpp"
+},
+{
+  "directory": "/Users/olga/katya/android/app/.cxx/cmake/release/x86_64",
+  "command": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DOLMLIB_VERSION_MAJOR=3 -DOLMLIB_VERSION_MINOR=2 -DOLMLIB_VERSION_PATCH=14 -Dolm_EXPORTS -I/Users/olga/katya/android/olm/include -I/Users/olga/katya/android/olm/lib -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -DNDEBUG  -fPIC -fvisibility=hidden -fvisibility-inlines-hidden -std=gnu++11 -o CMakeFiles/olm.dir/src/session.cpp.o -c /Users/olga/katya/android/olm/src/session.cpp",
+  "file": "/Users/olga/katya/android/olm/src/session.cpp"
+},
+{
+  "directory": "/Users/olga/katya/android/app/.cxx/cmake/release/x86_64",
+  "command": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DOLMLIB_VERSION_MAJOR=3 -DOLMLIB_VERSION_MINOR=2 -DOLMLIB_VERSION_PATCH=14 -Dolm_EXPORTS -I/Users/olga/katya/android/olm/include -I/Users/olga/katya/android/olm/lib -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -DNDEBUG  -fPIC -fvisibility=hidden -fvisibility-inlines-hidden -std=gnu++11 -o CMakeFiles/olm.dir/src/utility.cpp.o -c /Users/olga/katya/android/olm/src/utility.cpp",
+  "file": "/Users/olga/katya/android/olm/src/utility.cpp"
+},
+{
+  "directory": "/Users/olga/katya/android/app/.cxx/cmake/release/x86_64",
+  "command": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DOLMLIB_VERSION_MAJOR=3 -DOLMLIB_VERSION_MINOR=2 -DOLMLIB_VERSION_PATCH=14 -Dolm_EXPORTS -I/Users/olga/katya/android/olm/include -I/Users/olga/katya/android/olm/lib -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -DNDEBUG  -fPIC -fvisibility=hidden -fvisibility-inlines-hidden -std=gnu++11 -o CMakeFiles/olm.dir/src/pk.cpp.o -c /Users/olga/katya/android/olm/src/pk.cpp",
+  "file": "/Users/olga/katya/android/olm/src/pk.cpp"
+},
+{
+  "directory": "/Users/olga/katya/android/app/.cxx/cmake/release/x86_64",
+  "command": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DOLMLIB_VERSION_MAJOR=3 -DOLMLIB_VERSION_MINOR=2 -DOLMLIB_VERSION_PATCH=14 -Dolm_EXPORTS -I/Users/olga/katya/android/olm/include -I/Users/olga/katya/android/olm/lib -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC -fvisibility=hidden -std=gnu99 -o CMakeFiles/olm.dir/src/sas.c.o -c /Users/olga/katya/android/olm/src/sas.c",
+  "file": "/Users/olga/katya/android/olm/src/sas.c"
+},
+{
+  "directory": "/Users/olga/katya/android/app/.cxx/cmake/release/x86_64",
+  "command": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DOLMLIB_VERSION_MAJOR=3 -DOLMLIB_VERSION_MINOR=2 -DOLMLIB_VERSION_PATCH=14 -Dolm_EXPORTS -I/Users/olga/katya/android/olm/include -I/Users/olga/katya/android/olm/lib -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC -fvisibility=hidden -std=gnu99 -o CMakeFiles/olm.dir/src/ed25519.c.o -c /Users/olga/katya/android/olm/src/ed25519.c",
+  "file": "/Users/olga/katya/android/olm/src/ed25519.c"
+},
+{
+  "directory": "/Users/olga/katya/android/app/.cxx/cmake/release/x86_64",
+  "command": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DOLMLIB_VERSION_MAJOR=3 -DOLMLIB_VERSION_MINOR=2 -DOLMLIB_VERSION_PATCH=14 -Dolm_EXPORTS -I/Users/olga/katya/android/olm/include -I/Users/olga/katya/android/olm/lib -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC -fvisibility=hidden -std=gnu99 -o CMakeFiles/olm.dir/src/error.c.o -c /Users/olga/katya/android/olm/src/error.c",
+  "file": "/Users/olga/katya/android/olm/src/error.c"
+},
+{
+  "directory": "/Users/olga/katya/android/app/.cxx/cmake/release/x86_64",
+  "command": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DOLMLIB_VERSION_MAJOR=3 -DOLMLIB_VERSION_MINOR=2 -DOLMLIB_VERSION_PATCH=14 -Dolm_EXPORTS -I/Users/olga/katya/android/olm/include -I/Users/olga/katya/android/olm/lib -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC -fvisibility=hidden -std=gnu99 -o CMakeFiles/olm.dir/src/inbound_group_session.c.o -c /Users/olga/katya/android/olm/src/inbound_group_session.c",
+  "file": "/Users/olga/katya/android/olm/src/inbound_group_session.c"
+},
+{
+  "directory": "/Users/olga/katya/android/app/.cxx/cmake/release/x86_64",
+  "command": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DOLMLIB_VERSION_MAJOR=3 -DOLMLIB_VERSION_MINOR=2 -DOLMLIB_VERSION_PATCH=14 -Dolm_EXPORTS -I/Users/olga/katya/android/olm/include -I/Users/olga/katya/android/olm/lib -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC -fvisibility=hidden -std=gnu99 -o CMakeFiles/olm.dir/src/megolm.c.o -c /Users/olga/katya/android/olm/src/megolm.c",
+  "file": "/Users/olga/katya/android/olm/src/megolm.c"
+},
+{
+  "directory": "/Users/olga/katya/android/app/.cxx/cmake/release/x86_64",
+  "command": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DOLMLIB_VERSION_MAJOR=3 -DOLMLIB_VERSION_MINOR=2 -DOLMLIB_VERSION_PATCH=14 -Dolm_EXPORTS -I/Users/olga/katya/android/olm/include -I/Users/olga/katya/android/olm/lib -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -DNDEBUG  -fPIC -fvisibility=hidden -fvisibility-inlines-hidden -std=gnu++11 -o CMakeFiles/olm.dir/src/olm.cpp.o -c /Users/olga/katya/android/olm/src/olm.cpp",
+  "file": "/Users/olga/katya/android/olm/src/olm.cpp"
+},
+{
+  "directory": "/Users/olga/katya/android/app/.cxx/cmake/release/x86_64",
+  "command": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DOLMLIB_VERSION_MAJOR=3 -DOLMLIB_VERSION_MINOR=2 -DOLMLIB_VERSION_PATCH=14 -Dolm_EXPORTS -I/Users/olga/katya/android/olm/include -I/Users/olga/katya/android/olm/lib -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC -fvisibility=hidden -std=gnu99 -o CMakeFiles/olm.dir/src/outbound_group_session.c.o -c /Users/olga/katya/android/olm/src/outbound_group_session.c",
+  "file": "/Users/olga/katya/android/olm/src/outbound_group_session.c"
+},
+{
+  "directory": "/Users/olga/katya/android/app/.cxx/cmake/release/x86_64",
+  "command": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DOLMLIB_VERSION_MAJOR=3 -DOLMLIB_VERSION_MINOR=2 -DOLMLIB_VERSION_PATCH=14 -Dolm_EXPORTS -I/Users/olga/katya/android/olm/include -I/Users/olga/katya/android/olm/lib -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC -fvisibility=hidden -std=gnu99 -o CMakeFiles/olm.dir/src/pickle_encoding.c.o -c /Users/olga/katya/android/olm/src/pickle_encoding.c",
+  "file": "/Users/olga/katya/android/olm/src/pickle_encoding.c"
+},
+{
+  "directory": "/Users/olga/katya/android/app/.cxx/cmake/release/x86_64",
+  "command": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DOLMLIB_VERSION_MAJOR=3 -DOLMLIB_VERSION_MINOR=2 -DOLMLIB_VERSION_PATCH=14 -Dolm_EXPORTS -I/Users/olga/katya/android/olm/include -I/Users/olga/katya/android/olm/lib -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC -fvisibility=hidden -std=gnu99 -o CMakeFiles/olm.dir/lib/crypto-algorithms/aes.c.o -c /Users/olga/katya/android/olm/lib/crypto-algorithms/aes.c",
+  "file": "/Users/olga/katya/android/olm/lib/crypto-algorithms/aes.c"
+},
+{
+  "directory": "/Users/olga/katya/android/app/.cxx/cmake/release/x86_64",
+  "command": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DOLMLIB_VERSION_MAJOR=3 -DOLMLIB_VERSION_MINOR=2 -DOLMLIB_VERSION_PATCH=14 -Dolm_EXPORTS -I/Users/olga/katya/android/olm/include -I/Users/olga/katya/android/olm/lib -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC -fvisibility=hidden -std=gnu99 -o CMakeFiles/olm.dir/lib/crypto-algorithms/sha256.c.o -c /Users/olga/katya/android/olm/lib/crypto-algorithms/sha256.c",
+  "file": "/Users/olga/katya/android/olm/lib/crypto-algorithms/sha256.c"
+},
+{
+  "directory": "/Users/olga/katya/android/app/.cxx/cmake/release/x86_64",
+  "command": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=x86_64-none-linux-android21 --gcc-toolchain=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DOLMLIB_VERSION_MAJOR=3 -DOLMLIB_VERSION_MINOR=2 -DOLMLIB_VERSION_PATCH=14 -Dolm_EXPORTS -I/Users/olga/katya/android/olm/include -I/Users/olga/katya/android/olm/lib -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC -fvisibility=hidden -std=gnu99 -o CMakeFiles/olm.dir/lib/curve25519-donna/curve25519-donna.c.o -c /Users/olga/katya/android/olm/lib/curve25519-donna/curve25519-donna.c",
+  "file": "/Users/olga/katya/android/olm/lib/curve25519-donna/curve25519-donna.c"
+}
+]

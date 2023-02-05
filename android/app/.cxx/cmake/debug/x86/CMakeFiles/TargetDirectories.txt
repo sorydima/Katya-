@@ -1,0 +1,7 @@
+/Users/olga/katya/android/app/.cxx/cmake/debug/x86/CMakeFiles/install/local.dir
+/Users/olga/katya/android/app/.cxx/cmake/debug/x86/CMakeFiles/install/strip.dir
+/Users/olga/katya/android/app/.cxx/cmake/debug/x86/CMakeFiles/install.dir
+/Users/olga/katya/android/app/.cxx/cmake/debug/x86/CMakeFiles/list_install_components.dir
+/Users/olga/katya/android/app/.cxx/cmake/debug/x86/CMakeFiles/rebuild_cache.dir
+/Users/olga/katya/android/app/.cxx/cmake/debug/x86/CMakeFiles/edit_cache.dir
+/Users/olga/katya/android/app/.cxx/cmake/debug/x86/CMakeFiles/olm.dir

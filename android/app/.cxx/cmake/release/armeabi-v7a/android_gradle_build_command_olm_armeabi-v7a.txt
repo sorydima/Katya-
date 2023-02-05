@@ -1,0 +1,7 @@
+Executable : /Users/olga/Library/Android/sdk/cmake/3.18.1/bin/ninja
+arguments : 
+-C
+/Users/olga/katya/android/app/.cxx/cmake/release/armeabi-v7a
+olm
+jvmArgs : 
+
