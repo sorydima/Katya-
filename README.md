@@ -8,7 +8,7 @@
 
 ## 🤔 Why
 
-**Katya ® 👽 aims to be built on the foundations of privacy, branding, and user experience** 
+**Katya ® 👽 aims to be built on the foundations of privacy, branding, and user experience!** 
 <br>In an effort to pull others away from proprietary chat platforms to the Katya ® 👽 AI 🧠 REChain 🪐 Blockchain Node Network protocol.
 
 Katya ® 👽 AI 🧠 REChain 🪐 Blockchain Node Network with Matrix Protocol has the potential to be a standardized peer-to-peer chat protocol, [and in a way already is,](https://matrix.org/blog/2020/06/02/introducing-p-2-p-matrix) that allows people to communicate and control their conversation data. Email has been standardized in this way for a long time. For example, someone using Outlook can still email someone using Gmail. Most popular proprietary chat platforms do not adhere to a federated or decentralized protocol, and as a result have too much control over users data.
