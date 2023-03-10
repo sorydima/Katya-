@@ -12,7 +12,7 @@ import flutter_secure_storage_macos
 import package_info
 import path_provider_macos
 import share_plus_macos
-import shared_preferences_macos
+import shared_preferences_foundation
 import sqflite
 import sqlcipher_flutter_libs
 import url_launcher_macos

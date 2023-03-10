@@ -293,7 +293,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-## shared_preferences_macos
+## shared_preferences_foundation
 
 Copyright 2013 The Flutter Authors. All rights reserved.
 

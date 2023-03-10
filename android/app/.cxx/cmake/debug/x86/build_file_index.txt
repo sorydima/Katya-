@@ -1,2 +1,0 @@
-/Users/olga/katya/android/olm/CMakeLists.txt
-/Users/olga/katya/android/olm/cmake/OlmConfig.cmake.in

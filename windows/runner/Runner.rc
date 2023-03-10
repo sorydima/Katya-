@@ -63,13 +63,13 @@ IDI_APP_ICON            ICON                    "resources\\app_icon.ico"
 #ifdef FLUTTER_BUILD_NUMBER
 #define VERSION_AS_NUMBER FLUTTER_BUILD_NUMBER
 #else
-#define VERSION_AS_NUMBER 0,3,10,0
+#define VERSION_AS_NUMBER 0,3,14,0
 #endif
 
 #ifdef FLUTTER_BUILD_NAME
 #define VERSION_AS_STRING #FLUTTER_BUILD_NAME
 #else
-#define VERSION_AS_STRING "0.3.10.0"
+#define VERSION_AS_STRING "0.3.14.0"
 #endif
 
 VS_VERSION_INFO VERSIONINFO
@@ -93,7 +93,7 @@ BEGIN
             VALUE "FileDescription", "An AI 🧠 multifunctional social blockchain platform 👽!" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "Katya ® 👽" "\0"
-            VALUE "LegalCopyright", "Need help? 🤔 Email us! 👇 A Dmitry Sorokin production. All rights reserved. Powered by Katya AI. 👽 Copyright © 2021-2022 Katya Systems, LLC Katya ® is a registered trademark Sponsored by REChain. 🪐 pr@rechain.email support@rechain.email Please allow anywhere from 1 to 5 business days for E-mail responses! 💌" "\0"
+            VALUE "LegalCopyright", "Need help? 🤔 Email us! 👇 A Dmitry Sorokin production. All rights reserved. Powered by Katya AI. 👽 Copyright © 2021-2023 Katya Systems, LLC Katya ® is a registered trademark Sponsored by REChain. 🪐 pr@rechain.email support@rechain.email Please allow anywhere from 1 to 5 business days for E-mail responses! 💌" "\0"
             VALUE "OriginalFilename", "Katya ® 👽.exe" "\0"
             VALUE "ProductName", "Katya ® 👽" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
