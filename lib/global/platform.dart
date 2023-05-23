@@ -18,6 +18,7 @@ import 'package:katya/store/sync/service/service.dart';
 /// init all specific dependencies needed
 /// to run Katya ® 👽 on a specific platform
 ///
+
 Future<void> initPlatformDependencies() async {
   // init platform overrides for compatability with dart libs
   if (!kIsWeb && (Platform.isMacOS || Platform.isWindows || Platform.isLinux)) {

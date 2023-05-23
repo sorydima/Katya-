@@ -5,6 +5,7 @@ import 'dart:math';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:katya/context/auth.dart';
@@ -259,7 +260,7 @@ ThunkAction<AppState> startAuthObserver() {
 
         // init notifications server
         globalNotificationPluginInstance = await initNotifications(
-          onSelectNotification: (String? payload) {
+          onSelectNotification: (NotificationResponse? payload) {
             dismissAllNotifications(
               pluginInstance: globalNotificationPluginInstance,
             );
@@ -1333,7 +1334,6 @@ ThunkAction<AppState> resolveUsername({String? username}) {
 
     if (localpart.contains('@')) {
       if (localpart.indexOf('@') == 0) {
-        // Katya ® 👽 AI 🧠 REChain 🪐 Blockchain Node
         localpart = localpart.replaceFirst('@', '');
         store.dispatch(setUsername(username: localpart));
       } else {

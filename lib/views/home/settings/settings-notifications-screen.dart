@@ -155,7 +155,7 @@ class NotificationSettingsScreen extends StatelessWidget {
                         width: width,
                         padding: Dimensions.listPadding,
                         child: Text(
-                          'Show notifications using Apple Push Notifications through Katya ® 👽 AI 🧠 REChain 🪐 Blockchain Node Network',
+                          'Show Notifications Using Apple Push Notifications Through Katya ® 👽 AI 🧠 REChain 🪐 Blockchain Node Network',
                           textAlign: TextAlign.start,
                           style: Theme.of(context).textTheme.caption,
                         ),

@@ -38,14 +38,7 @@ extension MessageQueries on StorageDatabase {
     return (delete(messages)..where((tbl) => tbl.id.isIn(messageIds))).go();
   }
 
-  ///
-  /// Select Messages (Ids)
-  ///
-  /// Query messages that occured previous to the timestamp
-  /// sent in. This doesn't factor in batches or any matrix
-  /// paradigm in terms of DAG / state and just pulls messages
-  /// previous in time.
-  ///
+
   Future<List<Message>> selectMessagesIds(List<String> messageIds) {
     return (select(messages)
           ..where((tbl) => tbl.id.isIn(messageIds))
@@ -56,14 +49,6 @@ extension MessageQueries on StorageDatabase {
         .get();
   }
 
-  ///
-  /// Select Messages (Timeline)
-  ///
-  /// Query messages that occured previous to the timestamp
-  /// sent in. This doesn't factor in batches or any matrix
-  /// paradigm in terms of DAG / state and just pulls messages
-  /// previous in time.
-  ///
   Future<List<Message>> selectMessagesOrdered(
     String? roomId, {
     int? timestamp,
@@ -72,8 +57,8 @@ extension MessageQueries on StorageDatabase {
   }) {
     return (select(messages)
           ..where((tbl) =>
-              tbl.roomId.equals(roomId) &
-              tbl.timestamp.isSmallerOrEqualValue(timestamp))
+              tbl.roomId.equals(roomId!) &
+              tbl.timestamp.isSmallerOrEqualValue(timestamp!))
           ..orderBy([
             (tbl) =>
                 OrderingTerm(expression: tbl.timestamp, mode: OrderingMode.desc)
@@ -113,7 +98,7 @@ extension MessageQueries on StorageDatabase {
   }) {
     return (select(messages)
           ..where(
-            (tbl) => tbl.roomId.equals(roomId) & tbl.batch.equals(batch),
+            (tbl) => tbl.roomId.equals(roomId!) & tbl.batch.equals(batch!),
           ))
         .get();
   }
@@ -252,14 +237,6 @@ extension DecryptedQueries on StorageDatabase {
     );
   }
 
-  ///
-  /// Select Messages (Generic)
-  ///
-  /// Query messages that occured previous to the timestamp
-  /// sent in. This doesn't factor in batches or any matrix
-  /// paradigm in terms of DAG / state and just pulls messages
-  /// previous in time.
-  ///
   Future<List<Message>> selectDecrypted(
     String? roomId, {
     int? timestamp,
@@ -268,8 +245,8 @@ extension DecryptedQueries on StorageDatabase {
   }) {
     return (select(decrypted)
           ..where((tbl) =>
-              tbl.roomId.equals(roomId) &
-              tbl.timestamp.isSmallerOrEqualValue(timestamp))
+              tbl.roomId.equals(roomId!) &
+              tbl.timestamp.isSmallerOrEqualValue(timestamp!))
           ..orderBy([
             (tbl) =>
                 OrderingTerm(expression: tbl.timestamp, mode: OrderingMode.desc)

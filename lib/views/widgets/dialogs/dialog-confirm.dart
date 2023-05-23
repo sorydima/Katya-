@@ -5,13 +5,6 @@ import 'package:katya/global/strings.dart';
 
 import 'package:katya/views/widgets/buttons/button-text.dart';
 
-///
-/// Confirmation Dialog
-///
-/// Use this *instead* of AlertDialog
-/// as they come with desired styling and generally
-/// what is needed for a confirmation layout
-///
 class DialogConfirm extends StatelessWidget {
   const DialogConfirm({
     Key? key,

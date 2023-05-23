@@ -9,19 +9,6 @@ import 'package:katya/store/media/converters.dart';
 import 'package:katya/store/media/encryption.dart';
 import 'package:katya/store/rooms/room/model.dart';
 
-///
-/// Format Message Content (Encrypted / Unencrypted)
-///
-/// A real shame the content properties have to be fundamentally different
-/// between encrypted and unencrypted media messages
-/// content -> file -> url
-/// vs.
-/// content -> url
-/// Why not just add another child object instead of changing the root parent?
-/// makes it difficult to encode and decode
-///
-/// https://matrix.org/docs/spec/client_server/latest#sending-encrypted-attachments
-///
 Future<Message> formatMessageContent({
   required String tempId,
   required String userId,
@@ -136,9 +123,6 @@ Future<Message> formatMessageContent({
             'mimetype': mimeType,
             'w': fileImage.width,
             'h': fileImage.height,
-            // TODO: 'thumbnail_info': thumbnailContent
-            // 'xyz.amorgan.blurhash': 'LYRg0Ls:}uNaxaayNHj[^8WU9@s:',
-            // 'thumbnail_url': 'mxc://matrix.org/dYEziAIojXCEoHtbwIRkKBKE'
           },
         });
       }
@@ -168,14 +152,6 @@ Future<Message> formatMessageContent({
   }
 }
 
-///
-/// Format Message Reply
-///
-/// Format a message as a reply to another
-/// https://matrix.org/docs/spec/client_server/latest#rich-replies
-/// https://github.com/matrix-org/matrix-doc/pull/1767
-///
-///
 Message formatMessageReply(
   Room room,
   Message message,

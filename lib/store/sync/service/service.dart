@@ -96,7 +96,7 @@ class SyncService {
     );
 
     // immediately begin checking for notifications
-    compute(notificationJobThreaded, {});
+    // compute(notificationJobThreaded, {});
   }
 
   static Future stop() async {
@@ -108,22 +108,6 @@ class SyncService {
   }
 }
 
-///
-/// Notification Job Threaded (Android Only)
-///
-/// Same as below, but works in compute / isolates outside alarm_services
-///
-/// TODO: not working off main thread - due to secure storage and flutter widget binding
-Future notificationJobThreaded(Map params) async => notificationJob();
-
-///
-/// Notification Job (Android Only)
-///
-/// Fetches data from matrix in background and displays
-/// notifications without needing google play services
-///
-/// NOTE: https://github.com/flutter/flutter/issues/32164
-///
 Future notificationJob() async {
   try {
     User currentUser;
@@ -161,7 +145,7 @@ Future notificationJob() async {
 
     // Init notifiations for background service and new messages/events
     final pluginInstance = await initNotifications(
-      onSelectNotification: (String? payload) {
+      onSelectNotification: (NotificationResponse? payload) {
         log.threaded(
             '[onSelectNotification] TESTING PAYLOAD INSIDE BACKGROUND THREAD $payload');
         return Future.value(true);
@@ -202,12 +186,6 @@ Future notificationJob() async {
   }
 }
 
-///
-/// Background Sync (Android Only)
-///
-/// Fetches data from matrix in background and displays
-/// notifications without needing google play services
-///
 Future backgroundSync({
   required Map params,
   required FlutterLocalNotificationsPlugin pluginInstance,
@@ -409,19 +387,11 @@ Future backgroundSync({
   }
 }
 
-///
-/// Foreground Sync Test (TESTING ONLY)
-///
-/// Fetches data from matrix in background and displays
-/// notifications without needing google play services
-///
-/// NOTE: https://github.com/flutter/flutter/issues/32164
-///
 Future notificationSyncTEST() async {
   try {
     // Init notifiations for background service and new messages/events
     final pluginInstance = await initNotifications(
-      onSelectNotification: (String? payload) {
+      onSelectNotification: (NotificationResponse? payload) {
         log.threaded('[onSelectNotification] payload $payload');
         return Future.value(true);
       },

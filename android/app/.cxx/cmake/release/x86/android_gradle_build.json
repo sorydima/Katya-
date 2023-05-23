@@ -1,20 +1,20 @@
 {
   "buildFiles": [
-    "/Users/olga/katya/android/olm/CMakeLists.txt",
-    "/Users/olga/katya/android/olm/cmake/OlmConfig.cmake.in"
+    "/Users/sorydima/katya/android/olm/CMakeLists.txt",
+    "/Users/sorydima/katya/android/olm/cmake/OlmConfig.cmake.in"
   ],
   "cleanCommandsComponents": [
     [
-      "/Users/olga/Library/Android/sdk/cmake/3.18.1/bin/ninja",
+      "/Users/sorydima/Library/Android/sdk/cmake/3.18.1/bin/ninja",
       "-C",
-      "/Users/olga/katya/android/app/.cxx/cmake/release/x86",
+      "/Users/sorydima/katya/android/app/.cxx/cmake/release/x86",
       "clean"
     ]
   ],
   "buildTargetsCommandComponents": [
-    "/Users/olga/Library/Android/sdk/cmake/3.18.1/bin/ninja",
+    "/Users/sorydima/Library/Android/sdk/cmake/3.18.1/bin/ninja",
     "-C",
-    "/Users/olga/katya/android/app/.cxx/cmake/release/x86",
+    "/Users/sorydima/katya/android/app/.cxx/cmake/release/x86",
     "{LIST_OF_TARGETS_TO_BUILD}"
   ],
   "libraries": {
@@ -22,14 +22,14 @@
       "toolchain": "toolchain",
       "abi": "x86",
       "artifactName": "olm",
-      "output": "/Users/olga/katya/android/app/.cxx/cmake/release/x86/libolm.so",
+      "output": "/Users/sorydima/katya/android/app/.cxx/cmake/release/x86/libolm.so",
       "runtimeFiles": []
     }
   },
   "toolchains": {
     "toolchain": {
-      "cCompilerExecutable": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang",
-      "cppCompilerExecutable": "/Users/olga/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++"
+      "cCompilerExecutable": "/Users/sorydima/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang",
+      "cppCompilerExecutable": "/Users/sorydima/Library/Android/sdk/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++"
     }
   },
   "cFileExtensions": [

@@ -94,7 +94,7 @@ class AppBarHome extends HookWidget implements PreferredSizeWidget {
               Routes.chat,
               arguments: ChatScreenArguments(
                 roomId: supportRoom.id,
-                title: 'Katya ® 👽 Support!',
+                title: 'Katya ® 👽 AI 🧠 Platform Support!',
               ),
             );
           },

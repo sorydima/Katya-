@@ -325,14 +325,6 @@ class ChatScreenState extends State<ChatScreen> {
 
     final mxcUri = mxcData['content_uri'] as String?;
 
-    ///
-    /// TODO: solve mounted issue with back navigation
-    ///
-    /// should not have to do this but unfortunately
-    /// when navigating back from the preview screen and
-    /// submitting a new draft message, a MatrixImage widget
-    /// doesn't fire onMounted or initState. Could potentially
-    /// have something to do with the Visibility widget
     if (mxcUri != null) {
       store.dispatch(
         fetchMedia(
@@ -344,7 +336,7 @@ class ChatScreenState extends State<ChatScreen> {
 
     final message = Message(
       url: mxcUri,
-      type: type.value, // get matrix type string (m.image)
+      type: type.value,
       body: path.basename(file.path),
     );
 

@@ -268,7 +268,7 @@ class Message extends Event implements drift.Insertable<Message> {
         content: content,
         body: body,
         msgtype: msgtype,
-        format: content['format'], // "org.matrix.custom.html"
+        format: content['format'],
         formattedBody: content['formatted_body'],
         url: content['url'],
         file: content['file'],

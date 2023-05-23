@@ -30,7 +30,7 @@
     }
   },
   "platforms": {
-    "ios": "9.0",
+    "ios": "11.0",
     "osx": "10.11"
   },
   "pod_target_xcconfig": {

@@ -22,22 +22,6 @@ import 'package:katya/store/index.dart';
 import 'package:katya/store/settings/actions.dart';
 import 'package:katya/store/sync/actions.dart';
 
-///
-///
-/// Key Session Management
-///
-/// https://matrix.org/docs/guides/end-to-end-encryption-implementation-guide#starting-an-olm-session
-/// https://matrix.org/docs/spec/client_server/latest#m-room-key
-/// https://matrix.org/docs/spec/client_server/latest#m-olm-v1-curve25519-aes-sha2
-/// https://matrix.org/docs/spec/client_server/r0.4.0#m-olm-v1-curve25519-aes-sha2
-///
-/// Outbound Key Session === Outbound Session (Algorithm.olmv1)
-/// Outbound Message Session === Outbound Group Session (Algorithm.megolmv2)
-///
-/// (Pre)Key Session <--> Only "Session"
-/// Message Session <--> prefixed with "Group" Session
-///
-///
 class AddKeySession {
   String session;
   String sessionId;
@@ -200,13 +184,6 @@ ThunkAction<AppState> loadKeySessionOutbound({
   };
 }
 
-///
-/// Load Key Session Inbound
-///
-/// Manage and load Olm sessions for pre-key messages or indications
-///
-/// https://matrix.org/docs/guides/end-to-end-encryption-implementation-guide#molmv1curve25519-aes-sha2
-///
 ThunkAction<AppState> loadKeySessionInbound({
   required int type,
   required String body,
@@ -284,9 +261,6 @@ ThunkAction<AppState> loadKeySessionInbound({
   };
 }
 
-/// Inbound Message Session
-///
-/// https://matrix.org/docs/guides/end-to-end-encryption-implementation-guide#starting-a-megolm-session
 ThunkAction<AppState> createMessageSessionInbound({
   required String roomId,
   required String senderKey,
@@ -362,10 +336,6 @@ ThunkAction<AppState> addMessageSessionInbound({
   };
 }
 
-///
-/// Outbound Message Session Functionality
-///
-/// https://matrix.org/docs/guides/end-to-end-encryption-implementation-guide#starting-a-megolm-session
 ThunkAction<AppState> createMessageSessionOutbound({required String roomId}) {
   return (Store<AppState> store) async {
     // Get current user device identity key
@@ -567,7 +537,7 @@ ThunkAction<AppState> exportSessionKeys(String password) {
         error: error,
         origin: 'exportSessionKeys',
         message:
-            'Failed to backup your current session keys, please, contact us at support@rechain.email!',
+            'Failed to backup your current session keys, please, contact us at https://katya.wtf !',
       ));
     } finally {
       store.dispatch(SetLoadingSettings(loading: false));

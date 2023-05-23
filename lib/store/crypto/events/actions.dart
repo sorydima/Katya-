@@ -22,11 +22,6 @@ import 'package:katya/store/media/encryption.dart';
 import 'package:katya/store/rooms/actions.dart';
 import 'package:katya/store/rooms/room/model.dart';
 
-///
-/// Encrypt event content with loaded outbound session for room
-///
-/// https://matrix.org/docs/guides/end-to-end-encryption-implementation-guide#sending-an-encrypted-message-event
-///
 ThunkAction<AppState> encryptMessageContent({
   required String roomId,
   Map? content,
@@ -272,12 +267,6 @@ ThunkAction<AppState> decryptMessage({
   };
 }
 
-/// Encrypt key sharing event content with loaded outbound session for a device
-///
-/// NOTE: Utilizes available one time keys pre-fetched
-/// and claimed by the current user
-///
-/// https://matrix.org/docs/spec/client_server/latest#m-room-encrypted
 ThunkAction<AppState> encryptKeyContent({
   String? roomId,
   Map? content,
@@ -349,17 +338,6 @@ ThunkAction<AppState> encryptKeyContent({
   };
 }
 
-///
-/// Decrypting Key Event
-///
-/// Decrypt to_device event content with loaded
-/// key session (outbound | inbound) for that device
-///
-/// NOTE: Utilizes available one time keys pre-fetched
-/// and claimed by the current user
-///
-/// https://matrix.org/docs/spec/client_server/latest#m-room-encrypted
-///
 ThunkAction<AppState> decryptKeyEvent({Map event = const {}}) {
   return (Store<AppState> store) async {
     // Get current user device identity key
@@ -401,25 +379,6 @@ ThunkAction<AppState> decryptKeyEvent({Map event = const {}}) {
   };
 }
 
-///
-/// Saving a message session key from a m.room_key event
-///
-/// https://matrix.org/docs/spec/client_server/latest#m-room-encrypted
-///
-/// The room_id, together with the sender_key of the m.room_key_ event before it was decrypted,
-/// and the session_id, uniquely identify a Megolm session
-///
-/// event = const {
-///     "content": {
-///       "algorithm": "m.megolm.v1.aes-sha2",
-///       "room_id": "!OXolesDwApoFSnipLA:matrix.org",
-///       "session_id": "MFgUVsIJtzKrl1tJdLC+yipG/uTIF5sBXd8NvvLjfQ4",
-///       "session_key":  "<session_key_data>"
-///     },
-///     "room_id": "!OXolesDwApoFSnipLA:matrix.org",
-///     "type": "m.room_key"
-///   },
-/// }
 ThunkAction<AppState> saveMessageSession({
   Map? event,
   String? senderKey,

@@ -264,9 +264,6 @@ class SignupScreenState extends State<SignupScreen> with Lifecycle<SignupScreen>
             return onNavigateNextPage(controller);
           }
 
-          // If the user has a completed auth flow for matrix.org, reset to
-          // proper auth type to attempt a real account creation
-          // for matrix and try again
           if (result && props.user.accessToken == null) {
             await props.onResetCredential();
             props.onCreateUser();

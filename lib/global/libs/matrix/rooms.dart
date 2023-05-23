@@ -8,14 +8,6 @@ import 'package:katya/store/rooms/room/model.dart';
 import 'package:katya/store/settings/proxy-settings/model.dart';
 
 abstract class Rooms {
-  /// Sync (main functionality)
-  ///
-  /// https://matrix.org/docs/spec/client_server/latest#id251
-  ///
-  /// long polling will hang the http request until any new
-  /// events are found, the hang will "timeout" using the respective
-  /// param where you'll need to call the sync api again to wai
-  /// for new events
   static Future<dynamic> sync({
     String? protocol = 'https://', // http or https ( or libp2p :D )
     String? homeserver = Values.homeserverDefault,

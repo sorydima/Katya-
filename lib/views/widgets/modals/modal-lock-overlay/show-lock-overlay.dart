@@ -7,30 +7,6 @@ import 'package:katya/views/widgets/modals/modal-lock-overlay/input-secrets-conf
 import 'package:katya/views/widgets/modals/modal-lock-overlay/lock-controller.dart';
 import 'package:katya/views/widgets/modals/modal-lock-overlay/lock-overlay.dart';
 
-/// Animated ScreenLock
-///
-/// - `correctString`: Input correct string (Required).
-///   If [confirmMode] is `true`, it will be ignored, so set it to any string or empty.
-/// - `screenLockConfig`: Configurations of [ScreenLock]
-/// - `secretsConfig`: Configurations of [Secrets]
-/// - `inputButtonConfig`: Configurations of [InputButton]
-/// - `canCancel`: `true` is show cancel button
-/// - `confirmation`: Make sure the first and second inputs are the same.
-/// - `digits`: Set the maximum number of characters to enter when [confirmMode] is `true`.
-/// - `maxRetries`: `0` is unlimited. For example, if it is set to 1, didMaxRetries will be called on the first failure. Default `0`
-/// - `didUnlocked`: Called if the value matches the correctString.
-/// - `didError`: Called if the value does not match the correctString.
-/// - `didMaxRetries`: Events that have reached the maximum number of attempts
-/// - `didOpened`: For example, when you want to perform biometric authentication
-/// - `didConfirmed`: Called when the first and second inputs match during confirmation
-/// - `customizedButtonTap`: Tapped for left side lower button
-/// - `customizedButtonChild`: Child for bottom left side button
-/// - `footer`: Add a Widget to the footer
-/// - `cancelButton`: Change the child widget for the delete button
-/// - `deleteButton`: Change the child widget for the delete button
-/// - `title`: Change the title widget
-/// - `confirmTitle`: Change the confirm title widget
-/// - `inputController`: Control inputs externally
 Future<void>? showLockOverlay({
   required BuildContext context,
   required Future<bool> Function(String) onVerify,

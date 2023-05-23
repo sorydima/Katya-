@@ -20,7 +20,6 @@ String findLocale(String language, {required BuildContext context}) {
   return language;
 }
 
-// a -> A
 String formatInitials(String? word) {
   final wordUppercase = (word ?? '').toUpperCase();
   return wordUppercase.length > 1

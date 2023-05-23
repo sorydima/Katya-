@@ -7,7 +7,7 @@ part 'model.g.dart';
 
 @JsonSerializable()
 class Reaction extends Event implements drift.Insertable<Reaction> {
-  final String? body; // 'key' in matrix likely an emoji
+  final String? body;
   final String? relType;
   final String? relEventId;
 

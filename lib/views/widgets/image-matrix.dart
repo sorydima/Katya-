@@ -10,12 +10,6 @@ import 'package:katya/store/media/actions.dart';
 import 'package:katya/store/media/model.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 
-///
-/// Matrix Image
-///
-/// uses the matrix mxc uris and either pulls from cached data
-/// or downloads the image and saves it to cache
-///
 class MatrixImage extends HookWidget {
   const MatrixImage({
     Key? key,

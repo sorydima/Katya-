@@ -2,7 +2,7 @@ From the latest update:
 
 ### CHANGELOG ###
 
-### v@0.3.14
+### v@0.3.15 + 1012
 
 🔥 Hot Fixes
 

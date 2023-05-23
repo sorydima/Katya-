@@ -157,7 +157,7 @@ class MessageWidget extends StatelessWidget {
     required Uint8List bytes,
     required String? eventId,
     required String? roomId,
-    String filename = 'Katya ® 👽 Image',
+    String filename = 'Katya ® 👽 AI 🧠 REChain 🪐 Blockchain Node Image',
   }) {
     Navigator.push(
       context,
@@ -187,6 +187,7 @@ class MessageWidget extends StatelessWidget {
 
     var textColor = Colors.white;
     Color anchorColor = Colors.blue;
+    var backgroundColor = Theme.of(context).scaffoldBackgroundColor;
     var showSender = !messageOnly && !isUserSent; // nearly always show the sender
     var luminance = this.luminance;
 
@@ -322,7 +323,6 @@ class MessageWidget extends StatelessWidget {
       }
     }
 
-    // efficent way to check if Matrix message is a reply
     if (body.isNotEmpty && body[0] == '>') {
       final isLight = (luminance ?? 0.0) > 0.5;
       replyColor = HSLColor.fromColor(bubbleColor).withLightness(isLight ? 0.5 : 0.25).toColor();
@@ -531,10 +531,10 @@ class MessageWidget extends StatelessWidget {
                                             color: replyColor,
                                             borderRadius: const BorderRadius.only(
                                               //TODO: shape similar to bubbleBorder
-                                              topLeft: Radius.circular(4),
-                                              topRight: Radius.circular(4),
-                                              bottomLeft: Radius.circular(4),
-                                              bottomRight: Radius.circular(4),
+                                              topLeft: Radius.circular(12),
+                                              topRight: Radius.circular(12),
+                                              bottomLeft: Radius.circular(12),
+                                              bottomRight: Radius.circular(12),
                                             ),
                                           ),
                                           p: TextStyle(
@@ -542,6 +542,12 @@ class MessageWidget extends StatelessWidget {
                                             fontStyle: fontStyle,
                                             fontWeight: FontWeight.w300,
                                             fontSize: messageSize,
+                                          ),
+                                          codeblockDecoration: ShapeDecoration(
+                                            color: backgroundColor,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(12),
+                                            ),
                                           ),
                                         ),
                                       ),

@@ -242,8 +242,6 @@ ThunkAction<AppState> incrementLanguage() {
   };
 }
 
-///Supported since Spec v1.4
-///https://spec.matrix.org/v1.4/client-server-api/#private-read-receipts
 Future<bool> homeserverSupportsPrivateReadReceipts(
     Store<AppState> store) async {
   final version = await MatrixApi.checkVersion(

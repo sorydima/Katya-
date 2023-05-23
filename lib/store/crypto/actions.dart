@@ -19,14 +19,6 @@ import 'package:katya/store/index.dart';
 import 'package:katya/store/rooms/room/model.dart';
 import 'package:katya/store/user/model.dart';
 
-///
-///
-/// E2EE
-/// https://matrix.org/docs/spec/client_server/latest#id76
-///
-///
-///
-// Set currently authenticated users keys
 class SetOlmAccount {
   var olmAccount;
   SetOlmAccount({this.olmAccount});
@@ -140,15 +132,6 @@ ThunkAction<AppState> saveOlmAccount() {
   };
 }
 
-///
-/// Update (Pre)Key Sessions
-///
-/// Specifically for sending encrypted keys using olm
-/// for later use with encrypted messages using megolm
-/// sent directly to devices within the room
-///
-/// https://matrix.org/docs/spec/client_server/latest#id454
-/// https://matrix.org/docs/spec/client_server/latest#id461
 ThunkAction<AppState> updateKeySessions({
   required Room room,
 }) {

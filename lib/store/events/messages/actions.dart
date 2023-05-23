@@ -21,13 +21,6 @@ import 'package:katya/store/rooms/actions.dart';
 import 'package:katya/store/rooms/room/model.dart';
 import 'package:katya/store/user/model.dart';
 
-///
-/// Mutate Messages
-///
-/// Add/mutate to accomodate all the required, necessary
-/// mutations by matrix after the message has been sent
-/// such as reactions, redactions, and edits
-///
 Future<List<Message>> reviseMessages({
   List<Message>? messages,
   List<Message>? existing,
@@ -39,13 +32,6 @@ Future<List<Message>> reviseMessages({
   });
 }
 
-///
-/// Mutate Messages
-///
-/// Add/mutate to accomodate all the required, necessary
-/// mutations by matrix after the message has been sent
-/// such as reactions, redactions, and edits
-///
 ThunkAction<AppState> mutateMessages({
   List<Message>? messages,
   List<Message>? existing,
@@ -63,13 +49,6 @@ ThunkAction<AppState> mutateMessages({
   };
 }
 
-///
-/// Mutate Messages All
-///
-/// Run through all room messages to accomodate the required,
-/// necessary mutations by matrix after the message has been sent
-/// such as reactions, redactions, and edits
-///
 ThunkAction<AppState> mutateMessagesRoom({required Room room}) {
   return (Store<AppState> store) async {
     final messages = store.state.eventStore.messages[room.id];
@@ -106,13 +85,6 @@ ThunkAction<AppState> mutateMessagesRoom({required Room room}) {
   };
 }
 
-///
-/// Mutate Messages All
-///
-/// Add/mutate to accomodate all messages avaiable with
-/// the required, necessary mutations by matrix after the
-/// message has been sent (such as reactions, redactions, and edits)
-///
 ThunkAction<AppState> mutateMessagesAll() {
   return (Store<AppState> store) async {
     final rooms = store.state.roomStore.roomList;

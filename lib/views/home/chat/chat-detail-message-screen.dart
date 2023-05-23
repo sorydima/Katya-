@@ -147,7 +147,7 @@ class MessageDetailsScreen extends StatelessWidget {
                     ),
                   ),
                   trailing: Text(
-                    'Katya ® 👽 AI 🧠 REChain 🪐 Blockchain Node Network',
+                    'Katya ® 👽 AI 🧠 \n REChain 🪐 Blockchain \n Node Network',
                     style: TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w300,

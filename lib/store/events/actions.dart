@@ -177,14 +177,6 @@ ThunkAction<AppState> loadMessagesCached({
   };
 }
 
-///
-/// Fetch Message Events
-///
-/// https://matrix.org/docs/spec/client_server/latest#syncing
-/// https://matrix.org/docs/spec/client_server/latest#get-matrix-client-r0-rooms-roomid-messages
-///
-/// Pulls next message events remote from homeserver or storage
-///
 ThunkAction<AppState> fetchMessageEvents({
   Room? room,
   String? to,

@@ -6,11 +6,6 @@ import 'package:katya/views/widgets/lifecycle.dart';
 import 'package:katya/views/widgets/loader/loading-indicator.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-/*
- * Captcha
- * renders the captcha needed to be completed 
- * by certain matrix servers -_-
- */
 class Captcha extends StatefulWidget {
   final String? baseUrl;
   final String? publicKey;
@@ -51,7 +46,7 @@ class CaptchaState extends State<Captcha> with Lifecycle<Captcha> {
   Widget build(BuildContext context) => Stack(
         children: [
           WebView(
-            baseUrl: widget.baseUrl != null ? 'https://${widget.baseUrl}' : 'https://matrix.org',
+            baseUrl: widget.baseUrl != null ? 'https://${widget.baseUrl}' : 'matrix.katya.wtf',
             javascriptMode: JavascriptMode.unrestricted,
             javascriptChannels: {
               JavascriptChannel(

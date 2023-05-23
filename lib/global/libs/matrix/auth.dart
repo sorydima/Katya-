@@ -7,11 +7,6 @@ import 'package:katya/global/https.dart';
 import 'package:katya/global/print.dart';
 import 'package:katya/global/values.dart';
 
-/// https://matrix.org/docs/spec/client_server/latest#id183
-///
-/// Authentication Types
-///
-/// Can be used during actual login or interactive auth for confirmation
 class MatrixAuthTypes {
   static const PASSWORD = 'm.login.password';
   static const RECAPTCHA = 'm.login.recaptcha';

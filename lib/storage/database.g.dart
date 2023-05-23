@@ -2,558 +2,223 @@
 
 part of 'database.dart';
 
-// **************************************************************************
-// MoorGenerator
-// **************************************************************************
-
 // ignore_for_file: type=lint
-class MessagesCompanion extends UpdateCompanion<Message> {
-  final Value<String> id;
-  final Value<String?> roomId;
-  final Value<String?> userId;
-  final Value<String?> type;
-  final Value<String?> sender;
-  final Value<String?> stateKey;
-  final Value<String?> prevBatch;
-  final Value<String?> batch;
-  final Value<bool> pending;
-  final Value<bool> syncing;
-  final Value<bool> failed;
-  final Value<bool> edited;
-  final Value<bool> replacement;
-  final Value<int> timestamp;
-  final Value<int> received;
-  final Value<bool> hasLink;
-  final Value<String?> body;
-  final Value<String?> msgtype;
-  final Value<String?> format;
-  final Value<String?> formattedBody;
-  final Value<String?> url;
-  final Value<Map<String, dynamic>?> file;
-  final Value<String?> typeDecrypted;
-  final Value<String?> ciphertext;
-  final Value<String?> algorithm;
-  final Value<String?> sessionId;
-  final Value<String?> senderKey;
-  final Value<String?> deviceId;
-  final Value<String?> relatedEventId;
-  final Value<List<String>> editIds;
-  const MessagesCompanion({
-    this.id = const Value.absent(),
-    this.roomId = const Value.absent(),
-    this.userId = const Value.absent(),
-    this.type = const Value.absent(),
-    this.sender = const Value.absent(),
-    this.stateKey = const Value.absent(),
-    this.prevBatch = const Value.absent(),
-    this.batch = const Value.absent(),
-    this.pending = const Value.absent(),
-    this.syncing = const Value.absent(),
-    this.failed = const Value.absent(),
-    this.edited = const Value.absent(),
-    this.replacement = const Value.absent(),
-    this.timestamp = const Value.absent(),
-    this.received = const Value.absent(),
-    this.hasLink = const Value.absent(),
-    this.body = const Value.absent(),
-    this.msgtype = const Value.absent(),
-    this.format = const Value.absent(),
-    this.formattedBody = const Value.absent(),
-    this.url = const Value.absent(),
-    this.file = const Value.absent(),
-    this.typeDecrypted = const Value.absent(),
-    this.ciphertext = const Value.absent(),
-    this.algorithm = const Value.absent(),
-    this.sessionId = const Value.absent(),
-    this.senderKey = const Value.absent(),
-    this.deviceId = const Value.absent(),
-    this.relatedEventId = const Value.absent(),
-    this.editIds = const Value.absent(),
-  });
-  MessagesCompanion.insert({
-    required String id,
-    this.roomId = const Value.absent(),
-    this.userId = const Value.absent(),
-    this.type = const Value.absent(),
-    this.sender = const Value.absent(),
-    this.stateKey = const Value.absent(),
-    this.prevBatch = const Value.absent(),
-    this.batch = const Value.absent(),
-    required bool pending,
-    required bool syncing,
-    required bool failed,
-    required bool edited,
-    required bool replacement,
-    required int timestamp,
-    required int received,
-    this.hasLink = const Value.absent(),
-    this.body = const Value.absent(),
-    this.msgtype = const Value.absent(),
-    this.format = const Value.absent(),
-    this.formattedBody = const Value.absent(),
-    this.url = const Value.absent(),
-    this.file = const Value.absent(),
-    this.typeDecrypted = const Value.absent(),
-    this.ciphertext = const Value.absent(),
-    this.algorithm = const Value.absent(),
-    this.sessionId = const Value.absent(),
-    this.senderKey = const Value.absent(),
-    this.deviceId = const Value.absent(),
-    this.relatedEventId = const Value.absent(),
-    this.editIds = const Value.absent(),
-  })  : id = Value(id),
-        pending = Value(pending),
-        syncing = Value(syncing),
-        failed = Value(failed),
-        edited = Value(edited),
-        replacement = Value(replacement),
-        timestamp = Value(timestamp),
-        received = Value(received);
-  static Insertable<Message> custom({
-    Expression<String>? id,
-    Expression<String?>? roomId,
-    Expression<String?>? userId,
-    Expression<String?>? type,
-    Expression<String?>? sender,
-    Expression<String?>? stateKey,
-    Expression<String?>? prevBatch,
-    Expression<String?>? batch,
-    Expression<bool>? pending,
-    Expression<bool>? syncing,
-    Expression<bool>? failed,
-    Expression<bool>? edited,
-    Expression<bool>? replacement,
-    Expression<int>? timestamp,
-    Expression<int>? received,
-    Expression<bool>? hasLink,
-    Expression<String?>? body,
-    Expression<String?>? msgtype,
-    Expression<String?>? format,
-    Expression<String?>? formattedBody,
-    Expression<String?>? url,
-    Expression<Map<String, dynamic>?>? file,
-    Expression<String?>? typeDecrypted,
-    Expression<String?>? ciphertext,
-    Expression<String?>? algorithm,
-    Expression<String?>? sessionId,
-    Expression<String?>? senderKey,
-    Expression<String?>? deviceId,
-    Expression<String?>? relatedEventId,
-    Expression<List<String>>? editIds,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (roomId != null) 'room_id': roomId,
-      if (userId != null) 'user_id': userId,
-      if (type != null) 'type': type,
-      if (sender != null) 'sender': sender,
-      if (stateKey != null) 'state_key': stateKey,
-      if (prevBatch != null) 'prev_batch': prevBatch,
-      if (batch != null) 'batch': batch,
-      if (pending != null) 'pending': pending,
-      if (syncing != null) 'syncing': syncing,
-      if (failed != null) 'failed': failed,
-      if (edited != null) 'edited': edited,
-      if (replacement != null) 'replacement': replacement,
-      if (timestamp != null) 'timestamp': timestamp,
-      if (received != null) 'received': received,
-      if (hasLink != null) 'has_link': hasLink,
-      if (body != null) 'body': body,
-      if (msgtype != null) 'msgtype': msgtype,
-      if (format != null) 'format': format,
-      if (formattedBody != null) 'formatted_body': formattedBody,
-      if (url != null) 'url': url,
-      if (file != null) 'file': file,
-      if (typeDecrypted != null) 'type_decrypted': typeDecrypted,
-      if (ciphertext != null) 'ciphertext': ciphertext,
-      if (algorithm != null) 'algorithm': algorithm,
-      if (sessionId != null) 'session_id': sessionId,
-      if (senderKey != null) 'sender_key': senderKey,
-      if (deviceId != null) 'device_id': deviceId,
-      if (relatedEventId != null) 'related_event_id': relatedEventId,
-      if (editIds != null) 'edit_ids': editIds,
-    });
-  }
-
-  MessagesCompanion copyWith(
-      {Value<String>? id,
-      Value<String?>? roomId,
-      Value<String?>? userId,
-      Value<String?>? type,
-      Value<String?>? sender,
-      Value<String?>? stateKey,
-      Value<String?>? prevBatch,
-      Value<String?>? batch,
-      Value<bool>? pending,
-      Value<bool>? syncing,
-      Value<bool>? failed,
-      Value<bool>? edited,
-      Value<bool>? replacement,
-      Value<int>? timestamp,
-      Value<int>? received,
-      Value<bool>? hasLink,
-      Value<String?>? body,
-      Value<String?>? msgtype,
-      Value<String?>? format,
-      Value<String?>? formattedBody,
-      Value<String?>? url,
-      Value<Map<String, dynamic>?>? file,
-      Value<String?>? typeDecrypted,
-      Value<String?>? ciphertext,
-      Value<String?>? algorithm,
-      Value<String?>? sessionId,
-      Value<String?>? senderKey,
-      Value<String?>? deviceId,
-      Value<String?>? relatedEventId,
-      Value<List<String>>? editIds}) {
-    return MessagesCompanion(
-      id: id ?? this.id,
-      roomId: roomId ?? this.roomId,
-      userId: userId ?? this.userId,
-      type: type ?? this.type,
-      sender: sender ?? this.sender,
-      stateKey: stateKey ?? this.stateKey,
-      prevBatch: prevBatch ?? this.prevBatch,
-      batch: batch ?? this.batch,
-      pending: pending ?? this.pending,
-      syncing: syncing ?? this.syncing,
-      failed: failed ?? this.failed,
-      edited: edited ?? this.edited,
-      replacement: replacement ?? this.replacement,
-      timestamp: timestamp ?? this.timestamp,
-      received: received ?? this.received,
-      hasLink: hasLink ?? this.hasLink,
-      body: body ?? this.body,
-      msgtype: msgtype ?? this.msgtype,
-      format: format ?? this.format,
-      formattedBody: formattedBody ?? this.formattedBody,
-      url: url ?? this.url,
-      file: file ?? this.file,
-      typeDecrypted: typeDecrypted ?? this.typeDecrypted,
-      ciphertext: ciphertext ?? this.ciphertext,
-      algorithm: algorithm ?? this.algorithm,
-      sessionId: sessionId ?? this.sessionId,
-      senderKey: senderKey ?? this.senderKey,
-      deviceId: deviceId ?? this.deviceId,
-      relatedEventId: relatedEventId ?? this.relatedEventId,
-      editIds: editIds ?? this.editIds,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<String>(id.value);
-    }
-    if (roomId.present) {
-      map['room_id'] = Variable<String?>(roomId.value);
-    }
-    if (userId.present) {
-      map['user_id'] = Variable<String?>(userId.value);
-    }
-    if (type.present) {
-      map['type'] = Variable<String?>(type.value);
-    }
-    if (sender.present) {
-      map['sender'] = Variable<String?>(sender.value);
-    }
-    if (stateKey.present) {
-      map['state_key'] = Variable<String?>(stateKey.value);
-    }
-    if (prevBatch.present) {
-      map['prev_batch'] = Variable<String?>(prevBatch.value);
-    }
-    if (batch.present) {
-      map['batch'] = Variable<String?>(batch.value);
-    }
-    if (pending.present) {
-      map['pending'] = Variable<bool>(pending.value);
-    }
-    if (syncing.present) {
-      map['syncing'] = Variable<bool>(syncing.value);
-    }
-    if (failed.present) {
-      map['failed'] = Variable<bool>(failed.value);
-    }
-    if (edited.present) {
-      map['edited'] = Variable<bool>(edited.value);
-    }
-    if (replacement.present) {
-      map['replacement'] = Variable<bool>(replacement.value);
-    }
-    if (timestamp.present) {
-      map['timestamp'] = Variable<int>(timestamp.value);
-    }
-    if (received.present) {
-      map['received'] = Variable<int>(received.value);
-    }
-    if (hasLink.present) {
-      map['has_link'] = Variable<bool>(hasLink.value);
-    }
-    if (body.present) {
-      map['body'] = Variable<String?>(body.value);
-    }
-    if (msgtype.present) {
-      map['msgtype'] = Variable<String?>(msgtype.value);
-    }
-    if (format.present) {
-      map['format'] = Variable<String?>(format.value);
-    }
-    if (formattedBody.present) {
-      map['formatted_body'] = Variable<String?>(formattedBody.value);
-    }
-    if (url.present) {
-      map['url'] = Variable<String?>(url.value);
-    }
-    if (file.present) {
-      final converter = $MessagesTable.$converter0;
-      map['file'] = Variable<String?>(converter.mapToSql(file.value));
-    }
-    if (typeDecrypted.present) {
-      map['type_decrypted'] = Variable<String?>(typeDecrypted.value);
-    }
-    if (ciphertext.present) {
-      map['ciphertext'] = Variable<String?>(ciphertext.value);
-    }
-    if (algorithm.present) {
-      map['algorithm'] = Variable<String?>(algorithm.value);
-    }
-    if (sessionId.present) {
-      map['session_id'] = Variable<String?>(sessionId.value);
-    }
-    if (senderKey.present) {
-      map['sender_key'] = Variable<String?>(senderKey.value);
-    }
-    if (deviceId.present) {
-      map['device_id'] = Variable<String?>(deviceId.value);
-    }
-    if (relatedEventId.present) {
-      map['related_event_id'] = Variable<String?>(relatedEventId.value);
-    }
-    if (editIds.present) {
-      final converter = $MessagesTable.$converter1;
-      map['edit_ids'] = Variable<String>(converter.mapToSql(editIds.value)!);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('MessagesCompanion(')
-          ..write('id: $id, ')
-          ..write('roomId: $roomId, ')
-          ..write('userId: $userId, ')
-          ..write('type: $type, ')
-          ..write('sender: $sender, ')
-          ..write('stateKey: $stateKey, ')
-          ..write('prevBatch: $prevBatch, ')
-          ..write('batch: $batch, ')
-          ..write('pending: $pending, ')
-          ..write('syncing: $syncing, ')
-          ..write('failed: $failed, ')
-          ..write('edited: $edited, ')
-          ..write('replacement: $replacement, ')
-          ..write('timestamp: $timestamp, ')
-          ..write('received: $received, ')
-          ..write('hasLink: $hasLink, ')
-          ..write('body: $body, ')
-          ..write('msgtype: $msgtype, ')
-          ..write('format: $format, ')
-          ..write('formattedBody: $formattedBody, ')
-          ..write('url: $url, ')
-          ..write('file: $file, ')
-          ..write('typeDecrypted: $typeDecrypted, ')
-          ..write('ciphertext: $ciphertext, ')
-          ..write('algorithm: $algorithm, ')
-          ..write('sessionId: $sessionId, ')
-          ..write('senderKey: $senderKey, ')
-          ..write('deviceId: $deviceId, ')
-          ..write('relatedEventId: $relatedEventId, ')
-          ..write('editIds: $editIds')
-          ..write(')'))
-        .toString();
-  }
-}
-
 class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $MessagesTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
       'id', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
-      $customConstraints: 'UNIQUE');
-  final VerificationMeta _roomIdMeta = const VerificationMeta('roomId');
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+  static const VerificationMeta _roomIdMeta = const VerificationMeta('roomId');
   @override
-  late final GeneratedColumn<String?> roomId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> roomId = GeneratedColumn<String>(
       'room_id', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
   @override
-  late final GeneratedColumn<String?> userId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
       'user_id', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _typeMeta = const VerificationMeta('type');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
   @override
-  late final GeneratedColumn<String?> type = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
       'type', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _senderMeta = const VerificationMeta('sender');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _senderMeta = const VerificationMeta('sender');
   @override
-  late final GeneratedColumn<String?> sender = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> sender = GeneratedColumn<String>(
       'sender', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _stateKeyMeta = const VerificationMeta('stateKey');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _stateKeyMeta =
+      const VerificationMeta('stateKey');
   @override
-  late final GeneratedColumn<String?> stateKey = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> stateKey = GeneratedColumn<String>(
       'state_key', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _prevBatchMeta = const VerificationMeta('prevBatch');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _prevBatchMeta =
+      const VerificationMeta('prevBatch');
   @override
-  late final GeneratedColumn<String?> prevBatch = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> prevBatch = GeneratedColumn<String>(
       'prev_batch', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _batchMeta = const VerificationMeta('batch');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _batchMeta = const VerificationMeta('batch');
   @override
-  late final GeneratedColumn<String?> batch = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> batch = GeneratedColumn<String>(
       'batch', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _pendingMeta = const VerificationMeta('pending');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _pendingMeta =
+      const VerificationMeta('pending');
   @override
-  late final GeneratedColumn<bool?> pending = GeneratedColumn<bool?>(
-      'pending', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (pending IN (0, 1))');
-  final VerificationMeta _syncingMeta = const VerificationMeta('syncing');
+  late final GeneratedColumn<bool> pending =
+      GeneratedColumn<bool>('pending', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: true,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("pending" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
+  static const VerificationMeta _syncingMeta =
+      const VerificationMeta('syncing');
   @override
-  late final GeneratedColumn<bool?> syncing = GeneratedColumn<bool?>(
-      'syncing', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (syncing IN (0, 1))');
-  final VerificationMeta _failedMeta = const VerificationMeta('failed');
+  late final GeneratedColumn<bool> syncing =
+      GeneratedColumn<bool>('syncing', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: true,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("syncing" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
+  static const VerificationMeta _failedMeta = const VerificationMeta('failed');
   @override
-  late final GeneratedColumn<bool?> failed = GeneratedColumn<bool?>(
-      'failed', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (failed IN (0, 1))');
-  final VerificationMeta _editedMeta = const VerificationMeta('edited');
+  late final GeneratedColumn<bool> failed =
+      GeneratedColumn<bool>('failed', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: true,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("failed" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
+  static const VerificationMeta _editedMeta = const VerificationMeta('edited');
   @override
-  late final GeneratedColumn<bool?> edited = GeneratedColumn<bool?>(
-      'edited', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (edited IN (0, 1))');
-  final VerificationMeta _replacementMeta =
+  late final GeneratedColumn<bool> edited =
+      GeneratedColumn<bool>('edited', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: true,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("edited" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
+  static const VerificationMeta _replacementMeta =
       const VerificationMeta('replacement');
   @override
-  late final GeneratedColumn<bool?> replacement = GeneratedColumn<bool?>(
-      'replacement', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (replacement IN (0, 1))');
-  final VerificationMeta _timestampMeta = const VerificationMeta('timestamp');
+  late final GeneratedColumn<bool> replacement =
+      GeneratedColumn<bool>('replacement', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: true,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("replacement" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
+  static const VerificationMeta _timestampMeta =
+      const VerificationMeta('timestamp');
   @override
-  late final GeneratedColumn<int?> timestamp = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> timestamp = GeneratedColumn<int>(
       'timestamp', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: true);
-  final VerificationMeta _receivedMeta = const VerificationMeta('received');
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _receivedMeta =
+      const VerificationMeta('received');
   @override
-  late final GeneratedColumn<int?> received = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> received = GeneratedColumn<int>(
       'received', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: true);
-  final VerificationMeta _hasLinkMeta = const VerificationMeta('hasLink');
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _hasLinkMeta =
+      const VerificationMeta('hasLink');
   @override
-  late final GeneratedColumn<bool?> hasLink = GeneratedColumn<bool?>(
-      'has_link', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: false,
-      defaultConstraints: 'CHECK (has_link IN (0, 1))',
-      defaultValue: const Constant(false));
-  final VerificationMeta _bodyMeta = const VerificationMeta('body');
+  late final GeneratedColumn<bool> hasLink =
+      GeneratedColumn<bool>('has_link', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("has_link" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }),
+          defaultValue: const Constant(false));
+  static const VerificationMeta _bodyMeta = const VerificationMeta('body');
   @override
-  late final GeneratedColumn<String?> body = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> body = GeneratedColumn<String>(
       'body', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _msgtypeMeta = const VerificationMeta('msgtype');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _msgtypeMeta =
+      const VerificationMeta('msgtype');
   @override
-  late final GeneratedColumn<String?> msgtype = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> msgtype = GeneratedColumn<String>(
       'msgtype', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _formatMeta = const VerificationMeta('format');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _formatMeta = const VerificationMeta('format');
   @override
-  late final GeneratedColumn<String?> format = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> format = GeneratedColumn<String>(
       'format', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _formattedBodyMeta =
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _formattedBodyMeta =
       const VerificationMeta('formattedBody');
   @override
-  late final GeneratedColumn<String?> formattedBody = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> formattedBody = GeneratedColumn<String>(
       'formatted_body', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _urlMeta = const VerificationMeta('url');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _urlMeta = const VerificationMeta('url');
   @override
-  late final GeneratedColumn<String?> url = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> url = GeneratedColumn<String>(
       'url', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _fileMeta = const VerificationMeta('file');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _fileMeta = const VerificationMeta('file');
   @override
-  late final GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String?>
-      file = GeneratedColumn<String?>('file', aliasedName, true,
-              type: const StringType(), requiredDuringInsert: false)
-          .withConverter<Map<String, dynamic>?>($MessagesTable.$converter0);
-  final VerificationMeta _typeDecryptedMeta =
+  late final GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String>
+      file = GeneratedColumn<String>('file', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<Map<String, dynamic>?>($MessagesTable.$converterfile);
+  static const VerificationMeta _typeDecryptedMeta =
       const VerificationMeta('typeDecrypted');
   @override
-  late final GeneratedColumn<String?> typeDecrypted = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> typeDecrypted = GeneratedColumn<String>(
       'type_decrypted', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _ciphertextMeta = const VerificationMeta('ciphertext');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _ciphertextMeta =
+      const VerificationMeta('ciphertext');
   @override
-  late final GeneratedColumn<String?> ciphertext = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> ciphertext = GeneratedColumn<String>(
       'ciphertext', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _algorithmMeta = const VerificationMeta('algorithm');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _algorithmMeta =
+      const VerificationMeta('algorithm');
   @override
-  late final GeneratedColumn<String?> algorithm = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> algorithm = GeneratedColumn<String>(
       'algorithm', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _sessionIdMeta = const VerificationMeta('sessionId');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _sessionIdMeta =
+      const VerificationMeta('sessionId');
   @override
-  late final GeneratedColumn<String?> sessionId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> sessionId = GeneratedColumn<String>(
       'session_id', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _senderKeyMeta = const VerificationMeta('senderKey');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _senderKeyMeta =
+      const VerificationMeta('senderKey');
   @override
-  late final GeneratedColumn<String?> senderKey = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> senderKey = GeneratedColumn<String>(
       'sender_key', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _deviceIdMeta = const VerificationMeta('deviceId');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _deviceIdMeta =
+      const VerificationMeta('deviceId');
   @override
-  late final GeneratedColumn<String?> deviceId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> deviceId = GeneratedColumn<String>(
       'device_id', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _relatedEventIdMeta =
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _relatedEventIdMeta =
       const VerificationMeta('relatedEventId');
   @override
-  late final GeneratedColumn<String?> relatedEventId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> relatedEventId = GeneratedColumn<String>(
       'related_event_id', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _editIdsMeta = const VerificationMeta('editIds');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _editIdsMeta =
+      const VerificationMeta('editIds');
   @override
-  late final GeneratedColumnWithTypeConverter<List<String>, String?> editIds =
-      GeneratedColumn<String?>('edit_ids', aliasedName, false,
-              type: const StringType(),
+  late final GeneratedColumnWithTypeConverter<List<String>, String> editIds =
+      GeneratedColumn<String>('edit_ids', aliasedName, false,
+              type: DriftSqlType.string,
               requiredDuringInsert: false,
               defaultValue: const Constant('[]'))
-          .withConverter<List<String>>($MessagesTable.$converter1);
+          .withConverter<List<String>>($MessagesTable.$convertereditIds);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -744,66 +409,67 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
   Message map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Message(
-      id: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      userId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}user_id']),
-      roomId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}room_id']),
-      type: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}type']),
-      sender: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}sender']),
-      stateKey: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}state_key']),
-      batch: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}batch']),
-      prevBatch: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}prev_batch']),
-      timestamp: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}timestamp'])!,
-      body: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}body']),
-      typeDecrypted: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}type_decrypted']),
-      msgtype: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}msgtype']),
-      format: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}format']),
-      file: $MessagesTable.$converter0.mapToDart(const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}file'])),
-      url: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}url']),
-      formattedBody: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}formatted_body']),
-      received: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}received'])!,
-      ciphertext: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}ciphertext']),
-      senderKey: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}sender_key']),
-      deviceId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}device_id']),
-      algorithm: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}algorithm']),
-      sessionId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}session_id']),
-      relatedEventId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}related_event_id']),
-      edited: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}edited'])!,
-      syncing: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}syncing'])!,
-      pending: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}pending'])!,
-      failed: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}failed'])!,
-      replacement: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}replacement'])!,
-      hasLink: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}has_link'])!,
-      editIds: $MessagesTable.$converter1.mapToDart(const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}edit_ids']))!,
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      userId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}user_id']),
+      roomId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}room_id']),
+      type: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}type']),
+      sender: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sender']),
+      stateKey: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}state_key']),
+      batch: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}batch']),
+      prevBatch: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}prev_batch']),
+      timestamp: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}timestamp'])!,
+      body: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}body']),
+      typeDecrypted: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}type_decrypted']),
+      msgtype: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}msgtype']),
+      format: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}format']),
+      file: $MessagesTable.$converterfile.fromSql(attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}file'])),
+      url: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}url']),
+      formattedBody: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}formatted_body']),
+      received: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}received'])!,
+      ciphertext: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}ciphertext']),
+      senderKey: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sender_key']),
+      deviceId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}device_id']),
+      algorithm: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}algorithm']),
+      sessionId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}session_id']),
+      relatedEventId: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}related_event_id']),
+      edited: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}edited'])!,
+      syncing: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}syncing'])!,
+      pending: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}pending'])!,
+      failed: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}failed'])!,
+      replacement: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}replacement'])!,
+      hasLink: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}has_link'])!,
+      editIds: $MessagesTable.$convertereditIds.fromSql(attachedDatabase
+          .typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}edit_ids'])!),
     );
   }
 
@@ -812,13 +478,13 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
     return $MessagesTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<Map<String, dynamic>?, String> $converter0 =
+  static TypeConverter<Map<String, dynamic>?, String?> $converterfile =
       const MapToJsonConverter();
-  static TypeConverter<List<String>, String> $converter1 =
+  static TypeConverter<List<String>, String> $convertereditIds =
       const ListToTextConverter();
 }
 
-class DecryptedCompanion extends UpdateCompanion<Message> {
+class MessagesCompanion extends UpdateCompanion<Message> {
   final Value<String> id;
   final Value<String?> roomId;
   final Value<String?> userId;
@@ -849,7 +515,8 @@ class DecryptedCompanion extends UpdateCompanion<Message> {
   final Value<String?> deviceId;
   final Value<String?> relatedEventId;
   final Value<List<String>> editIds;
-  const DecryptedCompanion({
+  final Value<int> rowid;
+  const MessagesCompanion({
     this.id = const Value.absent(),
     this.roomId = const Value.absent(),
     this.userId = const Value.absent(),
@@ -880,8 +547,9 @@ class DecryptedCompanion extends UpdateCompanion<Message> {
     this.deviceId = const Value.absent(),
     this.relatedEventId = const Value.absent(),
     this.editIds = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
-  DecryptedCompanion.insert({
+  MessagesCompanion.insert({
     required String id,
     this.roomId = const Value.absent(),
     this.userId = const Value.absent(),
@@ -912,6 +580,7 @@ class DecryptedCompanion extends UpdateCompanion<Message> {
     this.deviceId = const Value.absent(),
     this.relatedEventId = const Value.absent(),
     this.editIds = const Value.absent(),
+    this.rowid = const Value.absent(),
   })  : id = Value(id),
         pending = Value(pending),
         syncing = Value(syncing),
@@ -922,13 +591,13 @@ class DecryptedCompanion extends UpdateCompanion<Message> {
         received = Value(received);
   static Insertable<Message> custom({
     Expression<String>? id,
-    Expression<String?>? roomId,
-    Expression<String?>? userId,
-    Expression<String?>? type,
-    Expression<String?>? sender,
-    Expression<String?>? stateKey,
-    Expression<String?>? prevBatch,
-    Expression<String?>? batch,
+    Expression<String>? roomId,
+    Expression<String>? userId,
+    Expression<String>? type,
+    Expression<String>? sender,
+    Expression<String>? stateKey,
+    Expression<String>? prevBatch,
+    Expression<String>? batch,
     Expression<bool>? pending,
     Expression<bool>? syncing,
     Expression<bool>? failed,
@@ -937,20 +606,21 @@ class DecryptedCompanion extends UpdateCompanion<Message> {
     Expression<int>? timestamp,
     Expression<int>? received,
     Expression<bool>? hasLink,
-    Expression<String?>? body,
-    Expression<String?>? msgtype,
-    Expression<String?>? format,
-    Expression<String?>? formattedBody,
-    Expression<String?>? url,
-    Expression<Map<String, dynamic>?>? file,
-    Expression<String?>? typeDecrypted,
-    Expression<String?>? ciphertext,
-    Expression<String?>? algorithm,
-    Expression<String?>? sessionId,
-    Expression<String?>? senderKey,
-    Expression<String?>? deviceId,
-    Expression<String?>? relatedEventId,
-    Expression<List<String>>? editIds,
+    Expression<String>? body,
+    Expression<String>? msgtype,
+    Expression<String>? format,
+    Expression<String>? formattedBody,
+    Expression<String>? url,
+    Expression<String>? file,
+    Expression<String>? typeDecrypted,
+    Expression<String>? ciphertext,
+    Expression<String>? algorithm,
+    Expression<String>? sessionId,
+    Expression<String>? senderKey,
+    Expression<String>? deviceId,
+    Expression<String>? relatedEventId,
+    Expression<String>? editIds,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -983,10 +653,11 @@ class DecryptedCompanion extends UpdateCompanion<Message> {
       if (deviceId != null) 'device_id': deviceId,
       if (relatedEventId != null) 'related_event_id': relatedEventId,
       if (editIds != null) 'edit_ids': editIds,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
-  DecryptedCompanion copyWith(
+  MessagesCompanion copyWith(
       {Value<String>? id,
       Value<String?>? roomId,
       Value<String?>? userId,
@@ -1016,8 +687,9 @@ class DecryptedCompanion extends UpdateCompanion<Message> {
       Value<String?>? senderKey,
       Value<String?>? deviceId,
       Value<String?>? relatedEventId,
-      Value<List<String>>? editIds}) {
-    return DecryptedCompanion(
+      Value<List<String>>? editIds,
+      Value<int>? rowid}) {
+    return MessagesCompanion(
       id: id ?? this.id,
       roomId: roomId ?? this.roomId,
       userId: userId ?? this.userId,
@@ -1048,6 +720,7 @@ class DecryptedCompanion extends UpdateCompanion<Message> {
       deviceId: deviceId ?? this.deviceId,
       relatedEventId: relatedEventId ?? this.relatedEventId,
       editIds: editIds ?? this.editIds,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -1058,25 +731,25 @@ class DecryptedCompanion extends UpdateCompanion<Message> {
       map['id'] = Variable<String>(id.value);
     }
     if (roomId.present) {
-      map['room_id'] = Variable<String?>(roomId.value);
+      map['room_id'] = Variable<String>(roomId.value);
     }
     if (userId.present) {
-      map['user_id'] = Variable<String?>(userId.value);
+      map['user_id'] = Variable<String>(userId.value);
     }
     if (type.present) {
-      map['type'] = Variable<String?>(type.value);
+      map['type'] = Variable<String>(type.value);
     }
     if (sender.present) {
-      map['sender'] = Variable<String?>(sender.value);
+      map['sender'] = Variable<String>(sender.value);
     }
     if (stateKey.present) {
-      map['state_key'] = Variable<String?>(stateKey.value);
+      map['state_key'] = Variable<String>(stateKey.value);
     }
     if (prevBatch.present) {
-      map['prev_batch'] = Variable<String?>(prevBatch.value);
+      map['prev_batch'] = Variable<String>(prevBatch.value);
     }
     if (batch.present) {
-      map['batch'] = Variable<String?>(batch.value);
+      map['batch'] = Variable<String>(batch.value);
     }
     if (pending.present) {
       map['pending'] = Variable<bool>(pending.value);
@@ -1103,55 +776,58 @@ class DecryptedCompanion extends UpdateCompanion<Message> {
       map['has_link'] = Variable<bool>(hasLink.value);
     }
     if (body.present) {
-      map['body'] = Variable<String?>(body.value);
+      map['body'] = Variable<String>(body.value);
     }
     if (msgtype.present) {
-      map['msgtype'] = Variable<String?>(msgtype.value);
+      map['msgtype'] = Variable<String>(msgtype.value);
     }
     if (format.present) {
-      map['format'] = Variable<String?>(format.value);
+      map['format'] = Variable<String>(format.value);
     }
     if (formattedBody.present) {
-      map['formatted_body'] = Variable<String?>(formattedBody.value);
+      map['formatted_body'] = Variable<String>(formattedBody.value);
     }
     if (url.present) {
-      map['url'] = Variable<String?>(url.value);
+      map['url'] = Variable<String>(url.value);
     }
     if (file.present) {
-      final converter = $DecryptedTable.$converter0;
-      map['file'] = Variable<String?>(converter.mapToSql(file.value));
+      final converter = $MessagesTable.$converterfile;
+      map['file'] = Variable<String>(converter.toSql(file.value));
     }
     if (typeDecrypted.present) {
-      map['type_decrypted'] = Variable<String?>(typeDecrypted.value);
+      map['type_decrypted'] = Variable<String>(typeDecrypted.value);
     }
     if (ciphertext.present) {
-      map['ciphertext'] = Variable<String?>(ciphertext.value);
+      map['ciphertext'] = Variable<String>(ciphertext.value);
     }
     if (algorithm.present) {
-      map['algorithm'] = Variable<String?>(algorithm.value);
+      map['algorithm'] = Variable<String>(algorithm.value);
     }
     if (sessionId.present) {
-      map['session_id'] = Variable<String?>(sessionId.value);
+      map['session_id'] = Variable<String>(sessionId.value);
     }
     if (senderKey.present) {
-      map['sender_key'] = Variable<String?>(senderKey.value);
+      map['sender_key'] = Variable<String>(senderKey.value);
     }
     if (deviceId.present) {
-      map['device_id'] = Variable<String?>(deviceId.value);
+      map['device_id'] = Variable<String>(deviceId.value);
     }
     if (relatedEventId.present) {
-      map['related_event_id'] = Variable<String?>(relatedEventId.value);
+      map['related_event_id'] = Variable<String>(relatedEventId.value);
     }
     if (editIds.present) {
-      final converter = $DecryptedTable.$converter1;
-      map['edit_ids'] = Variable<String>(converter.mapToSql(editIds.value)!);
+      final converter = $MessagesTable.$convertereditIds;
+      map['edit_ids'] = Variable<String>(converter.toSql(editIds.value));
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
     }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('DecryptedCompanion(')
+    return (StringBuffer('MessagesCompanion(')
           ..write('id: $id, ')
           ..write('roomId: $roomId, ')
           ..write('userId: $userId, ')
@@ -1181,7 +857,8 @@ class DecryptedCompanion extends UpdateCompanion<Message> {
           ..write('senderKey: $senderKey, ')
           ..write('deviceId: $deviceId, ')
           ..write('relatedEventId: $relatedEventId, ')
-          ..write('editIds: $editIds')
+          ..write('editIds: $editIds, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -1193,179 +870,217 @@ class $DecryptedTable extends Decrypted
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $DecryptedTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
       'id', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
-      $customConstraints: 'UNIQUE');
-  final VerificationMeta _roomIdMeta = const VerificationMeta('roomId');
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+  static const VerificationMeta _roomIdMeta = const VerificationMeta('roomId');
   @override
-  late final GeneratedColumn<String?> roomId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> roomId = GeneratedColumn<String>(
       'room_id', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
   @override
-  late final GeneratedColumn<String?> userId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
       'user_id', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _typeMeta = const VerificationMeta('type');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
   @override
-  late final GeneratedColumn<String?> type = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
       'type', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _senderMeta = const VerificationMeta('sender');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _senderMeta = const VerificationMeta('sender');
   @override
-  late final GeneratedColumn<String?> sender = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> sender = GeneratedColumn<String>(
       'sender', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _stateKeyMeta = const VerificationMeta('stateKey');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _stateKeyMeta =
+      const VerificationMeta('stateKey');
   @override
-  late final GeneratedColumn<String?> stateKey = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> stateKey = GeneratedColumn<String>(
       'state_key', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _prevBatchMeta = const VerificationMeta('prevBatch');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _prevBatchMeta =
+      const VerificationMeta('prevBatch');
   @override
-  late final GeneratedColumn<String?> prevBatch = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> prevBatch = GeneratedColumn<String>(
       'prev_batch', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _batchMeta = const VerificationMeta('batch');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _batchMeta = const VerificationMeta('batch');
   @override
-  late final GeneratedColumn<String?> batch = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> batch = GeneratedColumn<String>(
       'batch', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _pendingMeta = const VerificationMeta('pending');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _pendingMeta =
+      const VerificationMeta('pending');
   @override
-  late final GeneratedColumn<bool?> pending = GeneratedColumn<bool?>(
-      'pending', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (pending IN (0, 1))');
-  final VerificationMeta _syncingMeta = const VerificationMeta('syncing');
+  late final GeneratedColumn<bool> pending =
+      GeneratedColumn<bool>('pending', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: true,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("pending" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
+  static const VerificationMeta _syncingMeta =
+      const VerificationMeta('syncing');
   @override
-  late final GeneratedColumn<bool?> syncing = GeneratedColumn<bool?>(
-      'syncing', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (syncing IN (0, 1))');
-  final VerificationMeta _failedMeta = const VerificationMeta('failed');
+  late final GeneratedColumn<bool> syncing =
+      GeneratedColumn<bool>('syncing', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: true,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("syncing" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
+  static const VerificationMeta _failedMeta = const VerificationMeta('failed');
   @override
-  late final GeneratedColumn<bool?> failed = GeneratedColumn<bool?>(
-      'failed', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (failed IN (0, 1))');
-  final VerificationMeta _editedMeta = const VerificationMeta('edited');
+  late final GeneratedColumn<bool> failed =
+      GeneratedColumn<bool>('failed', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: true,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("failed" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
+  static const VerificationMeta _editedMeta = const VerificationMeta('edited');
   @override
-  late final GeneratedColumn<bool?> edited = GeneratedColumn<bool?>(
-      'edited', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (edited IN (0, 1))');
-  final VerificationMeta _replacementMeta =
+  late final GeneratedColumn<bool> edited =
+      GeneratedColumn<bool>('edited', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: true,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("edited" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
+  static const VerificationMeta _replacementMeta =
       const VerificationMeta('replacement');
   @override
-  late final GeneratedColumn<bool?> replacement = GeneratedColumn<bool?>(
-      'replacement', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (replacement IN (0, 1))');
-  final VerificationMeta _timestampMeta = const VerificationMeta('timestamp');
+  late final GeneratedColumn<bool> replacement =
+      GeneratedColumn<bool>('replacement', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: true,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("replacement" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
+  static const VerificationMeta _timestampMeta =
+      const VerificationMeta('timestamp');
   @override
-  late final GeneratedColumn<int?> timestamp = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> timestamp = GeneratedColumn<int>(
       'timestamp', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: true);
-  final VerificationMeta _receivedMeta = const VerificationMeta('received');
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _receivedMeta =
+      const VerificationMeta('received');
   @override
-  late final GeneratedColumn<int?> received = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> received = GeneratedColumn<int>(
       'received', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: true);
-  final VerificationMeta _hasLinkMeta = const VerificationMeta('hasLink');
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _hasLinkMeta =
+      const VerificationMeta('hasLink');
   @override
-  late final GeneratedColumn<bool?> hasLink = GeneratedColumn<bool?>(
-      'has_link', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: false,
-      defaultConstraints: 'CHECK (has_link IN (0, 1))',
-      defaultValue: const Constant(false));
-  final VerificationMeta _bodyMeta = const VerificationMeta('body');
+  late final GeneratedColumn<bool> hasLink =
+      GeneratedColumn<bool>('has_link', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: false,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("has_link" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }),
+          defaultValue: const Constant(false));
+  static const VerificationMeta _bodyMeta = const VerificationMeta('body');
   @override
-  late final GeneratedColumn<String?> body = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> body = GeneratedColumn<String>(
       'body', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _msgtypeMeta = const VerificationMeta('msgtype');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _msgtypeMeta =
+      const VerificationMeta('msgtype');
   @override
-  late final GeneratedColumn<String?> msgtype = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> msgtype = GeneratedColumn<String>(
       'msgtype', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _formatMeta = const VerificationMeta('format');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _formatMeta = const VerificationMeta('format');
   @override
-  late final GeneratedColumn<String?> format = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> format = GeneratedColumn<String>(
       'format', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _formattedBodyMeta =
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _formattedBodyMeta =
       const VerificationMeta('formattedBody');
   @override
-  late final GeneratedColumn<String?> formattedBody = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> formattedBody = GeneratedColumn<String>(
       'formatted_body', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _urlMeta = const VerificationMeta('url');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _urlMeta = const VerificationMeta('url');
   @override
-  late final GeneratedColumn<String?> url = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> url = GeneratedColumn<String>(
       'url', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _fileMeta = const VerificationMeta('file');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _fileMeta = const VerificationMeta('file');
   @override
-  late final GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String?>
-      file = GeneratedColumn<String?>('file', aliasedName, true,
-              type: const StringType(), requiredDuringInsert: false)
-          .withConverter<Map<String, dynamic>?>($DecryptedTable.$converter0);
-  final VerificationMeta _typeDecryptedMeta =
+  late final GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String>
+      file = GeneratedColumn<String>('file', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<Map<String, dynamic>?>($DecryptedTable.$converterfile);
+  static const VerificationMeta _typeDecryptedMeta =
       const VerificationMeta('typeDecrypted');
   @override
-  late final GeneratedColumn<String?> typeDecrypted = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> typeDecrypted = GeneratedColumn<String>(
       'type_decrypted', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _ciphertextMeta = const VerificationMeta('ciphertext');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _ciphertextMeta =
+      const VerificationMeta('ciphertext');
   @override
-  late final GeneratedColumn<String?> ciphertext = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> ciphertext = GeneratedColumn<String>(
       'ciphertext', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _algorithmMeta = const VerificationMeta('algorithm');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _algorithmMeta =
+      const VerificationMeta('algorithm');
   @override
-  late final GeneratedColumn<String?> algorithm = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> algorithm = GeneratedColumn<String>(
       'algorithm', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _sessionIdMeta = const VerificationMeta('sessionId');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _sessionIdMeta =
+      const VerificationMeta('sessionId');
   @override
-  late final GeneratedColumn<String?> sessionId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> sessionId = GeneratedColumn<String>(
       'session_id', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _senderKeyMeta = const VerificationMeta('senderKey');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _senderKeyMeta =
+      const VerificationMeta('senderKey');
   @override
-  late final GeneratedColumn<String?> senderKey = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> senderKey = GeneratedColumn<String>(
       'sender_key', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _deviceIdMeta = const VerificationMeta('deviceId');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _deviceIdMeta =
+      const VerificationMeta('deviceId');
   @override
-  late final GeneratedColumn<String?> deviceId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> deviceId = GeneratedColumn<String>(
       'device_id', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _relatedEventIdMeta =
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _relatedEventIdMeta =
       const VerificationMeta('relatedEventId');
   @override
-  late final GeneratedColumn<String?> relatedEventId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> relatedEventId = GeneratedColumn<String>(
       'related_event_id', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _editIdsMeta = const VerificationMeta('editIds');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _editIdsMeta =
+      const VerificationMeta('editIds');
   @override
-  late final GeneratedColumnWithTypeConverter<List<String>, String?> editIds =
-      GeneratedColumn<String?>('edit_ids', aliasedName, false,
-              type: const StringType(),
+  late final GeneratedColumnWithTypeConverter<List<String>, String> editIds =
+      GeneratedColumn<String>('edit_ids', aliasedName, false,
+              type: DriftSqlType.string,
               requiredDuringInsert: false,
               defaultValue: const Constant('[]'))
-          .withConverter<List<String>>($DecryptedTable.$converter1);
+          .withConverter<List<String>>($DecryptedTable.$convertereditIds);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -1556,66 +1271,67 @@ class $DecryptedTable extends Decrypted
   Message map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Message(
-      id: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      userId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}user_id']),
-      roomId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}room_id']),
-      type: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}type']),
-      sender: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}sender']),
-      stateKey: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}state_key']),
-      batch: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}batch']),
-      prevBatch: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}prev_batch']),
-      timestamp: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}timestamp'])!,
-      body: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}body']),
-      typeDecrypted: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}type_decrypted']),
-      msgtype: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}msgtype']),
-      format: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}format']),
-      file: $DecryptedTable.$converter0.mapToDart(const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}file'])),
-      url: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}url']),
-      formattedBody: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}formatted_body']),
-      received: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}received'])!,
-      ciphertext: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}ciphertext']),
-      senderKey: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}sender_key']),
-      deviceId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}device_id']),
-      algorithm: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}algorithm']),
-      sessionId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}session_id']),
-      relatedEventId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}related_event_id']),
-      edited: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}edited'])!,
-      syncing: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}syncing'])!,
-      pending: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}pending'])!,
-      failed: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}failed'])!,
-      replacement: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}replacement'])!,
-      hasLink: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}has_link'])!,
-      editIds: $DecryptedTable.$converter1.mapToDart(const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}edit_ids']))!,
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      userId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}user_id']),
+      roomId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}room_id']),
+      type: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}type']),
+      sender: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sender']),
+      stateKey: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}state_key']),
+      batch: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}batch']),
+      prevBatch: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}prev_batch']),
+      timestamp: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}timestamp'])!,
+      body: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}body']),
+      typeDecrypted: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}type_decrypted']),
+      msgtype: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}msgtype']),
+      format: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}format']),
+      file: $DecryptedTable.$converterfile.fromSql(attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}file'])),
+      url: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}url']),
+      formattedBody: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}formatted_body']),
+      received: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}received'])!,
+      ciphertext: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}ciphertext']),
+      senderKey: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sender_key']),
+      deviceId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}device_id']),
+      algorithm: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}algorithm']),
+      sessionId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}session_id']),
+      relatedEventId: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}related_event_id']),
+      edited: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}edited'])!,
+      syncing: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}syncing'])!,
+      pending: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}pending'])!,
+      failed: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}failed'])!,
+      replacement: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}replacement'])!,
+      hasLink: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}has_link'])!,
+      editIds: $DecryptedTable.$convertereditIds.fromSql(attachedDatabase
+          .typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}edit_ids'])!),
     );
   }
 
@@ -1624,216 +1340,249 @@ class $DecryptedTable extends Decrypted
     return $DecryptedTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<Map<String, dynamic>?, String> $converter0 =
+  static TypeConverter<Map<String, dynamic>?, String?> $converterfile =
       const MapToJsonConverter();
-  static TypeConverter<List<String>, String> $converter1 =
+  static TypeConverter<List<String>, String> $convertereditIds =
       const ListToTextConverter();
 }
 
-class RoomsCompanion extends UpdateCompanion<Room> {
+class DecryptedCompanion extends UpdateCompanion<Message> {
   final Value<String> id;
-  final Value<String?> name;
-  final Value<String?> alias;
-  final Value<String?> homeserver;
-  final Value<String?> avatarUri;
-  final Value<String?> topic;
-  final Value<String?> joinRule;
-  final Value<bool> drafting;
-  final Value<bool> direct;
-  final Value<bool> sending;
-  final Value<bool> invite;
-  final Value<bool> guestEnabled;
-  final Value<bool> encryptionEnabled;
-  final Value<bool> worldReadable;
-  final Value<bool> hidden;
-  final Value<bool> archived;
-  final Value<String?> lastBatch;
+  final Value<String?> roomId;
+  final Value<String?> userId;
+  final Value<String?> type;
+  final Value<String?> sender;
+  final Value<String?> stateKey;
   final Value<String?> prevBatch;
-  final Value<String?> nextBatch;
-  final Value<int> lastRead;
-  final Value<int> lastUpdate;
-  final Value<int> totalJoinedUsers;
-  final Value<int> namePriority;
-  final Value<Message?> draft;
-  final Value<Message?> reply;
-  final Value<List<String>> userIds;
-  const RoomsCompanion({
+  final Value<String?> batch;
+  final Value<bool> pending;
+  final Value<bool> syncing;
+  final Value<bool> failed;
+  final Value<bool> edited;
+  final Value<bool> replacement;
+  final Value<int> timestamp;
+  final Value<int> received;
+  final Value<bool> hasLink;
+  final Value<String?> body;
+  final Value<String?> msgtype;
+  final Value<String?> format;
+  final Value<String?> formattedBody;
+  final Value<String?> url;
+  final Value<Map<String, dynamic>?> file;
+  final Value<String?> typeDecrypted;
+  final Value<String?> ciphertext;
+  final Value<String?> algorithm;
+  final Value<String?> sessionId;
+  final Value<String?> senderKey;
+  final Value<String?> deviceId;
+  final Value<String?> relatedEventId;
+  final Value<List<String>> editIds;
+  final Value<int> rowid;
+  const DecryptedCompanion({
     this.id = const Value.absent(),
-    this.name = const Value.absent(),
-    this.alias = const Value.absent(),
-    this.homeserver = const Value.absent(),
-    this.avatarUri = const Value.absent(),
-    this.topic = const Value.absent(),
-    this.joinRule = const Value.absent(),
-    this.drafting = const Value.absent(),
-    this.direct = const Value.absent(),
-    this.sending = const Value.absent(),
-    this.invite = const Value.absent(),
-    this.guestEnabled = const Value.absent(),
-    this.encryptionEnabled = const Value.absent(),
-    this.worldReadable = const Value.absent(),
-    this.hidden = const Value.absent(),
-    this.archived = const Value.absent(),
-    this.lastBatch = const Value.absent(),
+    this.roomId = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.type = const Value.absent(),
+    this.sender = const Value.absent(),
+    this.stateKey = const Value.absent(),
     this.prevBatch = const Value.absent(),
-    this.nextBatch = const Value.absent(),
-    this.lastRead = const Value.absent(),
-    this.lastUpdate = const Value.absent(),
-    this.totalJoinedUsers = const Value.absent(),
-    this.namePriority = const Value.absent(),
-    this.draft = const Value.absent(),
-    this.reply = const Value.absent(),
-    this.userIds = const Value.absent(),
+    this.batch = const Value.absent(),
+    this.pending = const Value.absent(),
+    this.syncing = const Value.absent(),
+    this.failed = const Value.absent(),
+    this.edited = const Value.absent(),
+    this.replacement = const Value.absent(),
+    this.timestamp = const Value.absent(),
+    this.received = const Value.absent(),
+    this.hasLink = const Value.absent(),
+    this.body = const Value.absent(),
+    this.msgtype = const Value.absent(),
+    this.format = const Value.absent(),
+    this.formattedBody = const Value.absent(),
+    this.url = const Value.absent(),
+    this.file = const Value.absent(),
+    this.typeDecrypted = const Value.absent(),
+    this.ciphertext = const Value.absent(),
+    this.algorithm = const Value.absent(),
+    this.sessionId = const Value.absent(),
+    this.senderKey = const Value.absent(),
+    this.deviceId = const Value.absent(),
+    this.relatedEventId = const Value.absent(),
+    this.editIds = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
-  RoomsCompanion.insert({
+  DecryptedCompanion.insert({
     required String id,
-    this.name = const Value.absent(),
-    this.alias = const Value.absent(),
-    this.homeserver = const Value.absent(),
-    this.avatarUri = const Value.absent(),
-    this.topic = const Value.absent(),
-    this.joinRule = const Value.absent(),
-    required bool drafting,
-    required bool direct,
-    required bool sending,
-    required bool invite,
-    required bool guestEnabled,
-    required bool encryptionEnabled,
-    required bool worldReadable,
-    required bool hidden,
-    required bool archived,
-    this.lastBatch = const Value.absent(),
+    this.roomId = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.type = const Value.absent(),
+    this.sender = const Value.absent(),
+    this.stateKey = const Value.absent(),
     this.prevBatch = const Value.absent(),
-    this.nextBatch = const Value.absent(),
-    this.lastRead = const Value.absent(),
-    this.lastUpdate = const Value.absent(),
-    this.totalJoinedUsers = const Value.absent(),
-    this.namePriority = const Value.absent(),
-    this.draft = const Value.absent(),
-    this.reply = const Value.absent(),
-    this.userIds = const Value.absent(),
+    this.batch = const Value.absent(),
+    required bool pending,
+    required bool syncing,
+    required bool failed,
+    required bool edited,
+    required bool replacement,
+    required int timestamp,
+    required int received,
+    this.hasLink = const Value.absent(),
+    this.body = const Value.absent(),
+    this.msgtype = const Value.absent(),
+    this.format = const Value.absent(),
+    this.formattedBody = const Value.absent(),
+    this.url = const Value.absent(),
+    this.file = const Value.absent(),
+    this.typeDecrypted = const Value.absent(),
+    this.ciphertext = const Value.absent(),
+    this.algorithm = const Value.absent(),
+    this.sessionId = const Value.absent(),
+    this.senderKey = const Value.absent(),
+    this.deviceId = const Value.absent(),
+    this.relatedEventId = const Value.absent(),
+    this.editIds = const Value.absent(),
+    this.rowid = const Value.absent(),
   })  : id = Value(id),
-        drafting = Value(drafting),
-        direct = Value(direct),
-        sending = Value(sending),
-        invite = Value(invite),
-        guestEnabled = Value(guestEnabled),
-        encryptionEnabled = Value(encryptionEnabled),
-        worldReadable = Value(worldReadable),
-        hidden = Value(hidden),
-        archived = Value(archived);
-  static Insertable<Room> custom({
+        pending = Value(pending),
+        syncing = Value(syncing),
+        failed = Value(failed),
+        edited = Value(edited),
+        replacement = Value(replacement),
+        timestamp = Value(timestamp),
+        received = Value(received);
+  static Insertable<Message> custom({
     Expression<String>? id,
-    Expression<String?>? name,
-    Expression<String?>? alias,
-    Expression<String?>? homeserver,
-    Expression<String?>? avatarUri,
-    Expression<String?>? topic,
-    Expression<String?>? joinRule,
-    Expression<bool>? drafting,
-    Expression<bool>? direct,
-    Expression<bool>? sending,
-    Expression<bool>? invite,
-    Expression<bool>? guestEnabled,
-    Expression<bool>? encryptionEnabled,
-    Expression<bool>? worldReadable,
-    Expression<bool>? hidden,
-    Expression<bool>? archived,
-    Expression<String?>? lastBatch,
-    Expression<String?>? prevBatch,
-    Expression<String?>? nextBatch,
-    Expression<int>? lastRead,
-    Expression<int>? lastUpdate,
-    Expression<int>? totalJoinedUsers,
-    Expression<int>? namePriority,
-    Expression<Message?>? draft,
-    Expression<Message?>? reply,
-    Expression<List<String>>? userIds,
+    Expression<String>? roomId,
+    Expression<String>? userId,
+    Expression<String>? type,
+    Expression<String>? sender,
+    Expression<String>? stateKey,
+    Expression<String>? prevBatch,
+    Expression<String>? batch,
+    Expression<bool>? pending,
+    Expression<bool>? syncing,
+    Expression<bool>? failed,
+    Expression<bool>? edited,
+    Expression<bool>? replacement,
+    Expression<int>? timestamp,
+    Expression<int>? received,
+    Expression<bool>? hasLink,
+    Expression<String>? body,
+    Expression<String>? msgtype,
+    Expression<String>? format,
+    Expression<String>? formattedBody,
+    Expression<String>? url,
+    Expression<String>? file,
+    Expression<String>? typeDecrypted,
+    Expression<String>? ciphertext,
+    Expression<String>? algorithm,
+    Expression<String>? sessionId,
+    Expression<String>? senderKey,
+    Expression<String>? deviceId,
+    Expression<String>? relatedEventId,
+    Expression<String>? editIds,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (name != null) 'name': name,
-      if (alias != null) 'alias': alias,
-      if (homeserver != null) 'homeserver': homeserver,
-      if (avatarUri != null) 'avatar_uri': avatarUri,
-      if (topic != null) 'topic': topic,
-      if (joinRule != null) 'join_rule': joinRule,
-      if (drafting != null) 'drafting': drafting,
-      if (direct != null) 'direct': direct,
-      if (sending != null) 'sending': sending,
-      if (invite != null) 'invite': invite,
-      if (guestEnabled != null) 'guest_enabled': guestEnabled,
-      if (encryptionEnabled != null) 'encryption_enabled': encryptionEnabled,
-      if (worldReadable != null) 'world_readable': worldReadable,
-      if (hidden != null) 'hidden': hidden,
-      if (archived != null) 'archived': archived,
-      if (lastBatch != null) 'last_batch': lastBatch,
+      if (roomId != null) 'room_id': roomId,
+      if (userId != null) 'user_id': userId,
+      if (type != null) 'type': type,
+      if (sender != null) 'sender': sender,
+      if (stateKey != null) 'state_key': stateKey,
       if (prevBatch != null) 'prev_batch': prevBatch,
-      if (nextBatch != null) 'next_batch': nextBatch,
-      if (lastRead != null) 'last_read': lastRead,
-      if (lastUpdate != null) 'last_update': lastUpdate,
-      if (totalJoinedUsers != null) 'total_joined_users': totalJoinedUsers,
-      if (namePriority != null) 'name_priority': namePriority,
-      if (draft != null) 'draft': draft,
-      if (reply != null) 'reply': reply,
-      if (userIds != null) 'user_ids': userIds,
+      if (batch != null) 'batch': batch,
+      if (pending != null) 'pending': pending,
+      if (syncing != null) 'syncing': syncing,
+      if (failed != null) 'failed': failed,
+      if (edited != null) 'edited': edited,
+      if (replacement != null) 'replacement': replacement,
+      if (timestamp != null) 'timestamp': timestamp,
+      if (received != null) 'received': received,
+      if (hasLink != null) 'has_link': hasLink,
+      if (body != null) 'body': body,
+      if (msgtype != null) 'msgtype': msgtype,
+      if (format != null) 'format': format,
+      if (formattedBody != null) 'formatted_body': formattedBody,
+      if (url != null) 'url': url,
+      if (file != null) 'file': file,
+      if (typeDecrypted != null) 'type_decrypted': typeDecrypted,
+      if (ciphertext != null) 'ciphertext': ciphertext,
+      if (algorithm != null) 'algorithm': algorithm,
+      if (sessionId != null) 'session_id': sessionId,
+      if (senderKey != null) 'sender_key': senderKey,
+      if (deviceId != null) 'device_id': deviceId,
+      if (relatedEventId != null) 'related_event_id': relatedEventId,
+      if (editIds != null) 'edit_ids': editIds,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
-  RoomsCompanion copyWith(
+  DecryptedCompanion copyWith(
       {Value<String>? id,
-      Value<String?>? name,
-      Value<String?>? alias,
-      Value<String?>? homeserver,
-      Value<String?>? avatarUri,
-      Value<String?>? topic,
-      Value<String?>? joinRule,
-      Value<bool>? drafting,
-      Value<bool>? direct,
-      Value<bool>? sending,
-      Value<bool>? invite,
-      Value<bool>? guestEnabled,
-      Value<bool>? encryptionEnabled,
-      Value<bool>? worldReadable,
-      Value<bool>? hidden,
-      Value<bool>? archived,
-      Value<String?>? lastBatch,
+      Value<String?>? roomId,
+      Value<String?>? userId,
+      Value<String?>? type,
+      Value<String?>? sender,
+      Value<String?>? stateKey,
       Value<String?>? prevBatch,
-      Value<String?>? nextBatch,
-      Value<int>? lastRead,
-      Value<int>? lastUpdate,
-      Value<int>? totalJoinedUsers,
-      Value<int>? namePriority,
-      Value<Message?>? draft,
-      Value<Message?>? reply,
-      Value<List<String>>? userIds}) {
-    return RoomsCompanion(
+      Value<String?>? batch,
+      Value<bool>? pending,
+      Value<bool>? syncing,
+      Value<bool>? failed,
+      Value<bool>? edited,
+      Value<bool>? replacement,
+      Value<int>? timestamp,
+      Value<int>? received,
+      Value<bool>? hasLink,
+      Value<String?>? body,
+      Value<String?>? msgtype,
+      Value<String?>? format,
+      Value<String?>? formattedBody,
+      Value<String?>? url,
+      Value<Map<String, dynamic>?>? file,
+      Value<String?>? typeDecrypted,
+      Value<String?>? ciphertext,
+      Value<String?>? algorithm,
+      Value<String?>? sessionId,
+      Value<String?>? senderKey,
+      Value<String?>? deviceId,
+      Value<String?>? relatedEventId,
+      Value<List<String>>? editIds,
+      Value<int>? rowid}) {
+    return DecryptedCompanion(
       id: id ?? this.id,
-      name: name ?? this.name,
-      alias: alias ?? this.alias,
-      homeserver: homeserver ?? this.homeserver,
-      avatarUri: avatarUri ?? this.avatarUri,
-      topic: topic ?? this.topic,
-      joinRule: joinRule ?? this.joinRule,
-      drafting: drafting ?? this.drafting,
-      direct: direct ?? this.direct,
-      sending: sending ?? this.sending,
-      invite: invite ?? this.invite,
-      guestEnabled: guestEnabled ?? this.guestEnabled,
-      encryptionEnabled: encryptionEnabled ?? this.encryptionEnabled,
-      worldReadable: worldReadable ?? this.worldReadable,
-      hidden: hidden ?? this.hidden,
-      archived: archived ?? this.archived,
-      lastBatch: lastBatch ?? this.lastBatch,
+      roomId: roomId ?? this.roomId,
+      userId: userId ?? this.userId,
+      type: type ?? this.type,
+      sender: sender ?? this.sender,
+      stateKey: stateKey ?? this.stateKey,
       prevBatch: prevBatch ?? this.prevBatch,
-      nextBatch: nextBatch ?? this.nextBatch,
-      lastRead: lastRead ?? this.lastRead,
-      lastUpdate: lastUpdate ?? this.lastUpdate,
-      totalJoinedUsers: totalJoinedUsers ?? this.totalJoinedUsers,
-      namePriority: namePriority ?? this.namePriority,
-      draft: draft ?? this.draft,
-      reply: reply ?? this.reply,
-      userIds: userIds ?? this.userIds,
+      batch: batch ?? this.batch,
+      pending: pending ?? this.pending,
+      syncing: syncing ?? this.syncing,
+      failed: failed ?? this.failed,
+      edited: edited ?? this.edited,
+      replacement: replacement ?? this.replacement,
+      timestamp: timestamp ?? this.timestamp,
+      received: received ?? this.received,
+      hasLink: hasLink ?? this.hasLink,
+      body: body ?? this.body,
+      msgtype: msgtype ?? this.msgtype,
+      format: format ?? this.format,
+      formattedBody: formattedBody ?? this.formattedBody,
+      url: url ?? this.url,
+      file: file ?? this.file,
+      typeDecrypted: typeDecrypted ?? this.typeDecrypted,
+      ciphertext: ciphertext ?? this.ciphertext,
+      algorithm: algorithm ?? this.algorithm,
+      sessionId: sessionId ?? this.sessionId,
+      senderKey: senderKey ?? this.senderKey,
+      deviceId: deviceId ?? this.deviceId,
+      relatedEventId: relatedEventId ?? this.relatedEventId,
+      editIds: editIds ?? this.editIds,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -1843,116 +1592,135 @@ class RoomsCompanion extends UpdateCompanion<Room> {
     if (id.present) {
       map['id'] = Variable<String>(id.value);
     }
-    if (name.present) {
-      map['name'] = Variable<String?>(name.value);
+    if (roomId.present) {
+      map['room_id'] = Variable<String>(roomId.value);
     }
-    if (alias.present) {
-      map['alias'] = Variable<String?>(alias.value);
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
     }
-    if (homeserver.present) {
-      map['homeserver'] = Variable<String?>(homeserver.value);
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
     }
-    if (avatarUri.present) {
-      map['avatar_uri'] = Variable<String?>(avatarUri.value);
+    if (sender.present) {
+      map['sender'] = Variable<String>(sender.value);
     }
-    if (topic.present) {
-      map['topic'] = Variable<String?>(topic.value);
-    }
-    if (joinRule.present) {
-      map['join_rule'] = Variable<String?>(joinRule.value);
-    }
-    if (drafting.present) {
-      map['drafting'] = Variable<bool>(drafting.value);
-    }
-    if (direct.present) {
-      map['direct'] = Variable<bool>(direct.value);
-    }
-    if (sending.present) {
-      map['sending'] = Variable<bool>(sending.value);
-    }
-    if (invite.present) {
-      map['invite'] = Variable<bool>(invite.value);
-    }
-    if (guestEnabled.present) {
-      map['guest_enabled'] = Variable<bool>(guestEnabled.value);
-    }
-    if (encryptionEnabled.present) {
-      map['encryption_enabled'] = Variable<bool>(encryptionEnabled.value);
-    }
-    if (worldReadable.present) {
-      map['world_readable'] = Variable<bool>(worldReadable.value);
-    }
-    if (hidden.present) {
-      map['hidden'] = Variable<bool>(hidden.value);
-    }
-    if (archived.present) {
-      map['archived'] = Variable<bool>(archived.value);
-    }
-    if (lastBatch.present) {
-      map['last_batch'] = Variable<String?>(lastBatch.value);
+    if (stateKey.present) {
+      map['state_key'] = Variable<String>(stateKey.value);
     }
     if (prevBatch.present) {
-      map['prev_batch'] = Variable<String?>(prevBatch.value);
+      map['prev_batch'] = Variable<String>(prevBatch.value);
     }
-    if (nextBatch.present) {
-      map['next_batch'] = Variable<String?>(nextBatch.value);
+    if (batch.present) {
+      map['batch'] = Variable<String>(batch.value);
     }
-    if (lastRead.present) {
-      map['last_read'] = Variable<int>(lastRead.value);
+    if (pending.present) {
+      map['pending'] = Variable<bool>(pending.value);
     }
-    if (lastUpdate.present) {
-      map['last_update'] = Variable<int>(lastUpdate.value);
+    if (syncing.present) {
+      map['syncing'] = Variable<bool>(syncing.value);
     }
-    if (totalJoinedUsers.present) {
-      map['total_joined_users'] = Variable<int>(totalJoinedUsers.value);
+    if (failed.present) {
+      map['failed'] = Variable<bool>(failed.value);
     }
-    if (namePriority.present) {
-      map['name_priority'] = Variable<int>(namePriority.value);
+    if (edited.present) {
+      map['edited'] = Variable<bool>(edited.value);
     }
-    if (draft.present) {
-      final converter = $RoomsTable.$converter0;
-      map['draft'] = Variable<String?>(converter.mapToSql(draft.value));
+    if (replacement.present) {
+      map['replacement'] = Variable<bool>(replacement.value);
     }
-    if (reply.present) {
-      final converter = $RoomsTable.$converter1;
-      map['reply'] = Variable<String?>(converter.mapToSql(reply.value));
+    if (timestamp.present) {
+      map['timestamp'] = Variable<int>(timestamp.value);
     }
-    if (userIds.present) {
-      final converter = $RoomsTable.$converter2;
-      map['user_ids'] = Variable<String>(converter.mapToSql(userIds.value)!);
+    if (received.present) {
+      map['received'] = Variable<int>(received.value);
+    }
+    if (hasLink.present) {
+      map['has_link'] = Variable<bool>(hasLink.value);
+    }
+    if (body.present) {
+      map['body'] = Variable<String>(body.value);
+    }
+    if (msgtype.present) {
+      map['msgtype'] = Variable<String>(msgtype.value);
+    }
+    if (format.present) {
+      map['format'] = Variable<String>(format.value);
+    }
+    if (formattedBody.present) {
+      map['formatted_body'] = Variable<String>(formattedBody.value);
+    }
+    if (url.present) {
+      map['url'] = Variable<String>(url.value);
+    }
+    if (file.present) {
+      final converter = $DecryptedTable.$converterfile;
+      map['file'] = Variable<String>(converter.toSql(file.value));
+    }
+    if (typeDecrypted.present) {
+      map['type_decrypted'] = Variable<String>(typeDecrypted.value);
+    }
+    if (ciphertext.present) {
+      map['ciphertext'] = Variable<String>(ciphertext.value);
+    }
+    if (algorithm.present) {
+      map['algorithm'] = Variable<String>(algorithm.value);
+    }
+    if (sessionId.present) {
+      map['session_id'] = Variable<String>(sessionId.value);
+    }
+    if (senderKey.present) {
+      map['sender_key'] = Variable<String>(senderKey.value);
+    }
+    if (deviceId.present) {
+      map['device_id'] = Variable<String>(deviceId.value);
+    }
+    if (relatedEventId.present) {
+      map['related_event_id'] = Variable<String>(relatedEventId.value);
+    }
+    if (editIds.present) {
+      final converter = $DecryptedTable.$convertereditIds;
+      map['edit_ids'] = Variable<String>(converter.toSql(editIds.value));
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
     }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('RoomsCompanion(')
+    return (StringBuffer('DecryptedCompanion(')
           ..write('id: $id, ')
-          ..write('name: $name, ')
-          ..write('alias: $alias, ')
-          ..write('homeserver: $homeserver, ')
-          ..write('avatarUri: $avatarUri, ')
-          ..write('topic: $topic, ')
-          ..write('joinRule: $joinRule, ')
-          ..write('drafting: $drafting, ')
-          ..write('direct: $direct, ')
-          ..write('sending: $sending, ')
-          ..write('invite: $invite, ')
-          ..write('guestEnabled: $guestEnabled, ')
-          ..write('encryptionEnabled: $encryptionEnabled, ')
-          ..write('worldReadable: $worldReadable, ')
-          ..write('hidden: $hidden, ')
-          ..write('archived: $archived, ')
-          ..write('lastBatch: $lastBatch, ')
+          ..write('roomId: $roomId, ')
+          ..write('userId: $userId, ')
+          ..write('type: $type, ')
+          ..write('sender: $sender, ')
+          ..write('stateKey: $stateKey, ')
           ..write('prevBatch: $prevBatch, ')
-          ..write('nextBatch: $nextBatch, ')
-          ..write('lastRead: $lastRead, ')
-          ..write('lastUpdate: $lastUpdate, ')
-          ..write('totalJoinedUsers: $totalJoinedUsers, ')
-          ..write('namePriority: $namePriority, ')
-          ..write('draft: $draft, ')
-          ..write('reply: $reply, ')
-          ..write('userIds: $userIds')
+          ..write('batch: $batch, ')
+          ..write('pending: $pending, ')
+          ..write('syncing: $syncing, ')
+          ..write('failed: $failed, ')
+          ..write('edited: $edited, ')
+          ..write('replacement: $replacement, ')
+          ..write('timestamp: $timestamp, ')
+          ..write('received: $received, ')
+          ..write('hasLink: $hasLink, ')
+          ..write('body: $body, ')
+          ..write('msgtype: $msgtype, ')
+          ..write('format: $format, ')
+          ..write('formattedBody: $formattedBody, ')
+          ..write('url: $url, ')
+          ..write('file: $file, ')
+          ..write('typeDecrypted: $typeDecrypted, ')
+          ..write('ciphertext: $ciphertext, ')
+          ..write('algorithm: $algorithm, ')
+          ..write('sessionId: $sessionId, ')
+          ..write('senderKey: $senderKey, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('relatedEventId: $relatedEventId, ')
+          ..write('editIds: $editIds, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -1963,174 +1731,222 @@ class $RoomsTable extends Rooms with TableInfo<$RoomsTable, Room> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $RoomsTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
       'id', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
-      $customConstraints: 'UNIQUE');
-  final VerificationMeta _nameMeta = const VerificationMeta('name');
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
-  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
       'name', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _aliasMeta = const VerificationMeta('alias');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _aliasMeta = const VerificationMeta('alias');
   @override
-  late final GeneratedColumn<String?> alias = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> alias = GeneratedColumn<String>(
       'alias', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _homeserverMeta = const VerificationMeta('homeserver');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _homeserverMeta =
+      const VerificationMeta('homeserver');
   @override
-  late final GeneratedColumn<String?> homeserver = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> homeserver = GeneratedColumn<String>(
       'homeserver', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _avatarUriMeta = const VerificationMeta('avatarUri');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _avatarUriMeta =
+      const VerificationMeta('avatarUri');
   @override
-  late final GeneratedColumn<String?> avatarUri = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> avatarUri = GeneratedColumn<String>(
       'avatar_uri', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _topicMeta = const VerificationMeta('topic');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _topicMeta = const VerificationMeta('topic');
   @override
-  late final GeneratedColumn<String?> topic = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> topic = GeneratedColumn<String>(
       'topic', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _joinRuleMeta = const VerificationMeta('joinRule');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _joinRuleMeta =
+      const VerificationMeta('joinRule');
   @override
-  late final GeneratedColumn<String?> joinRule = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> joinRule = GeneratedColumn<String>(
       'join_rule', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _draftingMeta = const VerificationMeta('drafting');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _draftingMeta =
+      const VerificationMeta('drafting');
   @override
-  late final GeneratedColumn<bool?> drafting = GeneratedColumn<bool?>(
-      'drafting', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (drafting IN (0, 1))');
-  final VerificationMeta _directMeta = const VerificationMeta('direct');
+  late final GeneratedColumn<bool> drafting =
+      GeneratedColumn<bool>('drafting', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: true,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("drafting" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
+  static const VerificationMeta _directMeta = const VerificationMeta('direct');
   @override
-  late final GeneratedColumn<bool?> direct = GeneratedColumn<bool?>(
-      'direct', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (direct IN (0, 1))');
-  final VerificationMeta _sendingMeta = const VerificationMeta('sending');
+  late final GeneratedColumn<bool> direct =
+      GeneratedColumn<bool>('direct', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: true,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("direct" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
+  static const VerificationMeta _sendingMeta =
+      const VerificationMeta('sending');
   @override
-  late final GeneratedColumn<bool?> sending = GeneratedColumn<bool?>(
-      'sending', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (sending IN (0, 1))');
-  final VerificationMeta _inviteMeta = const VerificationMeta('invite');
+  late final GeneratedColumn<bool> sending =
+      GeneratedColumn<bool>('sending', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: true,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("sending" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
+  static const VerificationMeta _inviteMeta = const VerificationMeta('invite');
   @override
-  late final GeneratedColumn<bool?> invite = GeneratedColumn<bool?>(
-      'invite', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (invite IN (0, 1))');
-  final VerificationMeta _guestEnabledMeta =
+  late final GeneratedColumn<bool> invite =
+      GeneratedColumn<bool>('invite', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: true,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("invite" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
+  static const VerificationMeta _guestEnabledMeta =
       const VerificationMeta('guestEnabled');
   @override
-  late final GeneratedColumn<bool?> guestEnabled = GeneratedColumn<bool?>(
-      'guest_enabled', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (guest_enabled IN (0, 1))');
-  final VerificationMeta _encryptionEnabledMeta =
+  late final GeneratedColumn<bool> guestEnabled =
+      GeneratedColumn<bool>('guest_enabled', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: true,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("guest_enabled" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
+  static const VerificationMeta _encryptionEnabledMeta =
       const VerificationMeta('encryptionEnabled');
   @override
-  late final GeneratedColumn<bool?> encryptionEnabled = GeneratedColumn<bool?>(
-      'encryption_enabled', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (encryption_enabled IN (0, 1))');
-  final VerificationMeta _worldReadableMeta =
+  late final GeneratedColumn<bool> encryptionEnabled =
+      GeneratedColumn<bool>('encryption_enabled', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: true,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("encryption_enabled" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
+  static const VerificationMeta _worldReadableMeta =
       const VerificationMeta('worldReadable');
   @override
-  late final GeneratedColumn<bool?> worldReadable = GeneratedColumn<bool?>(
-      'world_readable', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (world_readable IN (0, 1))');
-  final VerificationMeta _hiddenMeta = const VerificationMeta('hidden');
+  late final GeneratedColumn<bool> worldReadable =
+      GeneratedColumn<bool>('world_readable', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: true,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("world_readable" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
+  static const VerificationMeta _hiddenMeta = const VerificationMeta('hidden');
   @override
-  late final GeneratedColumn<bool?> hidden = GeneratedColumn<bool?>(
-      'hidden', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (hidden IN (0, 1))');
-  final VerificationMeta _archivedMeta = const VerificationMeta('archived');
+  late final GeneratedColumn<bool> hidden =
+      GeneratedColumn<bool>('hidden', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: true,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("hidden" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
+  static const VerificationMeta _archivedMeta =
+      const VerificationMeta('archived');
   @override
-  late final GeneratedColumn<bool?> archived = GeneratedColumn<bool?>(
-      'archived', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (archived IN (0, 1))');
-  final VerificationMeta _lastBatchMeta = const VerificationMeta('lastBatch');
+  late final GeneratedColumn<bool> archived =
+      GeneratedColumn<bool>('archived', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: true,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("archived" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
+  static const VerificationMeta _lastBatchMeta =
+      const VerificationMeta('lastBatch');
   @override
-  late final GeneratedColumn<String?> lastBatch = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> lastBatch = GeneratedColumn<String>(
       'last_batch', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _prevBatchMeta = const VerificationMeta('prevBatch');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _prevBatchMeta =
+      const VerificationMeta('prevBatch');
   @override
-  late final GeneratedColumn<String?> prevBatch = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> prevBatch = GeneratedColumn<String>(
       'prev_batch', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _nextBatchMeta = const VerificationMeta('nextBatch');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _nextBatchMeta =
+      const VerificationMeta('nextBatch');
   @override
-  late final GeneratedColumn<String?> nextBatch = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> nextBatch = GeneratedColumn<String>(
       'next_batch', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _lastReadMeta = const VerificationMeta('lastRead');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _lastReadMeta =
+      const VerificationMeta('lastRead');
   @override
-  late final GeneratedColumn<int?> lastRead = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> lastRead = GeneratedColumn<int>(
       'last_read', aliasedName, false,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
-  final VerificationMeta _lastUpdateMeta = const VerificationMeta('lastUpdate');
+  static const VerificationMeta _lastUpdateMeta =
+      const VerificationMeta('lastUpdate');
   @override
-  late final GeneratedColumn<int?> lastUpdate = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> lastUpdate = GeneratedColumn<int>(
       'last_update', aliasedName, false,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
-  final VerificationMeta _totalJoinedUsersMeta =
+  static const VerificationMeta _totalJoinedUsersMeta =
       const VerificationMeta('totalJoinedUsers');
   @override
-  late final GeneratedColumn<int?> totalJoinedUsers = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> totalJoinedUsers = GeneratedColumn<int>(
       'total_joined_users', aliasedName, false,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
-  final VerificationMeta _namePriorityMeta =
+  static const VerificationMeta _namePriorityMeta =
       const VerificationMeta('namePriority');
   @override
-  late final GeneratedColumn<int?> namePriority = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> namePriority = GeneratedColumn<int>(
       'name_priority', aliasedName, false,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultValue: const Constant(4));
-  final VerificationMeta _draftMeta = const VerificationMeta('draft');
+  static const VerificationMeta _draftMeta = const VerificationMeta('draft');
   @override
-  late final GeneratedColumnWithTypeConverter<Message?, String?> draft =
-      GeneratedColumn<String?>('draft', aliasedName, true,
-              type: const StringType(), requiredDuringInsert: false)
-          .withConverter<Message?>($RoomsTable.$converter0);
-  final VerificationMeta _replyMeta = const VerificationMeta('reply');
+  late final GeneratedColumnWithTypeConverter<Message?, String> draft =
+      GeneratedColumn<String>('draft', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<Message?>($RoomsTable.$converterdraft);
+  static const VerificationMeta _replyMeta = const VerificationMeta('reply');
   @override
-  late final GeneratedColumnWithTypeConverter<Message?, String?> reply =
-      GeneratedColumn<String?>('reply', aliasedName, true,
-              type: const StringType(), requiredDuringInsert: false)
-          .withConverter<Message?>($RoomsTable.$converter1);
-  final VerificationMeta _userIdsMeta = const VerificationMeta('userIds');
+  late final GeneratedColumnWithTypeConverter<Message?, String> reply =
+      GeneratedColumn<String>('reply', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<Message?>($RoomsTable.$converterreply);
+  static const VerificationMeta _userIdsMeta =
+      const VerificationMeta('userIds');
   @override
-  late final GeneratedColumnWithTypeConverter<List<String>, String?> userIds =
-      GeneratedColumn<String?>('user_ids', aliasedName, false,
-              type: const StringType(),
+  late final GeneratedColumnWithTypeConverter<List<String>, String> userIds =
+      GeneratedColumn<String>('user_ids', aliasedName, false,
+              type: DriftSqlType.string,
               requiredDuringInsert: false,
               defaultValue: const Constant('[]'))
-          .withConverter<List<String>>($RoomsTable.$converter2);
+          .withConverter<List<String>>($RoomsTable.$converteruserIds);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -2306,58 +2122,59 @@ class $RoomsTable extends Rooms with TableInfo<$RoomsTable, Room> {
   Room map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Room(
-      id: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      name: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}name']),
-      alias: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}alias']),
-      homeserver: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}homeserver']),
-      avatarUri: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}avatar_uri']),
-      topic: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}topic']),
-      joinRule: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}join_rule']),
-      drafting: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}drafting'])!,
-      invite: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}invite'])!,
-      direct: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}direct'])!,
-      sending: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}sending'])!,
-      hidden: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}hidden'])!,
-      archived: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}archived'])!,
-      draft: $RoomsTable.$converter0.mapToDart(const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}draft'])),
-      reply: $RoomsTable.$converter1.mapToDart(const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}reply'])),
-      userIds: $RoomsTable.$converter2.mapToDart(const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}user_ids']))!,
-      lastRead: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}last_read'])!,
-      lastUpdate: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}last_update'])!,
-      namePriority: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}name_priority'])!,
-      totalJoinedUsers: const IntType().mapFromDatabaseResponse(
-          data['${effectivePrefix}total_joined_users'])!,
-      guestEnabled: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}guest_enabled'])!,
-      encryptionEnabled: const BoolType().mapFromDatabaseResponse(
-          data['${effectivePrefix}encryption_enabled'])!,
-      worldReadable: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}world_readable'])!,
-      lastBatch: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}last_batch']),
-      nextBatch: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}next_batch']),
-      prevBatch: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}prev_batch']),
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name']),
+      alias: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}alias']),
+      homeserver: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}homeserver']),
+      avatarUri: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}avatar_uri']),
+      topic: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}topic']),
+      joinRule: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}join_rule']),
+      drafting: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}drafting'])!,
+      invite: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}invite'])!,
+      direct: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}direct'])!,
+      sending: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}sending'])!,
+      hidden: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}hidden'])!,
+      archived: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}archived'])!,
+      draft: $RoomsTable.$converterdraft.fromSql(attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}draft'])),
+      reply: $RoomsTable.$converterreply.fromSql(attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}reply'])),
+      userIds: $RoomsTable.$converteruserIds.fromSql(attachedDatabase
+          .typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}user_ids'])!),
+      lastRead: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}last_read'])!,
+      lastUpdate: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}last_update'])!,
+      namePriority: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}name_priority'])!,
+      totalJoinedUsers: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}total_joined_users'])!,
+      guestEnabled: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}guest_enabled'])!,
+      encryptionEnabled: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool, data['${effectivePrefix}encryption_enabled'])!,
+      worldReadable: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}world_readable'])!,
+      lastBatch: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}last_batch']),
+      nextBatch: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}next_batch']),
+      prevBatch: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}prev_batch']),
     );
   }
 
@@ -2366,127 +2183,348 @@ class $RoomsTable extends Rooms with TableInfo<$RoomsTable, Room> {
     return $RoomsTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<Message?, String> $converter0 =
+  static TypeConverter<Message?, String?> $converterdraft =
       const MessageToJsonConverter();
-  static TypeConverter<Message?, String> $converter1 =
+  static TypeConverter<Message?, String?> $converterreply =
       const MessageToJsonConverter();
-  static TypeConverter<List<String>, String> $converter2 =
+  static TypeConverter<List<String>, String> $converteruserIds =
       const ListToTextConverter();
 }
 
-class UsersCompanion extends UpdateCompanion<User> {
-  final Value<String> userId;
-  final Value<String?> deviceId;
-  final Value<String?> idserver;
+class RoomsCompanion extends UpdateCompanion<Room> {
+  final Value<String> id;
+  final Value<String?> name;
+  final Value<String?> alias;
   final Value<String?> homeserver;
-  final Value<String?> homeserverName;
-  final Value<String?> accessToken;
-  final Value<String?> displayName;
   final Value<String?> avatarUri;
-  const UsersCompanion({
-    this.userId = const Value.absent(),
-    this.deviceId = const Value.absent(),
-    this.idserver = const Value.absent(),
+  final Value<String?> topic;
+  final Value<String?> joinRule;
+  final Value<bool> drafting;
+  final Value<bool> direct;
+  final Value<bool> sending;
+  final Value<bool> invite;
+  final Value<bool> guestEnabled;
+  final Value<bool> encryptionEnabled;
+  final Value<bool> worldReadable;
+  final Value<bool> hidden;
+  final Value<bool> archived;
+  final Value<String?> lastBatch;
+  final Value<String?> prevBatch;
+  final Value<String?> nextBatch;
+  final Value<int> lastRead;
+  final Value<int> lastUpdate;
+  final Value<int> totalJoinedUsers;
+  final Value<int> namePriority;
+  final Value<Message?> draft;
+  final Value<Message?> reply;
+  final Value<List<String>> userIds;
+  final Value<int> rowid;
+  const RoomsCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.alias = const Value.absent(),
     this.homeserver = const Value.absent(),
-    this.homeserverName = const Value.absent(),
-    this.accessToken = const Value.absent(),
-    this.displayName = const Value.absent(),
     this.avatarUri = const Value.absent(),
+    this.topic = const Value.absent(),
+    this.joinRule = const Value.absent(),
+    this.drafting = const Value.absent(),
+    this.direct = const Value.absent(),
+    this.sending = const Value.absent(),
+    this.invite = const Value.absent(),
+    this.guestEnabled = const Value.absent(),
+    this.encryptionEnabled = const Value.absent(),
+    this.worldReadable = const Value.absent(),
+    this.hidden = const Value.absent(),
+    this.archived = const Value.absent(),
+    this.lastBatch = const Value.absent(),
+    this.prevBatch = const Value.absent(),
+    this.nextBatch = const Value.absent(),
+    this.lastRead = const Value.absent(),
+    this.lastUpdate = const Value.absent(),
+    this.totalJoinedUsers = const Value.absent(),
+    this.namePriority = const Value.absent(),
+    this.draft = const Value.absent(),
+    this.reply = const Value.absent(),
+    this.userIds = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
-  UsersCompanion.insert({
-    required String userId,
-    this.deviceId = const Value.absent(),
-    this.idserver = const Value.absent(),
+  RoomsCompanion.insert({
+    required String id,
+    this.name = const Value.absent(),
+    this.alias = const Value.absent(),
     this.homeserver = const Value.absent(),
-    this.homeserverName = const Value.absent(),
-    this.accessToken = const Value.absent(),
-    this.displayName = const Value.absent(),
     this.avatarUri = const Value.absent(),
-  }) : userId = Value(userId);
-  static Insertable<User> custom({
-    Expression<String>? userId,
-    Expression<String?>? deviceId,
-    Expression<String?>? idserver,
-    Expression<String?>? homeserver,
-    Expression<String?>? homeserverName,
-    Expression<String?>? accessToken,
-    Expression<String?>? displayName,
-    Expression<String?>? avatarUri,
+    this.topic = const Value.absent(),
+    this.joinRule = const Value.absent(),
+    required bool drafting,
+    required bool direct,
+    required bool sending,
+    required bool invite,
+    required bool guestEnabled,
+    required bool encryptionEnabled,
+    required bool worldReadable,
+    required bool hidden,
+    required bool archived,
+    this.lastBatch = const Value.absent(),
+    this.prevBatch = const Value.absent(),
+    this.nextBatch = const Value.absent(),
+    this.lastRead = const Value.absent(),
+    this.lastUpdate = const Value.absent(),
+    this.totalJoinedUsers = const Value.absent(),
+    this.namePriority = const Value.absent(),
+    this.draft = const Value.absent(),
+    this.reply = const Value.absent(),
+    this.userIds = const Value.absent(),
+    this.rowid = const Value.absent(),
+  })  : id = Value(id),
+        drafting = Value(drafting),
+        direct = Value(direct),
+        sending = Value(sending),
+        invite = Value(invite),
+        guestEnabled = Value(guestEnabled),
+        encryptionEnabled = Value(encryptionEnabled),
+        worldReadable = Value(worldReadable),
+        hidden = Value(hidden),
+        archived = Value(archived);
+  static Insertable<Room> custom({
+    Expression<String>? id,
+    Expression<String>? name,
+    Expression<String>? alias,
+    Expression<String>? homeserver,
+    Expression<String>? avatarUri,
+    Expression<String>? topic,
+    Expression<String>? joinRule,
+    Expression<bool>? drafting,
+    Expression<bool>? direct,
+    Expression<bool>? sending,
+    Expression<bool>? invite,
+    Expression<bool>? guestEnabled,
+    Expression<bool>? encryptionEnabled,
+    Expression<bool>? worldReadable,
+    Expression<bool>? hidden,
+    Expression<bool>? archived,
+    Expression<String>? lastBatch,
+    Expression<String>? prevBatch,
+    Expression<String>? nextBatch,
+    Expression<int>? lastRead,
+    Expression<int>? lastUpdate,
+    Expression<int>? totalJoinedUsers,
+    Expression<int>? namePriority,
+    Expression<String>? draft,
+    Expression<String>? reply,
+    Expression<String>? userIds,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
-      if (userId != null) 'id': userId,
-      if (deviceId != null) 'device_id': deviceId,
-      if (idserver != null) 'idserver': idserver,
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (alias != null) 'alias': alias,
       if (homeserver != null) 'homeserver': homeserver,
-      if (homeserverName != null) 'homeserver_name': homeserverName,
-      if (accessToken != null) 'access_token': accessToken,
-      if (displayName != null) 'display_name': displayName,
       if (avatarUri != null) 'avatar_uri': avatarUri,
+      if (topic != null) 'topic': topic,
+      if (joinRule != null) 'join_rule': joinRule,
+      if (drafting != null) 'drafting': drafting,
+      if (direct != null) 'direct': direct,
+      if (sending != null) 'sending': sending,
+      if (invite != null) 'invite': invite,
+      if (guestEnabled != null) 'guest_enabled': guestEnabled,
+      if (encryptionEnabled != null) 'encryption_enabled': encryptionEnabled,
+      if (worldReadable != null) 'world_readable': worldReadable,
+      if (hidden != null) 'hidden': hidden,
+      if (archived != null) 'archived': archived,
+      if (lastBatch != null) 'last_batch': lastBatch,
+      if (prevBatch != null) 'prev_batch': prevBatch,
+      if (nextBatch != null) 'next_batch': nextBatch,
+      if (lastRead != null) 'last_read': lastRead,
+      if (lastUpdate != null) 'last_update': lastUpdate,
+      if (totalJoinedUsers != null) 'total_joined_users': totalJoinedUsers,
+      if (namePriority != null) 'name_priority': namePriority,
+      if (draft != null) 'draft': draft,
+      if (reply != null) 'reply': reply,
+      if (userIds != null) 'user_ids': userIds,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
-  UsersCompanion copyWith(
-      {Value<String>? userId,
-      Value<String?>? deviceId,
-      Value<String?>? idserver,
+  RoomsCompanion copyWith(
+      {Value<String>? id,
+      Value<String?>? name,
+      Value<String?>? alias,
       Value<String?>? homeserver,
-      Value<String?>? homeserverName,
-      Value<String?>? accessToken,
-      Value<String?>? displayName,
-      Value<String?>? avatarUri}) {
-    return UsersCompanion(
-      userId: userId ?? this.userId,
-      deviceId: deviceId ?? this.deviceId,
-      idserver: idserver ?? this.idserver,
+      Value<String?>? avatarUri,
+      Value<String?>? topic,
+      Value<String?>? joinRule,
+      Value<bool>? drafting,
+      Value<bool>? direct,
+      Value<bool>? sending,
+      Value<bool>? invite,
+      Value<bool>? guestEnabled,
+      Value<bool>? encryptionEnabled,
+      Value<bool>? worldReadable,
+      Value<bool>? hidden,
+      Value<bool>? archived,
+      Value<String?>? lastBatch,
+      Value<String?>? prevBatch,
+      Value<String?>? nextBatch,
+      Value<int>? lastRead,
+      Value<int>? lastUpdate,
+      Value<int>? totalJoinedUsers,
+      Value<int>? namePriority,
+      Value<Message?>? draft,
+      Value<Message?>? reply,
+      Value<List<String>>? userIds,
+      Value<int>? rowid}) {
+    return RoomsCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      alias: alias ?? this.alias,
       homeserver: homeserver ?? this.homeserver,
-      homeserverName: homeserverName ?? this.homeserverName,
-      accessToken: accessToken ?? this.accessToken,
-      displayName: displayName ?? this.displayName,
       avatarUri: avatarUri ?? this.avatarUri,
+      topic: topic ?? this.topic,
+      joinRule: joinRule ?? this.joinRule,
+      drafting: drafting ?? this.drafting,
+      direct: direct ?? this.direct,
+      sending: sending ?? this.sending,
+      invite: invite ?? this.invite,
+      guestEnabled: guestEnabled ?? this.guestEnabled,
+      encryptionEnabled: encryptionEnabled ?? this.encryptionEnabled,
+      worldReadable: worldReadable ?? this.worldReadable,
+      hidden: hidden ?? this.hidden,
+      archived: archived ?? this.archived,
+      lastBatch: lastBatch ?? this.lastBatch,
+      prevBatch: prevBatch ?? this.prevBatch,
+      nextBatch: nextBatch ?? this.nextBatch,
+      lastRead: lastRead ?? this.lastRead,
+      lastUpdate: lastUpdate ?? this.lastUpdate,
+      totalJoinedUsers: totalJoinedUsers ?? this.totalJoinedUsers,
+      namePriority: namePriority ?? this.namePriority,
+      draft: draft ?? this.draft,
+      reply: reply ?? this.reply,
+      userIds: userIds ?? this.userIds,
+      rowid: rowid ?? this.rowid,
     );
   }
 
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (userId.present) {
-      map['id'] = Variable<String>(userId.value);
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
     }
-    if (deviceId.present) {
-      map['device_id'] = Variable<String?>(deviceId.value);
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
     }
-    if (idserver.present) {
-      map['idserver'] = Variable<String?>(idserver.value);
+    if (alias.present) {
+      map['alias'] = Variable<String>(alias.value);
     }
     if (homeserver.present) {
-      map['homeserver'] = Variable<String?>(homeserver.value);
-    }
-    if (homeserverName.present) {
-      map['homeserver_name'] = Variable<String?>(homeserverName.value);
-    }
-    if (accessToken.present) {
-      map['access_token'] = Variable<String?>(accessToken.value);
-    }
-    if (displayName.present) {
-      map['display_name'] = Variable<String?>(displayName.value);
+      map['homeserver'] = Variable<String>(homeserver.value);
     }
     if (avatarUri.present) {
-      map['avatar_uri'] = Variable<String?>(avatarUri.value);
+      map['avatar_uri'] = Variable<String>(avatarUri.value);
+    }
+    if (topic.present) {
+      map['topic'] = Variable<String>(topic.value);
+    }
+    if (joinRule.present) {
+      map['join_rule'] = Variable<String>(joinRule.value);
+    }
+    if (drafting.present) {
+      map['drafting'] = Variable<bool>(drafting.value);
+    }
+    if (direct.present) {
+      map['direct'] = Variable<bool>(direct.value);
+    }
+    if (sending.present) {
+      map['sending'] = Variable<bool>(sending.value);
+    }
+    if (invite.present) {
+      map['invite'] = Variable<bool>(invite.value);
+    }
+    if (guestEnabled.present) {
+      map['guest_enabled'] = Variable<bool>(guestEnabled.value);
+    }
+    if (encryptionEnabled.present) {
+      map['encryption_enabled'] = Variable<bool>(encryptionEnabled.value);
+    }
+    if (worldReadable.present) {
+      map['world_readable'] = Variable<bool>(worldReadable.value);
+    }
+    if (hidden.present) {
+      map['hidden'] = Variable<bool>(hidden.value);
+    }
+    if (archived.present) {
+      map['archived'] = Variable<bool>(archived.value);
+    }
+    if (lastBatch.present) {
+      map['last_batch'] = Variable<String>(lastBatch.value);
+    }
+    if (prevBatch.present) {
+      map['prev_batch'] = Variable<String>(prevBatch.value);
+    }
+    if (nextBatch.present) {
+      map['next_batch'] = Variable<String>(nextBatch.value);
+    }
+    if (lastRead.present) {
+      map['last_read'] = Variable<int>(lastRead.value);
+    }
+    if (lastUpdate.present) {
+      map['last_update'] = Variable<int>(lastUpdate.value);
+    }
+    if (totalJoinedUsers.present) {
+      map['total_joined_users'] = Variable<int>(totalJoinedUsers.value);
+    }
+    if (namePriority.present) {
+      map['name_priority'] = Variable<int>(namePriority.value);
+    }
+    if (draft.present) {
+      final converter = $RoomsTable.$converterdraft;
+      map['draft'] = Variable<String>(converter.toSql(draft.value));
+    }
+    if (reply.present) {
+      final converter = $RoomsTable.$converterreply;
+      map['reply'] = Variable<String>(converter.toSql(reply.value));
+    }
+    if (userIds.present) {
+      final converter = $RoomsTable.$converteruserIds;
+      map['user_ids'] = Variable<String>(converter.toSql(userIds.value));
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
     }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('UsersCompanion(')
-          ..write('userId: $userId, ')
-          ..write('deviceId: $deviceId, ')
-          ..write('idserver: $idserver, ')
+    return (StringBuffer('RoomsCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('alias: $alias, ')
           ..write('homeserver: $homeserver, ')
-          ..write('homeserverName: $homeserverName, ')
-          ..write('accessToken: $accessToken, ')
-          ..write('displayName: $displayName, ')
-          ..write('avatarUri: $avatarUri')
+          ..write('avatarUri: $avatarUri, ')
+          ..write('topic: $topic, ')
+          ..write('joinRule: $joinRule, ')
+          ..write('drafting: $drafting, ')
+          ..write('direct: $direct, ')
+          ..write('sending: $sending, ')
+          ..write('invite: $invite, ')
+          ..write('guestEnabled: $guestEnabled, ')
+          ..write('encryptionEnabled: $encryptionEnabled, ')
+          ..write('worldReadable: $worldReadable, ')
+          ..write('hidden: $hidden, ')
+          ..write('archived: $archived, ')
+          ..write('lastBatch: $lastBatch, ')
+          ..write('prevBatch: $prevBatch, ')
+          ..write('nextBatch: $nextBatch, ')
+          ..write('lastRead: $lastRead, ')
+          ..write('lastUpdate: $lastUpdate, ')
+          ..write('totalJoinedUsers: $totalJoinedUsers, ')
+          ..write('namePriority: $namePriority, ')
+          ..write('draft: $draft, ')
+          ..write('reply: $reply, ')
+          ..write('userIds: $userIds, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -2497,51 +2535,55 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $UsersTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
   @override
-  late final GeneratedColumn<String?> userId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
       'id', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
-      $customConstraints: 'UNIQUE');
-  final VerificationMeta _deviceIdMeta = const VerificationMeta('deviceId');
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+  static const VerificationMeta _deviceIdMeta =
+      const VerificationMeta('deviceId');
   @override
-  late final GeneratedColumn<String?> deviceId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> deviceId = GeneratedColumn<String>(
       'device_id', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _idserverMeta = const VerificationMeta('idserver');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _idserverMeta =
+      const VerificationMeta('idserver');
   @override
-  late final GeneratedColumn<String?> idserver = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> idserver = GeneratedColumn<String>(
       'idserver', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _homeserverMeta = const VerificationMeta('homeserver');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _homeserverMeta =
+      const VerificationMeta('homeserver');
   @override
-  late final GeneratedColumn<String?> homeserver = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> homeserver = GeneratedColumn<String>(
       'homeserver', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _homeserverNameMeta =
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _homeserverNameMeta =
       const VerificationMeta('homeserverName');
   @override
-  late final GeneratedColumn<String?> homeserverName = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> homeserverName = GeneratedColumn<String>(
       'homeserver_name', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _accessTokenMeta =
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _accessTokenMeta =
       const VerificationMeta('accessToken');
   @override
-  late final GeneratedColumn<String?> accessToken = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> accessToken = GeneratedColumn<String>(
       'access_token', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _displayNameMeta =
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _displayNameMeta =
       const VerificationMeta('displayName');
   @override
-  late final GeneratedColumn<String?> displayName = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> displayName = GeneratedColumn<String>(
       'display_name', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _avatarUriMeta = const VerificationMeta('avatarUri');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _avatarUriMeta =
+      const VerificationMeta('avatarUri');
   @override
-  late final GeneratedColumn<String?> avatarUri = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> avatarUri = GeneratedColumn<String>(
       'avatar_uri', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
+      type: DriftSqlType.string, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         userId,
@@ -2613,22 +2655,22 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   User map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return User(
-      userId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      deviceId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}device_id']),
-      idserver: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}idserver']),
-      homeserver: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}homeserver']),
-      homeserverName: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}homeserver_name']),
-      accessToken: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}access_token']),
-      displayName: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}display_name']),
-      avatarUri: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}avatar_uri']),
+      userId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      deviceId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}device_id']),
+      idserver: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}idserver']),
+      homeserver: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}homeserver']),
+      homeserverName: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}homeserver_name']),
+      accessToken: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}access_token']),
+      displayName: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}display_name']),
+      avatarUri: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}avatar_uri']),
     );
   }
 
@@ -2638,76 +2680,130 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
   }
 }
 
-class MediasCompanion extends UpdateCompanion<Media> {
-  final Value<String> mxcUri;
-  final Value<Uint8List?> data;
-  final Value<String?> type;
-  final Value<EncryptInfo?> info;
-  const MediasCompanion({
-    this.mxcUri = const Value.absent(),
-    this.data = const Value.absent(),
-    this.type = const Value.absent(),
-    this.info = const Value.absent(),
+class UsersCompanion extends UpdateCompanion<User> {
+  final Value<String> userId;
+  final Value<String?> deviceId;
+  final Value<String?> idserver;
+  final Value<String?> homeserver;
+  final Value<String?> homeserverName;
+  final Value<String?> accessToken;
+  final Value<String?> displayName;
+  final Value<String?> avatarUri;
+  final Value<int> rowid;
+  const UsersCompanion({
+    this.userId = const Value.absent(),
+    this.deviceId = const Value.absent(),
+    this.idserver = const Value.absent(),
+    this.homeserver = const Value.absent(),
+    this.homeserverName = const Value.absent(),
+    this.accessToken = const Value.absent(),
+    this.displayName = const Value.absent(),
+    this.avatarUri = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
-  MediasCompanion.insert({
-    required String mxcUri,
-    this.data = const Value.absent(),
-    this.type = const Value.absent(),
-    this.info = const Value.absent(),
-  }) : mxcUri = Value(mxcUri);
-  static Insertable<Media> custom({
-    Expression<String>? mxcUri,
-    Expression<Uint8List?>? data,
-    Expression<String?>? type,
-    Expression<EncryptInfo?>? info,
+  UsersCompanion.insert({
+    required String userId,
+    this.deviceId = const Value.absent(),
+    this.idserver = const Value.absent(),
+    this.homeserver = const Value.absent(),
+    this.homeserverName = const Value.absent(),
+    this.accessToken = const Value.absent(),
+    this.displayName = const Value.absent(),
+    this.avatarUri = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : userId = Value(userId);
+  static Insertable<User> custom({
+    Expression<String>? userId,
+    Expression<String>? deviceId,
+    Expression<String>? idserver,
+    Expression<String>? homeserver,
+    Expression<String>? homeserverName,
+    Expression<String>? accessToken,
+    Expression<String>? displayName,
+    Expression<String>? avatarUri,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
-      if (mxcUri != null) 'mxc_uri': mxcUri,
-      if (data != null) 'data': data,
-      if (type != null) 'type': type,
-      if (info != null) 'info': info,
+      if (userId != null) 'id': userId,
+      if (deviceId != null) 'device_id': deviceId,
+      if (idserver != null) 'idserver': idserver,
+      if (homeserver != null) 'homeserver': homeserver,
+      if (homeserverName != null) 'homeserver_name': homeserverName,
+      if (accessToken != null) 'access_token': accessToken,
+      if (displayName != null) 'display_name': displayName,
+      if (avatarUri != null) 'avatar_uri': avatarUri,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
-  MediasCompanion copyWith(
-      {Value<String>? mxcUri,
-      Value<Uint8List?>? data,
-      Value<String?>? type,
-      Value<EncryptInfo?>? info}) {
-    return MediasCompanion(
-      mxcUri: mxcUri ?? this.mxcUri,
-      data: data ?? this.data,
-      type: type ?? this.type,
-      info: info ?? this.info,
+  UsersCompanion copyWith(
+      {Value<String>? userId,
+      Value<String?>? deviceId,
+      Value<String?>? idserver,
+      Value<String?>? homeserver,
+      Value<String?>? homeserverName,
+      Value<String?>? accessToken,
+      Value<String?>? displayName,
+      Value<String?>? avatarUri,
+      Value<int>? rowid}) {
+    return UsersCompanion(
+      userId: userId ?? this.userId,
+      deviceId: deviceId ?? this.deviceId,
+      idserver: idserver ?? this.idserver,
+      homeserver: homeserver ?? this.homeserver,
+      homeserverName: homeserverName ?? this.homeserverName,
+      accessToken: accessToken ?? this.accessToken,
+      displayName: displayName ?? this.displayName,
+      avatarUri: avatarUri ?? this.avatarUri,
+      rowid: rowid ?? this.rowid,
     );
   }
 
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (mxcUri.present) {
-      map['mxc_uri'] = Variable<String>(mxcUri.value);
+    if (userId.present) {
+      map['id'] = Variable<String>(userId.value);
     }
-    if (data.present) {
-      map['data'] = Variable<Uint8List?>(data.value);
+    if (deviceId.present) {
+      map['device_id'] = Variable<String>(deviceId.value);
     }
-    if (type.present) {
-      map['type'] = Variable<String?>(type.value);
+    if (idserver.present) {
+      map['idserver'] = Variable<String>(idserver.value);
     }
-    if (info.present) {
-      final converter = $MediasTable.$converter0;
-      map['info'] = Variable<String?>(converter.mapToSql(info.value));
+    if (homeserver.present) {
+      map['homeserver'] = Variable<String>(homeserver.value);
+    }
+    if (homeserverName.present) {
+      map['homeserver_name'] = Variable<String>(homeserverName.value);
+    }
+    if (accessToken.present) {
+      map['access_token'] = Variable<String>(accessToken.value);
+    }
+    if (displayName.present) {
+      map['display_name'] = Variable<String>(displayName.value);
+    }
+    if (avatarUri.present) {
+      map['avatar_uri'] = Variable<String>(avatarUri.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
     }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('MediasCompanion(')
-          ..write('mxcUri: $mxcUri, ')
-          ..write('data: $data, ')
-          ..write('type: $type, ')
-          ..write('info: $info')
+    return (StringBuffer('UsersCompanion(')
+          ..write('userId: $userId, ')
+          ..write('deviceId: $deviceId, ')
+          ..write('idserver: $idserver, ')
+          ..write('homeserver: $homeserver, ')
+          ..write('homeserverName: $homeserverName, ')
+          ..write('accessToken: $accessToken, ')
+          ..write('displayName: $displayName, ')
+          ..write('avatarUri: $avatarUri, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -2718,29 +2814,29 @@ class $MediasTable extends Medias with TableInfo<$MediasTable, Media> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $MediasTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _mxcUriMeta = const VerificationMeta('mxcUri');
+  static const VerificationMeta _mxcUriMeta = const VerificationMeta('mxcUri');
   @override
-  late final GeneratedColumn<String?> mxcUri = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> mxcUri = GeneratedColumn<String>(
       'mxc_uri', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
-      $customConstraints: 'UNIQUE');
-  final VerificationMeta _dataMeta = const VerificationMeta('data');
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+  static const VerificationMeta _dataMeta = const VerificationMeta('data');
   @override
-  late final GeneratedColumn<Uint8List?> data = GeneratedColumn<Uint8List?>(
+  late final GeneratedColumn<Uint8List> data = GeneratedColumn<Uint8List>(
       'data', aliasedName, true,
-      type: const BlobType(), requiredDuringInsert: false);
-  final VerificationMeta _typeMeta = const VerificationMeta('type');
+      type: DriftSqlType.blob, requiredDuringInsert: false);
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
   @override
-  late final GeneratedColumn<String?> type = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
       'type', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _infoMeta = const VerificationMeta('info');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _infoMeta = const VerificationMeta('info');
   @override
-  late final GeneratedColumnWithTypeConverter<EncryptInfo?, String?> info =
-      GeneratedColumn<String?>('info', aliasedName, true,
-              type: const StringType(), requiredDuringInsert: false)
-          .withConverter<EncryptInfo?>($MediasTable.$converter0);
+  late final GeneratedColumnWithTypeConverter<EncryptInfo?, String> info =
+      GeneratedColumn<String>('info', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<EncryptInfo?>($MediasTable.$converterinfo);
   @override
   List<GeneratedColumn> get $columns => [mxcUri, data, type, info];
   @override
@@ -2776,14 +2872,14 @@ class $MediasTable extends Medias with TableInfo<$MediasTable, Media> {
   Media map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Media(
-      mxcUri: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}mxc_uri'])!,
-      type: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}type']),
-      data: const BlobType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}data']),
-      info: $MediasTable.$converter0.mapToDart(const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}info'])),
+      mxcUri: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}mxc_uri'])!,
+      type: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}type']),
+      data: attachedDatabase.typeMapping
+          .read(DriftSqlType.blob, data['${effectivePrefix}data']),
+      info: $MediasTable.$converterinfo.fromSql(attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}info'])),
     );
   }
 
@@ -2792,168 +2888,91 @@ class $MediasTable extends Medias with TableInfo<$MediasTable, Media> {
     return $MediasTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<EncryptInfo?, String> $converter0 =
+  static TypeConverter<EncryptInfo?, String?> $converterinfo =
       const EncryptInfoToJsonConverter();
 }
 
-class ReactionsCompanion extends UpdateCompanion<Reaction> {
-  final Value<String> id;
-  final Value<String?> roomId;
-  final Value<String?> userId;
+class MediasCompanion extends UpdateCompanion<Media> {
+  final Value<String> mxcUri;
+  final Value<Uint8List?> data;
   final Value<String?> type;
-  final Value<String?> sender;
-  final Value<String?> stateKey;
-  final Value<String?> batch;
-  final Value<String?> prevBatch;
-  final Value<int> timestamp;
-  final Value<String?> body;
-  final Value<String?> relType;
-  final Value<String?> relEventId;
-  const ReactionsCompanion({
-    this.id = const Value.absent(),
-    this.roomId = const Value.absent(),
-    this.userId = const Value.absent(),
+  final Value<EncryptInfo?> info;
+  final Value<int> rowid;
+  const MediasCompanion({
+    this.mxcUri = const Value.absent(),
+    this.data = const Value.absent(),
     this.type = const Value.absent(),
-    this.sender = const Value.absent(),
-    this.stateKey = const Value.absent(),
-    this.batch = const Value.absent(),
-    this.prevBatch = const Value.absent(),
-    this.timestamp = const Value.absent(),
-    this.body = const Value.absent(),
-    this.relType = const Value.absent(),
-    this.relEventId = const Value.absent(),
+    this.info = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
-  ReactionsCompanion.insert({
-    required String id,
-    this.roomId = const Value.absent(),
-    this.userId = const Value.absent(),
+  MediasCompanion.insert({
+    required String mxcUri,
+    this.data = const Value.absent(),
     this.type = const Value.absent(),
-    this.sender = const Value.absent(),
-    this.stateKey = const Value.absent(),
-    this.batch = const Value.absent(),
-    this.prevBatch = const Value.absent(),
-    required int timestamp,
-    this.body = const Value.absent(),
-    this.relType = const Value.absent(),
-    this.relEventId = const Value.absent(),
-  })  : id = Value(id),
-        timestamp = Value(timestamp);
-  static Insertable<Reaction> custom({
-    Expression<String>? id,
-    Expression<String?>? roomId,
-    Expression<String?>? userId,
-    Expression<String?>? type,
-    Expression<String?>? sender,
-    Expression<String?>? stateKey,
-    Expression<String?>? batch,
-    Expression<String?>? prevBatch,
-    Expression<int>? timestamp,
-    Expression<String?>? body,
-    Expression<String?>? relType,
-    Expression<String?>? relEventId,
+    this.info = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : mxcUri = Value(mxcUri);
+  static Insertable<Media> custom({
+    Expression<String>? mxcUri,
+    Expression<Uint8List>? data,
+    Expression<String>? type,
+    Expression<String>? info,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (roomId != null) 'room_id': roomId,
-      if (userId != null) 'user_id': userId,
+      if (mxcUri != null) 'mxc_uri': mxcUri,
+      if (data != null) 'data': data,
       if (type != null) 'type': type,
-      if (sender != null) 'sender': sender,
-      if (stateKey != null) 'state_key': stateKey,
-      if (batch != null) 'batch': batch,
-      if (prevBatch != null) 'prev_batch': prevBatch,
-      if (timestamp != null) 'timestamp': timestamp,
-      if (body != null) 'body': body,
-      if (relType != null) 'rel_type': relType,
-      if (relEventId != null) 'rel_event_id': relEventId,
+      if (info != null) 'info': info,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
-  ReactionsCompanion copyWith(
-      {Value<String>? id,
-      Value<String?>? roomId,
-      Value<String?>? userId,
+  MediasCompanion copyWith(
+      {Value<String>? mxcUri,
+      Value<Uint8List?>? data,
       Value<String?>? type,
-      Value<String?>? sender,
-      Value<String?>? stateKey,
-      Value<String?>? batch,
-      Value<String?>? prevBatch,
-      Value<int>? timestamp,
-      Value<String?>? body,
-      Value<String?>? relType,
-      Value<String?>? relEventId}) {
-    return ReactionsCompanion(
-      id: id ?? this.id,
-      roomId: roomId ?? this.roomId,
-      userId: userId ?? this.userId,
+      Value<EncryptInfo?>? info,
+      Value<int>? rowid}) {
+    return MediasCompanion(
+      mxcUri: mxcUri ?? this.mxcUri,
+      data: data ?? this.data,
       type: type ?? this.type,
-      sender: sender ?? this.sender,
-      stateKey: stateKey ?? this.stateKey,
-      batch: batch ?? this.batch,
-      prevBatch: prevBatch ?? this.prevBatch,
-      timestamp: timestamp ?? this.timestamp,
-      body: body ?? this.body,
-      relType: relType ?? this.relType,
-      relEventId: relEventId ?? this.relEventId,
+      info: info ?? this.info,
+      rowid: rowid ?? this.rowid,
     );
   }
 
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<String>(id.value);
+    if (mxcUri.present) {
+      map['mxc_uri'] = Variable<String>(mxcUri.value);
     }
-    if (roomId.present) {
-      map['room_id'] = Variable<String?>(roomId.value);
-    }
-    if (userId.present) {
-      map['user_id'] = Variable<String?>(userId.value);
+    if (data.present) {
+      map['data'] = Variable<Uint8List>(data.value);
     }
     if (type.present) {
-      map['type'] = Variable<String?>(type.value);
+      map['type'] = Variable<String>(type.value);
     }
-    if (sender.present) {
-      map['sender'] = Variable<String?>(sender.value);
+    if (info.present) {
+      final converter = $MediasTable.$converterinfo;
+      map['info'] = Variable<String>(converter.toSql(info.value));
     }
-    if (stateKey.present) {
-      map['state_key'] = Variable<String?>(stateKey.value);
-    }
-    if (batch.present) {
-      map['batch'] = Variable<String?>(batch.value);
-    }
-    if (prevBatch.present) {
-      map['prev_batch'] = Variable<String?>(prevBatch.value);
-    }
-    if (timestamp.present) {
-      map['timestamp'] = Variable<int>(timestamp.value);
-    }
-    if (body.present) {
-      map['body'] = Variable<String?>(body.value);
-    }
-    if (relType.present) {
-      map['rel_type'] = Variable<String?>(relType.value);
-    }
-    if (relEventId.present) {
-      map['rel_event_id'] = Variable<String?>(relEventId.value);
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
     }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('ReactionsCompanion(')
-          ..write('id: $id, ')
-          ..write('roomId: $roomId, ')
-          ..write('userId: $userId, ')
+    return (StringBuffer('MediasCompanion(')
+          ..write('mxcUri: $mxcUri, ')
+          ..write('data: $data, ')
           ..write('type: $type, ')
-          ..write('sender: $sender, ')
-          ..write('stateKey: $stateKey, ')
-          ..write('batch: $batch, ')
-          ..write('prevBatch: $prevBatch, ')
-          ..write('timestamp: $timestamp, ')
-          ..write('body: $body, ')
-          ..write('relType: $relType, ')
-          ..write('relEventId: $relEventId')
+          ..write('info: $info, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -2965,68 +2984,73 @@ class $ReactionsTable extends Reactions
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $ReactionsTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
       'id', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
-      $customConstraints: 'UNIQUE');
-  final VerificationMeta _roomIdMeta = const VerificationMeta('roomId');
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+  static const VerificationMeta _roomIdMeta = const VerificationMeta('roomId');
   @override
-  late final GeneratedColumn<String?> roomId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> roomId = GeneratedColumn<String>(
       'room_id', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
   @override
-  late final GeneratedColumn<String?> userId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
       'user_id', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _typeMeta = const VerificationMeta('type');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
   @override
-  late final GeneratedColumn<String?> type = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
       'type', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _senderMeta = const VerificationMeta('sender');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _senderMeta = const VerificationMeta('sender');
   @override
-  late final GeneratedColumn<String?> sender = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> sender = GeneratedColumn<String>(
       'sender', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _stateKeyMeta = const VerificationMeta('stateKey');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _stateKeyMeta =
+      const VerificationMeta('stateKey');
   @override
-  late final GeneratedColumn<String?> stateKey = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> stateKey = GeneratedColumn<String>(
       'state_key', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _batchMeta = const VerificationMeta('batch');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _batchMeta = const VerificationMeta('batch');
   @override
-  late final GeneratedColumn<String?> batch = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> batch = GeneratedColumn<String>(
       'batch', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _prevBatchMeta = const VerificationMeta('prevBatch');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _prevBatchMeta =
+      const VerificationMeta('prevBatch');
   @override
-  late final GeneratedColumn<String?> prevBatch = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> prevBatch = GeneratedColumn<String>(
       'prev_batch', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _timestampMeta = const VerificationMeta('timestamp');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _timestampMeta =
+      const VerificationMeta('timestamp');
   @override
-  late final GeneratedColumn<int?> timestamp = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> timestamp = GeneratedColumn<int>(
       'timestamp', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: true);
-  final VerificationMeta _bodyMeta = const VerificationMeta('body');
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _bodyMeta = const VerificationMeta('body');
   @override
-  late final GeneratedColumn<String?> body = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> body = GeneratedColumn<String>(
       'body', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _relTypeMeta = const VerificationMeta('relType');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _relTypeMeta =
+      const VerificationMeta('relType');
   @override
-  late final GeneratedColumn<String?> relType = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> relType = GeneratedColumn<String>(
       'rel_type', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _relEventIdMeta = const VerificationMeta('relEventId');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _relEventIdMeta =
+      const VerificationMeta('relEventId');
   @override
-  late final GeneratedColumn<String?> relEventId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> relEventId = GeneratedColumn<String>(
       'rel_event_id', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
+      type: DriftSqlType.string, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -3113,30 +3137,30 @@ class $ReactionsTable extends Reactions
   Reaction map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Reaction(
-      id: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      userId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}user_id']),
-      roomId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}room_id']),
-      type: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}type']),
-      sender: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}sender']),
-      stateKey: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}state_key']),
-      batch: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}batch']),
-      prevBatch: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}prev_batch']),
-      timestamp: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}timestamp'])!,
-      body: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}body']),
-      relType: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}rel_type']),
-      relEventId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}rel_event_id']),
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      userId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}user_id']),
+      roomId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}room_id']),
+      type: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}type']),
+      sender: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sender']),
+      stateKey: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}state_key']),
+      batch: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}batch']),
+      prevBatch: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}prev_batch']),
+      timestamp: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}timestamp'])!,
+      body: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}body']),
+      relType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}rel_type']),
+      relEventId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}rel_event_id']),
     );
   }
 
@@ -3146,66 +3170,175 @@ class $ReactionsTable extends Reactions
   }
 }
 
-class ReceiptsCompanion extends UpdateCompanion<Receipt> {
-  final Value<String> eventId;
-  final Value<int?> latestRead;
-  final Value<Map<String, dynamic>?> userReads;
-  const ReceiptsCompanion({
-    this.eventId = const Value.absent(),
-    this.latestRead = const Value.absent(),
-    this.userReads = const Value.absent(),
+class ReactionsCompanion extends UpdateCompanion<Reaction> {
+  final Value<String> id;
+  final Value<String?> roomId;
+  final Value<String?> userId;
+  final Value<String?> type;
+  final Value<String?> sender;
+  final Value<String?> stateKey;
+  final Value<String?> batch;
+  final Value<String?> prevBatch;
+  final Value<int> timestamp;
+  final Value<String?> body;
+  final Value<String?> relType;
+  final Value<String?> relEventId;
+  final Value<int> rowid;
+  const ReactionsCompanion({
+    this.id = const Value.absent(),
+    this.roomId = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.type = const Value.absent(),
+    this.sender = const Value.absent(),
+    this.stateKey = const Value.absent(),
+    this.batch = const Value.absent(),
+    this.prevBatch = const Value.absent(),
+    this.timestamp = const Value.absent(),
+    this.body = const Value.absent(),
+    this.relType = const Value.absent(),
+    this.relEventId = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
-  ReceiptsCompanion.insert({
-    required String eventId,
-    this.latestRead = const Value.absent(),
-    this.userReads = const Value.absent(),
-  }) : eventId = Value(eventId);
-  static Insertable<Receipt> custom({
-    Expression<String>? eventId,
-    Expression<int?>? latestRead,
-    Expression<Map<String, dynamic>?>? userReads,
+  ReactionsCompanion.insert({
+    required String id,
+    this.roomId = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.type = const Value.absent(),
+    this.sender = const Value.absent(),
+    this.stateKey = const Value.absent(),
+    this.batch = const Value.absent(),
+    this.prevBatch = const Value.absent(),
+    required int timestamp,
+    this.body = const Value.absent(),
+    this.relType = const Value.absent(),
+    this.relEventId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  })  : id = Value(id),
+        timestamp = Value(timestamp);
+  static Insertable<Reaction> custom({
+    Expression<String>? id,
+    Expression<String>? roomId,
+    Expression<String>? userId,
+    Expression<String>? type,
+    Expression<String>? sender,
+    Expression<String>? stateKey,
+    Expression<String>? batch,
+    Expression<String>? prevBatch,
+    Expression<int>? timestamp,
+    Expression<String>? body,
+    Expression<String>? relType,
+    Expression<String>? relEventId,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
-      if (eventId != null) 'event_id': eventId,
-      if (latestRead != null) 'latest_read': latestRead,
-      if (userReads != null) 'user_reads': userReads,
+      if (id != null) 'id': id,
+      if (roomId != null) 'room_id': roomId,
+      if (userId != null) 'user_id': userId,
+      if (type != null) 'type': type,
+      if (sender != null) 'sender': sender,
+      if (stateKey != null) 'state_key': stateKey,
+      if (batch != null) 'batch': batch,
+      if (prevBatch != null) 'prev_batch': prevBatch,
+      if (timestamp != null) 'timestamp': timestamp,
+      if (body != null) 'body': body,
+      if (relType != null) 'rel_type': relType,
+      if (relEventId != null) 'rel_event_id': relEventId,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
-  ReceiptsCompanion copyWith(
-      {Value<String>? eventId,
-      Value<int?>? latestRead,
-      Value<Map<String, dynamic>?>? userReads}) {
-    return ReceiptsCompanion(
-      eventId: eventId ?? this.eventId,
-      latestRead: latestRead ?? this.latestRead,
-      userReads: userReads ?? this.userReads,
+  ReactionsCompanion copyWith(
+      {Value<String>? id,
+      Value<String?>? roomId,
+      Value<String?>? userId,
+      Value<String?>? type,
+      Value<String?>? sender,
+      Value<String?>? stateKey,
+      Value<String?>? batch,
+      Value<String?>? prevBatch,
+      Value<int>? timestamp,
+      Value<String?>? body,
+      Value<String?>? relType,
+      Value<String?>? relEventId,
+      Value<int>? rowid}) {
+    return ReactionsCompanion(
+      id: id ?? this.id,
+      roomId: roomId ?? this.roomId,
+      userId: userId ?? this.userId,
+      type: type ?? this.type,
+      sender: sender ?? this.sender,
+      stateKey: stateKey ?? this.stateKey,
+      batch: batch ?? this.batch,
+      prevBatch: prevBatch ?? this.prevBatch,
+      timestamp: timestamp ?? this.timestamp,
+      body: body ?? this.body,
+      relType: relType ?? this.relType,
+      relEventId: relEventId ?? this.relEventId,
+      rowid: rowid ?? this.rowid,
     );
   }
 
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (eventId.present) {
-      map['event_id'] = Variable<String>(eventId.value);
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
     }
-    if (latestRead.present) {
-      map['latest_read'] = Variable<int?>(latestRead.value);
+    if (roomId.present) {
+      map['room_id'] = Variable<String>(roomId.value);
     }
-    if (userReads.present) {
-      final converter = $ReceiptsTable.$converter0;
-      map['user_reads'] =
-          Variable<String?>(converter.mapToSql(userReads.value));
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    if (sender.present) {
+      map['sender'] = Variable<String>(sender.value);
+    }
+    if (stateKey.present) {
+      map['state_key'] = Variable<String>(stateKey.value);
+    }
+    if (batch.present) {
+      map['batch'] = Variable<String>(batch.value);
+    }
+    if (prevBatch.present) {
+      map['prev_batch'] = Variable<String>(prevBatch.value);
+    }
+    if (timestamp.present) {
+      map['timestamp'] = Variable<int>(timestamp.value);
+    }
+    if (body.present) {
+      map['body'] = Variable<String>(body.value);
+    }
+    if (relType.present) {
+      map['rel_type'] = Variable<String>(relType.value);
+    }
+    if (relEventId.present) {
+      map['rel_event_id'] = Variable<String>(relEventId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
     }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('ReceiptsCompanion(')
-          ..write('eventId: $eventId, ')
-          ..write('latestRead: $latestRead, ')
-          ..write('userReads: $userReads')
+    return (StringBuffer('ReactionsCompanion(')
+          ..write('id: $id, ')
+          ..write('roomId: $roomId, ')
+          ..write('userId: $userId, ')
+          ..write('type: $type, ')
+          ..write('sender: $sender, ')
+          ..write('stateKey: $stateKey, ')
+          ..write('batch: $batch, ')
+          ..write('prevBatch: $prevBatch, ')
+          ..write('timestamp: $timestamp, ')
+          ..write('body: $body, ')
+          ..write('relType: $relType, ')
+          ..write('relEventId: $relEventId, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -3216,24 +3349,28 @@ class $ReceiptsTable extends Receipts with TableInfo<$ReceiptsTable, Receipt> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $ReceiptsTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _eventIdMeta = const VerificationMeta('eventId');
+  static const VerificationMeta _eventIdMeta =
+      const VerificationMeta('eventId');
   @override
-  late final GeneratedColumn<String?> eventId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> eventId = GeneratedColumn<String>(
       'event_id', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
-      $customConstraints: 'UNIQUE');
-  final VerificationMeta _latestReadMeta = const VerificationMeta('latestRead');
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+  static const VerificationMeta _latestReadMeta =
+      const VerificationMeta('latestRead');
   @override
-  late final GeneratedColumn<int?> latestRead = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> latestRead = GeneratedColumn<int>(
       'latest_read', aliasedName, true,
-      type: const IntType(), requiredDuringInsert: false);
-  final VerificationMeta _userReadsMeta = const VerificationMeta('userReads');
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _userReadsMeta =
+      const VerificationMeta('userReads');
   @override
-  late final GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String?>
-      userReads = GeneratedColumn<String?>('user_reads', aliasedName, true,
-              type: const StringType(), requiredDuringInsert: false)
-          .withConverter<Map<String, dynamic>?>($ReceiptsTable.$converter0);
+  late final GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String>
+      userReads = GeneratedColumn<String>('user_reads', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<Map<String, dynamic>?>(
+              $ReceiptsTable.$converteruserReads);
   @override
   List<GeneratedColumn> get $columns => [eventId, latestRead, userReads];
   @override
@@ -3267,10 +3404,10 @@ class $ReceiptsTable extends Receipts with TableInfo<$ReceiptsTable, Receipt> {
   Receipt map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Receipt(
-      eventId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}event_id'])!,
-      latestRead: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}latest_read']),
+      eventId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}event_id'])!,
+      latestRead: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}latest_read']),
     );
   }
 
@@ -3279,30 +3416,156 @@ class $ReceiptsTable extends Receipts with TableInfo<$ReceiptsTable, Receipt> {
     return $ReceiptsTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<Map<String, dynamic>?, String> $converter0 =
+  static TypeConverter<Map<String, dynamic>?, String> $converteruserReads =
       const MapToReadConverter();
+}
+
+class ReceiptsCompanion extends UpdateCompanion<Receipt> {
+  final Value<String> eventId;
+  final Value<int?> latestRead;
+  final Value<Map<String, dynamic>?> userReads;
+  final Value<int> rowid;
+  const ReceiptsCompanion({
+    this.eventId = const Value.absent(),
+    this.latestRead = const Value.absent(),
+    this.userReads = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ReceiptsCompanion.insert({
+    required String eventId,
+    this.latestRead = const Value.absent(),
+    this.userReads = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : eventId = Value(eventId);
+  static Insertable<Receipt> custom({
+    Expression<String>? eventId,
+    Expression<int>? latestRead,
+    Expression<String>? userReads,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (eventId != null) 'event_id': eventId,
+      if (latestRead != null) 'latest_read': latestRead,
+      if (userReads != null) 'user_reads': userReads,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ReceiptsCompanion copyWith(
+      {Value<String>? eventId,
+      Value<int?>? latestRead,
+      Value<Map<String, dynamic>?>? userReads,
+      Value<int>? rowid}) {
+    return ReceiptsCompanion(
+      eventId: eventId ?? this.eventId,
+      latestRead: latestRead ?? this.latestRead,
+      userReads: userReads ?? this.userReads,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (eventId.present) {
+      map['event_id'] = Variable<String>(eventId.value);
+    }
+    if (latestRead.present) {
+      map['latest_read'] = Variable<int>(latestRead.value);
+    }
+    if (userReads.present) {
+      final converter = $ReceiptsTable.$converteruserReads;
+      map['user_reads'] = Variable<String>(converter.toSql(userReads.value));
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ReceiptsCompanion(')
+          ..write('eventId: $eventId, ')
+          ..write('latestRead: $latestRead, ')
+          ..write('userReads: $userReads, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $AuthsTable extends Auths with TableInfo<$AuthsTable, Auth> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AuthsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+  static const VerificationMeta _storeMeta = const VerificationMeta('store');
+  @override
+  late final GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String>
+      store = GeneratedColumn<String>('store', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<Map<String, dynamic>?>($AuthsTable.$converterstore);
+  @override
+  List<GeneratedColumn> get $columns => [id, store];
+  @override
+  String get aliasedName => _alias ?? 'auths';
+  @override
+  String get actualTableName => 'auths';
+  @override
+  VerificationContext validateIntegrity(Insertable<Auth> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    context.handle(_storeMeta, const VerificationResult.success());
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Auth map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Auth(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      store: $AuthsTable.$converterstore.fromSql(attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}store'])),
+    );
+  }
+
+  @override
+  $AuthsTable createAlias(String alias) {
+    return $AuthsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<Map<String, dynamic>?, String?> $converterstore =
+      const MapToJsonConverter();
 }
 
 class Auth extends DataClass implements Insertable<Auth> {
   final String id;
   final Map<String, dynamic>? store;
-  Auth({required this.id, this.store});
-  factory Auth.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return Auth(
-      id: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      store: $AuthsTable.$converter0.mapToDart(const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}store'])),
-    );
-  }
+  const Auth({required this.id, this.store});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     if (!nullToAbsent || store != null) {
-      final converter = $AuthsTable.$converter0;
-      map['store'] = Variable<String?>(converter.mapToSql(store));
+      final converter = $AuthsTable.$converterstore;
+      map['store'] = Variable<String>(converter.toSql(store));
     }
     return map;
   }
@@ -3332,9 +3595,12 @@ class Auth extends DataClass implements Insertable<Auth> {
     };
   }
 
-  Auth copyWith({String? id, Map<String, dynamic>? store}) => Auth(
+  Auth copyWith(
+          {String? id,
+          Value<Map<String, dynamic>?> store = const Value.absent()}) =>
+      Auth(
         id: id ?? this.id,
-        store: store ?? this.store,
+        store: store.present ? store.value : this.store,
       );
   @override
   String toString() {
@@ -3356,29 +3622,37 @@ class Auth extends DataClass implements Insertable<Auth> {
 class AuthsCompanion extends UpdateCompanion<Auth> {
   final Value<String> id;
   final Value<Map<String, dynamic>?> store;
+  final Value<int> rowid;
   const AuthsCompanion({
     this.id = const Value.absent(),
     this.store = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   AuthsCompanion.insert({
     required String id,
     this.store = const Value.absent(),
+    this.rowid = const Value.absent(),
   }) : id = Value(id);
   static Insertable<Auth> custom({
     Expression<String>? id,
-    Expression<Map<String, dynamic>?>? store,
+    Expression<String>? store,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (store != null) 'store': store,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
   AuthsCompanion copyWith(
-      {Value<String>? id, Value<Map<String, dynamic>?>? store}) {
+      {Value<String>? id,
+      Value<Map<String, dynamic>?>? store,
+      Value<int>? rowid}) {
     return AuthsCompanion(
       id: id ?? this.id,
       store: store ?? this.store,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -3389,8 +3663,11 @@ class AuthsCompanion extends UpdateCompanion<Auth> {
       map['id'] = Variable<String>(id.value);
     }
     if (store.present) {
-      final converter = $AuthsTable.$converter0;
-      map['store'] = Variable<String?>(converter.mapToSql(store.value));
+      final converter = $AuthsTable.$converterstore;
+      map['store'] = Variable<String>(converter.toSql(store.value));
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
     }
     return map;
   }
@@ -3399,38 +3676,39 @@ class AuthsCompanion extends UpdateCompanion<Auth> {
   String toString() {
     return (StringBuffer('AuthsCompanion(')
           ..write('id: $id, ')
-          ..write('store: $store')
+          ..write('store: $store, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
 }
 
-class $AuthsTable extends Auths with TableInfo<$AuthsTable, Auth> {
+class $SyncsTable extends Syncs with TableInfo<$SyncsTable, Sync> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $AuthsTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
+  $SyncsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
       'id', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
-      $customConstraints: 'UNIQUE');
-  final VerificationMeta _storeMeta = const VerificationMeta('store');
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+  static const VerificationMeta _storeMeta = const VerificationMeta('store');
   @override
-  late final GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String?>
-      store = GeneratedColumn<String?>('store', aliasedName, true,
-              type: const StringType(), requiredDuringInsert: false)
-          .withConverter<Map<String, dynamic>?>($AuthsTable.$converter0);
+  late final GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String>
+      store = GeneratedColumn<String>('store', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<Map<String, dynamic>?>($SyncsTable.$converterstore);
   @override
   List<GeneratedColumn> get $columns => [id, store];
   @override
-  String get aliasedName => _alias ?? 'auths';
+  String get aliasedName => _alias ?? 'syncs';
   @override
-  String get actualTableName => 'auths';
+  String get actualTableName => 'syncs';
   @override
-  VerificationContext validateIntegrity(Insertable<Auth> instance,
+  VerificationContext validateIntegrity(Insertable<Sync> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -3446,40 +3724,36 @@ class $AuthsTable extends Auths with TableInfo<$AuthsTable, Auth> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Auth map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Auth.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  Sync map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Sync(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      store: $SyncsTable.$converterstore.fromSql(attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}store'])),
+    );
   }
 
   @override
-  $AuthsTable createAlias(String alias) {
-    return $AuthsTable(attachedDatabase, alias);
+  $SyncsTable createAlias(String alias) {
+    return $SyncsTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<Map<String, dynamic>?, String> $converter0 =
+  static TypeConverter<Map<String, dynamic>?, String?> $converterstore =
       const MapToJsonConverter();
 }
 
 class Sync extends DataClass implements Insertable<Sync> {
   final String id;
   final Map<String, dynamic>? store;
-  Sync({required this.id, this.store});
-  factory Sync.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return Sync(
-      id: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      store: $SyncsTable.$converter0.mapToDart(const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}store'])),
-    );
-  }
+  const Sync({required this.id, this.store});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     if (!nullToAbsent || store != null) {
-      final converter = $SyncsTable.$converter0;
-      map['store'] = Variable<String?>(converter.mapToSql(store));
+      final converter = $SyncsTable.$converterstore;
+      map['store'] = Variable<String>(converter.toSql(store));
     }
     return map;
   }
@@ -3509,9 +3783,12 @@ class Sync extends DataClass implements Insertable<Sync> {
     };
   }
 
-  Sync copyWith({String? id, Map<String, dynamic>? store}) => Sync(
+  Sync copyWith(
+          {String? id,
+          Value<Map<String, dynamic>?> store = const Value.absent()}) =>
+      Sync(
         id: id ?? this.id,
-        store: store ?? this.store,
+        store: store.present ? store.value : this.store,
       );
   @override
   String toString() {
@@ -3533,29 +3810,37 @@ class Sync extends DataClass implements Insertable<Sync> {
 class SyncsCompanion extends UpdateCompanion<Sync> {
   final Value<String> id;
   final Value<Map<String, dynamic>?> store;
+  final Value<int> rowid;
   const SyncsCompanion({
     this.id = const Value.absent(),
     this.store = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   SyncsCompanion.insert({
     required String id,
     this.store = const Value.absent(),
+    this.rowid = const Value.absent(),
   }) : id = Value(id);
   static Insertable<Sync> custom({
     Expression<String>? id,
-    Expression<Map<String, dynamic>?>? store,
+    Expression<String>? store,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (store != null) 'store': store,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
   SyncsCompanion copyWith(
-      {Value<String>? id, Value<Map<String, dynamic>?>? store}) {
+      {Value<String>? id,
+      Value<Map<String, dynamic>?>? store,
+      Value<int>? rowid}) {
     return SyncsCompanion(
       id: id ?? this.id,
       store: store ?? this.store,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -3566,8 +3851,11 @@ class SyncsCompanion extends UpdateCompanion<Sync> {
       map['id'] = Variable<String>(id.value);
     }
     if (store.present) {
-      final converter = $SyncsTable.$converter0;
-      map['store'] = Variable<String?>(converter.mapToSql(store.value));
+      final converter = $SyncsTable.$converterstore;
+      map['store'] = Variable<String>(converter.toSql(store.value));
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
     }
     return map;
   }
@@ -3576,38 +3864,39 @@ class SyncsCompanion extends UpdateCompanion<Sync> {
   String toString() {
     return (StringBuffer('SyncsCompanion(')
           ..write('id: $id, ')
-          ..write('store: $store')
+          ..write('store: $store, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
 }
 
-class $SyncsTable extends Syncs with TableInfo<$SyncsTable, Sync> {
+class $CryptosTable extends Cryptos with TableInfo<$CryptosTable, Crypto> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $SyncsTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
+  $CryptosTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
       'id', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
-      $customConstraints: 'UNIQUE');
-  final VerificationMeta _storeMeta = const VerificationMeta('store');
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+  static const VerificationMeta _storeMeta = const VerificationMeta('store');
   @override
-  late final GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String?>
-      store = GeneratedColumn<String?>('store', aliasedName, true,
-              type: const StringType(), requiredDuringInsert: false)
-          .withConverter<Map<String, dynamic>?>($SyncsTable.$converter0);
+  late final GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String>
+      store = GeneratedColumn<String>('store', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<Map<String, dynamic>?>($CryptosTable.$converterstore);
   @override
   List<GeneratedColumn> get $columns => [id, store];
   @override
-  String get aliasedName => _alias ?? 'syncs';
+  String get aliasedName => _alias ?? 'cryptos';
   @override
-  String get actualTableName => 'syncs';
+  String get actualTableName => 'cryptos';
   @override
-  VerificationContext validateIntegrity(Insertable<Sync> instance,
+  VerificationContext validateIntegrity(Insertable<Crypto> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -3623,40 +3912,36 @@ class $SyncsTable extends Syncs with TableInfo<$SyncsTable, Sync> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Sync map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Sync.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  Crypto map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Crypto(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      store: $CryptosTable.$converterstore.fromSql(attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}store'])),
+    );
   }
 
   @override
-  $SyncsTable createAlias(String alias) {
-    return $SyncsTable(attachedDatabase, alias);
+  $CryptosTable createAlias(String alias) {
+    return $CryptosTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<Map<String, dynamic>?, String> $converter0 =
+  static TypeConverter<Map<String, dynamic>?, String?> $converterstore =
       const MapToJsonConverter();
 }
 
 class Crypto extends DataClass implements Insertable<Crypto> {
   final String id;
   final Map<String, dynamic>? store;
-  Crypto({required this.id, this.store});
-  factory Crypto.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return Crypto(
-      id: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      store: $CryptosTable.$converter0.mapToDart(const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}store'])),
-    );
-  }
+  const Crypto({required this.id, this.store});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     if (!nullToAbsent || store != null) {
-      final converter = $CryptosTable.$converter0;
-      map['store'] = Variable<String?>(converter.mapToSql(store));
+      final converter = $CryptosTable.$converterstore;
+      map['store'] = Variable<String>(converter.toSql(store));
     }
     return map;
   }
@@ -3686,9 +3971,12 @@ class Crypto extends DataClass implements Insertable<Crypto> {
     };
   }
 
-  Crypto copyWith({String? id, Map<String, dynamic>? store}) => Crypto(
+  Crypto copyWith(
+          {String? id,
+          Value<Map<String, dynamic>?> store = const Value.absent()}) =>
+      Crypto(
         id: id ?? this.id,
-        store: store ?? this.store,
+        store: store.present ? store.value : this.store,
       );
   @override
   String toString() {
@@ -3710,29 +3998,37 @@ class Crypto extends DataClass implements Insertable<Crypto> {
 class CryptosCompanion extends UpdateCompanion<Crypto> {
   final Value<String> id;
   final Value<Map<String, dynamic>?> store;
+  final Value<int> rowid;
   const CryptosCompanion({
     this.id = const Value.absent(),
     this.store = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   CryptosCompanion.insert({
     required String id,
     this.store = const Value.absent(),
+    this.rowid = const Value.absent(),
   }) : id = Value(id);
   static Insertable<Crypto> custom({
     Expression<String>? id,
-    Expression<Map<String, dynamic>?>? store,
+    Expression<String>? store,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (store != null) 'store': store,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
   CryptosCompanion copyWith(
-      {Value<String>? id, Value<Map<String, dynamic>?>? store}) {
+      {Value<String>? id,
+      Value<Map<String, dynamic>?>? store,
+      Value<int>? rowid}) {
     return CryptosCompanion(
       id: id ?? this.id,
       store: store ?? this.store,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -3743,8 +4039,11 @@ class CryptosCompanion extends UpdateCompanion<Crypto> {
       map['id'] = Variable<String>(id.value);
     }
     if (store.present) {
-      final converter = $CryptosTable.$converter0;
-      map['store'] = Variable<String?>(converter.mapToSql(store.value));
+      final converter = $CryptosTable.$converterstore;
+      map['store'] = Variable<String>(converter.toSql(store.value));
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
     }
     return map;
   }
@@ -3753,312 +4052,8 @@ class CryptosCompanion extends UpdateCompanion<Crypto> {
   String toString() {
     return (StringBuffer('CryptosCompanion(')
           ..write('id: $id, ')
-          ..write('store: $store')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class $CryptosTable extends Cryptos with TableInfo<$CryptosTable, Crypto> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $CryptosTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
-      'id', aliasedName, false,
-      type: const StringType(),
-      requiredDuringInsert: true,
-      $customConstraints: 'UNIQUE');
-  final VerificationMeta _storeMeta = const VerificationMeta('store');
-  @override
-  late final GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String?>
-      store = GeneratedColumn<String?>('store', aliasedName, true,
-              type: const StringType(), requiredDuringInsert: false)
-          .withConverter<Map<String, dynamic>?>($CryptosTable.$converter0);
-  @override
-  List<GeneratedColumn> get $columns => [id, store];
-  @override
-  String get aliasedName => _alias ?? 'cryptos';
-  @override
-  String get actualTableName => 'cryptos';
-  @override
-  VerificationContext validateIntegrity(Insertable<Crypto> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    } else if (isInserting) {
-      context.missing(_idMeta);
-    }
-    context.handle(_storeMeta, const VerificationResult.success());
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  Crypto map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Crypto.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
-  }
-
-  @override
-  $CryptosTable createAlias(String alias) {
-    return $CryptosTable(attachedDatabase, alias);
-  }
-
-  static TypeConverter<Map<String, dynamic>?, String> $converter0 =
-      const MapToJsonConverter();
-}
-
-class MessageSession extends DataClass implements Insertable<MessageSession> {
-  final String id;
-  final String roomId;
-  final int index;
-  final String? identityKey;
-  final String session;
-  final bool inbound;
-  final int createdAt;
-  MessageSession(
-      {required this.id,
-      required this.roomId,
-      required this.index,
-      this.identityKey,
-      required this.session,
-      required this.inbound,
-      required this.createdAt});
-  factory MessageSession.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return MessageSession(
-      id: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      roomId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}room_id'])!,
-      index: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}index'])!,
-      identityKey: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}identity_key']),
-      session: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}session'])!,
-      inbound: const BoolType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}inbound'])!,
-      createdAt: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
-    );
-  }
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<String>(id);
-    map['room_id'] = Variable<String>(roomId);
-    map['index'] = Variable<int>(index);
-    if (!nullToAbsent || identityKey != null) {
-      map['identity_key'] = Variable<String?>(identityKey);
-    }
-    map['session'] = Variable<String>(session);
-    map['inbound'] = Variable<bool>(inbound);
-    map['created_at'] = Variable<int>(createdAt);
-    return map;
-  }
-
-  MessageSessionsCompanion toCompanion(bool nullToAbsent) {
-    return MessageSessionsCompanion(
-      id: Value(id),
-      roomId: Value(roomId),
-      index: Value(index),
-      identityKey: identityKey == null && nullToAbsent
-          ? const Value.absent()
-          : Value(identityKey),
-      session: Value(session),
-      inbound: Value(inbound),
-      createdAt: Value(createdAt),
-    );
-  }
-
-  factory MessageSession.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return MessageSession(
-      id: serializer.fromJson<String>(json['id']),
-      roomId: serializer.fromJson<String>(json['roomId']),
-      index: serializer.fromJson<int>(json['index']),
-      identityKey: serializer.fromJson<String?>(json['identityKey']),
-      session: serializer.fromJson<String>(json['session']),
-      inbound: serializer.fromJson<bool>(json['inbound']),
-      createdAt: serializer.fromJson<int>(json['createdAt']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<String>(id),
-      'roomId': serializer.toJson<String>(roomId),
-      'index': serializer.toJson<int>(index),
-      'identityKey': serializer.toJson<String?>(identityKey),
-      'session': serializer.toJson<String>(session),
-      'inbound': serializer.toJson<bool>(inbound),
-      'createdAt': serializer.toJson<int>(createdAt),
-    };
-  }
-
-  MessageSession copyWith(
-          {String? id,
-          String? roomId,
-          int? index,
-          String? identityKey,
-          String? session,
-          bool? inbound,
-          int? createdAt}) =>
-      MessageSession(
-        id: id ?? this.id,
-        roomId: roomId ?? this.roomId,
-        index: index ?? this.index,
-        identityKey: identityKey ?? this.identityKey,
-        session: session ?? this.session,
-        inbound: inbound ?? this.inbound,
-        createdAt: createdAt ?? this.createdAt,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('MessageSession(')
-          ..write('id: $id, ')
-          ..write('roomId: $roomId, ')
-          ..write('index: $index, ')
-          ..write('identityKey: $identityKey, ')
-          ..write('session: $session, ')
-          ..write('inbound: $inbound, ')
-          ..write('createdAt: $createdAt')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(id, roomId, index, identityKey, session, inbound, createdAt);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is MessageSession &&
-          other.id == this.id &&
-          other.roomId == this.roomId &&
-          other.index == this.index &&
-          other.identityKey == this.identityKey &&
-          other.session == this.session &&
-          other.inbound == this.inbound &&
-          other.createdAt == this.createdAt);
-}
-
-class MessageSessionsCompanion extends UpdateCompanion<MessageSession> {
-  final Value<String> id;
-  final Value<String> roomId;
-  final Value<int> index;
-  final Value<String?> identityKey;
-  final Value<String> session;
-  final Value<bool> inbound;
-  final Value<int> createdAt;
-  const MessageSessionsCompanion({
-    this.id = const Value.absent(),
-    this.roomId = const Value.absent(),
-    this.index = const Value.absent(),
-    this.identityKey = const Value.absent(),
-    this.session = const Value.absent(),
-    this.inbound = const Value.absent(),
-    this.createdAt = const Value.absent(),
-  });
-  MessageSessionsCompanion.insert({
-    required String id,
-    required String roomId,
-    required int index,
-    this.identityKey = const Value.absent(),
-    required String session,
-    required bool inbound,
-    required int createdAt,
-  })  : id = Value(id),
-        roomId = Value(roomId),
-        index = Value(index),
-        session = Value(session),
-        inbound = Value(inbound),
-        createdAt = Value(createdAt);
-  static Insertable<MessageSession> custom({
-    Expression<String>? id,
-    Expression<String>? roomId,
-    Expression<int>? index,
-    Expression<String?>? identityKey,
-    Expression<String>? session,
-    Expression<bool>? inbound,
-    Expression<int>? createdAt,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (roomId != null) 'room_id': roomId,
-      if (index != null) 'index': index,
-      if (identityKey != null) 'identity_key': identityKey,
-      if (session != null) 'session': session,
-      if (inbound != null) 'inbound': inbound,
-      if (createdAt != null) 'created_at': createdAt,
-    });
-  }
-
-  MessageSessionsCompanion copyWith(
-      {Value<String>? id,
-      Value<String>? roomId,
-      Value<int>? index,
-      Value<String?>? identityKey,
-      Value<String>? session,
-      Value<bool>? inbound,
-      Value<int>? createdAt}) {
-    return MessageSessionsCompanion(
-      id: id ?? this.id,
-      roomId: roomId ?? this.roomId,
-      index: index ?? this.index,
-      identityKey: identityKey ?? this.identityKey,
-      session: session ?? this.session,
-      inbound: inbound ?? this.inbound,
-      createdAt: createdAt ?? this.createdAt,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<String>(id.value);
-    }
-    if (roomId.present) {
-      map['room_id'] = Variable<String>(roomId.value);
-    }
-    if (index.present) {
-      map['index'] = Variable<int>(index.value);
-    }
-    if (identityKey.present) {
-      map['identity_key'] = Variable<String?>(identityKey.value);
-    }
-    if (session.present) {
-      map['session'] = Variable<String>(session.value);
-    }
-    if (inbound.present) {
-      map['inbound'] = Variable<bool>(inbound.value);
-    }
-    if (createdAt.present) {
-      map['created_at'] = Variable<int>(createdAt.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('MessageSessionsCompanion(')
-          ..write('id: $id, ')
-          ..write('roomId: $roomId, ')
-          ..write('index: $index, ')
-          ..write('identityKey: $identityKey, ')
-          ..write('session: $session, ')
-          ..write('inbound: $inbound, ')
-          ..write('createdAt: $createdAt')
+          ..write('store: $store, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -4070,46 +4065,53 @@ class $MessageSessionsTable extends MessageSessions
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $MessageSessionsTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
       'id', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
-      $customConstraints: 'UNIQUE');
-  final VerificationMeta _roomIdMeta = const VerificationMeta('roomId');
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+  static const VerificationMeta _roomIdMeta = const VerificationMeta('roomId');
   @override
-  late final GeneratedColumn<String?> roomId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> roomId = GeneratedColumn<String>(
       'room_id', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
-  final VerificationMeta _indexMeta = const VerificationMeta('index');
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _indexMeta = const VerificationMeta('index');
   @override
-  late final GeneratedColumn<int?> index = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> index = GeneratedColumn<int>(
       'index', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: true);
-  final VerificationMeta _identityKeyMeta =
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _identityKeyMeta =
       const VerificationMeta('identityKey');
   @override
-  late final GeneratedColumn<String?> identityKey = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> identityKey = GeneratedColumn<String>(
       'identity_key', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
-  final VerificationMeta _sessionMeta = const VerificationMeta('session');
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _sessionMeta =
+      const VerificationMeta('session');
   @override
-  late final GeneratedColumn<String?> session = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> session = GeneratedColumn<String>(
       'session', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
-  final VerificationMeta _inboundMeta = const VerificationMeta('inbound');
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _inboundMeta =
+      const VerificationMeta('inbound');
   @override
-  late final GeneratedColumn<bool?> inbound = GeneratedColumn<bool?>(
-      'inbound', aliasedName, false,
-      type: const BoolType(),
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK (inbound IN (0, 1))');
-  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  late final GeneratedColumn<bool> inbound =
+      GeneratedColumn<bool>('inbound', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: true,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("inbound" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
   @override
-  late final GeneratedColumn<int?> createdAt = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> createdAt = GeneratedColumn<int>(
       'created_at', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: true);
+      type: DriftSqlType.int, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
       [id, roomId, index, identityKey, session, inbound, createdAt];
@@ -4170,8 +4172,23 @@ class $MessageSessionsTable extends MessageSessions
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   MessageSession map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return MessageSession.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MessageSession(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      roomId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}room_id'])!,
+      index: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}index'])!,
+      identityKey: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}identity_key']),
+      session: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}session'])!,
+      inbound: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}inbound'])!,
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}created_at'])!,
+    );
   }
 
   @override
@@ -4180,60 +4197,62 @@ class $MessageSessionsTable extends MessageSessions
   }
 }
 
-class KeySession extends DataClass implements Insertable<KeySession> {
+class MessageSession extends DataClass implements Insertable<MessageSession> {
   final String id;
-  final String sessionId;
-  final String identityKey;
-  final String? session;
-  KeySession(
+  final String roomId;
+  final int index;
+  final String? identityKey;
+  final String session;
+  final bool inbound;
+  final int createdAt;
+  const MessageSession(
       {required this.id,
-      required this.sessionId,
-      required this.identityKey,
-      this.session});
-  factory KeySession.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return KeySession(
-      id: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      sessionId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}session_id'])!,
-      identityKey: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}identity_key'])!,
-      session: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}session']),
-    );
-  }
+      required this.roomId,
+      required this.index,
+      this.identityKey,
+      required this.session,
+      required this.inbound,
+      required this.createdAt});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
-    map['session_id'] = Variable<String>(sessionId);
-    map['identity_key'] = Variable<String>(identityKey);
-    if (!nullToAbsent || session != null) {
-      map['session'] = Variable<String?>(session);
+    map['room_id'] = Variable<String>(roomId);
+    map['index'] = Variable<int>(index);
+    if (!nullToAbsent || identityKey != null) {
+      map['identity_key'] = Variable<String>(identityKey);
     }
+    map['session'] = Variable<String>(session);
+    map['inbound'] = Variable<bool>(inbound);
+    map['created_at'] = Variable<int>(createdAt);
     return map;
   }
 
-  KeySessionsCompanion toCompanion(bool nullToAbsent) {
-    return KeySessionsCompanion(
+  MessageSessionsCompanion toCompanion(bool nullToAbsent) {
+    return MessageSessionsCompanion(
       id: Value(id),
-      sessionId: Value(sessionId),
-      identityKey: Value(identityKey),
-      session: session == null && nullToAbsent
+      roomId: Value(roomId),
+      index: Value(index),
+      identityKey: identityKey == null && nullToAbsent
           ? const Value.absent()
-          : Value(session),
+          : Value(identityKey),
+      session: Value(session),
+      inbound: Value(inbound),
+      createdAt: Value(createdAt),
     );
   }
 
-  factory KeySession.fromJson(Map<String, dynamic> json,
+  factory MessageSession.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return KeySession(
+    return MessageSession(
       id: serializer.fromJson<String>(json['id']),
-      sessionId: serializer.fromJson<String>(json['sessionId']),
-      identityKey: serializer.fromJson<String>(json['identityKey']),
-      session: serializer.fromJson<String?>(json['session']),
+      roomId: serializer.fromJson<String>(json['roomId']),
+      index: serializer.fromJson<int>(json['index']),
+      identityKey: serializer.fromJson<String?>(json['identityKey']),
+      session: serializer.fromJson<String>(json['session']),
+      inbound: serializer.fromJson<bool>(json['inbound']),
+      createdAt: serializer.fromJson<int>(json['createdAt']),
     );
   }
   @override
@@ -4241,89 +4260,136 @@ class KeySession extends DataClass implements Insertable<KeySession> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
-      'sessionId': serializer.toJson<String>(sessionId),
-      'identityKey': serializer.toJson<String>(identityKey),
-      'session': serializer.toJson<String?>(session),
+      'roomId': serializer.toJson<String>(roomId),
+      'index': serializer.toJson<int>(index),
+      'identityKey': serializer.toJson<String?>(identityKey),
+      'session': serializer.toJson<String>(session),
+      'inbound': serializer.toJson<bool>(inbound),
+      'createdAt': serializer.toJson<int>(createdAt),
     };
   }
 
-  KeySession copyWith(
+  MessageSession copyWith(
           {String? id,
-          String? sessionId,
-          String? identityKey,
-          String? session}) =>
-      KeySession(
+          String? roomId,
+          int? index,
+          Value<String?> identityKey = const Value.absent(),
+          String? session,
+          bool? inbound,
+          int? createdAt}) =>
+      MessageSession(
         id: id ?? this.id,
-        sessionId: sessionId ?? this.sessionId,
-        identityKey: identityKey ?? this.identityKey,
+        roomId: roomId ?? this.roomId,
+        index: index ?? this.index,
+        identityKey: identityKey.present ? identityKey.value : this.identityKey,
         session: session ?? this.session,
+        inbound: inbound ?? this.inbound,
+        createdAt: createdAt ?? this.createdAt,
       );
   @override
   String toString() {
-    return (StringBuffer('KeySession(')
+    return (StringBuffer('MessageSession(')
           ..write('id: $id, ')
-          ..write('sessionId: $sessionId, ')
+          ..write('roomId: $roomId, ')
+          ..write('index: $index, ')
           ..write('identityKey: $identityKey, ')
-          ..write('session: $session')
+          ..write('session: $session, ')
+          ..write('inbound: $inbound, ')
+          ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, sessionId, identityKey, session);
+  int get hashCode =>
+      Object.hash(id, roomId, index, identityKey, session, inbound, createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is KeySession &&
+      (other is MessageSession &&
           other.id == this.id &&
-          other.sessionId == this.sessionId &&
+          other.roomId == this.roomId &&
+          other.index == this.index &&
           other.identityKey == this.identityKey &&
-          other.session == this.session);
+          other.session == this.session &&
+          other.inbound == this.inbound &&
+          other.createdAt == this.createdAt);
 }
 
-class KeySessionsCompanion extends UpdateCompanion<KeySession> {
+class MessageSessionsCompanion extends UpdateCompanion<MessageSession> {
   final Value<String> id;
-  final Value<String> sessionId;
-  final Value<String> identityKey;
-  final Value<String?> session;
-  const KeySessionsCompanion({
+  final Value<String> roomId;
+  final Value<int> index;
+  final Value<String?> identityKey;
+  final Value<String> session;
+  final Value<bool> inbound;
+  final Value<int> createdAt;
+  final Value<int> rowid;
+  const MessageSessionsCompanion({
     this.id = const Value.absent(),
-    this.sessionId = const Value.absent(),
+    this.roomId = const Value.absent(),
+    this.index = const Value.absent(),
     this.identityKey = const Value.absent(),
     this.session = const Value.absent(),
+    this.inbound = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
-  KeySessionsCompanion.insert({
+  MessageSessionsCompanion.insert({
     required String id,
-    required String sessionId,
-    required String identityKey,
-    this.session = const Value.absent(),
+    required String roomId,
+    required int index,
+    this.identityKey = const Value.absent(),
+    required String session,
+    required bool inbound,
+    required int createdAt,
+    this.rowid = const Value.absent(),
   })  : id = Value(id),
-        sessionId = Value(sessionId),
-        identityKey = Value(identityKey);
-  static Insertable<KeySession> custom({
+        roomId = Value(roomId),
+        index = Value(index),
+        session = Value(session),
+        inbound = Value(inbound),
+        createdAt = Value(createdAt);
+  static Insertable<MessageSession> custom({
     Expression<String>? id,
-    Expression<String>? sessionId,
+    Expression<String>? roomId,
+    Expression<int>? index,
     Expression<String>? identityKey,
-    Expression<String?>? session,
+    Expression<String>? session,
+    Expression<bool>? inbound,
+    Expression<int>? createdAt,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (sessionId != null) 'session_id': sessionId,
+      if (roomId != null) 'room_id': roomId,
+      if (index != null) 'index': index,
       if (identityKey != null) 'identity_key': identityKey,
       if (session != null) 'session': session,
+      if (inbound != null) 'inbound': inbound,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
-  KeySessionsCompanion copyWith(
+  MessageSessionsCompanion copyWith(
       {Value<String>? id,
-      Value<String>? sessionId,
-      Value<String>? identityKey,
-      Value<String?>? session}) {
-    return KeySessionsCompanion(
+      Value<String>? roomId,
+      Value<int>? index,
+      Value<String?>? identityKey,
+      Value<String>? session,
+      Value<bool>? inbound,
+      Value<int>? createdAt,
+      Value<int>? rowid}) {
+    return MessageSessionsCompanion(
       id: id ?? this.id,
-      sessionId: sessionId ?? this.sessionId,
+      roomId: roomId ?? this.roomId,
+      index: index ?? this.index,
       identityKey: identityKey ?? this.identityKey,
       session: session ?? this.session,
+      inbound: inbound ?? this.inbound,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -4333,25 +4399,41 @@ class KeySessionsCompanion extends UpdateCompanion<KeySession> {
     if (id.present) {
       map['id'] = Variable<String>(id.value);
     }
-    if (sessionId.present) {
-      map['session_id'] = Variable<String>(sessionId.value);
+    if (roomId.present) {
+      map['room_id'] = Variable<String>(roomId.value);
+    }
+    if (index.present) {
+      map['index'] = Variable<int>(index.value);
     }
     if (identityKey.present) {
       map['identity_key'] = Variable<String>(identityKey.value);
     }
     if (session.present) {
-      map['session'] = Variable<String?>(session.value);
+      map['session'] = Variable<String>(session.value);
+    }
+    if (inbound.present) {
+      map['inbound'] = Variable<bool>(inbound.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<int>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
     }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('KeySessionsCompanion(')
+    return (StringBuffer('MessageSessionsCompanion(')
           ..write('id: $id, ')
-          ..write('sessionId: $sessionId, ')
+          ..write('roomId: $roomId, ')
+          ..write('index: $index, ')
           ..write('identityKey: $identityKey, ')
-          ..write('session: $session')
+          ..write('session: $session, ')
+          ..write('inbound: $inbound, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
@@ -4363,29 +4445,31 @@ class $KeySessionsTable extends KeySessions
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $KeySessionsTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
       'id', aliasedName, false,
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true,
       $customConstraints: 'UNIQUE');
-  final VerificationMeta _sessionIdMeta = const VerificationMeta('sessionId');
+  static const VerificationMeta _sessionIdMeta =
+      const VerificationMeta('sessionId');
   @override
-  late final GeneratedColumn<String?> sessionId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> sessionId = GeneratedColumn<String>(
       'session_id', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
-  final VerificationMeta _identityKeyMeta =
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _identityKeyMeta =
       const VerificationMeta('identityKey');
   @override
-  late final GeneratedColumn<String?> identityKey = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> identityKey = GeneratedColumn<String>(
       'identity_key', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
-  final VerificationMeta _sessionMeta = const VerificationMeta('session');
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _sessionMeta =
+      const VerificationMeta('session');
   @override
-  late final GeneratedColumn<String?> session = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> session = GeneratedColumn<String>(
       'session', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
+      type: DriftSqlType.string, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [id, sessionId, identityKey, session];
   @override
@@ -4427,8 +4511,17 @@ class $KeySessionsTable extends KeySessions
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   KeySession map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return KeySession.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return KeySession(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      sessionId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}session_id'])!,
+      identityKey: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}identity_key'])!,
+      session: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}session']),
+    );
   }
 
   @override
@@ -4437,26 +4530,252 @@ class $KeySessionsTable extends KeySessions
   }
 }
 
+class KeySession extends DataClass implements Insertable<KeySession> {
+  final String id;
+  final String sessionId;
+  final String identityKey;
+  final String? session;
+  const KeySession(
+      {required this.id,
+      required this.sessionId,
+      required this.identityKey,
+      this.session});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['session_id'] = Variable<String>(sessionId);
+    map['identity_key'] = Variable<String>(identityKey);
+    if (!nullToAbsent || session != null) {
+      map['session'] = Variable<String>(session);
+    }
+    return map;
+  }
+
+  KeySessionsCompanion toCompanion(bool nullToAbsent) {
+    return KeySessionsCompanion(
+      id: Value(id),
+      sessionId: Value(sessionId),
+      identityKey: Value(identityKey),
+      session: session == null && nullToAbsent
+          ? const Value.absent()
+          : Value(session),
+    );
+  }
+
+  factory KeySession.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return KeySession(
+      id: serializer.fromJson<String>(json['id']),
+      sessionId: serializer.fromJson<String>(json['sessionId']),
+      identityKey: serializer.fromJson<String>(json['identityKey']),
+      session: serializer.fromJson<String?>(json['session']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'sessionId': serializer.toJson<String>(sessionId),
+      'identityKey': serializer.toJson<String>(identityKey),
+      'session': serializer.toJson<String?>(session),
+    };
+  }
+
+  KeySession copyWith(
+          {String? id,
+          String? sessionId,
+          String? identityKey,
+          Value<String?> session = const Value.absent()}) =>
+      KeySession(
+        id: id ?? this.id,
+        sessionId: sessionId ?? this.sessionId,
+        identityKey: identityKey ?? this.identityKey,
+        session: session.present ? session.value : this.session,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('KeySession(')
+          ..write('id: $id, ')
+          ..write('sessionId: $sessionId, ')
+          ..write('identityKey: $identityKey, ')
+          ..write('session: $session')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, sessionId, identityKey, session);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is KeySession &&
+          other.id == this.id &&
+          other.sessionId == this.sessionId &&
+          other.identityKey == this.identityKey &&
+          other.session == this.session);
+}
+
+class KeySessionsCompanion extends UpdateCompanion<KeySession> {
+  final Value<String> id;
+  final Value<String> sessionId;
+  final Value<String> identityKey;
+  final Value<String?> session;
+  final Value<int> rowid;
+  const KeySessionsCompanion({
+    this.id = const Value.absent(),
+    this.sessionId = const Value.absent(),
+    this.identityKey = const Value.absent(),
+    this.session = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  KeySessionsCompanion.insert({
+    required String id,
+    required String sessionId,
+    required String identityKey,
+    this.session = const Value.absent(),
+    this.rowid = const Value.absent(),
+  })  : id = Value(id),
+        sessionId = Value(sessionId),
+        identityKey = Value(identityKey);
+  static Insertable<KeySession> custom({
+    Expression<String>? id,
+    Expression<String>? sessionId,
+    Expression<String>? identityKey,
+    Expression<String>? session,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (sessionId != null) 'session_id': sessionId,
+      if (identityKey != null) 'identity_key': identityKey,
+      if (session != null) 'session': session,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  KeySessionsCompanion copyWith(
+      {Value<String>? id,
+      Value<String>? sessionId,
+      Value<String>? identityKey,
+      Value<String?>? session,
+      Value<int>? rowid}) {
+    return KeySessionsCompanion(
+      id: id ?? this.id,
+      sessionId: sessionId ?? this.sessionId,
+      identityKey: identityKey ?? this.identityKey,
+      session: session ?? this.session,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (sessionId.present) {
+      map['session_id'] = Variable<String>(sessionId.value);
+    }
+    if (identityKey.present) {
+      map['identity_key'] = Variable<String>(identityKey.value);
+    }
+    if (session.present) {
+      map['session'] = Variable<String>(session.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('KeySessionsCompanion(')
+          ..write('id: $id, ')
+          ..write('sessionId: $sessionId, ')
+          ..write('identityKey: $identityKey, ')
+          ..write('session: $session, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SettingsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+  static const VerificationMeta _storeMeta = const VerificationMeta('store');
+  @override
+  late final GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String>
+      store = GeneratedColumn<String>('store', aliasedName, true,
+              type: DriftSqlType.string, requiredDuringInsert: false)
+          .withConverter<Map<String, dynamic>?>($SettingsTable.$converterstore);
+  @override
+  List<GeneratedColumn> get $columns => [id, store];
+  @override
+  String get aliasedName => _alias ?? 'settings';
+  @override
+  String get actualTableName => 'settings';
+  @override
+  VerificationContext validateIntegrity(Insertable<Setting> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    context.handle(_storeMeta, const VerificationResult.success());
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Setting map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Setting(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      store: $SettingsTable.$converterstore.fromSql(attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}store'])),
+    );
+  }
+
+  @override
+  $SettingsTable createAlias(String alias) {
+    return $SettingsTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<Map<String, dynamic>?, String?> $converterstore =
+      const MapToJsonConverter();
+}
+
 class Setting extends DataClass implements Insertable<Setting> {
   final String id;
   final Map<String, dynamic>? store;
-  Setting({required this.id, this.store});
-  factory Setting.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return Setting(
-      id: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      store: $SettingsTable.$converter0.mapToDart(const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}store'])),
-    );
-  }
+  const Setting({required this.id, this.store});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     if (!nullToAbsent || store != null) {
-      final converter = $SettingsTable.$converter0;
-      map['store'] = Variable<String?>(converter.mapToSql(store));
+      final converter = $SettingsTable.$converterstore;
+      map['store'] = Variable<String>(converter.toSql(store));
     }
     return map;
   }
@@ -4486,9 +4805,12 @@ class Setting extends DataClass implements Insertable<Setting> {
     };
   }
 
-  Setting copyWith({String? id, Map<String, dynamic>? store}) => Setting(
+  Setting copyWith(
+          {String? id,
+          Value<Map<String, dynamic>?> store = const Value.absent()}) =>
+      Setting(
         id: id ?? this.id,
-        store: store ?? this.store,
+        store: store.present ? store.value : this.store,
       );
   @override
   String toString() {
@@ -4510,29 +4832,37 @@ class Setting extends DataClass implements Insertable<Setting> {
 class SettingsCompanion extends UpdateCompanion<Setting> {
   final Value<String> id;
   final Value<Map<String, dynamic>?> store;
+  final Value<int> rowid;
   const SettingsCompanion({
     this.id = const Value.absent(),
     this.store = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   SettingsCompanion.insert({
     required String id,
     this.store = const Value.absent(),
+    this.rowid = const Value.absent(),
   }) : id = Value(id);
   static Insertable<Setting> custom({
     Expression<String>? id,
-    Expression<Map<String, dynamic>?>? store,
+    Expression<String>? store,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (store != null) 'store': store,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
   SettingsCompanion copyWith(
-      {Value<String>? id, Value<Map<String, dynamic>?>? store}) {
+      {Value<String>? id,
+      Value<Map<String, dynamic>?>? store,
+      Value<int>? rowid}) {
     return SettingsCompanion(
       id: id ?? this.id,
       store: store ?? this.store,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -4543,8 +4873,11 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
       map['id'] = Variable<String>(id.value);
     }
     if (store.present) {
-      final converter = $SettingsTable.$converter0;
-      map['store'] = Variable<String?>(converter.mapToSql(store.value));
+      final converter = $SettingsTable.$converterstore;
+      map['store'] = Variable<String>(converter.toSql(store.value));
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
     }
     return map;
   }
@@ -4553,69 +4886,15 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
   String toString() {
     return (StringBuffer('SettingsCompanion(')
           ..write('id: $id, ')
-          ..write('store: $store')
+          ..write('store: $store, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
   }
 }
 
-class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $SettingsTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
-      'id', aliasedName, false,
-      type: const StringType(),
-      requiredDuringInsert: true,
-      $customConstraints: 'UNIQUE');
-  final VerificationMeta _storeMeta = const VerificationMeta('store');
-  @override
-  late final GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String?>
-      store = GeneratedColumn<String?>('store', aliasedName, true,
-              type: const StringType(), requiredDuringInsert: false)
-          .withConverter<Map<String, dynamic>?>($SettingsTable.$converter0);
-  @override
-  List<GeneratedColumn> get $columns => [id, store];
-  @override
-  String get aliasedName => _alias ?? 'settings';
-  @override
-  String get actualTableName => 'settings';
-  @override
-  VerificationContext validateIntegrity(Insertable<Setting> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    } else if (isInserting) {
-      context.missing(_idMeta);
-    }
-    context.handle(_storeMeta, const VerificationResult.success());
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  Setting map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Setting.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
-  }
-
-  @override
-  $SettingsTable createAlias(String alias) {
-    return $SettingsTable(attachedDatabase, alias);
-  }
-
-  static TypeConverter<Map<String, dynamic>?, String> $converter0 =
-      const MapToJsonConverter();
-}
-
 abstract class _$StorageDatabase extends GeneratedDatabase {
-  _$StorageDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
+  _$StorageDatabase(QueryExecutor e) : super(e);
   _$StorageDatabase.connect(DatabaseConnection c) : super.connect(c);
   late final $MessagesTable messages = $MessagesTable(this);
   late final $DecryptedTable decrypted = $DecryptedTable(this);
@@ -4632,7 +4911,8 @@ abstract class _$StorageDatabase extends GeneratedDatabase {
   late final $KeySessionsTable keySessions = $KeySessionsTable(this);
   late final $SettingsTable settings = $SettingsTable(this);
   @override
-  Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
+  Iterable<TableInfo<Table, Object?>> get allTables =>
+      allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
         messages,

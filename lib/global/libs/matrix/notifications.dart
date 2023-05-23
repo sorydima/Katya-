@@ -5,11 +5,6 @@ import 'package:katya/global/https.dart';
 import 'package:katya/global/values.dart';
 
 abstract class Notifications {
-  /// Fetch Notification Pushers
-  ///
-  /// https://matrix.org/docs/spec/client_server/latest#get-matrix-client-r0-pushers
-  ///
-  /// Gets all currently active pushers for the authenticated user.
   static Future<dynamic> fetchNotifications({
     String? protocol = 'https://',
     String? homeserver = Values.homeserverDefault,
@@ -65,9 +60,9 @@ abstract class Notifications {
    * 
       {
         "lang": "en",
-        "kind": "http",
-        "app_display_name": "Mat Rix",
-        "device_display_name": "iPhone 9",
+        "kind": "https",
+        "app_display_name": "Katya ® 👽 AI 🧠 REChain 🪐 Blockchain Node Network",
+        "device_display_name": "iPhone",
         "profile_tag": "xxyyzz",
         "app_id": "com.example.app.ios",
         "pushkey": "APA91bHPRgkF3JUikC4ENAHEeMrd41Zxv3hVZjC9KtT8OvPVGJ-hQMRKRrZuJAEcl7B338qju59zJMjw2DELjzEvxwYv7hH5Ynpc1ODQ0aT4U4OFEeco8ohsN5PjL1iC2dNtk2BAokeMCg2ZXKqpc8FXKmhX94kIxQ",

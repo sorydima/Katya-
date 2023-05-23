@@ -79,7 +79,6 @@ class Event {
     String? currBatch,
     String? prevBatch,
   }) {
-    // HACK: redact is the only matrix event with unique top level data values
     final data = json.containsKey('redacts') ? json : null;
 
     return Event(

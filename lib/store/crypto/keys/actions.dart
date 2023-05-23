@@ -97,7 +97,6 @@ ThunkAction<AppState> generateIdentityKeys() {
       final fingerprintId = Keys.fingerprintId(deviceId: authUser.deviceId);
       final identityKeyId = Keys.identityKeyId(deviceId: authUser.deviceId);
 
-      // formatting json for the signature required by matrix
       final deviceIdentityKeys = {
         'algorithms': [
           Algorithms.olmv1,
@@ -318,7 +317,6 @@ ThunkAction<AppState> updateOneTimeKeys({type = Algorithms.signedcurve25519}) {
         data: payload,
       );
 
-      // Recoverable error from matrix
       if (data['errcode'] != null) {
         throw data['error'];
       }
@@ -339,7 +337,7 @@ ThunkAction<AppState> updateOneTimeKeys({type = Algorithms.signedcurve25519}) {
       store.dispatch(addAlert(
           error: error,
           message:
-              'Failed to update one time keys (OTK), please, let us know at https://katya.wtf or by e-mail at support@rechain.email!',
+              'Failed to update one time keys, please, let us know at https://katya.wtf',
           origin: 'updateOneTimeKeys'));
     }
   };
@@ -382,7 +380,6 @@ ThunkAction<AppState> claimOneTimeKeys({
         return true;
       }
 
-      // claim one time keys from matrix server
       final Map claimKeysResponse = await MatrixApi.claimKeys(
         protocol: store.state.authStore.protocol,
         accessToken: store.state.authStore.user.accessToken,
@@ -452,11 +449,6 @@ ThunkAction<AppState> claimOneTimeKeys({
   };
 }
 
-///
-/// Fetch Device Keys
-///
-/// fetches the keys uploaded to the matrix homeserver
-/// by other users
 ThunkAction<AppState> fetchDeviceKeys({
   List<String?> userIds = const <String>[],
 }) {

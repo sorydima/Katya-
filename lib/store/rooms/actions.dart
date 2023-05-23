@@ -202,12 +202,6 @@ ThunkAction<AppState> fetchRooms({bool syncState = false}) {
   };
 }
 
-/// Fetch Direct Rooms
-///
-/// Fetches both state and message of direct rooms
-/// found from account_data of current authed user
-///
-/// Have to account for multiple direct rooms with one user
 ThunkAction<AppState> fetchDirectRooms() {
   return (Store<AppState> store) async {
     try {
@@ -297,13 +291,6 @@ ThunkAction<AppState> fetchRoomMembers({
   };
 }
 
-/// Create Room
-///
-/// stop / start the /sync session for this to run,
-/// otherwise it will appear like the room does
-/// not exist for the seconds between the response from
-/// matrix and caching in the app
-///
 ThunkAction<AppState> createRoom({
   String? name,
   String? alias,
@@ -466,12 +453,6 @@ ThunkAction<AppState> markRoomsReadAll() {
   };
 }
 
-/// Toggle Direct Room
-///
-/// NOTE: https://github.com/matrix-org/matrix-doc/issues/1519
-///
-/// Fetch the direct rooms list and recalculate it without the
-/// given alias
 ThunkAction<AppState> toggleDirectRoom({
   required Room room,
   bool enabled = false,
@@ -797,12 +778,6 @@ ThunkAction<AppState> removeRoom({Room? room}) {
   };
 }
 
-/// Leave Room
-///
-/// Kick all (if owner), tries to delete alias, and leaves
-/// TODO: make sure this is in accordance with matrix in that
-/// the user can only delete if owning the room, or leave if
-/// just a member
 ThunkAction<AppState> leaveRoom({Room? room}) {
   return (Store<AppState> store) async {
     try {
@@ -852,80 +827,3 @@ ThunkAction<AppState> archiveRoom({Room? room}) {
     }
   };
 }
-
-/**
- * TODO: Create Draft Room
- * 
- * A local only room that has not been established with matrix
- * meant to prep a room or first message before actually creating it 
- */
-// ThunkAction<AppState> createDraftRoom({
-//   String name = 'New Chat',
-//   String topic,
-//   String avatarUri,
-//   List<User> users,
-//   bool isDirect = false,
-// }) {
-//   return (Store<AppState> store) async {
-//     try {
-//       final draftId = Random.secure().nextInt(1 << 32).toString();
-
-//       final draftRoom = Room(
-//         id: draftId,
-//         name: name,
-//         topic: topic,
-//         direct: isDirect,
-//         avatarUri: avatarUri,
-//         draft: true,
-//         users: Map.fromIterable(
-//           users,
-//           key: (user) => user.id,
-//           value: (user) => user,
-//         ),
-//       );
-
-//       await store.dispatch(SetRoom(room: draftRoom));
-//       return draftRoom;
-//     } catch (error) {
-//       return null;
-//     }
-//   };
-// }
-
-/**
- * TODO: Convert Draft Room
- * 
- * Convert a draft room to a remote matrix room
- */
-// ThunkAction<AppState> convertDraftRoom({
-//   Room room,
-// }) {
-//   return (Store<AppState> store) async {
-//     try {
-//       if (!room.drafting) {
-//         throw 'Room has already been created';
-//       }
-
-//       final newRoomId = await store.dispatch(
-//         createRoom(
-//           name: room.name,
-//           topic: room.topic,
-//           invites: room.userIds,
-//           isDirect: room.direct,
-//         ),
-//       );
-
-//       if (newRoomId == null) {
-//         throw 'Failed to convert draft room to a real room';
-//       }
-
-//       // To temporarily redirect to the new room in the UI
-//       return Room(
-//         id: newRoomId,
-//         name: room.name,
-//       );
-//     } catch (error) {
-//       return null;
-//     }
-//   };
-// }

@@ -45,7 +45,7 @@ class FirstDescriptionPage extends StatelessWidget {
                     style: Theme.of(context).textTheme.subtitle1,
                     children: const <TextSpan>[
                       TextSpan(
-                        text: 'Katya ® 👽 AI 🧠 \nREChain 🪐 Blockchain \nNode Network',
+                        text: 'Katya ® 👽 AI 🧠 \n REChain 🪐 Blockchain Node \n Network',
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                         ),

@@ -169,13 +169,6 @@ ThunkAction<AppState> stopSyncObserver() {
   };
 }
 
-/// Initial Sync - Custom Solution for /sync
-///
-/// This will only be run on log in because the matrix protocol handles
-/// initial syncing terribly. It's incredibly cumbersome to load thousands of events
-/// for multiple rooms all at once in order to show the user just some room names
-/// and timestamps. Lazy loading isn't always supported, so it's not a solid solution
-///
 ThunkAction<AppState> initialSync() {
   return (Store<AppState> store) async {
     // Start initial sync in background
@@ -214,11 +207,6 @@ ThunkAction<AppState> updateLatestLastSince() {
   };
 }
 
-///
-/// Fetch Sync
-///
-/// Responsible for updates based on differences from Matrix
-///
 ThunkAction<AppState> fetchSync({String? since, bool forceFull = false}) {
   return (Store<AppState> store) async {
     try {
@@ -232,7 +220,6 @@ ThunkAction<AppState> fetchSync({String? since, bool forceFull = false}) {
         log.info('[fetchSync] *** full sync running *** ');
       }
 
-      // Normal matrix /sync call to the homeserver (Threaded)
       final data = await compute(MatrixApi.syncThreaded, {
         'protocol': store.state.authStore.protocol,
         'homeserver': store.state.authStore.user.homeserver,

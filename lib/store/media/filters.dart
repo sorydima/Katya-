@@ -8,16 +8,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:katya/global/print.dart';
 import 'package:katya/store/media/converters.dart';
 
-///
-/// Encrypt Media (for Matrix)
-///
-/// a client should generate a single-use 256-bit AES key,
-/// and encrypt the file using AES-CTR. The counter should be 64-bit long,
-/// starting at 0 and prefixed by a random 64-bit Initialization Vector (IV),
-/// which together form a 128-bit unique counter block.
-///
-/// https://matrix.org/docs/spec/client_server/latest#sending-encrypted-attachments
-///
 Future<File?> scrubMedia({
   required File localFile,
   String mediaNameFull = 'media-default',

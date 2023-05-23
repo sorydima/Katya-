@@ -4,15 +4,6 @@ import 'package:katya/global/weburl.dart';
 import 'package:katya/store/alerts/actions.dart';
 import 'package:katya/store/index.dart';
 
-///
-/// Alert Middleware
-///
-/// Authentication may be lost or need additional info at any point
-/// after authenticating, this will catch errors that may arise
-///
-/// We can intercept these errors by inspecting strange or
-/// unformatted alerts from matrix
-///
 dynamic alertMiddleware<State>(
   Store<AppState> store,
   dynamic action,

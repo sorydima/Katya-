@@ -1,1 +1,1 @@
-/Users/olga/katya/build/app/intermediates/cmake/release/obj/armeabi-v7a
+/Users/sorydima/katya/build/app/intermediates/cmake/release/obj/armeabi-v7a
