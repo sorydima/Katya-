@@ -1,21 +1,19 @@
 import 'package:equatable/equatable.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-
+import 'package:katya/domain/index.dart';
+import 'package:katya/domain/settings/theme-settings/model.dart';
 import 'package:katya/global/dimensions.dart';
-import 'package:katya/store/index.dart';
-import 'package:katya/store/settings/theme-settings/model.dart';
 
 class AvatarBadge extends StatelessWidget {
   const AvatarBadge({
-    Key? key,
+    super.key,
     this.public = false,
     this.group = false,
     this.invite = false,
     this.encryptionEnabled = false,
-  }) : super(key: key);
+  });
 
   final bool public;
   final bool group;

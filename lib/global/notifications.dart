@@ -4,11 +4,14 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:katya/domain/settings/notification-settings/model.dart';
 import 'package:katya/global/print.dart';
-
 import 'package:katya/global/strings.dart';
 import 'package:katya/global/values.dart';
-import 'package:katya/store/settings/notification-settings/model.dart';
+
+/// Notifications are handled by APNS when running in iOS
+/// Only need to handle local notifications on desktop and android
+///  https://matrix.org/docs/spec/client_server/latest#id470
 
 // TODO: extract apns and re-enable
 // import 'package:flutter_apns/apns.dart';
@@ -32,7 +35,7 @@ Future<FlutterLocalNotificationsPlugin?> initNotifications({
   }
 
 // ic_launcher_foreground needs to be a added as a drawable resource to the root Android project
-  final initializationSettingsAndroid = AndroidInitializationSettings(
+  const initializationSettingsAndroid = AndroidInitializationSettings(
     'ic_launcher_foreground',
   );
 
@@ -73,7 +76,7 @@ Future<FlutterLocalNotificationsPlugin?> initNotifications({
      */
   }
 
-  log.info('[initNotifications] successfully initialized $pluginInstance');
+  console.info('[initNotifications] successfully initialized $pluginInstance');
   return pluginInstance;
 }
 
@@ -120,7 +123,7 @@ Future showBackgroundServiceNotification({
   String debugContent = '',
   required FlutterLocalNotificationsPlugin pluginInstance,
 }) async {
-  final androidPlatformChannelSpecifics = AndroidNotificationDetails(
+  const androidPlatformChannelSpecifics = AndroidNotificationDetails(
     Values.channel_id_background_service,
     Values.channel_name_background_service,
     channelDescription: Values.channel_description,
@@ -138,7 +141,7 @@ Future showBackgroundServiceNotification({
     timeoutAfter: Values.serviceNotificationTimeoutDuration,
   );
 
-  final platformChannelSpecifics = NotificationDetails(
+  const platformChannelSpecifics = NotificationDetails(
     android: androidPlatformChannelSpecifics,
     iOS: DarwinNotificationDetails(),
   );
@@ -160,7 +163,7 @@ Future showMessageNotification({
   required FlutterLocalNotificationsPlugin pluginInstance,
 }) async {
   var messageHash = id ?? Random.secure().nextInt(1 << 31);
-  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+  var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
     Values.channel_id,
     Values.channel_name_messages,
     channelDescription: Values.channel_description,
@@ -178,7 +181,7 @@ Future showMessageNotification({
     case StyleType.Latest:
       // TODO: allow for grouping / layered notifications here
       messageHash = 0;
-      androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      androidPlatformChannelSpecifics = const AndroidNotificationDetails(
         Values.channel_id,
         Values.channel_name_messages,
         channelDescription: Values.channel_description,
@@ -231,7 +234,7 @@ Future showMessageNotification({
 
   final platformChannelSpecifics = NotificationDetails(
     android: androidPlatformChannelSpecifics,
-    iOS: DarwinNotificationDetails(),
+    iOS: const DarwinNotificationDetails(),
   );
 
   await pluginInstance.show(
@@ -255,7 +258,7 @@ Future showMessageNotificationTest({
   const String groupChannelId = 'grouped channel id';
   const String groupChannelName = 'grouped channel name';
   const String groupChannelDescription = 'grouped channel description';
-  final firstNotificationAndroidSpecifics = AndroidNotificationDetails(
+  const firstNotificationAndroidSpecifics = AndroidNotificationDetails(
     groupChannelId,
     groupChannelName,
     channelDescription: groupChannelDescription,
@@ -265,7 +268,7 @@ Future showMessageNotificationTest({
     groupKey: groupKey,
   );
 
-  final firstNotificationPlatformSpecifics = NotificationDetails(
+  const firstNotificationPlatformSpecifics = NotificationDetails(
     android: firstNotificationAndroidSpecifics,
   );
 
@@ -276,7 +279,7 @@ Future showMessageNotificationTest({
     firstNotificationPlatformSpecifics,
   );
 
-  final secondNotificationAndroidSpecifics = AndroidNotificationDetails(
+  const secondNotificationAndroidSpecifics = AndroidNotificationDetails(
     groupChannelId,
     groupChannelName,
     channelDescription: groupChannelDescription,
@@ -285,7 +288,7 @@ Future showMessageNotificationTest({
     groupKey: groupKey,
   );
 
-  final NotificationDetails secondNotificationPlatformSpecifics =
+  const NotificationDetails secondNotificationPlatformSpecifics =
       NotificationDetails(android: secondNotificationAndroidSpecifics);
   await pluginInstance.show(
     2,
@@ -318,9 +321,9 @@ Future showDebugNotification({
   String customMessage = 'Example Notification',
   FlutterLocalNotificationsPlugin? pluginInstance,
 }) async {
-  final iOSPlatformChannelSpecifics = DarwinNotificationDetails();
+  const iOSPlatformChannelSpecifics = DarwinNotificationDetails();
 
-  final androidPlatformChannelSpecifics = AndroidNotificationDetails(
+  const androidPlatformChannelSpecifics = AndroidNotificationDetails(
     Values.channel_id,
     Values.channel_name_messages,
     channelDescription: Values.channel_description,
@@ -328,7 +331,7 @@ Future showDebugNotification({
     priority: Priority.high,
   );
 
-  final platformChannelSpecifics = NotificationDetails(
+  const platformChannelSpecifics = NotificationDetails(
     android: androidPlatformChannelSpecifics,
     iOS: iOSPlatformChannelSpecifics,
   );

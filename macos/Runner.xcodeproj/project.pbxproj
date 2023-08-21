@@ -469,7 +469,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1012;
+				CURRENT_PROJECT_VERSION = 1013;
 				DEVELOPMENT_ASSET_PATHS = "libolm.3.dylib libolm.3.2.2.dylib";
 				DEVELOPMENT_TEAM = RKP34AXQ68;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -489,7 +489,7 @@
 					"$(PROJECT_DIR)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				MARKETING_VERSION = 0.3.15;
+				MARKETING_VERSION = 0.3.16;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -657,7 +657,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1012;
+				CURRENT_PROJECT_VERSION = 1013;
 				DEVELOPMENT_ASSET_PATHS = "libolm.3.dylib libolm.3.2.2.dylib";
 				DEVELOPMENT_TEAM = RKP34AXQ68;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -676,7 +676,7 @@
 					"$(PROJECT_DIR)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				MARKETING_VERSION = 0.3.15;
+				MARKETING_VERSION = 0.3.16;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-l\"sqlite3\"",
@@ -736,7 +736,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1012;
+				CURRENT_PROJECT_VERSION = 1013;
 				DEVELOPMENT_ASSET_PATHS = "libolm.3.dylib libolm.3.2.2.dylib";
 				DEVELOPMENT_TEAM = RKP34AXQ68;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -756,7 +756,7 @@
 					"$(PROJECT_DIR)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				MARKETING_VERSION = 0.3.15;
+				MARKETING_VERSION = 0.3.16;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",

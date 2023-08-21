@@ -15,6 +15,18 @@ found [here][6].
 
 The full API reference can be found [here][7].
 
+# Installation instructions
+
+To install from the source package, you will need:
+
+- cmake (recommended) or GNU make
+- a C/C++ compiler
+
+You can then run `pip install python-olm`.
+
+This should work in UNIX-like environments, including macOS, and may work in
+other environments too, but is known to not work yet in Windows.
+
 # Accounts
 
 Accounts create and hold the central identity of the Olm protocol, they consist of a fingerprint and identity

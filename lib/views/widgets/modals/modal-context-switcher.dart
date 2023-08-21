@@ -5,14 +5,14 @@ import 'package:redux/redux.dart';
 import 'package:katya/context/auth.dart';
 import 'package:katya/context/storage.dart';
 import 'package:katya/context/types.dart';
+import 'package:katya/domain/index.dart';
+import 'package:katya/domain/settings/theme-settings/model.dart';
+import 'package:katya/domain/user/model.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
-import 'package:katya/store/index.dart';
-import 'package:katya/store/settings/theme-settings/model.dart';
-import 'package:katya/store/user/model.dart';
 import 'package:katya/views/behaviors.dart';
-import 'package:katya/views/intro/login/login-screen.dart';
+import 'package:katya/views/intro/login/LoginScreen.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/katya.dart';
 import 'package:katya/views/widgets/lists/list-item-account.dart';
@@ -47,23 +47,19 @@ class ModalContextSwitcher extends StatelessWidget {
       builder: (context, currentContextData) => FutureBuilder<List<AppContext>>(
             future: props.availableContext, // async work
             builder: (context, contextsAllData) {
-              final knownUsers =
-                  props.availableUsers.map((u) => generateContextId_DEPRECATED(id: u.userId!));
-              final contextCurrent = currentContextData.data ?? AppContext();
+              final knownUsers = props.availableUsers.map((u) => generateContextId_DEPRECATED(id: u.userId!));
+              final contextCurrent = currentContextData.data ?? const AppContext();
               final contextsAll = contextsAllData.data ?? [];
 
-              final contextsUnknown = contextsAll
-                  .where((c) => c.id != contextCurrent.id && !knownUsers.contains(c.id))
-                  .toList();
+              final contextsUnknown =
+                  contextsAll.where((c) => c.id != contextCurrent.id && !knownUsers.contains(c.id)).toList();
 
               return ListView.builder(
                   shrinkWrap: true,
                   padding: EdgeInsets.zero,
                   physics: const NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,
-                  itemCount: props.availableUsers.length >= contextsAll.length
-                      ? 0
-                      : contextsUnknown.length,
+                  itemCount: props.availableUsers.length >= contextsAll.length ? 0 : contextsUnknown.length,
                   itemBuilder: (BuildContext context, int index) {
                     final context = contextsUnknown[index];
 
@@ -86,7 +82,7 @@ class ModalContextSwitcher extends StatelessWidget {
             },
           ));
 
-  buildUserList(BuildContext context, _Props props) => ListView.builder(
+  Widget buildUserList(BuildContext context, _Props props) => ListView.builder(
       shrinkWrap: true,
       padding: EdgeInsets.zero,
       physics: const NeverScrollableScrollPhysics(),
@@ -109,25 +105,25 @@ class ModalContextSwitcher extends StatelessWidget {
       distinct: true,
       converter: (Store<AppState> store) => _Props.mapStateToProps(store),
       builder: (context, props) => Container(
-            constraints: BoxConstraints(
+            constraints: const BoxConstraints(
               maxHeight: Dimensions.modalHeightMax,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     vertical: Dimensions.paddingContainer,
                     horizontal: Dimensions.paddingLarge,
                   ),
                   child: Text(
                     Strings.listItemContextSwitcherAccounts,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline5?.copyWith(
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: Theme.of(context).brightness == Brightness.light
-                              ? Color(AppColors.greyDark)
-                              : Color(AppColors.whiteDefault),
+                              ? const Color(AppColors.greyDark)
+                              : const Color(AppColors.whiteDefault),
                         ),
                   ),
                 ),
@@ -149,18 +145,18 @@ class ModalContextSwitcher extends StatelessWidget {
                               context: context,
                               props: props,
                             ),
-                            contentPadding: EdgeInsets.symmetric(
+                            contentPadding: const EdgeInsets.symmetric(
                               horizontal: Dimensions.paddingContainer,
                             ),
                             title: Text(
                               Strings.listItemContextSwitcherAddAccount,
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.bodyMedium,
                             ),
                             leading: Container(
                               height: Dimensions.avatarSizeMin,
                               width: Dimensions.avatarSizeMin,
-                              padding: EdgeInsets.symmetric(horizontal: 4),
-                              child: Icon(
+                              padding: const EdgeInsets.symmetric(horizontal: 4),
+                              child: const Icon(
                                 Icons.add_circle_outline,
                                 size: Dimensions.iconSize,
                               ),

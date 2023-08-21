@@ -4,22 +4,22 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:katya/domain/index.dart';
+import 'package:katya/domain/settings/actions.dart';
+import 'package:katya/domain/settings/notification-settings/actions.dart';
+import 'package:katya/domain/settings/notification-settings/model.dart';
+import 'package:katya/domain/settings/notification-settings/remote/actions.dart';
+import 'package:katya/domain/sync/service/service.dart';
 import 'package:katya/global/algos.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/notifications.dart';
 import 'package:katya/global/strings.dart';
-import 'package:katya/store/index.dart';
-import 'package:katya/store/settings/actions.dart';
-import 'package:katya/store/settings/notification-settings/actions.dart';
-import 'package:katya/store/settings/notification-settings/model.dart';
-import 'package:katya/store/settings/notification-settings/remote/actions.dart';
-import 'package:katya/store/sync/service/service.dart';
 import 'package:katya/views/widgets/appbars/appbar-normal.dart';
 import 'package:katya/views/widgets/containers/card-section.dart';
 import 'package:katya/views/widgets/dialogs/dialog-confirm.dart';
 
 class NotificationSettingsScreen extends StatelessWidget {
-  const NotificationSettingsScreen({Key? key}) : super(key: key);
+  const NotificationSettingsScreen({super.key});
 
   onToggleNotifications(_Props props) async {
     final enabledPreviously = props.localNotificationsEnabled;
@@ -30,8 +30,7 @@ class NotificationSettingsScreen extends StatelessWidget {
     }
   }
 
-  onConfirmNotifications(
-      {required BuildContext context, required _Props props}) async {
+  onConfirmNotifications({required BuildContext context, required _Props props}) async {
     // If the platform is iOS, we'll want to confirm they
     // understand the native notification prompt first
     if (Platform.isIOS && !props.notificationsEnabled) {
@@ -71,19 +70,16 @@ class NotificationSettingsScreen extends StatelessWidget {
               break;
             case StyleType.Itemized:
             default:
-              styleTypeDescription =
-                  Strings.contentNotificationStyleTypeItemized;
+              styleTypeDescription = Strings.contentNotificationStyleTypeItemized;
               break;
           }
 
           return Scaffold(
-            appBar: AppBarNormal(title: 'Notifications'),
+            appBar: const AppBarNormal(title: 'Notifications'),
             body: Column(
               children: <Widget>[
                 Visibility(
-                  visible: Platform.isAndroid ||
-                      Platform.isMacOS ||
-                      Platform.isLinux,
+                  visible: Platform.isAndroid || Platform.isMacOS || Platform.isLinux,
                   child: CardSection(
                     child: Column(children: [
                       Container(
@@ -92,7 +88,7 @@ class NotificationSettingsScreen extends StatelessWidget {
                         child: Text(
                           'On-Device',
                           textAlign: TextAlign.start,
-                          style: Theme.of(context).textTheme.subtitle2,
+                          style: Theme.of(context).textTheme.titleSmall,
                         ),
                       ),
                       Container(
@@ -101,22 +97,18 @@ class NotificationSettingsScreen extends StatelessWidget {
                         child: RichText(
                           textAlign: TextAlign.left,
                           text: TextSpan(
-                            text:
-                                'Show notifications using a background service',
-                            style: Theme.of(context).textTheme.caption,
+                            text: 'Show notifications using a background service',
+                            style: Theme.of(context).textTheme.bodySmall,
                             children: <TextSpan>[
                               TextSpan(
                                 text: ' without ',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .caption!
-                                    .copyWith(
+                                style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       fontWeight: FontWeight.w500,
                                     ),
                               ),
                               TextSpan(
                                 text: 'Google Play Services',
-                                style: Theme.of(context).textTheme.caption,
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
                             ],
                           ),
@@ -128,7 +120,7 @@ class NotificationSettingsScreen extends StatelessWidget {
                         contentPadding: Dimensions.listPadding,
                         title: Text(
                           'Notifications',
-                          style: Theme.of(context).textTheme.bodyText2,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         trailing: Switch(
                           value: props.localNotificationsEnabled,
@@ -148,25 +140,24 @@ class NotificationSettingsScreen extends StatelessWidget {
                         child: Text(
                           'Katya ® 👽 AI 🧠 REChain 🪐 Blockchain Node Network (Remote)',
                           textAlign: TextAlign.start,
-                          style: Theme.of(context).textTheme.subtitle2,
+                          style: Theme.of(context).textTheme.titleSmall,
                         ),
                       ),
                       Container(
                         width: width,
                         padding: Dimensions.listPadding,
                         child: Text(
-                          'Show Notifications Using Apple Push Notifications Through Katya ® 👽 AI 🧠 REChain 🪐 Blockchain Node Network',
+                          'Show notifications using Apple Push Notifications through Katya ® 👽 AI 🧠 REChain 🪐 Blockchain Node Network',
                           textAlign: TextAlign.start,
-                          style: Theme.of(context).textTheme.caption,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
                       ListTile(
                         enabled: Platform.isIOS,
                         dense: true,
-                        onTap: () => onConfirmNotifications(
-                            context: context, props: props),
+                        onTap: () => onConfirmNotifications(context: context, props: props),
                         contentPadding: Dimensions.listPadding,
-                        title: Text(
+                        title: const Text(
                           'Notifications',
                           style: TextStyle(fontSize: 18.0),
                         ),
@@ -174,8 +165,7 @@ class NotificationSettingsScreen extends StatelessWidget {
                           value: props.remoteNotificationsEnabled,
                           onChanged: !Platform.isIOS
                               ? null
-                              : (value) => onConfirmNotifications(
-                                  context: context, props: props),
+                              : (value) => onConfirmNotifications(context: context, props: props),
                         ),
                       ),
                       ListTile(
@@ -183,15 +173,14 @@ class NotificationSettingsScreen extends StatelessWidget {
                         dense: true,
                         onTap: () => props.onTogglePusher(),
                         contentPadding: Dimensions.listPadding,
-                        title: Text(
+                        title: const Text(
                           'Fetch Notifications',
                           style: TextStyle(fontSize: 18.0),
                         ),
                         trailing: Switch(
                           value: props.httpPusherEnabled,
-                          onChanged: !props.remoteNotificationsEnabled
-                              ? null
-                              : (value) => props.onTogglePusher(),
+                          onChanged:
+                              !props.remoteNotificationsEnabled ? null : (value) => props.onTogglePusher(),
                         ),
                       ),
                     ]),
@@ -206,32 +195,28 @@ class NotificationSettingsScreen extends StatelessWidget {
                         child: Text(
                           'Options',
                           textAlign: TextAlign.start,
-                          style: Theme.of(context).textTheme.subtitle2,
+                          style: Theme.of(context).textTheme.titleSmall,
                         ),
                       ),
                       ListTile(
-                        onTap: !props.localNotificationsEnabled
-                            ? null
-                            : () => props.onIncrementStyleType(),
+                        onTap: !props.localNotificationsEnabled ? null : () => props.onIncrementStyleType(),
                         contentPadding: Dimensions.listPadding,
-                        title: Text('Notification Type'),
+                        title: const Text('Notification Type'),
                         subtitle: Text(
                           styleTypeDescription,
-                          style: Theme.of(context).textTheme.caption,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         trailing: Text(enumToString(props.styleType)),
                       ),
                       ListTile(
-                        onTap: !props.localNotificationsEnabled
-                            ? null
-                            : () => props.onIncrementToggleType(),
+                        onTap: !props.localNotificationsEnabled ? null : () => props.onIncrementToggleType(),
                         contentPadding: Dimensions.listPadding,
-                        title: Text('Notification Default'),
+                        title: const Text('Notification Default'),
                         subtitle: Text(
                           props.toggleType == ToggleType.Enabled
                               ? 'All chats have notifications enabled by default'
                               : 'All chats have notifications disabled by default',
-                          style: Theme.of(context).textTheme.caption,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         trailing: Text(enumToString(props.toggleType)),
                       ),
@@ -289,16 +274,13 @@ class _Props extends Equatable {
   ) =>
       _Props(
         // will not always be platform dependent
-        localNotificationsEnabled: Platform.isAndroid &&
-            store.state.settingsStore.notificationSettings.enabled,
-        remoteNotificationsEnabled: Platform.isIOS &&
-            store.state.settingsStore.notificationSettings.enabled,
-        notificationsEnabled:
-            store.state.settingsStore.notificationSettings.enabled,
+        localNotificationsEnabled:
+            Platform.isAndroid && store.state.settingsStore.notificationSettings.enabled,
+        remoteNotificationsEnabled: Platform.isIOS && store.state.settingsStore.notificationSettings.enabled,
+        notificationsEnabled: store.state.settingsStore.notificationSettings.enabled,
         styleType: store.state.settingsStore.notificationSettings.styleType,
         toggleType: store.state.settingsStore.notificationSettings.toggleType,
-        httpPusherEnabled:
-            store.state.settingsStore.notificationSettings.pushers.isNotEmpty,
+        httpPusherEnabled: store.state.settingsStore.notificationSettings.pushers.isNotEmpty,
         onTogglePusher: () async {
           // await store.dispatch(fetchNotificationPushers());
           store.dispatch(fetchNotifications());

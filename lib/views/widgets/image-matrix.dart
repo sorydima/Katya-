@@ -2,17 +2,23 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:katya/domain/index.dart';
+import 'package:katya/domain/media/actions.dart';
+import 'package:katya/domain/media/model.dart';
 import 'package:katya/global/dimensions.dart';
+import 'package:katya/global/libraries/redux/hooks.dart';
 import 'package:katya/global/strings.dart';
-import 'package:katya/store/hooks.dart';
-import 'package:katya/store/index.dart';
-import 'package:katya/store/media/actions.dart';
-import 'package:katya/store/media/model.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 
+///
+/// Matrix Image
+///
+/// uses the matrix mxc uris and either pulls from cached data
+/// or downloads the image and saves it to cache
+///
 class MatrixImage extends HookWidget {
   const MatrixImage({
-    Key? key,
+    super.key,
     required this.mxcUri,
     this.width = Dimensions.avatarSizeMin,
     this.height = Dimensions.avatarSizeMin,
@@ -29,7 +35,7 @@ class MatrixImage extends HookWidget {
     this.fallback,
     this.fileName = '',
     this.onPressImage,
-  }) : super(key: key);
+  });
 
   final String? mxcUri;
   final String? imageType;
@@ -56,16 +62,16 @@ class MatrixImage extends HookWidget {
   Widget build(BuildContext context) {
     final dispatch = useDispatch<AppState>();
 
-    final bool isMediaCached = useSelector<AppState, bool?>(
+    final bool isMediaCached = useSelectorUnsafe<AppState, bool?>(
           (state) => state.mediaStore.mediaCache.containsKey(mxcUri),
         ) ??
         false;
 
-    final String? mediaStatus = useSelector<AppState, String?>(
+    final String? mediaStatus = useSelectorUnsafe<AppState, String?>(
       (state) => state.mediaStore.mediaStatus[mxcUri],
     );
 
-    final Uint8List? mediaCached = useSelector<AppState, Uint8List?>(
+    final Uint8List? mediaCached = useSelectorUnsafe<AppState, Uint8List?>(
       (state) => state.mediaStore.mediaCache[mxcUri],
     );
 
@@ -92,8 +98,7 @@ class MatrixImage extends HookWidget {
       loadingLocal.value = false;
     }
 
-    final failed =
-        mediaStatus != null && mediaStatus == MediaStatus.FAILURE.value;
+    final failed = mediaStatus != null && mediaStatus == MediaStatus.FAILURE.value;
     final loading = forceLoading || !isMediaCached || loadingLocal.value;
 
     // allows user option to manually load images on tap
@@ -108,16 +113,16 @@ class MatrixImage extends HookWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
+              const Icon(
                 Icons.photo,
                 size: Dimensions.avatarSizeLarge,
                 color: Colors.white,
               ),
               Padding(
-                padding: EdgeInsets.only(top: 8),
+                padding: const EdgeInsets.only(top: 8),
                 child: Text(
                   Strings.labelDownloadImage,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                   ),
                 ),
@@ -133,7 +138,7 @@ class MatrixImage extends HookWidget {
         radius: 24,
         backgroundColor: fallbackColor,
         child: fallback ??
-            Icon(
+            const Icon(
               Icons.photo,
               color: Colors.white,
             ),

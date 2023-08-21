@@ -1,17 +1,16 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:redux/redux.dart';
+import 'package:katya/domain/auth/actions.dart';
+import 'package:katya/domain/index.dart';
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/global/values.dart';
-import 'package:katya/store/auth/actions.dart';
-import 'package:katya/store/index.dart';
 import 'package:katya/views/widgets/dialogs/dialog-explaination.dart';
 import 'package:katya/views/widgets/input/text-field-secure.dart';
 
@@ -20,7 +19,7 @@ import 'package:katya/views/widgets/input/text-field-secure.dart';
 // Styling
 
 class EmailVerifyStep extends StatefulWidget {
-  const EmailVerifyStep({Key? key}) : super(key: key);
+  const EmailVerifyStep({super.key});
 
   @override
   EmailStepState createState() => EmailStepState();
@@ -53,22 +52,22 @@ class EmailStepState extends State<EmailVerifyStep> {
         final double height = MediaQuery.of(context).size.height;
 
         Color suffixBackgroundColor = Colors.grey;
-        Widget suffixWidgetHomeserver = CircularProgressIndicator(
+        Widget suffixWidgetHomeserver = const CircularProgressIndicator(
           strokeWidth: Dimensions.strokeWidthDefault,
-          valueColor: const AlwaysStoppedAnimation<Color>(
+          valueColor: AlwaysStoppedAnimation<Color>(
             Colors.white,
           ),
         );
 
-        Widget suffixWidgetEmail = CircularProgressIndicator(
+        Widget suffixWidgetEmail = const CircularProgressIndicator(
           strokeWidth: Dimensions.strokeWidthDefault,
-          valueColor: const AlwaysStoppedAnimation<Color>(
+          valueColor: AlwaysStoppedAnimation<Color>(
             Colors.white,
           ),
         );
 
         if (props.isEmailValid) {
-          suffixWidgetEmail = Icon(
+          suffixWidgetEmail = const Icon(
             Icons.check,
             color: Colors.white,
           );
@@ -77,13 +76,13 @@ class EmailStepState extends State<EmailVerifyStep> {
 
         if (!props.loading && typingTimeout == null) {
           if (props.isHomeserverValid) {
-            suffixWidgetHomeserver = Icon(
+            suffixWidgetHomeserver = const Icon(
               Icons.check,
               color: Colors.white,
             );
             suffixBackgroundColor = Theme.of(context).primaryColor;
           } else {
-            suffixWidgetHomeserver = Icon(
+            suffixWidgetHomeserver = const Icon(
               Icons.close,
               color: Colors.white,
             );
@@ -104,7 +103,7 @@ class EmailStepState extends State<EmailVerifyStep> {
                 flex: 2,
                 child: Container(
                   width: Dimensions.contentWidth(context),
-                  constraints: BoxConstraints(
+                  constraints: const BoxConstraints(
                     maxHeight: Dimensions.mediaSizeMax * 0.5,
                     maxWidth: Dimensions.mediaSizeMax * 0.5,
                   ),
@@ -121,19 +120,19 @@ class EmailStepState extends State<EmailVerifyStep> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(top: 32),
+                      margin: const EdgeInsets.only(top: 32),
                       child: Stack(
                         clipBehavior: Clip.none,
                         children: <Widget>[
                           Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                               vertical: 8,
                               horizontal: 24,
                             ),
                             child: Text(
                               'Enter both your email\n and homeserver',
                               textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.headline5,
+                              style: Theme.of(context).textTheme.headlineSmall,
                             ),
                           ),
                           Positioned(
@@ -172,10 +171,10 @@ class EmailStepState extends State<EmailVerifyStep> {
               Flexible(
                 flex: 1,
                 child: Container(
-                  margin: EdgeInsets.only(bottom: 16, top: 8),
+                  margin: const EdgeInsets.only(bottom: 16, top: 8),
                   width: Dimensions.contentWidthWide(context),
                   height: Dimensions.inputHeight,
-                  constraints: BoxConstraints(
+                  constraints: const BoxConstraints(
                     minWidth: Dimensions.inputWidthMin,
                     maxWidth: Dimensions.inputWidthMax,
                   ),
@@ -208,7 +207,7 @@ class EmailStepState extends State<EmailVerifyStep> {
 
                       // Run check after 1 second of no typing
                       typingTimeout = Timer(
-                        Duration(milliseconds: 1000),
+                        const Duration(milliseconds: 1000),
                         () {
                           props.onSelectHomeserver(hostname);
 
@@ -223,13 +222,13 @@ class EmailStepState extends State<EmailVerifyStep> {
                       child: Container(
                         width: 12,
                         height: 12,
-                        margin: EdgeInsets.all(6),
+                        margin: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
                           color: suffixBackgroundColor,
                           borderRadius: BorderRadius.circular(24),
                         ),
                         child: Container(
-                          padding: EdgeInsets.all(6),
+                          padding: const EdgeInsets.all(6),
                           child: suffixWidgetHomeserver,
                         ),
                       ),
@@ -242,7 +241,7 @@ class EmailStepState extends State<EmailVerifyStep> {
                 child: Container(
                   width: Dimensions.contentWidthWide(context),
                   height: Dimensions.inputHeight,
-                  constraints: BoxConstraints(
+                  constraints: const BoxConstraints(
                     minWidth: Dimensions.inputWidthMin,
                     maxWidth: Dimensions.inputWidthMax,
                   ),
@@ -267,13 +266,13 @@ class EmailStepState extends State<EmailVerifyStep> {
                       child: Container(
                         width: 12,
                         height: 12,
-                        margin: EdgeInsets.all(6),
+                        margin: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
                           color: suffixBackgroundColor,
                           borderRadius: BorderRadius.circular(24),
                         ),
                         child: Container(
-                          padding: EdgeInsets.all(6),
+                          padding: const EdgeInsets.all(6),
                           child: suffixWidgetEmail,
                         ),
                       ),
@@ -325,8 +324,7 @@ class _Props extends Equatable {
         loading: store.state.authStore.loading,
         isEmailValid: store.state.authStore.isEmailValid,
         isHomeserverValid: store.state.authStore.homeserver.valid,
-        session: store.state.authStore.authSession != null &&
-            store.state.authStore.authSession!.isNotEmpty,
+        session: store.state.authStore.authSession != null && store.state.authStore.authSession!.isNotEmpty,
         onSetEmail: (email) {
           return store.dispatch(setEmail(email: email));
         },

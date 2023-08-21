@@ -5,11 +5,11 @@ import 'package:katya/global/strings.dart';
 
 class DialogInvite extends StatelessWidget {
   const DialogInvite({
-    Key? key,
+    super.key,
     this.onAccept,
     this.onReject,
     this.onCancel,
-  }) : super(key: key);
+  });
 
   final Function? onAccept;
   final Function? onReject;
@@ -34,7 +34,7 @@ class DialogInvite extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SimpleDialogOption(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: 12,
                   vertical: 12,
                 ),
@@ -43,15 +43,15 @@ class DialogInvite extends StatelessWidget {
                 },
                 child: Text(
                   Strings.buttonTextGoBack,
-                  style: Theme.of(context).textTheme.subtitle1,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
-              Spacer(flex: 1),
+              const Spacer(flex: 1),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   SimpleDialogOption(
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 12,
                     ),
@@ -60,11 +60,11 @@ class DialogInvite extends StatelessWidget {
                     },
                     child: Text(
                       Strings.buttonTextReject,
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   SimpleDialogOption(
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 8,
                     ),
@@ -74,7 +74,7 @@ class DialogInvite extends StatelessWidget {
                     },
                     child: Text(
                       Strings.buttonTextAccept,
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                 ],

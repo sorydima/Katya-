@@ -1,17 +1,16 @@
 import 'package:equatable/equatable.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
 import 'package:redux/redux.dart';
+import 'package:katya/domain/events/messages/model.dart';
+import 'package:katya/domain/events/receipts/model.dart';
+import 'package:katya/domain/index.dart';
+import 'package:katya/domain/settings/models.dart';
+import 'package:katya/domain/settings/theme-settings/model.dart';
+import 'package:katya/domain/user/model.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
-import 'package:katya/store/events/messages/model.dart';
-import 'package:katya/store/events/receipts/model.dart';
-import 'package:katya/store/index.dart';
-import 'package:katya/store/settings/models.dart';
-import 'package:katya/store/settings/theme-settings/model.dart';
-import 'package:katya/store/user/model.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/lists/list-user-bubbles.dart';
 import 'package:katya/views/widgets/messages/message.dart';
@@ -27,10 +26,10 @@ class MessageDetailArguments {
 }
 
 class MessageDetailsScreen extends StatelessWidget {
-  const MessageDetailsScreen({Key? key}) : super(key: key);
+  const MessageDetailsScreen({super.key});
 
   Widget buildUserReadList(_Props props, double width) {
-    final Receipt readReceipts = props.readReceipts[props.message!.id!] ?? Receipt();
+    final Receipt readReceipts = props.readReceipts[props.message!.id!] ?? const Receipt();
     final userReads = Map<String, int>.from(readReceipts.userReads);
 
     final List<User?> users = userReads.keys.map((userId) => props.users[userId]).toList();
@@ -47,7 +46,7 @@ class MessageDetailsScreen extends StatelessWidget {
         distinct: true,
         converter: (Store<AppState> store) => _Props.mapStateToProps(
           store,
-          useScreenArguments<MessageDetailArguments>(context),
+          useScreenArguments<MessageDetailArguments>(context, MessageDetailArguments()),
         ),
         builder: (context, props) {
           final double width = MediaQuery.of(context).size.width;
@@ -63,12 +62,12 @@ class MessageDetailsScreen extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               leading: IconButton(
-                icon: Icon(Icons.arrow_back, color: Colors.white),
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
                 onPressed: () => Navigator.pop(context, false),
               ),
               title: Text(
                 Strings.titleMessageDetails,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w100,
                 ),
@@ -82,7 +81,7 @@ class MessageDetailsScreen extends StatelessWidget {
                   child: ListView.builder(
                     reverse: true,
                     shrinkWrap: true,
-                    padding: EdgeInsets.only(bottom: 4),
+                    padding: const EdgeInsets.only(bottom: 4),
                     // ignore: avoid_redundant_argument_values
                     scrollDirection: Axis.vertical,
                     // ignore: avoid_redundant_argument_values
@@ -105,14 +104,14 @@ class MessageDetailsScreen extends StatelessWidget {
                   contentPadding: Dimensions.listPadding,
                   title: Text(
                     Strings.listItemSent,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   trailing: Text(
                     DateFormat('MMM d h:mm a').format(timestamp),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w300,
                     ),
@@ -123,14 +122,14 @@ class MessageDetailsScreen extends StatelessWidget {
                   contentPadding: Dimensions.listPadding,
                   title: Text(
                     Strings.listItemReceived,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   trailing: Text(
                     DateFormat('MMM d h:mm a').format(received),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w300,
                     ),
@@ -141,13 +140,13 @@ class MessageDetailsScreen extends StatelessWidget {
                   contentPadding: Dimensions.listPadding,
                   title: Text(
                     Strings.listItemVia,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  trailing: Text(
-                    'Katya ® 👽 AI 🧠 \n REChain 🪐 Blockchain \n Node Network',
+                  trailing: const Text(
+                    'Katya ® 👽 \nAI 🧠 REChain 🪐 \nBlockchain Node Network',
                     style: TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w300,
@@ -159,7 +158,7 @@ class MessageDetailsScreen extends StatelessWidget {
                   contentPadding: Dimensions.listPadding,
                   title: Text(
                     Strings.listItemFrom,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w600,
                     ),
@@ -167,7 +166,7 @@ class MessageDetailsScreen extends StatelessWidget {
                   trailing: Text(
                     message.sender!,
                     textAlign: TextAlign.start,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w300,
                     ),
@@ -177,7 +176,7 @@ class MessageDetailsScreen extends StatelessWidget {
                   contentPadding: Dimensions.listPadding,
                   title: Text(
                     Strings.listItemReadBy,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w600,
                     ),
@@ -227,8 +226,7 @@ class _Props extends Equatable {
         readReceipts: store.state.eventStore.receipts[args?.roomId!] ?? <String, Receipt>{},
         userId: store.state.authStore.user.userId,
         themeType: store.state.settingsStore.themeSettings.themeType,
-        timeFormat:
-            store.state.settingsStore.timeFormat24Enabled ? TimeFormat.hr24 : TimeFormat.hr12,
+        timeFormat: store.state.settingsStore.timeFormat24Enabled ? TimeFormat.hr24 : TimeFormat.hr12,
       );
 
   @override

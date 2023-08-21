@@ -15,8 +15,6 @@
 # CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 # CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-from __future__ import unicode_literals
-
 import os
 import subprocess
 
@@ -28,17 +26,9 @@ PATH = os.path.dirname(__file__)
 DEVELOP = os.environ.get("DEVELOP")
 
 compile_args = ["-I../include"]
-link_args = ["-L../build"]
 
 if DEVELOP and DEVELOP.lower() in ["yes", "true", "1"]:
     link_args.append('-Wl,-rpath=../build')
-
-# If libolm is compiled statically, we may need to link to the C++ standard
-# library dynamically.  This flag allows passing the required linker flag to do
-# so.
-CXX_LIB = os.environ.get("CXX_LIB")
-if CXX_LIB:
-    link_args.extend(CXX_LIB.split())
 
 headers_build = subprocess.Popen("make headers", shell=True)
 headers_build.wait()
@@ -53,8 +43,10 @@ ffibuilder.set_source(
         #include <olm/sas.h>
     """,
     libraries=["olm"],
+    library_dirs=[os.path.join("..", "build")],
     extra_compile_args=compile_args,
-    extra_link_args=link_args)
+    source_extension=".cpp", # we need to link the C++ standard library, so use a C++ extension
+)
 
 with open(os.path.join(PATH, "include/olm/error.h")) as f:
     ffibuilder.cdef(f.read(), override=True)

@@ -1,21 +1,20 @@
-import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:swipeable/swipeable.dart';
+import 'package:katya/domain/events/messages/model.dart';
+import 'package:katya/domain/events/messages/selectors.dart';
+import 'package:katya/domain/index.dart';
+import 'package:katya/domain/settings/models.dart';
+import 'package:katya/domain/settings/theme-settings/model.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/formatters.dart';
-import 'package:katya/global/libs/matrix/constants.dart';
+import 'package:katya/global/libraries/matrix/events/types.dart';
 import 'package:katya/global/noop.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/global/weburl.dart';
-import 'package:katya/store/events/messages/model.dart';
-import 'package:katya/store/events/messages/selectors.dart';
-import 'package:katya/store/index.dart';
-import 'package:katya/store/settings/models.dart';
-import 'package:katya/store/settings/theme-settings/model.dart';
 import 'package:katya/views/home/chat/media-full-screen.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
 import 'package:katya/views/widgets/dialogs/dialog-confirm.dart';
@@ -30,7 +29,7 @@ const MESSAGE_MARGIN_VERTICAL_SMALL = 1.0;
 
 class MessageWidget extends StatelessWidget {
   const MessageWidget({
-    Key? key,
+    super.key,
     required this.message,
     this.editorController,
     this.isUserSent = false,
@@ -57,7 +56,7 @@ class MessageWidget extends StatelessWidget {
     this.onPressAvatar,
     this.onInputReaction,
     this.onToggleReaction,
-  }) : super(key: key);
+  });
 
   final bool messageOnly;
   final bool isNewContext;
@@ -90,7 +89,48 @@ class MessageWidget extends StatelessWidget {
   final Function? onToggleReaction;
   final void Function(Message)? onLongPress;
 
-  buildReactionsInput(
+  onSwipeMessage(Message message) {
+    onSwipe(message);
+  }
+
+  onConfirmLink(BuildContext context, String? url) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => DialogConfirm(
+        title: Strings.titleDialogConfirmLinkout.capitalize(),
+        content: Strings.confirmLinkout(url!),
+        confirmStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
+        confirmText: Strings.buttonConfirmFormal.capitalize(),
+        onDismiss: () => Navigator.pop(dialogContext),
+        onConfirm: () async {
+          Navigator.of(dialogContext).pop();
+          await launchUrlWrapper(url);
+        },
+      ),
+    );
+  }
+
+  onViewFullscreen(
+    BuildContext context, {
+    required Uint8List bytes,
+    required String? eventId,
+    required String? roomId,
+    String filename = 'Katya ® 👽 Image',
+  }) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => MediaFullScreen(
+          title: filename,
+          bytes: bytes,
+          eventId: eventId,
+          roomId: roomId,
+        ),
+      ),
+    );
+  }
+
+  Widget buildReactionsInput(
     BuildContext context,
     MainAxisAlignment alignment, {
     bool isUserSent = false,
@@ -102,14 +142,14 @@ class MessageWidget extends StatelessWidget {
           width: 36,
           height: Dimensions.iconSizeLarge,
           decoration: BoxDecoration(
-            color: Color(AppColors.greyDefault),
+            color: const Color(AppColors.greyDefault),
             borderRadius: BorderRadius.circular(Dimensions.iconSizeLarge),
             border: Border.all(
               color: Colors.white,
               width: 1,
             ),
           ),
-          child: Icon(
+          child: const Icon(
             Icons.tag_faces,
             size: 22,
             color: Colors.white,
@@ -131,47 +171,6 @@ class MessageWidget extends StatelessWidget {
     );
   }
 
-  onSwipeMessage(Message message) {
-    onSwipe(message);
-  }
-
-  onConfirmLink(BuildContext context, String? url) {
-    showDialog(
-      context: context,
-      builder: (dialogContext) => DialogConfirm(
-        title: Strings.titleDialogConfirmLinkout.capitalize(),
-        content: Strings.confirmLinkout(url!),
-        confirmStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
-        confirmText: Strings.buttonConfirmFormal.capitalize(),
-        onDismiss: () => Navigator.pop(dialogContext),
-        onConfirm: () async {
-          Navigator.of(dialogContext).pop();
-          await launchUrl(url);
-        },
-      ),
-    );
-  }
-
-  onViewFullscreen(
-    BuildContext context, {
-    required Uint8List bytes,
-    required String? eventId,
-    required String? roomId,
-    String filename = 'Katya ® 👽 AI 🧠 REChain 🪐 Blockchain Node Image',
-  }) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => MediaFullScreen(
-          title: filename,
-          bytes: bytes,
-          eventId: eventId,
-          roomId: roomId,
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final message = this.message;
@@ -187,7 +186,7 @@ class MessageWidget extends StatelessWidget {
 
     var textColor = Colors.white;
     Color anchorColor = Colors.blue;
-    var backgroundColor = Theme.of(context).scaffoldBackgroundColor;
+    final backgroundColor = Theme.of(context).scaffoldBackgroundColor;
     var showSender = !messageOnly && !isUserSent; // nearly always show the sender
     var luminance = this.luminance;
 
@@ -203,7 +202,6 @@ class MessageWidget extends StatelessWidget {
     var showInfoRow = true;
     var showStatus = true;
 
-    var fontStyle;
     var opacity = 1.0;
     var zIndex = 1.0;
     var status = timeFormat == TimeFormat.full
@@ -218,17 +216,19 @@ class MessageWidget extends StatelessWidget {
             showTime: true,
           );
 
+    FontStyle? fontStyle;
+
     // Current User Bubble Styling
     if (isUserSent) {
       if (isLastSender) {
         if (isNextSender) {
           // Message in the middle of a sender messages block
-          bubbleMargin = EdgeInsets.symmetric(vertical: MESSAGE_MARGIN_VERTICAL_SMALL);
+          bubbleMargin = const EdgeInsets.symmetric(vertical: MESSAGE_MARGIN_VERTICAL_SMALL);
           bubbleBorder = Styles.bubbleBorderMiddleUser;
           showInfoRow = isNewContext;
         } else {
           // Message at the beginning of a user sender messages block
-          bubbleMargin = EdgeInsets.only(
+          bubbleMargin = const EdgeInsets.only(
             top: MESSAGE_MARGIN_VERTICAL_LARGE,
             bottom: MESSAGE_MARGIN_VERTICAL_SMALL,
           );
@@ -239,7 +239,7 @@ class MessageWidget extends StatelessWidget {
 
       if (!isLastSender && isNextSender) {
         // End of a sender messages block
-        bubbleMargin = EdgeInsets.only(
+        bubbleMargin = const EdgeInsets.only(
           top: MESSAGE_MARGIN_VERTICAL_SMALL,
           bottom: MESSAGE_MARGIN_VERTICAL_LARGE,
         );
@@ -250,13 +250,13 @@ class MessageWidget extends StatelessWidget {
       if (isLastSender) {
         if (isNextSender) {
           // Message in the middle of a sender messages block
-          bubbleMargin = EdgeInsets.symmetric(vertical: MESSAGE_MARGIN_VERTICAL_SMALL);
+          bubbleMargin = const EdgeInsets.symmetric(vertical: MESSAGE_MARGIN_VERTICAL_SMALL);
           bubbleBorder = Styles.bubbleBorderMiddleSender;
           showSender = false;
           showInfoRow = isNewContext;
         } else {
           // Message at the beginning of a sender messages block
-          bubbleMargin = EdgeInsets.only(top: 8, bottom: MESSAGE_MARGIN_VERTICAL_SMALL);
+          bubbleMargin = const EdgeInsets.only(top: 8, bottom: MESSAGE_MARGIN_VERTICAL_SMALL);
           bubbleBorder = Styles.bubbleBorderTopSender;
           showInfoRow = isNewContext;
         }
@@ -264,7 +264,7 @@ class MessageWidget extends StatelessWidget {
 
       if (!isLastSender && isNextSender) {
         // End of a sender messages block
-        bubbleMargin = EdgeInsets.only(
+        bubbleMargin = const EdgeInsets.only(
           top: MESSAGE_MARGIN_VERTICAL_SMALL,
           bottom: MESSAGE_MARGIN_VERTICAL_LARGE,
         );
@@ -274,10 +274,10 @@ class MessageWidget extends StatelessWidget {
 
     if (isUserSent) {
       if (themeType == ThemeType.Dark) {
-        bubbleColor = Color(AppColors.greyDark);
+        bubbleColor = const Color(AppColors.greyDark);
         luminance = 0.2;
       } else if (themeType != ThemeType.Light) {
-        bubbleColor = Color(AppColors.greyDarkest);
+        bubbleColor = const Color(AppColors.greyDarkest);
         luminance = bubbleColor.computeLuminance();
         luminance = 0.2;
       } else {
@@ -319,10 +319,11 @@ class MessageWidget extends StatelessWidget {
 
     if (message.hasLink) {
       if (bubbleColor.delta(Colors.blue) > 0.85) {
-        anchorColor = Color(AppColors.blueDark);
+        anchorColor = const Color(AppColors.blueDark);
       }
     }
 
+    // efficent way to check if Matrix message is a reply
     if (body.isNotEmpty && body[0] == '>') {
       final isLight = (luminance ?? 0.0) > 0.5;
       replyColor = HSLColor.fromColor(bubbleColor).withLightness(isLight ? 0.5 : 0.25).toColor();
@@ -351,7 +352,7 @@ class MessageWidget extends StatelessWidget {
               children: <Widget>[
                 Transform(
                   transform: isUserSent ? Matrix4.rotationY(-185) : Matrix4.rotationY(0),
-                  child: Icon(
+                  child: const Icon(
                     Icons.reply,
                     size: Dimensions.iconSizeLarge,
                   ),
@@ -403,8 +404,7 @@ class MessageWidget extends StatelessWidget {
                             }
                           },
                           child: Container(
-                            margin: const EdgeInsets.only(right: 8)
-                                .copyWith(bottom: hasReactions ? 16 : 0),
+                            margin: const EdgeInsets.only(right: 8).copyWith(bottom: hasReactions ? 16 : 0),
                             child: Avatar(
                               margin: EdgeInsets.zero,
                               padding: EdgeInsets.zero,
@@ -424,8 +424,7 @@ class MessageWidget extends StatelessWidget {
                             Container(
                               constraints: BoxConstraints(
                                 // NOTE: issue shrinking the message based on width
-                                maxWidth:
-                                    !isMedia ? double.infinity : Dimensions.mediaSizeMaxMessage,
+                                maxWidth: !isMedia ? double.infinity : Dimensions.mediaSizeMaxMessage,
                                 // NOTE: prevents exposing the reply icon
                                 minWidth: 72,
                               ),
@@ -520,8 +519,7 @@ class MessageWidget extends StatelessWidget {
                                       firstChild: MarkdownBody(
                                         data: body.trim(),
                                         softLineBreak: true,
-                                        onTapLink: (text, href, title) =>
-                                            onConfirmLink(context, href),
+                                        onTapLink: (text, href, title) => onConfirmLink(context, href),
                                         styleSheet: MarkdownStyleSheet(
                                           a: TextStyle(color: anchorColor),
                                           blockquote: TextStyle(
@@ -555,7 +553,7 @@ class MessageWidget extends StatelessWidget {
                                       secondChild: !selected
                                           ? Container()
                                           : Padding(
-                                              padding: EdgeInsets.only(left: 12, right: 12),
+                                              padding: const EdgeInsets.only(left: 12, right: 12),
                                               child: IntrinsicWidth(
                                                 child: TextFieldInline(
                                                   body: body,
@@ -581,12 +579,11 @@ class MessageWidget extends StatelessWidget {
                                         crossAxisAlignment: alignmentMessageText,
                                         children: [
                                           Visibility(
-                                            visible:
-                                                !isUserSent && message.type == EventTypes.encrypted,
+                                            visible: !isUserSent && message.type == EventTypes.encrypted,
                                             child: Container(
                                               width: Dimensions.indicatorSize,
                                               height: Dimensions.indicatorSize,
-                                              margin: EdgeInsets.only(right: 4),
+                                              margin: const EdgeInsets.only(right: 4),
                                               child: Icon(
                                                 Icons.lock,
                                                 color: textColor,
@@ -598,7 +595,7 @@ class MessageWidget extends StatelessWidget {
                                             visible: showStatus,
                                             child: Container(
                                               // timestamp and error message
-                                              margin: EdgeInsets.only(right: 4),
+                                              margin: const EdgeInsets.only(right: 4),
                                               child: Text(
                                                 status,
                                                 style: TextStyle(
@@ -610,12 +607,11 @@ class MessageWidget extends StatelessWidget {
                                             ),
                                           ),
                                           Visibility(
-                                            visible:
-                                                isUserSent && message.type == EventTypes.encrypted,
+                                            visible: isUserSent && message.type == EventTypes.encrypted,
                                             child: Container(
                                               width: Dimensions.indicatorSize,
                                               height: Dimensions.indicatorSize,
-                                              margin: EdgeInsets.only(left: 2),
+                                              margin: const EdgeInsets.only(left: 2),
                                               child: Icon(
                                                 Icons.lock,
                                                 color: textColor,
@@ -628,8 +624,8 @@ class MessageWidget extends StatelessWidget {
                                             child: Container(
                                               width: Dimensions.indicatorSize,
                                               height: Dimensions.indicatorSize,
-                                              margin: EdgeInsets.only(left: 3),
-                                              child: Icon(
+                                              margin: const EdgeInsets.only(left: 3),
+                                              child: const Icon(
                                                 Icons.close,
                                                 color: Colors.redAccent,
                                                 size: Dimensions.indicatorSize,
@@ -645,8 +641,8 @@ class MessageWidget extends StatelessWidget {
                                                   child: Container(
                                                     width: Dimensions.indicatorSize,
                                                     height: Dimensions.indicatorSize,
-                                                    margin: EdgeInsets.only(left: 4),
-                                                    child: CircularProgressIndicator(
+                                                    margin: const EdgeInsets.only(left: 4),
+                                                    child: const CircularProgressIndicator(
                                                       strokeWidth: Dimensions.strokeWidthThin,
                                                     ),
                                                   ),
@@ -656,7 +652,7 @@ class MessageWidget extends StatelessWidget {
                                                   child: Container(
                                                     width: Dimensions.indicatorSize,
                                                     height: Dimensions.indicatorSize,
-                                                    margin: EdgeInsets.only(left: 4),
+                                                    margin: const EdgeInsets.only(left: 4),
                                                     decoration: ShapeDecoration(
                                                       color: indicatorColor,
                                                       shape: CircleBorder(
@@ -678,7 +674,7 @@ class MessageWidget extends StatelessWidget {
                                                   child: Container(
                                                     width: Dimensions.indicatorSize,
                                                     height: Dimensions.indicatorSize,
-                                                    margin: EdgeInsets.only(left: 11),
+                                                    margin: const EdgeInsets.only(left: 11),
                                                     decoration: ShapeDecoration(
                                                       color: indicatorColor,
                                                       shape: CircleBorder(

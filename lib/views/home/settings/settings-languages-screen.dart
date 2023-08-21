@@ -2,16 +2,16 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:katya/domain/alerts/actions.dart';
+import 'package:katya/domain/index.dart';
+import 'package:katya/domain/settings/actions.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/global/values.dart';
-import 'package:katya/store/alerts/actions.dart';
-import 'package:katya/store/index.dart';
-import 'package:katya/store/settings/actions.dart';
 import 'package:katya/views/widgets/appbars/appbar-normal.dart';
 
 class LanguageSettingsScreen extends StatelessWidget {
-  const LanguageSettingsScreen({Key? key}) : super(key: key);
+  const LanguageSettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) => StoreConnector<AppState, Props>(
@@ -36,23 +36,23 @@ class LanguageSettingsScreen extends StatelessWidget {
                       contentPadding: Dimensions.listPadding,
                       title: Text(
                         displayName ?? 'Unknown',
-                        style: Theme.of(context).textTheme.bodyText2,
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       subtitle: Text(
                         nativeName ?? 'N/A',
-                        style: Theme.of(context).textTheme.caption,
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                       trailing: Visibility(
                         visible: props.language == language,
                         child: Container(
                           width: 32,
                           height: 32,
-                          margin: EdgeInsets.all(6),
+                          margin: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
                             color: Theme.of(context).primaryColor,
                             borderRadius: BorderRadius.circular(24),
                           ),
-                          child: Icon(
+                          child: const Icon(
                             Icons.check,
                             color: Colors.white,
                           ),

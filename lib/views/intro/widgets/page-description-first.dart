@@ -6,7 +6,7 @@ import 'package:katya/global/assets.dart';
 import 'package:katya/global/strings.dart';
 
 class FirstDescriptionPage extends StatelessWidget {
-  const FirstDescriptionPage({Key? key, this.title}) : super(key: key);
+  const FirstDescriptionPage({super.key, this.title});
 
   final String? title;
 
@@ -42,10 +42,10 @@ class FirstDescriptionPage extends StatelessWidget {
                   textAlign: TextAlign.center,
                   text: TextSpan(
                     text: Strings.contentIntroFirstPartOne,
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: Theme.of(context).textTheme.titleMedium,
                     children: const <TextSpan>[
                       TextSpan(
-                        text: 'Katya ® 👽 AI 🧠 \n REChain 🪐 Blockchain Node \n Network',
+                        text: 'Katya ® 👽 \nAI 🧠 REChain 🪐 \nBlockchain Node Network',
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                         ),

@@ -4,10 +4,10 @@ import 'package:katya/global/dimensions.dart';
 
 class LoadingIndicator extends StatelessWidget {
   const LoadingIndicator({
-    Key? key,
+    super.key,
     this.size = 28,
     this.loading = false,
-  }) : super(key: key);
+  });
 
   final double size;
   final bool loading;
@@ -18,7 +18,7 @@ class LoadingIndicator extends StatelessWidget {
           maxWidth: size,
           maxHeight: size,
         ),
-        child: CircularProgressIndicator(
+        child: const CircularProgressIndicator(
           strokeWidth: Dimensions.strokeWidthDefault,
           backgroundColor: Colors.white,
           valueColor: AlwaysStoppedAnimation<Color>(

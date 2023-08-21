@@ -4,21 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:katya/domain/events/actions.dart';
+import 'package:katya/domain/events/messages/model.dart';
+import 'package:katya/domain/events/selectors.dart';
+import 'package:katya/domain/index.dart';
+import 'package:katya/domain/rooms/room/model.dart';
+import 'package:katya/domain/settings/theme-settings/selectors.dart';
+import 'package:katya/domain/user/model.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/strings.dart';
-import 'package:katya/store/events/actions.dart';
-import 'package:katya/store/events/messages/model.dart';
-import 'package:katya/store/events/selectors.dart';
-import 'package:katya/store/index.dart';
-import 'package:katya/store/rooms/room/model.dart';
-import 'package:katya/store/settings/theme-settings/selectors.dart';
-import 'package:katya/store/user/model.dart';
 import 'package:katya/views/home/chat/chat-detail-message-screen.dart';
 import 'package:katya/views/navigation.dart';
 
 class AppBarMessageOptions extends StatefulWidget implements PreferredSizeWidget {
   const AppBarMessageOptions({
-    Key? key,
+    super.key,
     this.title = 'title:',
     this.label = 'label:',
     this.tooltip = 'tooltip:',
@@ -34,7 +34,7 @@ class AppBarMessageOptions extends StatefulWidget implements PreferredSizeWidget
     this.onEdit,
     this.onDismiss,
     required this.user,
-  }) : super(key: key);
+  });
 
   final String title;
   final String label;
@@ -79,15 +79,15 @@ class AppBarMessageOptionState extends State<AppBarMessageOptions> {
   @override
   Widget build(BuildContext context) => AppBar(
         systemOverlayStyle: computeSystemUIColor(context),
-        backgroundColor: Color(AppColors.greyDefault),
+        backgroundColor: const Color(AppColors.greyDefault),
         automaticallyImplyLeading: false,
         titleSpacing: 0.0,
         title: Row(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(left: 8),
+              margin: const EdgeInsets.only(left: 8),
               child: IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.close,
                   color: Colors.white,
                 ),
@@ -101,7 +101,7 @@ class AppBarMessageOptionState extends State<AppBarMessageOptions> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.info),
+            icon: const Icon(Icons.info),
             tooltip: Strings.tooltipMessageDetails,
             color: Colors.white,
             onPressed: () {
@@ -120,7 +120,7 @@ class AppBarMessageOptionState extends State<AppBarMessageOptions> {
           Visibility(
             visible: isMessageDeleted && widget.isUserSent,
             child: IconButton(
-              icon: Icon(Icons.delete),
+              icon: const Icon(Icons.delete),
               iconSize: 28.0,
               tooltip: Strings.tooltipDeleteMessage,
               color: Colors.white,
@@ -133,7 +133,7 @@ class AppBarMessageOptionState extends State<AppBarMessageOptions> {
           Visibility(
             visible: isMessageDeleted && widget.isUserSent,
             child: IconButton(
-              icon: Icon(Icons.edit_rounded),
+              icon: const Icon(Icons.edit_rounded),
               iconSize: 28.0,
               tooltip: Strings.tooltipEditMessage,
               color: Colors.white,
@@ -143,16 +143,16 @@ class AppBarMessageOptionState extends State<AppBarMessageOptions> {
             ),
           ),
           Visibility(
-            visible: isTextMessage(message: widget.message ?? Message()),
+            visible: isTextMessage(message: widget.message ?? const Message()),
             child: IconButton(
-              icon: Icon(Icons.content_copy),
+              icon: const Icon(Icons.content_copy),
               iconSize: 22.0,
               tooltip: Strings.tooltipCopyMessageContent,
               color: Colors.white,
               onPressed: () {
                 Clipboard.setData(
                   ClipboardData(
-                    text: widget.message!.formattedBody ?? widget.message!.body,
+                    text: widget.message!.formattedBody ?? widget.message!.body ?? '',
                   ),
                 );
 
@@ -161,7 +161,7 @@ class AppBarMessageOptionState extends State<AppBarMessageOptions> {
             ),
           ),
           IconButton(
-            icon: Icon(Icons.reply),
+            icon: const Icon(Icons.reply),
             iconSize: 28.0,
             tooltip: Strings.tooltipQuoteAndReply,
             color: Colors.white,
@@ -177,7 +177,7 @@ class AppBarMessageOptionState extends State<AppBarMessageOptions> {
             },
           ),
           IconButton(
-            icon: Icon(Icons.share),
+            icon: const Icon(Icons.share),
             iconSize: 24.0,
             tooltip: Strings.tooltipShareChats,
             color: Colors.white,

@@ -2,19 +2,19 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:katya/domain/index.dart';
+import 'package:katya/domain/user/model.dart';
+import 'package:katya/domain/user/selectors.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
-import 'package:katya/store/index.dart';
-import 'package:katya/store/user/model.dart';
-import 'package:katya/store/user/selectors.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
 
 class ProfilePreview extends StatelessWidget {
   const ProfilePreview({
-    Key? key,
+    super.key,
     this.hasMultiaccounts = false,
     this.onModifyAccounts,
-  }) : super(key: key);
+  });
 
   final bool hasMultiaccounts;
   final Function? onModifyAccounts;
@@ -31,7 +31,7 @@ class ProfilePreview extends StatelessWidget {
               Container(
                 width: Dimensions.avatarSize,
                 height: Dimensions.avatarSize,
-                margin: EdgeInsets.only(right: 16),
+                margin: const EdgeInsets.only(right: 16),
                 child: Avatar(
                   uri: props.avatarUri,
                   alt: props.user.displayName ?? props.user.userId,
@@ -46,11 +46,11 @@ class ProfilePreview extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     props.username ?? '',
-                    style: TextStyle(fontSize: 20.0),
+                    style: const TextStyle(fontSize: 20.0),
                   ),
                   Text(
                     props.userId ?? '',
-                    style: TextStyle(fontSize: 14.0),
+                    style: const TextStyle(fontSize: 14.0),
                   ),
                 ],
               ),
@@ -65,7 +65,7 @@ class ProfilePreview extends StatelessWidget {
                     height: Dimensions.avatarSize,
                     child: IconButton(
                       onPressed: () => onModifyAccounts?.call(),
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.more_horiz_rounded,
                         color: Color(AppColors.greyDefault),
                         size: avatarSize,

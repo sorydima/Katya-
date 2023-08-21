@@ -36,8 +36,6 @@ Examples:
 from builtins import super
 from typing import AnyStr, Type
 
-from future.utils import bytes_to_native_str
-
 from _libolm import ffi, lib  # type: ignore
 
 from ._compat import URANDOM, to_bytearray, to_unicode_str
@@ -116,8 +114,9 @@ class PkEncryption(object):
         if ret != lib.olm_error():
             return
 
-        last_error = bytes_to_native_str(
-            ffi.string(lib.olm_pk_encryption_last_error(self._pk_encryption)))
+        last_error = ffi.string(
+            lib.olm_pk_encryption_last_error(self._pk_encryption)
+        ).decode()
 
         raise PkEncryptionError(last_error)
 
@@ -166,12 +165,9 @@ class PkEncryption(object):
                     byte_plaintext[i] = 0
 
         message = PkMessage(
-            bytes_to_native_str(
-                ffi.unpack(ephemeral_key, ephemeral_key_size)),
-            bytes_to_native_str(
-                ffi.unpack(mac, mac_length)),
-            bytes_to_native_str(
-                ffi.unpack(ciphertext, ciphertext_length))
+            ffi.unpack(ephemeral_key, ephemeral_key_size).decode(),
+            ffi.unpack(mac, mac_length).decode(),
+            ffi.unpack(ciphertext, ciphertext_length).decode(),
         )
         return message
 
@@ -217,18 +213,19 @@ class PkDecryption(object):
             random_buffer, random_length
         )
         self._check_error(ret)
-        self.public_key: str = bytes_to_native_str(ffi.unpack(
+        self.public_key: str = ffi.unpack(
             key_buffer,
             key_length
-        ))
+        ).decode()
 
     def _check_error(self, ret):
         # type: (int) -> None
         if ret != lib.olm_error():
             return
 
-        last_error = bytes_to_native_str(
-            ffi.string(lib.olm_pk_decryption_last_error(self._pk_decryption)))
+        last_error = ffi.string(
+            lib.olm_pk_decryption_last_error(self._pk_decryption)
+        ).decode()
 
         raise PkDecryptionError(last_error)
 
@@ -306,10 +303,10 @@ class PkDecryption(object):
             for i in range(0, len(byte_key)):
                 byte_key[i] = 0
 
-        obj.public_key = bytes_to_native_str(ffi.unpack(
+        obj.public_key = ffi.unpack(
             pubkey_buffer,
             pubkey_length
-        ))
+        ).decode()
 
         return obj
 
@@ -411,17 +408,14 @@ class PkSigning(object):
 
         self._check_error(ret)
 
-        self.public_key = bytes_to_native_str(
-            ffi.unpack(pubkey_buffer, pubkey_length)
-        )
+        self.public_key = ffi.unpack(pubkey_buffer, pubkey_length).decode()
 
     def _check_error(self, ret):
         # type: (int) -> None
         if ret != lib.olm_error():
             return
 
-        last_error = bytes_to_native_str(
-            ffi.string(lib.olm_pk_signing_last_error(self._pk_signing)))
+        last_error = ffi.string(lib.olm_pk_signing_last_error(self._pk_signing)).decode()
 
         raise PkSigningError(last_error)
 
@@ -456,6 +450,4 @@ class PkSigning(object):
             signature_buffer, signature_length)
         self._check_error(ret)
 
-        return bytes_to_native_str(
-            ffi.unpack(signature_buffer, signature_length)
-        )
+        return ffi.unpack(signature_buffer, signature_length).decode()

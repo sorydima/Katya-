@@ -8,9 +8,9 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:path_provider_linux/path_provider_linux.dart';
 import 'package:sqlite3/open.dart';
-import 'package:katya/global/libs/storage/secure-storage.dart';
+import 'package:katya/domain/sync/service/service.dart';
+import 'package:katya/global/libraries/secure-storage/secure-storage.dart';
 import 'package:katya/global/print.dart';
-import 'package:katya/store/sync/service/service.dart';
 
 ///
 /// Init Platform Dependencies
@@ -18,7 +18,6 @@ import 'package:katya/store/sync/service/service.dart';
 /// init all specific dependencies needed
 /// to run Katya ® 👽 on a specific platform
 ///
-
 Future<void> initPlatformDependencies() async {
   // init platform overrides for compatability with dart libs
   if (!kIsWeb && (Platform.isMacOS || Platform.isWindows || Platform.isLinux)) {
@@ -39,7 +38,7 @@ Future<void> initPlatformDependencies() async {
     if (libolmExists) {
       DynamicLibrary.open(libolmDir.path);
     } else {
-      log.error('[linux] not found libolmExists ${libolmDir.path}');
+      console.error('[linux] not found libolmExists ${libolmDir.path}');
     }
 
     if (libsqliteExists) {
@@ -47,7 +46,7 @@ Future<void> initPlatformDependencies() async {
         return DynamicLibrary.open(libsqliteDir.path);
       });
     } else {
-      log.error('[linux] not found libsqliteExists ${libsqliteDir.path}');
+      console.error('[linux] not found libsqliteExists ${libsqliteDir.path}');
     }
 
     if (libsqlcipherExists) {
@@ -55,29 +54,29 @@ Future<void> initPlatformDependencies() async {
         return DynamicLibrary.open(libsqlcipherDir.path);
       });
     } else {
-      log.error('[linux] not found libsqlcipherExists ${libsqlcipherDir.path}');
+      console.error('[linux] not found libsqlcipherExists ${libsqlcipherDir.path}');
     }
   }
 
   // init window mangment for desktop builds
   if (Platform.isMacOS) {
     final directory = await getApplicationSupportDirectory();
-    log.info('[macos] ${directory.path}');
+    console.info('[macos] ${directory.path}');
     try {
       DynamicLibrary.open('libolm.3.dylib');
     } catch (error) {
-      log.info('[macos] ${error.toString()}');
+      console.info('[macos] $error');
     }
   }
 
   // Init flutter secure storage
   if (Platform.isAndroid || Platform.isIOS) {
-    SecureStorage.instance = FlutterSecureStorage();
+    SecureStorage.instance = const FlutterSecureStorage();
   }
 
   // init background sync for Android only
   if (Platform.isAndroid) {
     final backgroundSyncStatus = await SyncService.init();
-    log.info('[main] background service initialized $backgroundSyncStatus');
+    console.info('[main] background service initialized $backgroundSyncStatus');
   }
 }

@@ -23,7 +23,6 @@
 
 This is designed for avoiding __del__.
 """
-from __future__ import print_function
 
 import sys
 import traceback

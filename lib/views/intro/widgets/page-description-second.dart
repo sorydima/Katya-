@@ -8,7 +8,7 @@ import 'package:katya/global/strings.dart';
 // Assets
 
 class SecondDescriptionPage extends StatelessWidget {
-  const SecondDescriptionPage({Key? key, this.title}) : super(key: key);
+  const SecondDescriptionPage({super.key, this.title});
 
   final String? title;
 
@@ -45,17 +45,17 @@ class SecondDescriptionPage extends StatelessWidget {
                 textAlign: TextAlign.center,
                 text: TextSpan(
                   text: Strings.contentIntroSecondPartOne,
-                  style: Theme.of(context).textTheme.subtitle1,
+                  style: Theme.of(context).textTheme.titleMedium,
                   children: <TextSpan>[
                     TextSpan(
                       text: Strings.contentIntroSecondPartBold,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     TextSpan(
                       text: Strings.contentIntroSecondPartTwo,
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ],
                 ),

@@ -1,3 +1,16 @@
+Changes in `3.2.15 <https://gitlab.matrix.org/matrix-org/olm/tags/3.2.15>`_
+===========================================================================
+
+This release includes the following changes since 3.2.15:
+
+* Improvements to Python packaging
+  * No longer depend on ``future`` since Python 2 is no longer supported.
+  * Improve compatibility with tox 4.
+  * Add support for making standalone sdist.
+* Improvements to Nix flake (Thanks to Jon Ringer)
+  * Improve structure.
+  * Enable Darwin builds.
+
 Changes in `3.2.14 <https://gitlab.matrix.org/matrix-org/olm/tags/3.2.14>`_
 ===========================================================================
 

@@ -34,8 +34,6 @@ from builtins import bytes
 from functools import wraps
 from typing import Optional
 
-from future.utils import bytes_to_native_str
-
 from _libolm import ffi, lib
 
 from ._compat import URANDOM, to_bytearray, to_bytes
@@ -92,8 +90,7 @@ class Sas(object):
         if ret != lib.olm_error():
             return
 
-        last_error = bytes_to_native_str(
-            ffi.string((lib.olm_sas_last_error(self._sas))))
+        last_error = ffi.string((lib.olm_sas_last_error(self._sas))).decode()
 
         raise OlmSasError(last_error)
 
@@ -115,7 +112,7 @@ class Sas(object):
             lib.olm_sas_get_pubkey(self._sas, pubkey_buffer, pubkey_length)
         )
 
-        return bytes_to_native_str(ffi.unpack(pubkey_buffer, pubkey_length))
+        return ffi.unpack(pubkey_buffer, pubkey_length).decode()
 
     @property
     def other_key_set(self):
@@ -208,7 +205,7 @@ class Sas(object):
                 mac_length
             )
         )
-        return bytes_to_native_str(ffi.unpack(mac_buffer, mac_length))
+        return ffi.unpack(mac_buffer, mac_length).decode()
 
     def calculate_mac_fixed_base64(self, message, extra_info):
         # type: (str, str) -> str
@@ -242,7 +239,7 @@ class Sas(object):
                 mac_length
             )
         )
-        return bytes_to_native_str(ffi.unpack(mac_buffer, mac_length))
+        return ffi.unpack(mac_buffer, mac_length).decode()
 
     def calculate_mac_long_kdf(self, message, extra_info):
         # type: (str, str) -> str
@@ -276,4 +273,4 @@ class Sas(object):
                 mac_length
             )
         )
-        return bytes_to_native_str(ffi.unpack(mac_buffer, mac_length))
+        return ffi.unpack(mac_buffer, mac_length).decode()

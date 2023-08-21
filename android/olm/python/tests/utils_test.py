@@ -1,8 +1,6 @@
 import base64
 import hashlib
 
-from future.utils import bytes_to_native_str
-
 from olm import sha256
 from olm._compat import to_bytes
 
@@ -19,7 +17,7 @@ class TestClass(object):
             hashlib.sha256(to_bytes(input1)).digest()
         )
 
-        hashlib_hash = bytes_to_native_str(hashlib_hash[:-1])
+        hashlib_hash = hashlib_hash[:-1].decode()
 
         assert first_hash != second_hash
         assert hashlib_hash == first_hash

@@ -2,29 +2,27 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-
 import 'package:photo_view/photo_view.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:katya/global/libs/matrix/index.dart';
+import 'package:katya/domain/alerts/actions.dart';
+import 'package:katya/domain/index.dart';
+import 'package:katya/domain/settings/theme-settings/selectors.dart';
+import 'package:katya/global/libraries/matrix/index.dart';
 import 'package:katya/global/strings.dart';
-import 'package:katya/store/alerts/actions.dart';
-import 'package:katya/store/index.dart';
-
-import 'package:katya/store/settings/theme-settings/selectors.dart';
 
 class MediaFullScreen extends StatelessWidget {
   final String title;
-  final Uint8List bytes;
   final String? roomId;
   final String? eventId;
+  final Uint8List bytes;
 
   const MediaFullScreen({
-    Key? key,
-    required this.roomId,
+    super.key,
     required this.title,
-    required this.bytes,
+    required this.roomId,
     required this.eventId,
-  }) : super(key: key);
+    required this.bytes,
+  });
 
   onPressDownload(BuildContext context) async {
     final store = StoreProvider.of<AppState>(context);
@@ -41,12 +39,12 @@ class MediaFullScreen extends StatelessWidget {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: Icon(Icons.download),
+            icon: const Icon(Icons.download),
             color: backgroundColor,
             onPressed: () => onPressDownload(context),
           ),
           IconButton(
-              icon: Icon(Icons.share),
+              icon: const Icon(Icons.share),
               color: backgroundColor,
               onPressed: () async {
                 await Share.share(MatrixApi.buildMessageUrl(
@@ -63,7 +61,7 @@ class MediaFullScreen extends StatelessWidget {
             onPressed: () => {
                   Navigator.of(context).pop(),
                 },
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back_outlined,
             ),
             color: backgroundColor),

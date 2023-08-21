@@ -5,37 +5,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:sembast/sembast.dart';
-import 'package:katya/cache/index.dart';
 import 'package:katya/context/auth.dart';
 import 'package:katya/context/storage.dart';
 import 'package:katya/context/types.dart';
+import 'package:katya/domain/alerts/actions.dart';
+import 'package:katya/domain/alerts/model.dart';
+import 'package:katya/domain/auth/actions.dart';
+import 'package:katya/domain/auth/context/actions.dart';
+import 'package:katya/domain/index.dart';
+import 'package:katya/domain/settings/theme-settings/model.dart';
+import 'package:katya/domain/sync/actions.dart';
+import 'package:katya/domain/sync/service/storage.dart';
+import 'package:katya/domain/user/model.dart';
 import 'package:katya/global/connectivity.dart';
 import 'package:katya/global/formatters.dart';
+import 'package:katya/global/libraries/cache/index.dart';
+import 'package:katya/global/libraries/storage/database.dart';
+import 'package:katya/global/libraries/storage/index.dart';
 import 'package:katya/global/notifications.dart';
 import 'package:katya/global/print.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/global/themes.dart';
 import 'package:katya/global/values.dart';
-import 'package:katya/storage/database.dart';
-import 'package:katya/storage/index.dart';
-import 'package:katya/store/alerts/actions.dart';
-import 'package:katya/store/alerts/model.dart';
-import 'package:katya/store/auth/actions.dart';
-import 'package:katya/store/auth/context/actions.dart';
-import 'package:katya/store/index.dart';
-import 'package:katya/store/settings/theme-settings/model.dart';
-import 'package:katya/store/sync/actions.dart';
-import 'package:katya/store/sync/service/storage.dart';
-import 'package:katya/store/user/model.dart';
-import 'package:katya/views/home/home-screen.dart';
-import 'package:katya/views/intro/intro-screen.dart';
+import 'package:katya/views/home/HomeScreen.dart';
+import 'package:katya/views/intro/IntroScreen.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/prelock.dart';
 
 class katya extends StatefulWidget {
   final Database? cache;
   final Store<AppState> store;
-  final StorageDatabase? storage;
+  final ColdStorageDatabase? storage;
 
   const katya(
     this.cache,
@@ -43,22 +43,16 @@ class katya extends StatefulWidget {
     this.storage,
   );
 
-  static Future setAppContext(
-      BuildContext buildContext, AppContext appContext) {
-    return buildContext
-        .findAncestorStateOfType<katyaState>()!
-        .onContextSet(appContext);
+  static Future setAppContext(BuildContext buildContext, AppContext appContext) {
+    return buildContext.findAncestorStateOfType<katyaState>()!.onContextSet(appContext);
   }
 
   static AppContext getAppContext(BuildContext buildContext) {
-    return buildContext.findAncestorStateOfType<katyaState>()!.appContext ??
-        AppContext();
+    return buildContext.findAncestorStateOfType<katyaState>()!.appContext ?? const AppContext();
   }
 
   static Future reloadCurrentContext(BuildContext buildContext) {
-    return buildContext
-        .findAncestorStateOfType<katyaState>()!
-        .reloadCurrentContext();
+    return buildContext.findAncestorStateOfType<katyaState>()!.reloadCurrentContext();
   }
 
   @override
@@ -69,7 +63,7 @@ class katyaState extends State<katya> with WidgetsBindingObserver {
   late Store<AppState> store;
 
   Database? cache;
-  StorageDatabase? storage;
+  ColdStorageDatabase? storage;
   AppContext? appContext;
 
   final globalScaffold = GlobalKey<ScaffoldMessengerState>();
@@ -93,13 +87,13 @@ class katyaState extends State<katya> with WidgetsBindingObserver {
     final authed = currentUser.accessToken != null;
 
     if (!authed) {
-      defaultHome = IntroScreen();
+      defaultHome = const IntroScreen();
     }
 
     super.initState();
   }
 
-  reloadCurrentContext() async {
+  Future<void> reloadCurrentContext() async {
     // context handling
     final currentContext = await loadContextCurrent();
     appContext = currentContext;
@@ -118,8 +112,7 @@ class katyaState extends State<katya> with WidgetsBindingObserver {
     final currentUser = store.state.authStore.user;
 
     // Reset contexts if the current user has no accessToken (unrecoverable state)
-    if (currentUser.accessToken == null &&
-        currentContext.id != AppContext.DEFAULT) {
+    if (currentUser.accessToken == null && currentContext.id != AppContext.DEFAULT) {
       return onResetContext();
     }
 
@@ -162,21 +155,18 @@ class katyaState extends State<katya> with WidgetsBindingObserver {
           pluginInstance: globalNotificationPluginInstance,
         );
         saveNotificationsUnchecked(const {});
-        break;
-      case AppLifecycleState.inactive:
-        break;
       case AppLifecycleState.paused:
         store.dispatch(updateLatestLastSince());
-        store.dispatch(setBackgrounded(true));
-        break;
+        store.dispatch(setBackgrounded(backgrounded: true));
       case AppLifecycleState.detached:
         store.dispatch(updateLatestLastSince());
-        store.dispatch(setBackgrounded(true));
+        store.dispatch(setBackgrounded(backgrounded: true));
+      case AppLifecycleState.inactive:
         break;
     }
   }
 
-  onContextSet(AppContext appContext) async {
+  Future<void> onContextSet(AppContext appContext) async {
     await saveContextCurrent(appContext);
     await Prelock.restart(context);
   }
@@ -266,9 +256,7 @@ class katyaState extends State<katya> with WidgetsBindingObserver {
     final authObserverNew = storeNew.state.authStore.authObserver;
 
     // revert to another authed user if available and logging out
-    if (user == null &&
-        userNew.accessToken != null &&
-        contextNew.id.isNotEmpty) {
+    if (user == null && userNew.accessToken != null && contextNew.id.isNotEmpty) {
       authObserverNew?.add(userNew);
     } else {
       authObserverNew?.add(user);
@@ -276,7 +264,7 @@ class katyaState extends State<katya> with WidgetsBindingObserver {
 
     // wipe unauthenticated storage
     if (user != null) {
-      onDeleteContextStorage(AppContext(id: AppContext.DEFAULT));
+      onDeleteContextStorage(const AppContext(id: AppContext.DEFAULT));
     } else {
       // delete cache data if removing context / account (context is not default)
       onDeleteContextStorage(contextOld);
@@ -287,9 +275,9 @@ class katyaState extends State<katya> with WidgetsBindingObserver {
 
   onDeleteContextStorage(AppContext context) async {
     if (context.id.isEmpty) {
-      log.info('[onContextChanged] DELETING DEFAULT CONTEXT');
+      console.info('[onContextChanged] DELETING DEFAULT CONTEXT');
     } else {
-      log.info('[onDeleteContext] DELETING CONTEXT DATA ${context.id}');
+      console.info('[onDeleteContext] DELETING CONTEXT DATA ${context.id}');
     }
 
     await deleteCache(context: context);
@@ -299,8 +287,7 @@ class katyaState extends State<katya> with WidgetsBindingObserver {
 
   // Reset contexts if the current user has no accessToken (unrecoverable state)
   onResetContext() async {
-    log.error(
-        '[onResetContext] WARNING - RESETTING CONTEXT - HIT UNRECOVERABLE STATE');
+    console.error('[onResetContext] WARNING - RESETTING CONTEXT - HIT UNRECOVERABLE STATE');
 
     resetContextsAll();
 
@@ -314,7 +301,7 @@ class katyaState extends State<katya> with WidgetsBindingObserver {
 
     // No user is present and no contexts are availble to jump to
     if (user == null && allContexts.isEmpty && defaultScreen == HomeScreen) {
-      defaultHome = IntroScreen();
+      defaultHome = const IntroScreen();
       return NavigationService.clearTo(Routes.intro, context);
     }
 
@@ -324,9 +311,7 @@ class katyaState extends State<katya> with WidgetsBindingObserver {
     }
 
     // New user is found and previously was in an unauthenticated state
-    if (user != null &&
-        user.accessToken != null &&
-        defaultScreen == IntroScreen) {
+    if (user != null && user.accessToken != null && defaultScreen == IntroScreen) {
       defaultHome = HomeScreen();
       return NavigationService.clearTo(Routes.home, context);
     }
@@ -345,7 +330,7 @@ class katyaState extends State<katya> with WidgetsBindingObserver {
   onAlertsChanged(Alert alert) {
     Color? color;
 
-    var alertOverride;
+    String? alertOverride;
 
     switch (alert.type) {
       case 'error':
@@ -353,33 +338,26 @@ class katyaState extends State<katya> with WidgetsBindingObserver {
           alertOverride = Strings.alertOffline;
         }
         color = Colors.red;
-        break;
       case 'warning':
         if (!ConnectionService.isConnected() && !alert.offline) {
           alertOverride = Strings.alertOffline;
         }
         color = Colors.red;
-        break;
       case 'success':
         color = Colors.green;
-        break;
       case 'info':
       default:
         color = Colors.grey;
     }
 
-    final alertMessage =
-        alertOverride ?? alert.message ?? alert.error ?? Strings.alertUnknown;
+    final alertMessage = alertOverride ?? alert.message ?? alert.error ?? Strings.alertUnknown;
 
     globalScaffold.currentState?.showSnackBar(
       SnackBar(
         backgroundColor: color,
         content: Text(
           alertMessage,
-          style: Theme.of(context)
-              .textTheme
-              .subtitle1
-              ?.copyWith(color: Colors.white),
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
         ),
         duration: alert.duration,
         action: SnackBarAction(
@@ -418,9 +396,8 @@ class katyaState extends State<katya> with WidgetsBindingObserver {
         child: localization.EasyLocalization(
           path: 'assets/translations',
           useOnlyLangCode: true,
-          startLocale: Locale(
-              findLocale(store.state.settingsStore.language, context: context)),
-          fallbackLocale: Locale(SupportedLanguages.defaultLang),
+          startLocale: Locale(findLocale(store.state.settingsStore.language, context: context)),
+          fallbackLocale: const Locale(SupportedLanguages.defaultLang),
           useFallbackTranslations: true,
           supportedLocales: SupportedLanguages.list,
           child: StoreConnector<AppState, ThemeSettings>(
@@ -436,8 +413,7 @@ class katyaState extends State<katya> with WidgetsBindingObserver {
               routes: NavigationProvider.getRoutes(),
               home: defaultHome,
               builder: (context, child) => Directionality(
-                textDirection: SupportedLanguages.rtl
-                        .contains(store.state.settingsStore.language)
+                textDirection: SupportedLanguages.rtl.contains(store.state.settingsStore.language)
                     ? TextDirection.rtl
                     : TextDirection.ltr,
                 child: child!,

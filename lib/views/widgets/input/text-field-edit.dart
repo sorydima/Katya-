@@ -18,12 +18,12 @@ class TextFieldInline extends StatefulWidget {
   final Function? onEdit;
 
   const TextFieldInline({
-    Key? key,
+    super.key,
     this.body,
     this.onEdit,
     this.autofocus = false,
     this.controller,
-  }) : super(key: key);
+  });
 
   @override
   State<TextFieldInline> createState() => _TextFieldInlineState();
@@ -65,7 +65,7 @@ class _TextFieldInlineState extends State<TextFieldInline> with Lifecycle<TextFi
                 color: Theme.of(context).colorScheme.secondary,
                 width: 1,
               ),
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(24),
                 topRight: Radius.circular(24),
                 bottomLeft: Radius.circular(24),
@@ -77,7 +77,7 @@ class _TextFieldInlineState extends State<TextFieldInline> with Lifecycle<TextFi
                 color: Theme.of(context).colorScheme.secondary,
                 width: 1,
               ),
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(24),
                 topRight: Radius.circular(24),
                 bottomLeft: Radius.circular(24),

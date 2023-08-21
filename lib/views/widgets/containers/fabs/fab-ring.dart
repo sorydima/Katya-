@@ -5,11 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:redux/redux.dart';
+import 'package:katya/domain/index.dart';
+import 'package:katya/domain/settings/theme-settings/selectors.dart';
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
-import 'package:katya/store/index.dart';
-import 'package:katya/store/settings/theme-settings/selectors.dart';
 import 'package:katya/views/navigation.dart';
 
 calculatePosition(int copyLength) => copyLength * 3.4;
@@ -20,11 +20,11 @@ class FabRing extends StatelessWidget {
   final GlobalKey<FabCircularMenuState>? fabKey;
 
   const FabRing({
-    Key? key,
+    super.key,
     this.fabKey,
     this.alignment = Alignment.bottomRight,
     this.showLabels = false,
-  }) : super(key: key);
+  });
 
   onNavigateToPublicSearch(context) {
     HapticFeedback.lightImpact();
@@ -83,7 +83,7 @@ class FabRing extends StatelessWidget {
             fabColor: props.primaryColor,
             ringColor: props.primaryColor.withAlpha(144),
             ringDiameter: actionRingDefaultDimensions(context),
-            animationDuration: Duration(milliseconds: 275),
+            animationDuration: const Duration(milliseconds: 275),
             onDisplayChange: (opened) {},
             children: [
               Stack(
@@ -96,7 +96,7 @@ class FabRing extends StatelessWidget {
                     onPressed: () => onNavigateToCreateGroupPublic(context),
                     child: SvgPicture.asset(
                       Assets.iconPublicAddBeing,
-                      color: Colors.white,
+                      colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                     ),
                   ),
                   Positioned(
@@ -106,11 +106,11 @@ class FabRing extends StatelessWidget {
                     child: Visibility(
                       visible: showLabels,
                       child: Padding(
-                        padding: EdgeInsets.only(right: 4),
+                        padding: const EdgeInsets.only(right: 4),
                         child: Chip(
                           label: Text(
                             Strings.labelFabCreatePublic,
-                            style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
                                   color: Colors.white,
                                 ),
                           ),
@@ -131,7 +131,7 @@ class FabRing extends StatelessWidget {
                     onPressed: () => onNavigateToCreateGroup(context),
                     child: SvgPicture.asset(
                       Assets.iconGroupAddBeing,
-                      color: Colors.white,
+                      colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                     ),
                   ),
                   Positioned(
@@ -141,11 +141,11 @@ class FabRing extends StatelessWidget {
                     child: Visibility(
                       visible: showLabels,
                       child: Padding(
-                        padding: EdgeInsets.only(right: 4),
+                        padding: const EdgeInsets.only(right: 4),
                         child: Chip(
                           label: Text(
                             Strings.labelFabCreateGroup,
-                            style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
                                   color: Colors.white,
                                 ),
                           ),
@@ -166,7 +166,7 @@ class FabRing extends StatelessWidget {
                     onPressed: () => onNavigateToDraft(context),
                     child: SvgPicture.asset(
                       Assets.iconMessageCircleBeing,
-                      color: Colors.white,
+                      colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                     ),
                   ),
                   Positioned(
@@ -175,11 +175,11 @@ class FabRing extends StatelessWidget {
                     child: Visibility(
                       visible: showLabels,
                       child: Padding(
-                        padding: EdgeInsets.only(right: 4),
+                        padding: const EdgeInsets.only(right: 4),
                         child: Chip(
                           label: Text(
                             Strings.labelFabCreateDM,
-                            style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
                                   color: Colors.white,
                                 ),
                           ),
@@ -200,7 +200,7 @@ class FabRing extends StatelessWidget {
                     onPressed: () => onNavigateToPublicSearch(context),
                     child: SvgPicture.asset(
                       Assets.iconSearchPublicCondensedBeing,
-                      color: Colors.white,
+                      colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                     ),
                   ),
                   Positioned(
@@ -210,11 +210,11 @@ class FabRing extends StatelessWidget {
                     child: Visibility(
                       visible: showLabels,
                       child: Padding(
-                        padding: EdgeInsets.only(right: 4),
+                        padding: const EdgeInsets.only(right: 4),
                         child: Chip(
                           label: Text(
                             Strings.labelFabSearch,
-                            style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
                                   color: Colors.white,
                                 ),
                           ),

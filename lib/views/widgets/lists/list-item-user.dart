@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:katya/domain/user/model.dart';
+import 'package:katya/domain/user/selectors.dart';
 import 'package:katya/global/assets.dart';
-
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
-
-import 'package:katya/store/user/model.dart';
-import 'package:katya/store/user/selectors.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
 import 'package:katya/views/widgets/containers/card-section.dart';
 
@@ -23,7 +21,7 @@ enum ListItemUserType {
 ///
 class ListItemUser extends StatelessWidget {
   const ListItemUser({
-    Key? key,
+    super.key,
     required this.user,
     this.type = ListItemUserType.Pressable,
     this.enabled = false,
@@ -32,7 +30,7 @@ class ListItemUser extends StatelessWidget {
     this.real = true,
     this.onPress,
     this.onPressAvatar,
-  }) : super(key: key);
+  });
 
   final User user;
   final bool loading;
@@ -43,7 +41,7 @@ class ListItemUser extends StatelessWidget {
   final Function? onPress;
   final Function? onPressAvatar;
 
-  Widget buildArrowIcon(context) => Semantics(
+  Widget buildArrowIcon(BuildContext context) => Semantics(
       button: true,
       enabled: true,
       label: 'Start Chat',
@@ -58,7 +56,7 @@ class ListItemUser extends StatelessWidget {
               child: Container(
                 width: Dimensions.iconSizeLite,
                 height: Dimensions.iconSizeLite,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(
                     Radius.circular(Dimensions.avatarSize),
                   ),
@@ -68,7 +66,8 @@ class ListItemUser extends StatelessWidget {
                   fit: BoxFit.scaleDown,
                   height: Dimensions.iconSizeLite,
                   width: Dimensions.iconSizeLite,
-                  color: Theme.of(context).iconTheme.color,
+                  colorFilter:
+                      ColorFilter.mode(Theme.of(context).iconTheme.color ?? Colors.white, BlendMode.srcIn),
                   semanticsLabel: 'Start Chat',
                 ),
               ),
@@ -119,13 +118,13 @@ class ListItemUser extends StatelessWidget {
             title: Text(
               formatUsername(user),
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
             subtitle: Text(
               user.userId!,
-              style: Theme.of(context).textTheme.caption!.merge(
+              style: Theme.of(context).textTheme.bodySmall!.merge(
                     TextStyle(
-                      color: loading ? Color(AppColors.greyDisabled) : null,
+                      color: loading ? const Color(AppColors.greyDisabled) : null,
                     ),
                   ),
             ),

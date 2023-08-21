@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:katya/context/auth.dart';
 import 'package:katya/context/types.dart';
 
-import 'package:katya/views/intro/signup/loading-screen.dart';
+import 'package:katya/views/intro/signup/LoadingScreen.dart';
 import 'package:katya/views/prelock.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
 import 'package:katya/views/widgets/modals/modal-lock-overlay/show-lock-overlay.dart';
@@ -20,9 +20,9 @@ class LockScreen extends StatefulWidget {
   final AppContext appContext;
 
   const LockScreen({
-    Key? key,
+    super.key,
     required this.appContext,
-  }) : super(key: key);
+  });
 
   @override
   _LockScreenState createState() => _LockScreenState();

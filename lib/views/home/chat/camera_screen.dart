@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:katya/global/libs/matrix/constants.dart';
+
+import 'package:katya/global/libraries/matrix/events/types.dart';
 import 'package:katya/global/print.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -43,6 +44,61 @@ class CameraScreenState extends State<CameraScreen> {
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  void _toggleCameraLens() {
+    try {
+      // get current lens direction (front / rear)
+      final lensDirection = _controller.description.lensDirection;
+
+      CameraDescription newDescription;
+
+      if (lensDirection == CameraLensDirection.front) {
+        newDescription = widget.cameras.firstWhere(
+          (description) => description.lensDirection == CameraLensDirection.back,
+        );
+      } else {
+        newDescription = widget.cameras.firstWhere(
+          (description) => description.lensDirection == CameraLensDirection.front,
+        );
+      }
+
+      _initCamera(newDescription);
+    } catch (error) {
+      console.error('camera not available $error');
+    }
+  }
+
+  Future<void> _initCamera(CameraDescription description) async {
+    _controller = CameraController(description, ResolutionPreset.max, enableAudio: true);
+
+    try {
+      await _controller.initialize();
+      // to notify the widgets that camera has been initialized and now camera preview can be done
+      setState(() {});
+    } catch (error) {
+      console.error(error.toString());
+    }
+  }
+
+  Future<void> takePicture() async {
+    try {
+      await _initializeControllerFuture;
+      final image = await _controller.takePicture();
+      if (!mounted) return;
+
+      // _controller.dispose();
+
+      await onAddPhoto(image.path);
+      Navigator.pop(context);
+    } catch (error) {
+      console.error(error.toString());
+    }
+  }
+
+  Future<void> onAddPhoto(String imagePath) async {
+    final file = File(imagePath);
+    await widget.onAddMedia(file: file, type: MessageType.image);
   }
 
   @override
@@ -88,7 +144,7 @@ class CameraScreenState extends State<CameraScreen> {
                           heightFactor: 0.9, // Adjust those two for the white space
                           widthFactor: 0.9,
                           child: Container(
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Colors.white,
                               shape: BoxShape.circle,
                             ),
@@ -104,7 +160,7 @@ class CameraScreenState extends State<CameraScreen> {
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
-                      icon: Icon(Icons.flip_camera_android_rounded, color: Colors.white),
+                      icon: const Icon(Icons.flip_camera_android_rounded, color: Colors.white),
                       onPressed: () {
                         _toggleCameraLens();
                       },
@@ -117,57 +173,5 @@ class CameraScreenState extends State<CameraScreen> {
         ],
       ),
     );
-  }
-
-  void _toggleCameraLens() {
-    // get current lens direction (front / rear)
-    final lensDirection = _controller.description.lensDirection;
-    CameraDescription newDescription;
-    if (lensDirection == CameraLensDirection.front) {
-      newDescription =
-          widget.cameras.firstWhere((description) => description.lensDirection == CameraLensDirection.back);
-    } else {
-      newDescription =
-          widget.cameras.firstWhere((description) => description.lensDirection == CameraLensDirection.front);
-    }
-
-    if (newDescription == null) {
-      log.error('camera not available');
-      return;
-    }
-
-    _initCamera(newDescription);
-  }
-
-  Future<void> _initCamera(CameraDescription description) async {
-    _controller = CameraController(description, ResolutionPreset.max, enableAudio: true);
-
-    try {
-      await _controller.initialize();
-      // to notify the widgets that camera has been initialized and now camera preview can be done
-      setState(() {});
-    } catch (error) {
-      log.error(error.toString());
-    }
-  }
-
-  Future<void> takePicture() async {
-    try {
-      await _initializeControllerFuture;
-      final image = await _controller.takePicture();
-      if (!mounted) return;
-
-      // _controller.dispose();
-
-      await onAddPhoto(image.path);
-      Navigator.pop(context);
-    } catch (error) {
-      log.error(error.toString());
-    }
-  }
-
-  Future<void> onAddPhoto(String imagePath) async {
-    final file = File(imagePath);
-    await widget.onAddMedia(file: file, type: MessageType.image);
   }
 }

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.4)
 
-project(olm VERSION 3.2.14 LANGUAGES CXX C)
+project(olm VERSION 3.2.15 LANGUAGES CXX C)
 
 option(OLM_TESTS "Build tests" ON)
 option(BUILD_SHARED_LIBS "Build as a shared library" ON)

@@ -1,18 +1,17 @@
 import 'package:equatable/equatable.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:katya/domain/index.dart';
+import 'package:katya/domain/rooms/actions.dart';
+import 'package:katya/domain/rooms/selectors.dart';
+import 'package:katya/domain/search/actions.dart';
+import 'package:katya/domain/settings/theme-settings/model.dart';
+import 'package:katya/domain/user/model.dart';
+import 'package:katya/domain/user/selectors.dart';
 import 'package:katya/global/formatters.dart';
 import 'package:katya/global/strings.dart';
-import 'package:katya/store/index.dart';
-import 'package:katya/store/rooms/actions.dart';
-import 'package:katya/store/rooms/selectors.dart';
-import 'package:katya/store/search/actions.dart';
-import 'package:katya/store/settings/theme-settings/model.dart';
-import 'package:katya/store/user/model.dart';
-import 'package:katya/store/user/selectors.dart';
-import 'package:katya/views/home/chat/chat-screen.dart';
+import 'package:katya/views/home/chat/ChatScreen.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/appbars/appbar-search.dart';
 import 'package:katya/views/widgets/dialogs/dialog-start-chat.dart';
@@ -21,7 +20,7 @@ import 'package:katya/views/widgets/loader/index.dart';
 import 'package:katya/views/widgets/modals/modal-user-details.dart';
 
 class SearchUserScreen extends StatefulWidget {
-  const SearchUserScreen({Key? key}) : super(key: key);
+  const SearchUserScreen({super.key});
 
   @override
   SearchUserState createState() => SearchUserState();
@@ -184,20 +183,19 @@ class SearchUserState extends State<SearchUserScreen> {
 
     final attemptableUser = User(
       displayName: searchable,
-      userId:
-          searchable.isNotEmpty && searchable.contains(':') ? searchable : formatUserId(searchable),
+      userId: searchable.isNotEmpty && searchable.contains(':') ? searchable : formatUserId(searchable),
     );
 
     return ListView(
       children: [
         Container(
-          padding: EdgeInsets.only(left: 20, right: 20, top: 24),
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 24),
           child: Row(
             children: [
               Text(
                 Strings.labelSearchResults,
                 textAlign: TextAlign.start,
-                style: Theme.of(context).textTheme.subtitle2,
+                style: Theme.of(context).textTheme.titleSmall,
               ),
             ],
           ),
@@ -250,13 +248,13 @@ class SearchUserState extends State<SearchUserScreen> {
         Visibility(
           visible: usersList.isNotEmpty,
           child: Container(
-            padding: EdgeInsets.only(left: 20, right: 20, top: 24),
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 24),
             child: Row(
               children: [
                 Text(
                   Strings.labelUsersRecent,
                   textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.subtitle2,
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
               ],
             ),
@@ -286,13 +284,13 @@ class SearchUserState extends State<SearchUserScreen> {
           },
         ),
         Container(
-          padding: EdgeInsets.only(left: 20, right: 20, top: 24),
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 24),
           child: Row(
             children: [
               Text(
                 Strings.labelKnownUsers,
                 textAlign: TextAlign.start,
-                style: Theme.of(context).textTheme.subtitle2,
+                style: Theme.of(context).textTheme.titleSmall,
               ),
             ],
           ),

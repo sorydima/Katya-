@@ -3,17 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:redux/redux.dart';
-
+import 'package:katya/domain/auth/actions.dart';
+import 'package:katya/domain/index.dart';
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
-import 'package:katya/global/libs/matrix/auth.dart';
+import 'package:katya/global/libraries/matrix/auth/types.dart';
 import 'package:katya/global/weburl.dart';
-import 'package:katya/store/auth/actions.dart';
-import 'package:katya/store/index.dart';
 
 class TermsStep extends StatelessWidget {
-  TermsStep({Key? key}) : super(key: key);
+  TermsStep({super.key});
   final focusNode = FocusNode();
 
   @override
@@ -31,11 +30,11 @@ class TermsStep extends StatelessWidget {
               flex: 6,
               child: Container(
                 width: width * 0.75,
-                constraints: BoxConstraints(
+                constraints: const BoxConstraints(
                   maxHeight: Dimensions.mediaSize,
                   maxWidth: Dimensions.mediaSize,
                 ),
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   bottom: 24,
                 ),
                 child: Stack(
@@ -54,7 +53,7 @@ class TermsStep extends StatelessWidget {
                           borderRadius: BorderRadius.circular(40),
                           color: const Color(AppColors.cyankatya),
                         ),
-                        child: Icon(
+                        child: const Icon(
                           Icons.check,
                           color: Colors.white,
                           size: 32,
@@ -72,25 +71,25 @@ class TermsStep extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.only(bottom: 8, top: 8),
+                    padding: const EdgeInsets.only(bottom: 8, top: 8),
                     child: Text(
                       '${props.homeserver} requires you read\nand agree to a terms of service.',
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.caption,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ),
                   Stack(
                     clipBehavior: Clip.none,
                     children: <Widget>[
                       Container(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           vertical: 8,
                           horizontal: 24,
                         ),
                         child: Text(
                           'Agree to Terms of Service',
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.headline5,
+                          style: Theme.of(context).textTheme.headlineSmall,
                         ),
                       ),
                       Positioned(
@@ -103,7 +102,7 @@ class TermsStep extends StatelessWidget {
                           child: Container(
                             height: 20,
                             width: 20,
-                            child: Icon(
+                            child: const Icon(
                               Icons.info_outline,
                               color: Colors.white,
                               size: 20,
@@ -128,7 +127,7 @@ class TermsStep extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Container(
-                          padding: EdgeInsets.only(
+                          padding: const EdgeInsets.only(
                             top: 8,
                             left: 8,
                             right: 8,
@@ -151,11 +150,11 @@ class TermsStep extends StatelessWidget {
                             textAlign: TextAlign.center,
                             text: TextSpan(
                               text: 'Agree to ${props.homeserver} ',
-                              style: Theme.of(context).textTheme.subtitle1,
+                              style: Theme.of(context).textTheme.titleMedium,
                               children: <TextSpan>[
                                 TextSpan(
                                   text: 'terms of service',
-                                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
                                         fontWeight: FontWeight.w400,
                                         decorationStyle: TextDecorationStyle.solid,
                                       ),
@@ -209,7 +208,7 @@ class _Props extends Equatable {
       onViewTermsOfService: () async {
         try {
           final termsOfServiceUrl = store.state.authStore.credential!.termsUrl!;
-          launchUrl(termsOfServiceUrl);
+          launchUrlWrapper(termsOfServiceUrl);
         } catch (error) {}
       });
 
