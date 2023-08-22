@@ -6,7 +6,7 @@ import 'package:katya/views/widgets/loader/loading-indicator.dart';
 
 class ButtonSolid extends StatelessWidget {
   const ButtonSolid({
-    super.key,
+    Key? key,
     this.text,
     this.textWidget,
     this.loading = false,
@@ -14,7 +14,7 @@ class ButtonSolid extends StatelessWidget {
     this.width,
     this.height,
     this.onPressed,
-  });
+  }) : super(key: key);
 
   final bool loading;
   final bool disabled;
@@ -28,7 +28,7 @@ class ButtonSolid extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         width: width ?? Dimensions.contentWidth(context),
         height: height ?? Dimensions.inputHeight,
-        constraints: const BoxConstraints(
+        constraints: BoxConstraints(
           minWidth: Dimensions.buttonWidthMin,
           maxWidth: Dimensions.buttonWidthMax,
         ),
@@ -36,7 +36,7 @@ class ButtonSolid extends StatelessWidget {
           style: ButtonStyle(
             foregroundColor: MaterialStateProperty.resolveWith<Color?>(
               (Set<MaterialState> states) => states.contains(MaterialState.disabled)
-                  ? const Color(AppColors.greyLight)
+                  ? Color(AppColors.greyLight)
                   : Theme.of(context).primaryColor,
             ),
             backgroundColor: MaterialStateProperty.resolveWith<Color>(
@@ -52,7 +52,7 @@ class ButtonSolid extends StatelessWidget {
           ),
           onPressed: disabled ? null : onPressed as void Function()?,
           child: loading
-              ? const LoadingIndicator()
+              ? LoadingIndicator()
               : (textWidget != null
                   ? textWidget!
                   : Text(
@@ -61,7 +61,7 @@ class ButtonSolid extends StatelessWidget {
                         fontSize: 20,
                         fontWeight: FontWeight.w100,
                         letterSpacing: 0.8,
-                        color: disabled ? const Color(AppColors.greyLight) : Colors.white,
+                        color: disabled ? Color(AppColors.greyLight) : Colors.white,
                       ),
                     )),
         ),

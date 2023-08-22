@@ -1,21 +1,22 @@
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:katya/domain/index.dart';
-import 'package:katya/domain/rooms/actions.dart';
-import 'package:katya/domain/rooms/room/model.dart';
-import 'package:katya/domain/settings/theme-settings/model.dart';
-import 'package:katya/domain/settings/theme-settings/selectors.dart';
-import 'package:katya/domain/user/actions.dart';
-import 'package:katya/domain/user/model.dart';
-import 'package:katya/domain/user/selectors.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/formatters.dart';
 import 'package:katya/global/strings.dart';
+import 'package:katya/store/index.dart';
+import 'package:katya/store/rooms/actions.dart';
+import 'package:katya/store/rooms/room/model.dart';
+import 'package:katya/store/settings/theme-settings/model.dart';
+import 'package:katya/store/settings/theme-settings/selectors.dart';
+import 'package:katya/store/user/actions.dart';
+import 'package:katya/store/user/model.dart';
+import 'package:katya/store/user/selectors.dart';
 import 'package:katya/views/behaviors.dart';
 import 'package:katya/views/widgets/buttons/button-solid.dart';
 import 'package:katya/views/widgets/buttons/button-text-opacity.dart';
@@ -24,7 +25,7 @@ import 'package:katya/views/widgets/lists/list-user-bubbles.dart';
 import 'package:katya/views/widgets/modals/modal-image-options.dart';
 
 class CreatePublicGroupScreen extends StatefulWidget {
-  const CreatePublicGroupScreen({super.key});
+  const CreatePublicGroupScreen({Key? key}) : super(key: key);
 
   @override
   CreateGroupPublicState createState() => CreateGroupPublicState();
@@ -130,14 +131,14 @@ class CreateGroupPublicState extends State<CreatePublicGroupScreen> {
           return Scaffold(
             appBar: AppBar(
               leading: IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  icon: Icon(Icons.arrow_back, color: Colors.white),
                   onPressed: () {
                     props.onClearUserInvites();
                     Navigator.pop(context, false);
                   }),
               title: Text(
                 Strings.titleCreateGroupPublic,
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w100,
                 ),
@@ -182,7 +183,7 @@ class CreateGroupPublicState extends State<CreatePublicGroupScreen> {
                                           Stack(
                                             children: [
                                               Container(
-                                                margin: const EdgeInsets.only(top: 42, bottom: 8),
+                                                margin: EdgeInsets.only(top: 42, bottom: 8),
                                                 width: imageSize,
                                                 height: imageSize,
                                                 child: GestureDetector(
@@ -218,16 +219,16 @@ class CreateGroupPublicState extends State<CreatePublicGroupScreen> {
                                             ],
                                           ),
                                           Container(
-                                            padding: const EdgeInsets.only(top: 12),
+                                            padding: EdgeInsets.only(top: 12),
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.center,
                                               children: [
                                                 Container(
-                                                  padding: const EdgeInsets.only(bottom: 4),
+                                                  padding: EdgeInsets.only(bottom: 4),
                                                   child: Text(
                                                     name ?? '',
                                                     overflow: TextOverflow.ellipsis,
-                                                    style: Theme.of(context).textTheme.bodyLarge,
+                                                    style: Theme.of(context).textTheme.bodyText1,
                                                   ),
                                                 ),
                                                 Visibility(
@@ -241,14 +242,14 @@ class CreateGroupPublicState extends State<CreatePublicGroupScreen> {
                                                       homeserver: props.homeserver ?? '',
                                                     ),
                                                     textAlign: TextAlign.center,
-                                                    style: Theme.of(context).textTheme.bodySmall,
+                                                    style: Theme.of(context).textTheme.caption,
                                                   ),
                                                 ),
                                                 Flexible(
                                                     flex: 0,
                                                     fit: FlexFit.tight,
                                                     child: Container(
-                                                      padding: const EdgeInsets.only(top: 4),
+                                                      padding: EdgeInsets.only(top: 4),
                                                       constraints: BoxConstraints(
                                                         maxWidth: width / 1.5,
                                                       ),
@@ -257,7 +258,7 @@ class CreateGroupPublicState extends State<CreatePublicGroupScreen> {
                                                         maxLines: 1,
                                                         overflow: TextOverflow.ellipsis,
                                                         textAlign: TextAlign.center,
-                                                        style: Theme.of(context).textTheme.bodySmall,
+                                                        style: Theme.of(context).textTheme.caption,
                                                       ),
                                                     )),
                                               ],
@@ -281,12 +282,12 @@ class CreateGroupPublicState extends State<CreatePublicGroupScreen> {
                                                 child: Text(
                                                   'About',
                                                   textAlign: TextAlign.start,
-                                                  style: Theme.of(context).textTheme.titleSmall,
+                                                  style: Theme.of(context).textTheme.subtitle2,
                                                 ),
                                               ),
                                               Container(
                                                 margin: Dimensions.inputMargin,
-                                                constraints: const BoxConstraints(
+                                                constraints: BoxConstraints(
                                                   maxHeight: Dimensions.inputHeight,
                                                   maxWidth: Dimensions.inputWidthMax,
                                                 ),
@@ -294,8 +295,8 @@ class CreateGroupPublicState extends State<CreatePublicGroupScreen> {
                                                   label: 'Name*',
                                                   textInputAction: TextInputAction.next,
                                                   controller: nameController,
-                                                  onSubmitted: (text) =>
-                                                      FocusScope.of(context).requestFocus(aliasFocus),
+                                                  onSubmitted: (text) => FocusScope.of(context)
+                                                      .requestFocus(aliasFocus),
                                                   onChanged: (text) => setState(() {
                                                     name = text;
                                                   }),
@@ -303,7 +304,7 @@ class CreateGroupPublicState extends State<CreatePublicGroupScreen> {
                                               ),
                                               Container(
                                                 margin: Dimensions.inputMargin,
-                                                constraints: const BoxConstraints(
+                                                constraints: BoxConstraints(
                                                   maxHeight: Dimensions.inputHeight,
                                                   maxWidth: Dimensions.inputWidthMax,
                                                 ),
@@ -312,8 +313,8 @@ class CreateGroupPublicState extends State<CreatePublicGroupScreen> {
                                                   textInputAction: TextInputAction.next,
                                                   disableSpacing: true,
                                                   focusNode: aliasFocus,
-                                                  onSubmitted: (text) =>
-                                                      FocusScope.of(context).requestFocus(topicFocus),
+                                                  onSubmitted: (text) => FocusScope.of(context)
+                                                      .requestFocus(topicFocus),
                                                   onChanged: (text) => setState(() {
                                                     alias = text;
                                                   }),
@@ -323,7 +324,7 @@ class CreateGroupPublicState extends State<CreatePublicGroupScreen> {
                                               Container(
                                                 margin: Dimensions.inputMargin,
                                                 height: Dimensions.inputEditorHeight,
-                                                constraints: const BoxConstraints(
+                                                constraints: BoxConstraints(
                                                   maxHeight: Dimensions.inputEditorHeight,
                                                   maxWidth: Dimensions.inputWidthMax,
                                                 ),
@@ -351,7 +352,7 @@ class CreateGroupPublicState extends State<CreatePublicGroupScreen> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Container(
-                                            padding: const EdgeInsets.only(
+                                            padding: EdgeInsets.only(
                                               left: 20,
                                               right: 20,
                                               top: 8,
@@ -361,7 +362,7 @@ class CreateGroupPublicState extends State<CreatePublicGroupScreen> {
                                                 Text(
                                                   Strings.labelUsers,
                                                   textAlign: TextAlign.start,
-                                                  style: Theme.of(context).textTheme.titleSmall,
+                                                  style: Theme.of(context).textTheme.subtitle2,
                                                 ),
                                               ],
                                             ),
@@ -369,7 +370,7 @@ class CreateGroupPublicState extends State<CreatePublicGroupScreen> {
                                           Container(
                                             height: Dimensions.avatarSizeLarge,
                                             width: width / 1.3,
-                                            padding: const EdgeInsets.only(left: 12),
+                                            padding: EdgeInsets.only(left: 12),
                                             child: ListUserBubbles(
                                               users: props.users,
                                               invite: true,
@@ -382,7 +383,7 @@ class CreateGroupPublicState extends State<CreatePublicGroupScreen> {
                                     Flexible(
                                       flex: 0,
                                       child: Container(
-                                        padding: const EdgeInsets.only(top: 16),
+                                        padding: EdgeInsets.only(top: 16),
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -399,7 +400,7 @@ class CreateGroupPublicState extends State<CreatePublicGroupScreen> {
                                             Container(
                                               height: Dimensions.inputHeight,
                                               margin: const EdgeInsets.all(10.0),
-                                              constraints: const BoxConstraints(
+                                              constraints: BoxConstraints(
                                                 minWidth: Dimensions.buttonWidthMin,
                                                 minHeight: Dimensions.buttonHeightMin,
                                               ),

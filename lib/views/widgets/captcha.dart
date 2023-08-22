@@ -6,22 +6,19 @@ import 'package:katya/views/widgets/lifecycle.dart';
 import 'package:katya/views/widgets/loader/loading-indicator.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-/*
- * Captcha
- * renders the captcha needed to be completed 
- * by certain matrix servers -_-
- */
 class Captcha extends StatefulWidget {
   final String? baseUrl;
   final String? publicKey;
   final Function onVerified;
 
   const Captcha({
-    super.key,
+    Key? key,
     required this.baseUrl,
     required this.publicKey,
     required this.onVerified,
-  });
+  }) : super(
+          key: key,
+        );
 
   @override
   CaptchaState createState() => CaptchaState();
@@ -49,7 +46,7 @@ class CaptchaState extends State<Captcha> with Lifecycle<Captcha> {
   Widget build(BuildContext context) => Stack(
         children: [
           WebView(
-            baseUrl: widget.baseUrl != null ? 'https://${widget.baseUrl}' : 'https://matrix.katya.wtf/',
+            baseUrl: widget.baseUrl != null ? 'https://${widget.baseUrl}' : 'matrix.katya.wtf',
             javascriptMode: JavascriptMode.unrestricted,
             javascriptChannels: {
               JavascriptChannel(

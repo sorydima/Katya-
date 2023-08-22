@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 /// existing components app wide
 class RoundedPopupMenu<T> extends StatelessWidget {
   const RoundedPopupMenu({
-    super.key,
+    Key? key,
     this.icon,
     this.onSelected,
     required this.itemBuilder,
-  });
+  }) : super(key: key);
 
   /// Called when the button is pressed to create the items to show in the menu.
   final Widget? icon;
@@ -19,7 +19,7 @@ class RoundedPopupMenu<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) => PopupMenuButton<T>(
         onSelected: onSelected,
-        icon: icon ?? const Icon(Icons.more_vert, color: Colors.white),
+        icon: icon ?? Icon(Icons.more_vert, color: Colors.white),
         itemBuilder: itemBuilder,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),

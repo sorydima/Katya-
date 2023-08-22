@@ -1,2 +1,2 @@
-/Users/sorydima/katya/android/olm/CMakeLists.txt
-/Users/sorydima/katya/android/olm/cmake/OlmConfig.cmake.in
+/Users/sorydima/Documents/GitHub/Katya-/android/olm/CMakeLists.txt
+/Users/sorydima/Documents/GitHub/Katya-/android/olm/cmake/OlmConfig.cmake.in

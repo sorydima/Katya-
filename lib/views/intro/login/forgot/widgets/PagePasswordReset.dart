@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:redux/redux.dart';
-import 'package:katya/domain/auth/actions.dart';
-import 'package:katya/domain/index.dart';
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
+import 'package:katya/store/auth/actions.dart';
+import 'package:katya/store/index.dart';
 import 'package:katya/views/widgets/input/text-field-secure.dart';
 
 class PasswordResetStep extends StatefulWidget {
-  const PasswordResetStep({super.key});
+  const PasswordResetStep({Key? key}) : super(key: key);
 
   @override
   PasswordResetStepState createState() => PasswordResetStepState();
@@ -64,8 +64,8 @@ class PasswordResetStepState extends State<PasswordResetStep> {
                 fit: FlexFit.tight,
                 child: Container(
                   width: width * 0.65,
-                  padding: const EdgeInsets.only(bottom: 8),
-                  constraints: const BoxConstraints(
+                  padding: EdgeInsets.only(bottom: 8),
+                  constraints: BoxConstraints(
                     maxHeight: Dimensions.mediaSizeMax,
                     maxWidth: Dimensions.mediaSizeMax,
                   ),
@@ -82,19 +82,19 @@ class PasswordResetStepState extends State<PasswordResetStep> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      padding: const EdgeInsets.only(bottom: 8, top: 8),
+                      padding: EdgeInsets.only(bottom: 8, top: 8),
                       child: Text(
                         Strings.contentPasswordRecommendation,
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: Theme.of(context).textTheme.caption,
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      padding: EdgeInsets.symmetric(vertical: 8),
                       child: Text(
                         'Create a password',
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headlineSmall,
+                        style: Theme.of(context).textTheme.headline5,
                       ),
                     ),
                   ],
@@ -133,7 +133,7 @@ class PasswordResetStepState extends State<PasswordResetStep> {
 
                       if (!passwordFocusNode.hasFocus) {
                         //Enable the text field's focus node request after some delay
-                        Future.delayed(const Duration(milliseconds: 100), () {
+                        Future.delayed(Duration(milliseconds: 100), () {
                           passwordFocusNode.canRequestFocus = true;
                         });
                       }
@@ -145,7 +145,7 @@ class PasswordResetStepState extends State<PasswordResetStep> {
                 ),
               ),
               Container(
-                  padding: const EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                 vertical: 8,
               )),
               Flexible(
@@ -169,14 +169,14 @@ class PasswordResetStepState extends State<PasswordResetStep> {
                     child: Container(
                       width: 12,
                       height: 12,
-                      margin: const EdgeInsets.all(6),
+                      margin: EdgeInsets.all(6),
                       decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor,
                         borderRadius: BorderRadius.circular(24),
                       ),
                       child: Container(
-                        padding: const EdgeInsets.all(6),
-                        child: const Icon(
+                        padding: EdgeInsets.all(6),
+                        child: Icon(
                           Icons.check,
                           color: Colors.white,
                         ),

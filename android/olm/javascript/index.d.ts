@@ -74,7 +74,7 @@ declare class InboundGroupSession {
     create(session_key: string): string;
     import_session(session_key: string): string;
     decrypt(message: string): {
-        message_index: number;
+        message_index: string;
         plaintext: string;
     };
     session_id(): string;

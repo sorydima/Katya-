@@ -2,17 +2,18 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:katya/domain/index.dart';
-import 'package:katya/domain/rooms/room/model.dart';
-import 'package:katya/domain/rooms/room/selectors.dart';
-import 'package:katya/domain/settings/notification-settings/actions.dart';
-import 'package:katya/domain/user/actions.dart';
-import 'package:katya/domain/user/model.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/global/values.dart';
+import 'package:katya/store/index.dart';
+import 'package:katya/store/rooms/room/model.dart';
+import 'package:katya/store/rooms/room/selectors.dart';
+import 'package:katya/store/settings/notification-settings/actions.dart';
+import 'package:katya/store/user/actions.dart';
+import 'package:katya/store/user/model.dart';
 import 'package:katya/views/home/chat/chat-detail-screen.dart';
 import 'package:katya/views/home/groups/invite-users-screen.dart';
 import 'package:katya/views/navigation.dart';
@@ -50,7 +51,7 @@ class AppBarChat extends StatefulWidget implements PreferredSizeWidget {
   final Function? onToggleSearch;
 
   const AppBarChat({
-    super.key,
+    Key? key,
     this.title = 'title:',
     this.label = 'label:',
     this.tooltip = 'tooltip:',
@@ -66,7 +67,7 @@ class AppBarChat extends StatefulWidget implements PreferredSizeWidget {
     this.badgesEnabled = true,
     this.forceFocus = false,
     this.loading = false,
-  });
+  }) : super(key: key);
 
   @override
   AppBarChatState createState() => AppBarChatState();
@@ -122,7 +123,7 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
     });
     if (searching) {
       Timer(
-        const Duration(milliseconds: 5), // hack to focus after visibility change
+        Duration(milliseconds: 5), // hack to focus after visibility change
         () => FocusScope.of(
           context!,
         ).requestFocus(
@@ -135,7 +136,7 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
   }
 
   onOpenMuteDialog(BuildContext context, _Props props) {
-    const defaultPadding = EdgeInsets.symmetric(horizontal: 10);
+    final defaultPadding = EdgeInsets.symmetric(horizontal: 10);
     showDialog(
       context: context,
       builder: (BuildContext context) => DialogRounded(
@@ -146,10 +147,10 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
                 padding: defaultPadding,
                 child: Text(
                   Strings.listItemMuteForOneHour,
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: Theme.of(context).textTheme.subtitle1,
                 )),
             onTap: () {
-              props.onMuteNotifications(const Duration(hours: 1));
+              props.onMuteNotifications(Duration(hours: 1));
               Navigator.pop(context);
             },
           ),
@@ -158,11 +159,11 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
               padding: defaultPadding,
               child: Text(
                 Strings.listItemMuteForHours(8),
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.subtitle1,
               ),
             ),
             onTap: () {
-              props.onMuteNotifications(const Duration(hours: 8));
+              props.onMuteNotifications(Duration(hours: 8));
               Navigator.pop(context);
             },
           ),
@@ -171,11 +172,11 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
               padding: defaultPadding,
               child: Text(
                 Strings.listItemMuteForOneDay,
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.subtitle1,
               ),
             ),
             onTap: () {
-              props.onMuteNotifications(const Duration(days: 1));
+              props.onMuteNotifications(Duration(days: 1));
               Navigator.pop(context);
             },
           ),
@@ -184,11 +185,11 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
               padding: defaultPadding,
               child: Text(
                 Strings.listItemMuteForDays(7),
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.subtitle1,
               ),
             ),
             onTap: () {
-              props.onMuteNotifications(const Duration(days: 7));
+              props.onMuteNotifications(Duration(days: 7));
               Navigator.pop(context);
             },
           ),
@@ -197,7 +198,7 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
               padding: defaultPadding,
               child: Text(
                 Strings.labelAlways,
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.subtitle1,
               ),
             ),
             onTap: () {
@@ -213,7 +214,8 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
   @override
   Widget build(BuildContext context) => StoreConnector<AppState, _Props>(
         distinct: true,
-        converter: (Store<AppState> store) => _Props.mapStateToProps(store, widget.room.id),
+        converter: (Store<AppState> store) =>
+            _Props.mapStateToProps(store, widget.room.id),
         builder: (context, props) => AppBar(
           titleSpacing: 0.0,
           automaticallyImplyLeading: false,
@@ -221,9 +223,9 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
           title: Row(
             children: <Widget>[
               Container(
-                margin: const EdgeInsets.only(left: 8),
+                margin: EdgeInsets.only(left: 8),
                 child: IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  icon: Icon(Icons.arrow_back, color: Colors.white),
                   onPressed: () => widget.onBack!(),
                   tooltip: Strings.labelBack,
                 ),
@@ -275,7 +277,9 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
                         ),
                       ),
                       Visibility(
-                        visible: widget.badgesEnabled && widget.room.type == 'group' && !widget.room.invite,
+                        visible: widget.badgesEnabled &&
+                            widget.room.type == 'group' &&
+                            !widget.room.invite,
                         child: Positioned(
                           right: 0,
                           bottom: 0,
@@ -295,7 +299,9 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
                         ),
                       ),
                       Visibility(
-                        visible: widget.badgesEnabled && widget.room.type == 'public' && !widget.room.invite,
+                        visible: widget.badgesEnabled &&
+                            widget.room.type == 'public' &&
+                            !widget.room.invite,
                         child: Positioned(
                           right: 0,
                           bottom: 0,
@@ -322,7 +328,10 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
                 child: Text(
                   widget.room.name!,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1!
+                      .copyWith(color: Colors.white),
                 ),
               ),
             ],
@@ -331,7 +340,7 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
             Visibility(
               visible: DEBUG_MODE,
               child: IconButton(
-                icon: const Icon(Icons.gamepad),
+                icon: Icon(Icons.gamepad),
                 iconSize: Dimensions.buttonAppBarSize,
                 tooltip: 'Debug Room Function',
                 color: Colors.white,
@@ -372,7 +381,7 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
                       break;
                   }
                 },
-                icon: const Icon(Icons.more_vert, color: Colors.white),
+                icon: Icon(Icons.more_vert, color: Colors.white),
                 itemBuilder: (BuildContext context) {
                   final menu = <PopupMenuEntry<ChatOptions>>[
                     const PopupMenuItem<ChatOptions>(
@@ -432,7 +441,8 @@ class _Props extends Equatable {
   @override
   List<Object> get props => [];
 
-  static _Props mapStateToProps(Store<AppState> store, String? roomId) => _Props(
+  static _Props mapStateToProps(Store<AppState> store, String? roomId) =>
+      _Props(
         currentUser: store.state.authStore.user,
         roomUsers: (store.state.roomStore.rooms[roomId]?.userIds ?? [])
             .map((id) => store.state.userStore.users[id])
@@ -448,7 +458,8 @@ class _Props extends Equatable {
           ));
         },
         onToggleNotifications: () {
-          store.dispatch(toggleChatNotifications(roomId: roomId!, enabled: false));
+          store.dispatch(
+              toggleChatNotifications(roomId: roomId!, enabled: false));
         },
       );
 }

@@ -6,12 +6,12 @@ import 'package:katya/views/widgets/captcha.dart';
 
 class DialogCaptcha extends StatefulWidget {
   const DialogCaptcha({
-    super.key,
+    Key? key,
     this.hostname,
     this.publicKey,
     this.onCancel,
     this.onComplete,
-  });
+  }) : super(key: key);
 
   final String? hostname;
   final String? publicKey;
@@ -33,13 +33,13 @@ class _DialogCaptchaState extends State<DialogCaptcha> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
-      titlePadding: const EdgeInsets.only(
+      titlePadding: EdgeInsets.only(
         left: 24,
         right: 16,
         top: 16,
         bottom: 16,
       ),
-      contentPadding: const EdgeInsets.only(
+      contentPadding: EdgeInsets.only(
         left: 8,
         right: 8,
         bottom: 16,
@@ -52,7 +52,7 @@ class _DialogCaptchaState extends State<DialogCaptcha> {
             child: Container(
               width: width,
               height: height * 0.5,
-              constraints: const BoxConstraints(
+              constraints: BoxConstraints(
                 minWidth: Dimensions.inputWidthMin,
                 maxWidth: Dimensions.inputWidthMax,
               ),

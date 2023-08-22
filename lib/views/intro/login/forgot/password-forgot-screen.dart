@@ -1,12 +1,13 @@
 import 'package:equatable/equatable.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:katya/domain/auth/actions.dart';
-import 'package:katya/domain/index.dart';
-import 'package:katya/domain/settings/theme-settings/selectors.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
+import 'package:katya/store/auth/actions.dart';
+import 'package:katya/store/index.dart';
+import 'package:katya/store/settings/theme-settings/selectors.dart';
 import 'package:katya/views/behaviors.dart';
 import 'package:katya/views/intro/login/forgot/widgets/PageEmailVerify.dart';
 import 'package:katya/views/navigation.dart';
@@ -14,7 +15,7 @@ import 'package:katya/views/widgets/buttons/button-solid.dart';
 import 'package:katya/views/widgets/dialogs/dialog-explaination.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
-  const ForgotPasswordScreen({super.key});
+  const ForgotPasswordScreen({Key? key}) : super(key: key);
 
   @override
   ForgotPasswordState createState() => ForgotPasswordState();
@@ -27,7 +28,7 @@ class ForgotPasswordState extends State<ForgotPasswordScreen> {
   PageController? pageController;
 
   var sections = [
-    const EmailVerifyStep(),
+    EmailVerifyStep(),
   ];
 
   ForgotPasswordState();
@@ -87,8 +88,10 @@ class ForgotPasswordState extends State<ForgotPasswordScreen> {
               behavior: DefaultScrollBehavior(),
               child: SingleChildScrollView(
                 child: Container(
-                  width: width, // set actual height and width for flex constraints
-                  height: height, // set actual height and width for flex constraints
+                  width:
+                      width, // set actual height and width for flex constraints
+                  height:
+                      height, // set actual height and width for flex constraints
                   child: Flex(
                     direction: Axis.vertical,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -103,7 +106,7 @@ class ForgotPasswordState extends State<ForgotPasswordScreen> {
                           children: <Widget>[
                             Container(
                               width: width,
-                              constraints: const BoxConstraints(
+                              constraints: BoxConstraints(
                                 minHeight: Dimensions.pageViewerHeightMin,
                                 maxHeight: Dimensions.heightMax * 0.5,
                               ),
@@ -111,7 +114,7 @@ class ForgotPasswordState extends State<ForgotPasswordScreen> {
                                 pageSnapping: true,
                                 allowImplicitScrolling: false,
                                 controller: pageController,
-                                physics: const NeverScrollableScrollPhysics(),
+                                physics: NeverScrollableScrollPhysics(),
                                 children: sections,
                               ),
                             ),
@@ -126,7 +129,7 @@ class ForgotPasswordState extends State<ForgotPasswordScreen> {
                           children: <Widget>[
                             Container(
                               height: Dimensions.inputHeight,
-                              constraints: const BoxConstraints(
+                              constraints: BoxConstraints(
                                 minWidth: Dimensions.buttonWidthMin,
                               ),
                               child: Stack(
@@ -136,13 +139,15 @@ class ForgotPasswordState extends State<ForgotPasswordScreen> {
                                     child: ButtonSolid(
                                       text: Strings.buttonSendVerification,
                                       loading: loading,
-                                      disabled: !props.isEmailValid || !props.isHomeserverValid,
+                                      disabled: !props.isEmailValid ||
+                                          !props.isHomeserverValid,
                                       onPressed: () async {
                                         setState(() {
                                           loading = true;
                                         });
 
-                                        final result = await props.onSendVerification(sendAttempt);
+                                        final result = await props
+                                            .onSendVerification(sendAttempt);
 
                                         if (result) {
                                           onShowConfirmDialog();
@@ -169,7 +174,8 @@ class ForgotPasswordState extends State<ForgotPasswordScreen> {
                                           loading = true;
                                         });
 
-                                        final result = await props.onConfirmVerification();
+                                        final result =
+                                            await props.onConfirmVerification();
 
                                         if (result) {
                                           onVerificationConfirmed();

@@ -3,18 +3,18 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:katya/domain/index.dart';
-import 'package:katya/domain/settings/theme-settings/model.dart';
-import 'package:katya/domain/settings/theme-settings/selectors.dart';
+import 'package:katya/store/index.dart';
+import 'package:katya/store/settings/theme-settings/model.dart';
+import 'package:katya/store/settings/theme-settings/selectors.dart';
 
 class CardSection extends StatelessWidget {
   const CardSection({
-    super.key,
+    Key? key,
     this.child,
     this.margin,
     this.padding,
     this.elevation,
-  });
+  }) : super(key: key);
 
   final Widget? child;
   final EdgeInsets? margin;
@@ -27,12 +27,12 @@ class CardSection extends StatelessWidget {
         converter: (Store<AppState> store) => Props.mapStateToProps(store),
         builder: (context, props) {
           return Card(
-            margin: margin ?? const EdgeInsets.symmetric(vertical: 4),
+            margin: margin ?? EdgeInsets.symmetric(vertical: 4),
             elevation: elevation ?? 0.5,
             // Re-use the System UI color because they are exactly the same
             color: Color(selectSystemUiColor(props.themeType)),
             child: Container(
-              padding: padding ?? const EdgeInsets.only(top: 12),
+              padding: padding ?? EdgeInsets.only(top: 12),
               child: child,
             ),
           );

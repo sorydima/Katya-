@@ -10,7 +10,7 @@ import 'package:katya/views/widgets/modals/modal-lock-overlay/lock-controller.da
 
 class LockOverlay extends StatefulWidget {
   const LockOverlay({
-    super.key,
+    Key? key,
     required this.onVerify,
     required this.title, // i18n Strings isn't a constant. You gotta pass it in
     required this.confirmTitle, // i18n Strings isn't a constant. You gotta pass it in
@@ -31,7 +31,8 @@ class LockOverlay extends StatefulWidget {
     this.cancelButton,
     this.deleteButton,
     this.lockController,
-  }) : assert(maxRetries > -1);
+  })  : assert(maxRetries > -1),
+        super(key: key);
 
   /// Configurations of [ScreenLock].
   final ScreenLockConfig screenLockConfig;

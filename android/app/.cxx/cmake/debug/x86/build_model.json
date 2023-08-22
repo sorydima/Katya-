@@ -6,12 +6,12 @@
     "deprecated": false,
     "default": true
   },
-  "originalCxxBuildFolder": "/Users/sorydima/katya/android/app/.cxx/cmake/debug/x86",
-  "cxxBuildFolder": "/Users/sorydima/katya/android/app/.cxx/cmake/debug/x86",
+  "originalCxxBuildFolder": "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/debug/x86",
+  "cxxBuildFolder": "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/debug/x86",
   "abiPlatformVersion": 21,
   "cmake": {
-    "cmakeWrappingBaseFolder": "/Users/sorydima/katya/android/app/.cxx/cxx/debug/x86",
-    "cmakeArtifactsBaseFolder": "/Users/sorydima/katya/android/app/.cxx/cmake/debug/x86",
+    "cmakeWrappingBaseFolder": "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cxx/debug/x86",
+    "cmakeArtifactsBaseFolder": "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/debug/x86",
     "effectiveConfiguration": {
       "name": "traditional-android-studio-cmake-environment",
       "description": "Composite reified CMakeSettings configuration",
@@ -19,13 +19,13 @@
       "inheritEnvironments": [
         "ndk"
       ],
-      "buildRoot": "/Users/sorydima/katya/android/app/.cxx/cmake/debug/x86",
+      "buildRoot": "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/debug/x86",
       "cmakeToolchain": "/Users/sorydima/Library/Android/sdk/ndk/21.4.7075529/build/cmake/android.toolchain.cmake",
       "cmakeExecutable": "/Users/sorydima/Library/Android/sdk/cmake/3.18.1/bin/cmake",
       "variables": [
         {
           "name": "CMAKE_FIND_ROOT_PATH",
-          "value": "/Users/sorydima/katya/android/app/.cxx/cmake/debug/prefab/x86/prefab"
+          "value": "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/debug/prefab/x86/prefab"
         },
         {
           "name": "CMAKE_BUILD_TYPE",
@@ -61,11 +61,11 @@
         },
         {
           "name": "CMAKE_LIBRARY_OUTPUT_DIRECTORY",
-          "value": "/Users/sorydima/katya/build/app/intermediates/cmake/debug/obj/x86"
+          "value": "/Users/sorydima/Documents/GitHub/Katya-/build/app/intermediates/cmake/debug/obj/x86"
         },
         {
           "name": "CMAKE_RUNTIME_OUTPUT_DIRECTORY",
-          "value": "/Users/sorydima/katya/build/app/intermediates/cmake/debug/obj/x86"
+          "value": "/Users/sorydima/Documents/GitHub/Katya-/build/app/intermediates/cmake/debug/obj/x86"
         },
         {
           "name": "CMAKE_MAKE_PROGRAM",
@@ -85,7 +85,7 @@
         }
       ]
     },
-    "cmakeServerLogFile": "/Users/sorydima/katya/android/app/.cxx/cmake/debug/x86/cmake_server_log.txt"
+    "cmakeServerLogFile": "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/debug/x86/cmake_server_log.txt"
   },
   "variant": {
     "buildSystemArgumentList": [
@@ -94,8 +94,8 @@
     "cFlagsList": [],
     "cppFlagsList": [],
     "variantName": "debug",
-    "objFolder": "/Users/sorydima/katya/build/app/intermediates/cmake/debug/obj",
-    "soFolder": "/Users/sorydima/katya/build/app/intermediates/cmake/debug/lib",
+    "objFolder": "/Users/sorydima/Documents/GitHub/Katya-/build/app/intermediates/cmake/debug/obj",
+    "soFolder": "/Users/sorydima/Documents/GitHub/Katya-/build/app/intermediates/cmake/debug/lib",
     "isDebuggableEnabled": true,
     "validAbiList": [
       "ARMEABI_V7A",
@@ -107,13 +107,13 @@
     "implicitBuildTargetSet": [],
     "cmakeSettingsConfiguration": "android-gradle-plugin-predetermined-name",
     "module": {
-      "cxxFolder": "/Users/sorydima/katya/android/app/.cxx",
+      "cxxFolder": "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx",
       "splitsAbiFilterSet": [],
-      "intermediatesFolder": "/Users/sorydima/katya/build/app/intermediates",
+      "intermediatesFolder": "/Users/sorydima/Documents/GitHub/Katya-/build/app/intermediates",
       "gradleModulePathName": ":app",
-      "moduleRootFolder": "/Users/sorydima/katya/android/app",
-      "moduleBuildFile": "/Users/sorydima/katya/android/app/build.gradle",
-      "makeFile": "/Users/sorydima/katya/android/olm/CMakeLists.txt",
+      "moduleRootFolder": "/Users/sorydima/Documents/GitHub/Katya-/android/app",
+      "moduleBuildFile": "/Users/sorydima/Documents/GitHub/Katya-/android/app/build.gradle",
+      "makeFile": "/Users/sorydima/Documents/GitHub/Katya-/android/olm/CMakeLists.txt",
       "buildSystem": "CMAKE",
       "ndkFolder": "/Users/sorydima/Library/Android/sdk/ndk/21.4.7075529",
       "ndkVersion": "21.4.7075529",
@@ -199,9 +199,9 @@
         "SYSTEM": {}
       },
       "project": {
-        "rootBuildGradleFolder": "/Users/sorydima/katya/android",
-        "cxxFolder": "/Users/sorydima/katya/android/.cxx",
-        "compilerSettingsCacheFolder": "/Users/sorydima/katya/android/.cxx",
+        "rootBuildGradleFolder": "/Users/sorydima/Documents/GitHub/Katya-/android",
+        "cxxFolder": "/Users/sorydima/Documents/GitHub/Katya-/android/.cxx",
+        "compilerSettingsCacheFolder": "/Users/sorydima/Documents/GitHub/Katya-/android/.cxx",
         "sdkFolder": "/Users/sorydima/Library/Android/sdk",
         "isNativeCompilerSettingsCacheEnabled": false,
         "isBuildOnlyTargetAbiEnabled": true,
@@ -211,10 +211,10 @@
       },
       "nativeBuildOutputLevel": "QUIET"
     },
-    "prefabDirectory": "/Users/sorydima/katya/android/app/.cxx/cmake/debug/prefab"
+    "prefabDirectory": "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/debug/prefab"
   },
   "buildSettings": {
     "environmentVariables": []
   },
-  "prefabFolder": "/Users/sorydima/katya/android/app/.cxx/cmake/debug/prefab/x86"
+  "prefabFolder": "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/debug/prefab/x86"
 }

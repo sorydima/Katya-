@@ -5,16 +5,9 @@ import 'package:katya/global/strings.dart';
 
 import 'package:katya/views/widgets/buttons/button-text.dart';
 
-///
-/// Confirmation Dialog
-///
-/// Use this *instead* of AlertDialog
-/// as they come with desired styling and generally
-/// what is needed for a confirmation layout
-///
 class DialogConfirm extends StatelessWidget {
   const DialogConfirm({
-    super.key,
+    Key? key,
     this.title = '',
     this.content = '',
     this.loading = false,
@@ -24,7 +17,7 @@ class DialogConfirm extends StatelessWidget {
     this.dismissText,
     this.onConfirm,
     this.onDismiss,
-  });
+  }) : super(key: key);
 
   final String title;
   final String content;
@@ -50,7 +43,7 @@ class DialogConfirm extends StatelessWidget {
         children: <Widget>[
           Text(content),
           Container(
-            padding: const EdgeInsets.only(top: 8),
+            padding: EdgeInsets.only(top: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -59,7 +52,7 @@ class DialogConfirm extends StatelessWidget {
                   onPressed: () => onDismiss!(),
                   textWidget: Text(
                     dismissText ?? Strings.buttonCancel.capitalize(),
-                    style: Theme.of(context).textTheme.titleMedium?.merge(dismissStyle).copyWith(
+                    style: Theme.of(context).textTheme.subtitle1?.merge(dismissStyle).copyWith(
                           fontWeight: FontWeight.w500,
                         ),
                   ),
@@ -71,7 +64,7 @@ class DialogConfirm extends StatelessWidget {
                     confirmText ?? Strings.buttonConfirm.capitalize(),
                     style: Theme.of(context)
                         .textTheme
-                        .titleMedium
+                        .subtitle1
                         ?.copyWith(
                           color: Theme.of(context).colorScheme.secondary,
                           fontWeight: FontWeight.w500,

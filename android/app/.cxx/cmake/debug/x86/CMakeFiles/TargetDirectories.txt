@@ -1,7 +1,7 @@
-/Users/sorydima/katya/android/app/.cxx/cmake/debug/x86/CMakeFiles/install/local.dir
-/Users/sorydima/katya/android/app/.cxx/cmake/debug/x86/CMakeFiles/install/strip.dir
-/Users/sorydima/katya/android/app/.cxx/cmake/debug/x86/CMakeFiles/install.dir
-/Users/sorydima/katya/android/app/.cxx/cmake/debug/x86/CMakeFiles/list_install_components.dir
-/Users/sorydima/katya/android/app/.cxx/cmake/debug/x86/CMakeFiles/rebuild_cache.dir
-/Users/sorydima/katya/android/app/.cxx/cmake/debug/x86/CMakeFiles/edit_cache.dir
-/Users/sorydima/katya/android/app/.cxx/cmake/debug/x86/CMakeFiles/olm.dir
+/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/debug/x86/CMakeFiles/install/local.dir
+/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/debug/x86/CMakeFiles/install/strip.dir
+/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/debug/x86/CMakeFiles/install.dir
+/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/debug/x86/CMakeFiles/list_install_components.dir
+/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/debug/x86/CMakeFiles/rebuild_cache.dir
+/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/debug/x86/CMakeFiles/edit_cache.dir
+/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/debug/x86/CMakeFiles/olm.dir

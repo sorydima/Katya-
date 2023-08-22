@@ -14,6 +14,7 @@ if (typeof(window) !== 'undefined') {
         var bytes = nodeCrypto['randomBytes'](buf.length);
         buf.set(bytes);
     };
+    process = global["process"];
 } else {
     throw new Error("Cannot find global to attach library to");
 }

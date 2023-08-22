@@ -5,14 +5,14 @@ import 'package:katya/global/dimensions.dart';
 
 class ButtonTextOpacity extends StatefulWidget {
   const ButtonTextOpacity({
-    super.key,
+    Key? key,
     this.text,
     this.textWidget,
     this.loading = false,
     this.disabled = false,
     this.color,
     this.onPressed,
-  });
+  }) : super(key: key);
 
   final bool loading;
   final bool disabled;
@@ -44,11 +44,11 @@ class ButtonTextState extends State<ButtonTextOpacity> {
           }),
           child: widget.loading
               ? Container(
-                  constraints: const BoxConstraints(
+                  constraints: BoxConstraints(
                     maxHeight: 24,
                     maxWidth: 24,
                   ),
-                  child: const CircularProgressIndicator(
+                  child: CircularProgressIndicator(
                     strokeWidth: Dimensions.strokeWidthDefault,
                     backgroundColor: Colors.white,
                     valueColor: AlwaysStoppedAnimation<Color>(
@@ -66,12 +66,12 @@ class ButtonTextState extends State<ButtonTextOpacity> {
                       letterSpacing: 0.8,
                       color: () {
                         if (widget.disabled) {
-                          return const Color(AppColors.greyLight);
+                          return Color(AppColors.greyLight);
                         }
                         if (widget.color != null) {
                           return widget.color;
                         }
-                        return Theme.of(context).textTheme.labelLarge!.color;
+                        return Theme.of(context).textTheme.button!.color;
                       }(),
                     ),
                   )),

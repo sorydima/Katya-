@@ -32,6 +32,8 @@ import json
 from builtins import bytes, super
 from typing import AnyStr, Dict, Optional, Type
 
+from future.utils import bytes_to_native_str
+
 # pylint: disable=no-name-in-module
 from _libolm import ffi, lib  # type: ignore
 
@@ -91,7 +93,8 @@ class Account(object):
         if ret != lib.olm_error():
             return
 
-        last_error = ffi.string((lib.olm_account_last_error(self._account))).decode()
+        last_error = bytes_to_native_str(
+            ffi.string((lib.olm_account_last_error(self._account))))
 
         raise OlmAccountError(last_error)
 
@@ -206,7 +209,7 @@ class Account(object):
                 for i in range(0, len(bytes_message)):
                     bytes_message[i] = 0
 
-        return ffi.unpack(out_buffer, out_length).decode()
+        return bytes_to_native_str(ffi.unpack(out_buffer, out_length))
 
     @property
     def max_one_time_keys(self):

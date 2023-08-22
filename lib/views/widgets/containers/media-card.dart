@@ -5,12 +5,12 @@ import 'package:katya/global/noop.dart';
 
 class MediaCard extends StatelessWidget {
   const MediaCard({
-    super.key,
+    Key? key,
     this.text,
     this.icon = Icons.photo,
     this.onPress = noop,
     this.disabled = false,
-  });
+  }) : super(key: key);
 
   final String? text;
   final IconData? icon;
@@ -28,12 +28,12 @@ class MediaCard extends StatelessWidget {
           onLongPress: disabled ? null : () => onPress(),
           child: Container(
             width: 76,
-            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+            padding: EdgeInsets.symmetric(vertical: 4, horizontal: 4),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  padding: const EdgeInsets.only(bottom: 8, top: 8),
+                  padding: EdgeInsets.only(bottom: 8, top: 8),
                   child: Icon(
                     icon,
                     size: 39,
@@ -43,7 +43,7 @@ class MediaCard extends StatelessWidget {
                 Text(
                   text ?? '',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  style: Theme.of(context).textTheme.button?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
                       ),

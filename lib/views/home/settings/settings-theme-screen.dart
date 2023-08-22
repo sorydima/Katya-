@@ -2,19 +2,20 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:katya/domain/index.dart';
-import 'package:katya/domain/settings/theme-settings/actions.dart';
-import 'package:katya/domain/settings/theme-settings/selectors.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
+import 'package:katya/store/index.dart';
+import 'package:katya/store/settings/actions.dart';
+import 'package:katya/store/settings/theme-settings/actions.dart';
+import 'package:katya/store/settings/theme-settings/selectors.dart';
 import 'package:katya/views/widgets/appbars/appbar-normal.dart';
 import 'package:katya/views/widgets/containers/card-section.dart';
 import 'package:katya/views/widgets/dialogs/dialog-color-picker.dart';
 import 'package:katya/views/widgets/dialogs/dialog-confirm.dart';
 
 class ThemeSettingsScreen extends StatefulWidget {
-  const ThemeSettingsScreen({super.key});
+  const ThemeSettingsScreen({Key? key}) : super(key: key);
 
   @override
   _ThemeSettingsScreenState createState() => _ThemeSettingsScreenState();
@@ -104,7 +105,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                           child: Text(
                             'Color',
                             textAlign: TextAlign.start,
-                            style: Theme.of(context).textTheme.titleSmall,
+                            style: Theme.of(context).textTheme.subtitle2,
                           ),
                         ),
                         ListTile(
@@ -116,7 +117,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                           contentPadding: Dimensions.listPadding,
                           title: Text(
                             'Primary Color',
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context).textTheme.subtitle1,
                           ),
                           trailing: CircleAvatar(
                             radius: 16,
@@ -132,7 +133,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                           contentPadding: Dimensions.listPadding,
                           title: Text(
                             'Accent Color',
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context).textTheme.subtitle1,
                           ),
                           trailing: CircleAvatar(
                             radius: 16,
@@ -148,7 +149,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                           contentPadding: Dimensions.listPadding,
                           title: Text(
                             'App Bar Color',
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context).textTheme.subtitle1,
                           ),
                           trailing: CircleAvatar(
                             radius: 16,
@@ -160,7 +161,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                           contentPadding: Dimensions.listPadding,
                           title: Text(
                             'Theme',
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context).textTheme.subtitle1,
                           ),
                           trailing: Text(
                             props.themeType,
@@ -178,18 +179,19 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                           child: Text(
                             'App',
                             textAlign: TextAlign.start,
-                            style: Theme.of(context).textTheme.titleSmall,
+                            style: Theme.of(context).textTheme.subtitle2,
                           ),
                         ),
                         ListTile(
                           contentPadding: Dimensions.listPadding,
                           title: Text(
                             'Chat Type Badges',
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context).textTheme.subtitle1,
                           ),
                           trailing: Switch(
                             value: props.roomTypeBadgesEnabled,
-                            onChanged: (value) => props.onToggleRoomTypeBadges(),
+                            onChanged: (value) =>
+                                props.onToggleRoomTypeBadges(),
                             activeColor: Color(props.primaryColor),
                           ),
                           onTap: () => props.onToggleRoomTypeBadges(),
@@ -199,7 +201,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                           contentPadding: Dimensions.listPadding,
                           title: Text(
                             'Avatar Shape',
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context).textTheme.subtitle1,
                           ),
                           trailing: Text(
                             props.avatarShape,
@@ -210,7 +212,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                           contentPadding: Dimensions.listPadding,
                           title: Text(
                             'Home FAB Type',
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context).textTheme.subtitle1,
                           ),
                           trailing: Text(props.mainFabType),
                         ),
@@ -219,7 +221,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                           contentPadding: Dimensions.listPadding,
                           title: Text(
                             'Home FAB Location',
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context).textTheme.subtitle1,
                           ),
                           trailing: Text(
                             props.mainFabLocation,
@@ -230,7 +232,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                           contentPadding: Dimensions.listPadding,
                           title: Text(
                             'Home FAB Labels',
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context).textTheme.subtitle1,
                           ),
                           trailing: Text(
                             props.mainFabLabel,
@@ -248,14 +250,14 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                           child: Text(
                             'Fonts',
                             textAlign: TextAlign.start,
-                            style: Theme.of(context).textTheme.titleSmall,
+                            style: Theme.of(context).textTheme.subtitle2,
                           ),
                         ),
                         ListTile(
                           contentPadding: Dimensions.listPadding,
                           title: Text(
                             'Font',
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context).textTheme.subtitle1,
                           ),
                           trailing: Text(
                             props.fontName,
@@ -266,7 +268,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                           contentPadding: Dimensions.listPadding,
                           title: Text(
                             'Font Size',
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context).textTheme.subtitle1,
                           ),
                           trailing: Text(
                             props.fontSize,
@@ -277,7 +279,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                           contentPadding: Dimensions.listPadding,
                           title: Text(
                             'Message Size',
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context).textTheme.subtitle1,
                           ),
                           trailing: Text(
                             props.messageSize,
@@ -367,16 +369,23 @@ class _Props extends Equatable {
         primaryColor: store.state.settingsStore.themeSettings.primaryColor,
         accentColor: store.state.settingsStore.themeSettings.accentColor,
         appBarColor: store.state.settingsStore.themeSettings.appBarColor,
-        themeType: selectThemeTypeString(store.state.settingsStore.themeSettings.themeType),
+        themeType: selectThemeTypeString(
+            store.state.settingsStore.themeSettings.themeType),
         language: store.state.settingsStore.language,
-        fontName: selectFontNameString(store.state.settingsStore.themeSettings.fontName),
-        fontSize: selectFontSizeString(store.state.settingsStore.themeSettings.fontSize),
-        messageSize: selectMessageSizeString(store.state.settingsStore.themeSettings.messageSize),
-        avatarShape: selectAvatarShapeString(store.state.settingsStore.themeSettings.avatarShape),
+        fontName: selectFontNameString(
+            store.state.settingsStore.themeSettings.fontName),
+        fontSize: selectFontSizeString(
+            store.state.settingsStore.themeSettings.fontSize),
+        messageSize: selectMessageSizeString(
+            store.state.settingsStore.themeSettings.messageSize),
+        avatarShape: selectAvatarShapeString(
+            store.state.settingsStore.themeSettings.avatarShape),
         roomTypeBadgesEnabled: store.state.settingsStore.roomTypeBadgesEnabled,
         mainFabType: selectMainFabType(store.state.settingsStore.themeSettings),
-        mainFabLabel: selectMainFabLabels(store.state.settingsStore.themeSettings),
-        mainFabLocation: selectMainFabLocation(store.state.settingsStore.themeSettings),
+        mainFabLabel:
+            selectMainFabLabels(store.state.settingsStore.themeSettings),
+        mainFabLocation:
+            selectMainFabLocation(store.state.settingsStore.themeSettings),
         onToggleRoomTypeBadges: () => store.dispatch(
           toggleRoomTypeBadges(),
         ),

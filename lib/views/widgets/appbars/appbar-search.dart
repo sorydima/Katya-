@@ -8,7 +8,7 @@ import 'package:touchable_opacity/touchable_opacity.dart';
 
 class AppBarSearch extends StatefulWidget implements PreferredSizeWidget {
   const AppBarSearch({
-    super.key,
+    Key? key,
     this.title = 'title:',
     this.label = 'label:',
     this.tooltip = 'tooltip:',
@@ -23,7 +23,7 @@ class AppBarSearch extends StatefulWidget implements PreferredSizeWidget {
     this.onChange,
     this.onSearch,
     this.onToggleSearch,
-  });
+  }) : super(key: key);
 
   final bool loading;
   final bool forceFocus;
@@ -111,7 +111,7 @@ class AppBarSearchState extends State<AppBarSearch> with Lifecycle<AppBarSearch>
   Widget build(BuildContext context) => AppBar(
         elevation: widget.elevation,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => onBack(),
           tooltip: Strings.labelBack,
         ),
@@ -124,7 +124,7 @@ class AppBarSearchState extends State<AppBarSearch> with Lifecycle<AppBarSearch>
                 onTap: () => onToggleSearch(context: context),
                 child: Text(
                   widget.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w100,
                   ),
@@ -154,7 +154,7 @@ class AppBarSearchState extends State<AppBarSearch> with Lifecycle<AppBarSearch>
                     });
                   },
                   cursorColor: Colors.white,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 20,
                     color: Colors.white,
                     fontWeight: FontWeight.w100,
@@ -166,7 +166,7 @@ class AppBarSearchState extends State<AppBarSearch> with Lifecycle<AppBarSearch>
                     errorBorder: InputBorder.none,
                     disabledBorder: InputBorder.none,
                     hintText: widget.label,
-                    hintStyle: const TextStyle(
+                    hintStyle: TextStyle(
                       fontSize: 20,
                       color: Colors.white,
                       fontWeight: FontWeight.w100,

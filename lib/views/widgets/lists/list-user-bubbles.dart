@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:katya/domain/user/model.dart';
+
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
+import 'package:katya/store/user/model.dart';
 import 'package:katya/views/home/chat/chat-detail-all-users-screen.dart';
 import 'package:katya/views/home/groups/invite-users-screen.dart';
 import 'package:katya/views/navigation.dart';
@@ -15,13 +16,13 @@ import 'package:katya/views/widgets/modals/modal-user-details.dart';
 /// are still indexed by room
 class ListUserBubbles extends StatelessWidget {
   const ListUserBubbles({
-    super.key,
+    Key? key,
     this.users = const [],
     this.roomId = '',
     this.invite = false,
     this.forceOption = false,
     this.max = 12,
-  });
+  }) : super(key: key);
 
   final int max;
   final bool invite;
@@ -54,7 +55,7 @@ class ListUserBubbles extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (BuildContext context, int index) {
-              final user = users[index] ?? const User();
+              final user = users[index] ?? User();
 
               return Align(
                 child: GestureDetector(
@@ -83,8 +84,8 @@ class ListUserBubbles extends StatelessWidget {
           Visibility(
             visible: users.length > max || forceOption,
             child: Container(
-              margin: const EdgeInsets.only(left: 4, right: 12),
-              padding: const EdgeInsets.symmetric(vertical: 14),
+              margin: EdgeInsets.only(left: 4, right: 12),
+              padding: EdgeInsets.symmetric(vertical: 14),
               child: ClipOval(
                 child: Material(
                   color: Theme.of(context).scaffoldBackgroundColor, // button color
@@ -112,18 +113,18 @@ class ListUserBubbles extends StatelessWidget {
                         width: Dimensions.avatarSize,
                         height: Dimensions.avatarSize,
                         decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(
+                          borderRadius: BorderRadius.all(
                             Radius.circular(Dimensions.avatarSize),
                           ),
                           border: Border.all(
                             width: 4,
-                            color: Theme.of(context).textTheme.bodySmall!.color!,
+                            color: Theme.of(context).textTheme.caption!.color!,
                           ),
                         ),
                         child: Icon(
                           invite ? Icons.edit : Icons.arrow_forward_ios,
                           size: invite ? Dimensions.iconSize : Dimensions.iconSizeLarge,
-                          color: Theme.of(context).textTheme.bodySmall!.color,
+                          color: Theme.of(context).textTheme.caption!.color,
                         ),
                       ),
                     ),

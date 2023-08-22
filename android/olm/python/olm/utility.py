@@ -33,6 +33,8 @@ Examples:
 # pylint: disable=redefined-builtin,unused-import
 from typing import AnyStr, Type
 
+from future.utils import bytes_to_native_str
+
 # pylint: disable=no-name-in-module
 from _libolm import ffi, lib  # type: ignore
 
@@ -121,7 +123,7 @@ class _Utility(object):
 
         cls._check_error(ret, OlmHashError)
 
-        return ffi.unpack(hash, hash_length).decode()
+        return bytes_to_native_str(ffi.unpack(hash, hash_length))
 
 
 def ed25519_verify(key, message, signature):

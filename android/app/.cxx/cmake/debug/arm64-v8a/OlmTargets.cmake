@@ -45,13 +45,13 @@ unset(_expectedTargets)
 add_library(Olm::Olm SHARED IMPORTED)
 
 set_target_properties(Olm::Olm PROPERTIES
-  INTERFACE_INCLUDE_DIRECTORIES "/Users/sorydima/katya/android/olm/include"
+  INTERFACE_INCLUDE_DIRECTORIES "/Users/sorydima/Documents/GitHub/Katya-/android/olm/include"
 )
 
 # Import target "Olm::Olm" for configuration "Debug"
 set_property(TARGET Olm::Olm APPEND PROPERTY IMPORTED_CONFIGURATIONS DEBUG)
 set_target_properties(Olm::Olm PROPERTIES
-  IMPORTED_LOCATION_DEBUG "/Users/sorydima/katya/android/app/.cxx/cmake/debug/arm64-v8a/libolm.so"
+  IMPORTED_LOCATION_DEBUG "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/debug/arm64-v8a/libolm.so"
   IMPORTED_SONAME_DEBUG "libolm.so"
   )
 

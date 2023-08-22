@@ -2,18 +2,19 @@ import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:redux/redux.dart';
-import 'package:katya/domain/alerts/actions.dart';
-import 'package:katya/domain/crypto/sessions/actions.dart';
-import 'package:katya/domain/index.dart';
-import 'package:katya/domain/settings/proxy-settings/actions.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/global/values.dart';
+import 'package:katya/store/alerts/actions.dart';
+import 'package:katya/store/crypto/sessions/actions.dart';
+import 'package:katya/store/index.dart';
+import 'package:katya/store/settings/proxy-settings/actions.dart';
 import 'package:katya/views/widgets/appbars/appbar-normal.dart';
 import 'package:katya/views/widgets/containers/card-section.dart';
 import 'package:katya/views/widgets/dialogs/dialog-text-input.dart';
@@ -24,7 +25,7 @@ import 'package:katya/views/widgets/dialogs/dialog-text-input.dart';
 /// Contains settings available in an unauthenticated state
 ///
 class IntroSettingsScreen extends StatelessWidget {
-  const IntroSettingsScreen({super.key});
+  const IntroSettingsScreen({Key? key}) : super(key: key);
 
   onImportSessionKeys(BuildContext context) async {
     final store = StoreProvider.of<AppState>(context);
@@ -129,7 +130,7 @@ class IntroSettingsScreen extends StatelessWidget {
                             ),
                             subtitle: Text(
                               Strings.subtitleUseProxyServer,
-                              style: Theme.of(context).textTheme.bodySmall,
+                              style: Theme.of(context).textTheme.caption,
                             ),
                             trailing: Switch(
                               value: props.proxyEnabled,
@@ -144,13 +145,13 @@ class IntroSettingsScreen extends StatelessWidget {
                               contentPadding: Dimensions.listPadding,
                               title: Text(
                                 Strings.listItemSettingsProxyHost,
-                                style: Theme.of(context).textTheme.titleMedium,
+                                style: Theme.of(context).textTheme.subtitle1,
                               ),
                               trailing: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8),
+                                padding: EdgeInsets.symmetric(horizontal: 8),
                                 child: Text(
                                   props.host,
-                                  style: const TextStyle(fontSize: 18.0),
+                                  style: TextStyle(fontSize: 18.0),
                                 ),
                               ),
                             ),
@@ -163,13 +164,13 @@ class IntroSettingsScreen extends StatelessWidget {
                               contentPadding: Dimensions.listPadding,
                               title: Text(
                                 Strings.listItemSettingsProxyPort,
-                                style: Theme.of(context).textTheme.titleMedium,
+                                style: Theme.of(context).textTheme.subtitle1,
                               ),
                               trailing: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8),
+                                padding: EdgeInsets.symmetric(horizontal: 8),
                                 child: Text(
                                   props.port,
-                                  style: const TextStyle(fontSize: 18.0),
+                                  style: TextStyle(fontSize: 18.0),
                                 ),
                               ),
                             ),
@@ -184,48 +185,51 @@ class IntroSettingsScreen extends StatelessWidget {
                               ),
                               subtitle: Text(
                                 Strings.subtitleProxyUseBasicAuthentication,
-                                style: Theme.of(context).textTheme.bodySmall,
+                                style: Theme.of(context).textTheme.caption,
                               ),
                               trailing: Switch(
                                 value: props.proxyAuthenticationEnabled,
-                                onChanged: (toggle) => props.onToggleProxyAuthentication(),
+                                onChanged: (toggle) =>
+                                    props.onToggleProxyAuthentication(),
                               ),
                             ),
                           ),
                           Visibility(
-                            visible: props.proxyEnabled && props.proxyAuthenticationEnabled,
+                            visible: props.proxyEnabled &&
+                                props.proxyAuthenticationEnabled,
                             child: ListTile(
                               dense: true,
                               onTap: () => props.onEditProxyUsername(context),
                               contentPadding: Dimensions.listPadding,
                               title: Text(
                                 Strings.listItemSettingsProxyUsername,
-                                style: Theme.of(context).textTheme.titleMedium,
+                                style: Theme.of(context).textTheme.subtitle1,
                               ),
                               trailing: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8),
+                                padding: EdgeInsets.symmetric(horizontal: 8),
                                 child: Text(
                                   props.username,
-                                  style: const TextStyle(fontSize: 18.0),
+                                  style: TextStyle(fontSize: 18.0),
                                 ),
                               ),
                             ),
                           ),
                           Visibility(
-                            visible: props.proxyEnabled && props.proxyAuthenticationEnabled,
+                            visible: props.proxyEnabled &&
+                                props.proxyAuthenticationEnabled,
                             child: ListTile(
                               dense: true,
                               onTap: () => props.onEditProxyPassword(context),
                               contentPadding: Dimensions.listPadding,
                               title: Text(
                                 Strings.listItemSettingsProxyPassword,
-                                style: Theme.of(context).textTheme.titleMedium,
+                                style: Theme.of(context).textTheme.subtitle1,
                               ),
                               trailing: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8),
+                                padding: EdgeInsets.symmetric(horizontal: 8),
                                 child: Text(
                                   '*' * props.password.length, // hide password
-                                  style: const TextStyle(fontSize: 18.0),
+                                  style: TextStyle(fontSize: 18.0),
                                 ),
                               ),
                             ),
@@ -244,7 +248,7 @@ class IntroSettingsScreen extends StatelessWidget {
                               child: Text(
                                 'Key Management Testing',
                                 textAlign: TextAlign.start,
-                                style: Theme.of(context).textTheme.titleSmall,
+                                style: Theme.of(context).textTheme.subtitle2,
                               ),
                             ),
                           ),
@@ -258,7 +262,7 @@ class IntroSettingsScreen extends StatelessWidget {
                               },
                               title: Text(
                                 'Export Device Key',
-                                style: Theme.of(context).textTheme.titleMedium,
+                                style: Theme.of(context).textTheme.subtitle1,
                               ),
                             ),
                           ),
@@ -272,7 +276,7 @@ class IntroSettingsScreen extends StatelessWidget {
                               },
                               title: Text(
                                 'Import Device Key',
-                                style: Theme.of(context).textTheme.titleMedium,
+                                style: Theme.of(context).textTheme.subtitle1,
                               ),
                             ),
                           ),
@@ -337,7 +341,8 @@ class _Props extends Equatable {
         proxyEnabled: store.state.settingsStore.proxySettings.enabled,
         host: store.state.settingsStore.proxySettings.host,
         port: store.state.settingsStore.proxySettings.port,
-        proxyAuthenticationEnabled: store.state.settingsStore.proxySettings.authenticationEnabled,
+        proxyAuthenticationEnabled:
+            store.state.settingsStore.proxySettings.authenticationEnabled,
         username: store.state.settingsStore.proxySettings.username,
         password: store.state.settingsStore.proxySettings.password,
         onToggleProxy: () async {
@@ -355,7 +360,9 @@ class _Props extends Equatable {
               content: Strings.contentProxyHost,
               label: Strings.labelProxyHost,
               initialValue: store.state.settingsStore.proxySettings.host,
-              inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
+              inputFormatters: [
+                FilteringTextInputFormatter.singleLineFormatter
+              ],
               onCancel: () async {
                 Navigator.of(dialogContext).pop();
               },
@@ -400,7 +407,9 @@ class _Props extends Equatable {
               content: Strings.contentProxyUsername,
               label: Strings.labelProxyUsername,
               initialValue: store.state.settingsStore.proxySettings.username,
-              inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
+              inputFormatters: [
+                FilteringTextInputFormatter.singleLineFormatter
+              ],
               onCancel: () async {
                 Navigator.of(dialogContext).pop();
               },
@@ -421,7 +430,9 @@ class _Props extends Equatable {
               content: Strings.contentProxyPassword,
               label: Strings.labelProxyPassword,
               initialValue: store.state.settingsStore.proxySettings.password,
-              inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
+              inputFormatters: [
+                FilteringTextInputFormatter.singleLineFormatter
+              ],
               obscureText: true,
               onCancel: () async {
                 Navigator.of(dialogContext).pop();

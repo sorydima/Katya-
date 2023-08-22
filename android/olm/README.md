@@ -52,16 +52,13 @@ You can use pre-built npm packages, available at
 
 #### Python
 
-A Python source package and pre-built packages for certain architectures from
-<https://pypi.org/project/python-olm/>.  If a pre-built package is not
-available for your architecture, you will need:
+Pre-built packages for Python are available for certain architectures at
+<https://gitlab.matrix.org/matrix-org/olm/-/packages?type=PyPI>.  They can be
+installed by running
 
-- cmake (recommended) or GNU make
-- a C/C++ compiler
-
-to build the source package.
-
-You can then run `pip install python-olm`.
+```bash
+pip install python-olm --extra-index-url https://gitlab.matrix.org/api/v4/projects/27/packages/pypi/simple
+```
 
 Currently, we try to provide packages for all supported versions of Python on
 x86-64, i686, and aarch64, but we cannot guarantee that packages for all
@@ -206,9 +203,8 @@ endorsed by the Matrix.org Foundation C.I.C.
 ## Release process
 
 First: bump version numbers in ``common.mk``, ``CMakeLists.txt``,
-``javascript/package.json``, ``python/olm/__version__.py``,
-``python/pyproject.toml``, ``OLMKit.podspec``, ``Package.swift``, and
-``android/gradle.properties``.
+``javascript/package.json``, ``python/olm/__version__.py``, ``OLMKit.podspec``,
+``Package.swift``, and ``android/gradle.properties``.
 
 Also, ensure the changelog is up to date, and that everything is committed to
 git.

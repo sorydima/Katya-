@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:katya/global/values.dart';
-import 'package:katya/views/home/HomeScreen.dart';
-import 'package:katya/views/home/chat/ChatScreen.dart';
 import 'package:katya/views/home/chat/chat-detail-all-users-screen.dart';
 import 'package:katya/views/home/chat/chat-detail-message-screen.dart';
 import 'package:katya/views/home/chat/chat-detail-screen.dart';
+import 'package:katya/views/home/chat/chat-screen.dart';
 import 'package:katya/views/home/chat/media-preview-screen.dart';
 import 'package:katya/views/home/groups/group-create-public-screen.dart';
 import 'package:katya/views/home/groups/group-create-screen.dart';
 import 'package:katya/views/home/groups/invite-users-screen.dart';
-import 'package:katya/views/home/profile/ProfileScreen.dart';
-import 'package:katya/views/home/profile/ProfileUserScreen.dart';
+import 'package:katya/views/home/home-screen.dart';
+import 'package:katya/views/home/profile/profile-screen.dart';
+import 'package:katya/views/home/profile/profile-user-screen.dart';
 import 'package:katya/views/home/search/search-chats-screen.dart';
 import 'package:katya/views/home/search/search-groups-screen.dart';
 import 'package:katya/views/home/search/search-users-screen.dart';
@@ -24,20 +25,24 @@ import 'package:katya/views/home/settings/settings-notifications-screen.dart';
 import 'package:katya/views/home/settings/settings-privacy-screen.dart';
 import 'package:katya/views/home/settings/settings-screen.dart';
 import 'package:katya/views/home/settings/settings-theme-screen.dart';
-import 'package:katya/views/intro/IntroScreen.dart';
-import 'package:katya/views/intro/login/LoginScreen.dart';
+import 'package:katya/views/intro/intro-screen.dart';
 import 'package:katya/views/intro/login/forgot/password-forgot-screen.dart';
 import 'package:katya/views/intro/login/forgot/password-reset-screen.dart';
+import 'package:katya/views/intro/login/login-screen.dart';
 import 'package:katya/views/intro/search/search-homeserver-screen.dart';
-import 'package:katya/views/intro/signup/LoadingScreen.dart';
-import 'package:katya/views/intro/signup/SignupScreen.dart';
+import 'package:katya/views/intro/signup/loading-screen.dart';
+import 'package:katya/views/intro/signup/signup-screen.dart';
 import 'package:katya/views/intro/signup/verification-screen.dart';
 
 import 'home/settings/settings-intro-screen.dart';
 
 // helper hook for extracting navigation params
-T useScreenArguments<T>(BuildContext context, T fallback) {
-  return (ModalRoute.of(context)?.settings.arguments ?? fallback) as T;
+T? useScreenArguments<T>(BuildContext context) {
+  return ModalRoute.of(context)?.settings.arguments as T;
+}
+
+T? useArguments<T>(BuildContext context) {
+  return useMemoized(() => ModalRoute.of(context)?.settings.arguments as T, [context]);
 }
 
 class NavigationService {
@@ -135,7 +140,7 @@ class NavigationProvider {
   static Map<String, Widget Function(BuildContext)> getRoutes() => <String, WidgetBuilder>{
         Routes.intro: (BuildContext context) => const IntroScreen(),
         Routes.login: (BuildContext context) => const LoginScreen(),
-        Routes.signup: (BuildContext context) => SignupScreen(),
+        Routes.signup: (BuildContext context) => const SignupScreen(),
         Routes.forgot: (BuildContext context) => const ForgotPasswordScreen(),
         Routes.reset: (BuildContext context) => const ResetPasswordScreen(),
         Routes.searchHomeservers: (BuildContext context) => const SearchHomeserverScreen(),
@@ -153,13 +158,14 @@ class NavigationProvider {
         Routes.searchGroups: (BuildContext context) => const GroupSearchScreen(),
         Routes.groupCreate: (BuildContext context) => const CreateGroupScreen(),
         Routes.groupCreatePublic: (BuildContext context) => const CreatePublicGroupScreen(),
-        Routes.settingsProfile: (BuildContext context) => const ProfileScreen(),
+        Routes.settingsProfile: (BuildContext context) => ProfileScreen(),
         Routes.settingsNotifications: (BuildContext context) => const NotificationSettingsScreen(),
         Routes.settingsLanguages: (BuildContext context) => const LanguageSettingsScreen(),
         Routes.settingsAdvanced: (BuildContext context) => const AdvancedSettingsScreen(),
         Routes.settingsProxy: (BuildContext context) => const IntroSettingsScreen(),
         Routes.settingsPassword: (BuildContext context) => const PasswordUpdateScreen(),
-        Routes.licenses: (BuildContext context) => const LicensePage(applicationName: Values.appName),
+        Routes.licenses: (BuildContext context) =>
+            const LicensePage(applicationName: Values.appName),
         Routes.settingsPrivacy: (BuildContext context) => const PrivacySettingsScreen(),
         Routes.settingsChat: (BuildContext context) => const SettingsChatsScreen(),
         Routes.settingsTheme: (BuildContext context) => const ThemeSettingsScreen(),

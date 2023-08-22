@@ -5,11 +5,11 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:redux/redux.dart';
-import 'package:katya/domain/index.dart';
-import 'package:katya/domain/settings/theme-settings/selectors.dart';
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
+import 'package:katya/store/index.dart';
+import 'package:katya/store/settings/theme-settings/selectors.dart';
 import 'package:katya/views/navigation.dart';
 
 class FabBarExpanding extends StatelessWidget {
@@ -17,10 +17,10 @@ class FabBarExpanding extends StatelessWidget {
   final Alignment? alignment;
 
   const FabBarExpanding({
-    super.key,
+    Key? key,
     this.alignment,
     this.showLabels = false,
-  });
+  }) : super(key: key);
 
   onNavigateToPublicSearch(context) {
     HapticFeedback.lightImpact();
@@ -49,7 +49,7 @@ class FabBarExpanding extends StatelessWidget {
         builder: (context, props) => SpeedDial(
           overlayOpacity: 0.4,
           switchLabelPosition: alignment == Alignment.bottomLeft,
-          childMargin: const EdgeInsets.symmetric(vertical: 16),
+          childMargin: EdgeInsets.symmetric(vertical: 16),
           spacing: 8,
           children: <SpeedDialChild>[
             SpeedDialChild(
@@ -58,7 +58,7 @@ class FabBarExpanding extends StatelessWidget {
               onTap: () => onNavigateToCreateGroupPublic(context),
               child: SvgPicture.asset(
                 Assets.iconPublicAddBeing,
-                colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                color: Colors.white,
               ),
             ),
             SpeedDialChild(
@@ -67,7 +67,7 @@ class FabBarExpanding extends StatelessWidget {
               onTap: () => onNavigateToCreateGroup(context),
               child: SvgPicture.asset(
                 Assets.iconGroupAddBeing,
-                colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                color: Colors.white,
               ),
             ),
             SpeedDialChild(
@@ -76,7 +76,7 @@ class FabBarExpanding extends StatelessWidget {
               onTap: () => onNavigateToDraft(context),
               child: SvgPicture.asset(
                 Assets.iconMessageCircleBeing,
-                colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                color: Colors.white,
               ),
             ),
             SpeedDialChild(
@@ -85,7 +85,7 @@ class FabBarExpanding extends StatelessWidget {
               onTap: () => onNavigateToPublicSearch(context),
               child: SvgPicture.asset(
                 Assets.iconSearchPublicCondensedBeing,
-                colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                color: Colors.white,
               ),
             ),
           ],

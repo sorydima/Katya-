@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class DialogRounded extends StatelessWidget {
   const DialogRounded({
-    super.key,
+    Key? key,
     this.title = '',
     this.content = '',
     this.children = const <Widget>[],
-  });
+  }) : super(key: key);
 
   final String title;
   final String content;
@@ -21,13 +21,13 @@ class DialogRounded extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
-      titlePadding: const EdgeInsets.only(
+      titlePadding: EdgeInsets.only(
         left: 24,
         right: 16,
         top: 16,
         bottom: 16,
       ),
-      contentPadding: const EdgeInsets.only(
+      contentPadding: EdgeInsets.only(
         // left: 16,
         // right: 16,
         bottom: 16,

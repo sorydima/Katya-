@@ -7,7 +7,7 @@ import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
 
 class LandingPage extends StatelessWidget {
-  const LandingPage({super.key, this.title});
+  const LandingPage({Key? key, this.title}) : super(key: key);
 
   final String? title;
 
@@ -41,13 +41,13 @@ class LandingPage extends StatelessWidget {
               direction: Axis.vertical,
               children: <Widget>[
                 Container(
-                  padding: const EdgeInsets.only(bottom: 14),
+                  padding: EdgeInsets.only(bottom: 14),
                   child: Text(
                     Strings.titleIntro,
                     textAlign: TextAlign.center,
                     style: Theme.of(context)
                         .textTheme
-                        .headlineMedium!
+                        .headline4!
                         .copyWith(fontSize: height < 569 ? 28 : null),
                   ),
                 ),
@@ -63,7 +63,7 @@ class LandingPage extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: Theme.of(context)
                     .textTheme
-                    .titleLarge!
+                    .headline6!
                     .copyWith(fontSize: height < 569 ? 18 : null),
               ),
             ],

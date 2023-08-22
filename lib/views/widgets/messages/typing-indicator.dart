@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:katya/domain/user/model.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
+import 'package:katya/store/user/model.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
 
 class TypingIndicator extends StatefulWidget {
@@ -13,13 +13,13 @@ class TypingIndicator extends StatefulWidget {
   final Function? onPressAvatar;
 
   const TypingIndicator({
-    super.key,
+    Key? key,
     this.typing,
     this.usersTyping = const [],
     this.roomUsers = const {},
     this.selectedMessageId,
     this.onPressAvatar,
-  });
+  }) : super(key: key);
 
   @override
   TypingIndicatorState createState() => TypingIndicatorState();
@@ -35,7 +35,7 @@ class TypingIndicatorState extends State<TypingIndicator> with TickerProviderSta
 
   wrapAnimation({Widget? animatedWidget, int? milliseconds}) => TweenAnimationBuilder(
         tween: Tween<double>(begin: 0, end: widget.typing! ? 1 : 0),
-        duration: const Duration(milliseconds: 250),
+        duration: Duration(milliseconds: 250),
         curve: Curves.easeInOut,
         builder: (BuildContext context, double size, Widget? child) => GestureDetector(
           onTap: () => setState(() {
@@ -59,13 +59,13 @@ class TypingIndicatorState extends State<TypingIndicator> with TickerProviderSta
     const messageTextAlignment = CrossAxisAlignment.start;
 
     final bubbleColor = Theme.of(context).primaryColor;
-    const bubbleSpacing = EdgeInsets.only(top: 4, bottom: 4);
+    final bubbleSpacing = EdgeInsets.only(top: 4, bottom: 4);
 
     var bubbleBorder = BorderRadius.circular(16);
     var opacity = 1.0;
-    var userTyping = const User();
+    var userTyping = User();
 
-    bubbleBorder = const BorderRadius.only(
+    bubbleBorder = BorderRadius.only(
       topLeft: Radius.circular(16),
       topRight: Radius.circular(16),
       bottomLeft: Radius.circular(4),
@@ -78,7 +78,7 @@ class TypingIndicatorState extends State<TypingIndicator> with TickerProviderSta
 
     if (widget.usersTyping.isNotEmpty) {
       final usernamesTyping = widget.usersTyping;
-      userTyping = widget.roomUsers[usernamesTyping[0]] ?? const User();
+      userTyping = widget.roomUsers[usernamesTyping[0]] ?? User();
     }
 
     return Opacity(
@@ -126,7 +126,7 @@ class TypingIndicatorState extends State<TypingIndicator> with TickerProviderSta
                   wrapAnimation(
                     milliseconds: 175,
                     animatedWidget: Container(
-                      padding: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                         horizontal: 12,
                         vertical: 6,
                       ),
@@ -141,8 +141,8 @@ class TypingIndicatorState extends State<TypingIndicator> with TickerProviderSta
                         crossAxisAlignment: messageTextAlignment,
                         children: <Widget>[
                           Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 4),
-                            child: const Text(
+                            margin: EdgeInsets.symmetric(horizontal: 4),
+                            child: Text(
                               '·',
                               style: TextStyle(
                                 fontSize: 28,
@@ -152,8 +152,8 @@ class TypingIndicatorState extends State<TypingIndicator> with TickerProviderSta
                             ),
                           ),
                           Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 4),
-                            child: const Text(
+                            margin: EdgeInsets.symmetric(horizontal: 4),
+                            child: Text(
                               '·',
                               style: TextStyle(
                                 fontSize: 28,
@@ -163,8 +163,8 @@ class TypingIndicatorState extends State<TypingIndicator> with TickerProviderSta
                             ),
                           ),
                           Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 4),
-                            child: const Text(
+                            margin: EdgeInsets.symmetric(horizontal: 4),
+                            child: Text(
                               '·',
                               style: TextStyle(
                                 fontSize: 28,

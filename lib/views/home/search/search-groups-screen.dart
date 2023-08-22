@@ -1,27 +1,28 @@
 import 'package:equatable/equatable.dart';
 import 'package:expandable/expandable.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:redux/redux.dart';
-import 'package:katya/domain/index.dart';
-import 'package:katya/domain/rooms/actions.dart';
-import 'package:katya/domain/rooms/room/model.dart';
-import 'package:katya/domain/rooms/room/selectors.dart';
-import 'package:katya/domain/search/actions.dart';
-import 'package:katya/domain/settings/theme-settings/model.dart';
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/global/values.dart';
+import 'package:katya/store/index.dart';
+import 'package:katya/store/rooms/actions.dart';
+import 'package:katya/store/rooms/room/model.dart';
+import 'package:katya/store/rooms/room/selectors.dart';
+import 'package:katya/store/search/actions.dart';
+import 'package:katya/store/settings/theme-settings/model.dart';
 import 'package:katya/views/widgets/appbars/appbar-search.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
 import 'package:katya/views/widgets/loader/index.dart';
 
 class GroupSearchScreen extends StatefulWidget {
-  const GroupSearchScreen({super.key});
+  const GroupSearchScreen({Key? key}) : super(key: key);
 
   @override
   GroupSearchState createState() => GroupSearchState();
@@ -67,7 +68,7 @@ class GroupSearchState extends State<GroupSearchScreen> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Container(
-            constraints: const BoxConstraints(
+            constraints: BoxConstraints(
               minWidth: Dimensions.mediaSizeMin,
               maxWidth: Dimensions.mediaSizeMax,
               maxHeight: Dimensions.mediaSizeMin,
@@ -79,11 +80,11 @@ class GroupSearchState extends State<GroupSearchScreen> {
           ),
           GestureDetector(
             child: Container(
-              margin: const EdgeInsets.only(bottom: 48),
-              padding: const EdgeInsets.only(top: 16),
+              margin: EdgeInsets.only(bottom: 48),
+              padding: EdgeInsets.only(top: 16),
               child: Text(
                 label,
-                style: Theme.of(context).textTheme.titleLarge,
+                style: Theme.of(context).textTheme.headline6,
               ),
             ),
           ),
@@ -106,7 +107,7 @@ class GroupSearchState extends State<GroupSearchScreen> {
             bottom: 8,
           ),
           child: ExpandablePanel(
-            theme: const ExpandableThemeData(
+            theme: ExpandableThemeData(
               hasIcon: false,
               tapBodyToCollapse: true,
               tapHeaderToExpand: true,
@@ -130,9 +131,9 @@ class GroupSearchState extends State<GroupSearchScreen> {
                           Dimensions.thumbnailSizeMax,
                         ),
                         child: Container(
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             color: Colors.grey,
-                            boxShadow: [
+                            boxShadow: const [
                               BoxShadow(
                                 color: Colors.red,
                                 offset: Offset(8.0, 8.0),
@@ -141,7 +142,7 @@ class GroupSearchState extends State<GroupSearchScreen> {
                           ),
                           height: 16,
                           width: 16,
-                          child: const Icon(
+                          child: Icon(
                             Icons.lock_open,
                             color: Colors.white,
                             size: 10,
@@ -163,7 +164,7 @@ class GroupSearchState extends State<GroupSearchScreen> {
                           height: 16,
                           width: 16,
                           color: Colors.green,
-                          child: const Icon(
+                          child: Icon(
                             Icons.lock,
                             color: Colors.white,
                             size: 10,
@@ -182,7 +183,7 @@ class GroupSearchState extends State<GroupSearchScreen> {
                     child: Text(
                       room.name!,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodyLarge,
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ),
                 ],
@@ -199,23 +200,23 @@ class GroupSearchState extends State<GroupSearchScreen> {
                         formattedUserTotal.format(
                           room.totalJoinedUsers,
                         ),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: Dimensions.textSizeTiny,
                         ),
                       ),
-                      const Icon(
+                      Icon(
                         Icons.person,
                         size: 20,
                       ),
                     ],
                   ),
                   IconButton(
-                    padding: const EdgeInsets.only(
+                    padding: EdgeInsets.only(
                       left: 8,
                       top: 8,
                       bottom: 8,
                     ),
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.add_circle,
                       color: Colors.greenAccent,
                     ),
@@ -238,7 +239,7 @@ class GroupSearchState extends State<GroupSearchScreen> {
                       formatPreviewTopic(room.topic),
                       softWrap: true,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: Theme.of(context).textTheme.caption,
                     ),
                   ),
                 ],
@@ -252,7 +253,7 @@ class GroupSearchState extends State<GroupSearchScreen> {
                   padding: Dimensions.listPadding,
                   child: Text(
                     room.topic ?? Strings.placeholderTopic,
-                    style: Theme.of(context).textTheme.bodySmall,
+                    style: Theme.of(context).textTheme.caption,
                   ),
                 ),
                 Container(
@@ -261,11 +262,11 @@ class GroupSearchState extends State<GroupSearchScreen> {
                     room.name!,
                     textAlign: TextAlign.start,
                     softWrap: true,
-                    style: Theme.of(context).textTheme.bodySmall,
+                    style: Theme.of(context).textTheme.caption,
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  padding: EdgeInsets.symmetric(vertical: 4),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -274,24 +275,24 @@ class GroupSearchState extends State<GroupSearchScreen> {
                         child: Column(
                           children: <Widget>[
                             Container(
-                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              padding: EdgeInsets.symmetric(vertical: 4),
                               child: !room.encryptionEnabled
-                                  ? const Icon(
+                                  ? Icon(
                                       Icons.lock_open,
                                       size: Dimensions.iconSizeLarge,
                                       color: Colors.redAccent,
                                     )
-                                  : const Icon(
+                                  : Icon(
                                       Icons.lock,
                                       size: Dimensions.iconSizeLarge,
                                       color: Colors.greenAccent,
                                     ),
                             ),
                             Container(
-                              margin: const EdgeInsets.only(top: 4),
+                              margin: EdgeInsets.only(top: 4),
                               child: Text(
                                 'Encryption',
-                                style: Theme.of(context).textTheme.bodySmall,
+                                style: Theme.of(context).textTheme.caption,
                               ),
                             )
                           ],
@@ -301,21 +302,21 @@ class GroupSearchState extends State<GroupSearchScreen> {
                         child: Column(
                           children: <Widget>[
                             Container(
-                              padding: const EdgeInsets.symmetric(
+                              padding: EdgeInsets.symmetric(
                                 vertical: 4,
                               ),
                               child: Text(
                                 localUserTotal.format(room.totalJoinedUsers),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 24,
                                 ),
                               ),
                             ),
                             Container(
-                              margin: const EdgeInsets.only(top: 4),
+                              margin: EdgeInsets.only(top: 4),
                               child: Text(
                                 'Total Users',
-                                style: Theme.of(context).textTheme.bodySmall,
+                                style: Theme.of(context).textTheme.caption,
                               ),
                             )
                           ],

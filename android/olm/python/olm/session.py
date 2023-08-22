@@ -35,6 +35,8 @@ Examples:
 from builtins import bytes, super
 from typing import AnyStr, Optional, Type
 
+from future.utils import bytes_to_native_str
+
 # pylint: disable=no-name-in-module
 from _libolm import ffi, lib  # type: ignore
 
@@ -144,7 +146,8 @@ class Session(object):
         if ret != lib.olm_error():
             return
 
-        last_error = ffi.string(lib.olm_session_last_error(self._session)).decode()
+        last_error = bytes_to_native_str(
+            ffi.string(lib.olm_session_last_error(self._session)))
 
         raise OlmSessionError(last_error)
 
@@ -257,16 +260,16 @@ class Session(object):
 
         if message_type == lib.OLM_MESSAGE_TYPE_PRE_KEY:
             return OlmPreKeyMessage(
-                ffi.unpack(
+                bytes_to_native_str(ffi.unpack(
                     ciphertext_buffer,
                     ciphertext_length
-                ).decode())
+                )))
         elif message_type == lib.OLM_MESSAGE_TYPE_MESSAGE:
             return OlmMessage(
-                ffi.unpack(
+                bytes_to_native_str(ffi.unpack(
                     ciphertext_buffer,
                     ciphertext_length
-                ).decode())
+                )))
         else:  # pragma: no cover
             raise ValueError("Unknown message type")
 
@@ -337,7 +340,7 @@ class Session(object):
         self._check_error(
             lib.olm_session_id(self._session, id_buffer, id_length)
         )
-        return ffi.unpack(id_buffer, id_length).decode()
+        return bytes_to_native_str(ffi.unpack(id_buffer, id_length))
 
     def matches(self, message, identity_key=None):
         # type: (OlmPreKeyMessage, Optional[AnyStr]) -> bool
@@ -404,7 +407,7 @@ class Session(object):
         lib.olm_session_describe(
             self._session, describe_buffer, buffer_length
         )
-        return ffi.string(describe_buffer).decode()
+        return bytes_to_native_str(ffi.string(describe_buffer))
 
 
 class InboundSession(Session):

@@ -1,15 +1,16 @@
 import 'package:equatable/equatable.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:redux/redux.dart';
-import 'package:katya/domain/auth/actions.dart';
-import 'package:katya/domain/auth/homeserver/model.dart';
-import 'package:katya/domain/index.dart';
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
-import 'package:katya/global/libraries/matrix/auth/types.dart';
+import 'package:katya/global/libs/matrix/auth.dart';
+import 'package:katya/store/auth/actions.dart';
+import 'package:katya/store/auth/homeserver/model.dart';
+import 'package:katya/store/index.dart';
 import 'package:katya/views/intro/search/search-homeserver-screen.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
@@ -18,7 +19,7 @@ import 'package:katya/views/widgets/lifecycle.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 
 class HomeserverStep extends StatefulWidget {
-  const HomeserverStep({super.key});
+  const HomeserverStep({Key? key}) : super(key: key);
 
   @override
   HomeserverStepState createState() => HomeserverStepState();
@@ -58,11 +59,11 @@ class HomeserverStepState extends State<HomeserverStep> with Lifecycle<Homeserve
           ),
           title: Text(
             props.homeserver.hostname ?? '',
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).textTheme.headline6,
           ),
           subtitle: Text(
             props.homeserver.baseUrl ?? '',
-            style: Theme.of(context).textTheme.bodySmall,
+            style: Theme.of(context).textTheme.caption,
           ),
           trailing: TouchableOpacity(
             onTap: () {
@@ -72,7 +73,7 @@ class HomeserverStepState extends State<HomeserverStep> with Lifecycle<Homeserve
                 arguments: SearchHomeserverArguments(signup: true),
               );
             },
-            child: const Icon(
+            child: Icon(
               Icons.search_rounded,
               size: Dimensions.iconSizeLarge,
             ),
@@ -83,7 +84,7 @@ class HomeserverStepState extends State<HomeserverStep> with Lifecycle<Homeserve
   buildContinueNormal(_Props props) => Container(
         width: Dimensions.contentWidthWide(context),
         height: Dimensions.inputHeight,
-        constraints: const BoxConstraints(
+        constraints: BoxConstraints(
           minWidth: Dimensions.inputWidthMin,
           maxWidth: Dimensions.inputWidthMax,
         ),
@@ -99,7 +100,7 @@ class HomeserverStepState extends State<HomeserverStep> with Lifecycle<Homeserve
             FocusScope.of(context).unfocus();
           },
           suffix: IconButton(
-              icon: const Icon(Icons.search),
+              icon: Icon(Icons.search),
               tooltip: 'Find your homeserver',
               onPressed: () {
                 Navigator.pushNamed(
@@ -140,7 +141,7 @@ class HomeserverStepState extends State<HomeserverStep> with Lifecycle<Homeserve
                 flex: 2,
                 child: Container(
                   width: Dimensions.contentWidth(context),
-                  constraints: const BoxConstraints(
+                  constraints: BoxConstraints(
                     maxHeight: Dimensions.mediaSizeMax,
                     maxWidth: Dimensions.mediaSizeMax,
                   ),
@@ -159,7 +160,7 @@ class HomeserverStepState extends State<HomeserverStep> with Lifecycle<Homeserve
                     Text(
                       'Find a homeserver',
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      style: Theme.of(context).textTheme.headline5,
                     ),
                   ],
                 ),

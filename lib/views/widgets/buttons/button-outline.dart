@@ -6,7 +6,7 @@ import 'package:katya/views/widgets/loader/loading-indicator.dart';
 
 class ButtonOutline extends StatelessWidget {
   const ButtonOutline({
-    super.key,
+    Key? key,
     this.text,
     this.loading = false,
     this.disabled = false,
@@ -14,7 +14,7 @@ class ButtonOutline extends StatelessWidget {
     this.height,
     this.child,
     this.onPressed,
-  });
+  }) : super(key: key);
 
   final bool loading;
   final bool disabled;
@@ -36,7 +36,7 @@ class ButtonOutline extends StatelessWidget {
             color: Theme.of(context).primaryColor,
           ),
         ),
-        constraints: const BoxConstraints(
+        constraints: BoxConstraints(
           minWidth: Dimensions.buttonWidthMin,
           maxWidth: Dimensions.buttonWidthMax,
         ),
@@ -44,7 +44,7 @@ class ButtonOutline extends StatelessWidget {
           style: ButtonStyle(
             foregroundColor: MaterialStateProperty.resolveWith<Color?>(
               (Set<MaterialState> states) => states.contains(MaterialState.disabled)
-                  ? const Color(AppColors.greyLight)
+                  ? Color(AppColors.greyLight)
                   : Theme.of(context).primaryColor,
             ),
             backgroundColor: MaterialStateProperty.resolveWith<Color?>(
@@ -59,7 +59,7 @@ class ButtonOutline extends StatelessWidget {
           ),
           onPressed: disabled ? null : onPressed as void Function()?,
           child: loading
-              ? const LoadingIndicator()
+              ? LoadingIndicator()
               : (child != null
                   ? child!
                   : Text(
@@ -69,7 +69,7 @@ class ButtonOutline extends StatelessWidget {
                         fontWeight: FontWeight.w100,
                         letterSpacing: 0.8,
                         color:
-                            disabled ? const Color(AppColors.greyLight) : Theme.of(context).primaryColor,
+                            disabled ? Color(AppColors.greyLight) : Theme.of(context).primaryColor,
                       ),
                     )),
         ),

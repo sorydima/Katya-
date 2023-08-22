@@ -5,10 +5,10 @@ import 'package:katya/global/strings.dart';
 
 class DialogEncryption extends StatelessWidget {
   const DialogEncryption({
-    super.key,
+    Key? key,
     this.content,
     this.onAccept,
-  });
+  }) : super(key: key);
 
   final String? content;
   final Function? onAccept;
@@ -30,7 +30,7 @@ class DialogEncryption extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             SimpleDialogOption(
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 horizontal: 12,
                 vertical: 12,
               ),
@@ -39,11 +39,11 @@ class DialogEncryption extends StatelessWidget {
               },
               child: Text(
                 Strings.buttonCancel,
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.subtitle1,
               ),
             ),
             SimpleDialogOption(
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 horizontal: 12,
                 vertical: 8,
               ),
@@ -56,7 +56,7 @@ class DialogEncryption extends StatelessWidget {
               },
               child: Text(
                 Strings.buttonTextLetsEncrypt,
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.subtitle1,
               ),
             ),
           ],

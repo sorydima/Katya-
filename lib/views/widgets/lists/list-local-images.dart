@@ -6,9 +6,10 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
-import 'package:katya/global/noop.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
+
+_empty(File file) {}
 
 ///
 /// Local Image List
@@ -17,10 +18,10 @@ import 'package:katya/views/widgets/lifecycle.dart';
 ///
 class ListLocalImages extends StatefulWidget {
   const ListLocalImages({
-    super.key,
+    Key? key,
     this.imageSize = 128,
-    this.onSelectImage = empty<File>,
-  });
+    this.onSelectImage = _empty,
+  }) : super(key: key);
 
   final double imageSize;
   final Function(File imagefile) onSelectImage;
@@ -29,7 +30,8 @@ class ListLocalImages extends StatefulWidget {
   _ListLocalImagesState createState() => _ListLocalImagesState();
 }
 
-class _ListLocalImagesState extends State<ListLocalImages> with Lifecycle<ListLocalImages> {
+class _ListLocalImagesState extends State<ListLocalImages>
+    with Lifecycle<ListLocalImages> {
   List<LocalImage> images = [];
   LocalImageProvider imageProvider = LocalImageProvider();
 
@@ -73,29 +75,28 @@ class _ListLocalImagesState extends State<ListLocalImages> with Lifecycle<ListLo
 
     if (images.isEmpty) {
       return Container(
-        width: width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.only(bottom: 8, top: 8),
-              child: const Icon(
-                Icons.search,
-                size: Dimensions.iconSize * 1.5,
-                color: Color(AppColors.greyDefault),
+          width: width,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.only(bottom: 8, top: 8),
+                child: Icon(
+                  Icons.search,
+                  size: Dimensions.iconSize * 1.5,
+                  color: const Color(AppColors.greyDefault),
+                ),
               ),
-            ),
-            Text(
-              Strings.alertNoImagesFound,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w400,
-                  ),
-            ),
-          ],
-        ),
-      );
+              Text(
+                Strings.alertNoImagesFound,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.button?.copyWith(
+                      fontWeight: FontWeight.w400,
+                    ),
+              ),
+            ],
+          ));
     }
 
     return ListView.builder(
@@ -119,12 +120,12 @@ class _ListLocalImagesState extends State<ListLocalImages> with Lifecycle<ListLo
           borderRadius: BorderRadius.circular(24),
           clipBehavior: Clip.antiAlias,
           child: Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(15.0)),
             ),
             width: widget.imageSize,
             height: widget.imageSize,
-            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+            padding: EdgeInsets.symmetric(vertical: 4, horizontal: 4),
             child: Stack(
               children: <Widget>[
                 Positioned.fill(

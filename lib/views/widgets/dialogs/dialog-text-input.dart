@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:katya/domain/auth/actions.dart';
+
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
+import 'package:katya/store/auth/actions.dart';
+
 import 'package:katya/views/widgets/loader/loading-indicator.dart';
 
 class DialogTextInput extends HookWidget {
   const DialogTextInput({
-    super.key,
+    Key? key,
     this.title = '',
     this.content = '',
     this.label = '',
@@ -25,7 +27,7 @@ class DialogTextInput extends HookWidget {
     this.onConfirm,
     this.onChange,
     this.onCancel,
-  });
+  }) : super(key: key);
 
   final String title;
   final String content;
@@ -48,7 +50,8 @@ class DialogTextInput extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final editingControllerLocal = editingController ?? useTextEditingController(text: initialValue);
+    final editingControllerLocal =
+        editingController ?? useTextEditingController(text: initialValue);
 
     final inputFocusNode = useFocusNode();
 
@@ -72,13 +75,13 @@ class DialogTextInput extends HookWidget {
       () {
         if (randomizeText) {
           return GestureDetector(
-            onTap: () async {
+            onTap: () {
               editingControllerLocal.text = generateDeviceId().deviceId ?? '';
             },
             child: Padding(
-              padding: const EdgeInsets.only(top: 16),
+              padding: EdgeInsets.only(top: 16),
               child: Icon(
-                const FaIcon(FontAwesomeIcons.dice).icon,
+                FaIcon(FontAwesomeIcons.dice).icon,
                 color: Theme.of(context).primaryColor,
               ),
             ),
@@ -91,7 +94,7 @@ class DialogTextInput extends HookWidget {
               visibility.value = !visibility.value;
             },
             child: Padding(
-              padding: const EdgeInsets.only(top: 16),
+              padding: EdgeInsets.only(top: 16),
               child: Icon(
                 visibility.value ? Icons.visibility : Icons.visibility_off,
                 color: visibility.value ? Theme.of(context).primaryColor : null,
@@ -107,12 +110,12 @@ class DialogTextInput extends HookWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
-      titlePadding: const EdgeInsets.only(
+      titlePadding: EdgeInsets.only(
         left: 24,
         right: 16,
         top: 16,
       ),
-      contentPadding: const EdgeInsets.only(
+      contentPadding: EdgeInsets.only(
         left: 16,
         right: 16,
         bottom: 16,
@@ -131,7 +134,7 @@ class DialogTextInput extends HookWidget {
               child: Text(
                 content,
                 textAlign: TextAlign.start,
-                style: Theme.of(context).textTheme.bodySmall,
+                style: Theme.of(context).textTheme.caption,
               ),
             ),
             Container(
@@ -141,7 +144,7 @@ class DialogTextInput extends HookWidget {
                 top: 12,
                 bottom: 20,
               ),
-              constraints: const BoxConstraints(
+              constraints: BoxConstraints(
                 minWidth: Dimensions.inputWidthMin,
                 maxWidth: Dimensions.inputWidthMax,
               ),
@@ -195,7 +198,7 @@ class DialogTextInput extends HookWidget {
                     },
               child: !loadingAny
                   ? Text(confirmText.isEmpty ? Strings.buttonSave : confirmText)
-                  : const LoadingIndicator(size: 16),
+                  : LoadingIndicator(size: 16),
             ),
           ],
         )

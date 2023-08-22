@@ -6,7 +6,7 @@ import 'package:katya/global/strings.dart';
 
 class DialogColorPicker extends StatefulWidget {
   const DialogColorPicker({
-    super.key,
+    Key? key,
     required this.title, // i18n Strings isn't a constant. You gotta pass it in
     required this.currentColor,
     this.advanced = false,
@@ -14,7 +14,7 @@ class DialogColorPicker extends StatefulWidget {
     this.onCancel,
     this.onSelectColor,
     this.onToggleAdvanced,
-  });
+  }) : super(key: key);
 
   final String title;
   final int? resetColor;
@@ -89,7 +89,7 @@ class _DialogColorPickerState extends State<DialogColorPicker> {
   buildAdvancedPicker(context) => ColorPicker(
         pickerColor: currentColor ?? Color(widget.currentColor),
         hexInputController: controller,
-        labelTypes: const [],
+        showLabel: false,
         onColorChanged: (Color color) {
           widget.onSelectColor!(color.value);
           setState(() {
@@ -124,7 +124,7 @@ class _DialogColorPickerState extends State<DialogColorPicker> {
         },
         child: Text(
           'reset',
-          style: Theme.of(context).textTheme.titleMedium,
+          style: Theme.of(context).textTheme.subtitle1,
         ),
       ),
     ];
@@ -140,7 +140,7 @@ class _DialogColorPickerState extends State<DialogColorPicker> {
             },
             child: Text(
               Strings.titleAdvanced.toLowerCase(),
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
         );
@@ -150,12 +150,14 @@ class _DialogColorPickerState extends State<DialogColorPicker> {
         SimpleDialogOption(
           padding: optionsPadding,
           onPressed: () {
-            widget.onCancel?.call();
+            if (widget.onCancel != null) {
+              widget.onCancel!();
+            }
             Navigator.pop(context);
           },
           child: Text(
             Strings.buttonCancel,
-            style: Theme.of(context).textTheme.titleMedium,
+            style: Theme.of(context).textTheme.subtitle1,
           ),
         ),
       );
@@ -170,7 +172,7 @@ class _DialogColorPickerState extends State<DialogColorPicker> {
           },
           child: Text(
             Strings.buttonConfirmFormal,
-            style: Theme.of(context).textTheme.titleMedium,
+            style: Theme.of(context).textTheme.subtitle1,
           ),
         ),
       );
@@ -178,16 +180,16 @@ class _DialogColorPickerState extends State<DialogColorPicker> {
 
     return SimpleDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      contentPadding: const EdgeInsets.symmetric(vertical: 12),
+      contentPadding: EdgeInsets.symmetric(vertical: 12),
       title: Text(widget.title),
       children: <Widget>[
         Container(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: 8,
           ),
           width: width,
           height: dialogHeight,
-          constraints: !widget.advanced ? null : const BoxConstraints(minHeight: 460),
+          constraints: !widget.advanced ? null : BoxConstraints(minHeight: 460),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -209,7 +211,7 @@ class _DialogColorPickerState extends State<DialogColorPicker> {
           ),
         ),
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 4),
+          padding: EdgeInsets.symmetric(vertical: 4),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: options,

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
-set(BINARY_NAME "Katya")
+set(BINARY_NAME "Katya ® 👽")
 set(APPLICATION_ID "com.katya.wtf")
 
 cmake_policy(SET CMP0063 NEW)

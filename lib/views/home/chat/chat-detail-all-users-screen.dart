@@ -1,16 +1,17 @@
 import 'package:equatable/equatable.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:katya/domain/index.dart';
-import 'package:katya/domain/rooms/actions.dart';
-import 'package:katya/domain/rooms/room/model.dart';
-import 'package:katya/domain/search/actions.dart';
-import 'package:katya/domain/user/model.dart';
-import 'package:katya/domain/user/selectors.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
+import 'package:katya/store/index.dart';
+import 'package:katya/store/rooms/actions.dart';
+import 'package:katya/store/rooms/room/model.dart';
+import 'package:katya/store/search/actions.dart';
+import 'package:katya/store/user/model.dart';
+import 'package:katya/store/user/selectors.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/appbars/appbar-search.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
@@ -26,13 +27,14 @@ class ChatUsersDetailArguments {
 }
 
 class ChatUsersDetailScreen extends StatefulWidget {
-  const ChatUsersDetailScreen({super.key});
+  const ChatUsersDetailScreen({Key? key}) : super(key: key);
 
   @override
   ChatUsersDetailState createState() => ChatUsersDetailState();
 }
 
-class ChatUsersDetailState extends State<ChatUsersDetailScreen> with Lifecycle<ChatUsersDetailScreen> {
+class ChatUsersDetailState extends State<ChatUsersDetailScreen>
+    with Lifecycle<ChatUsersDetailScreen> {
   final searchInputFocusNode = FocusNode();
 
   bool loading = false;
@@ -42,7 +44,7 @@ class ChatUsersDetailState extends State<ChatUsersDetailScreen> with Lifecycle<C
   @override
   void onMounted() {
     final store = StoreProvider.of<AppState>(context);
-    final arguments = useScreenArguments<ChatUsersDetailArguments>(context, ChatUsersDetailArguments());
+    final arguments = useScreenArguments<ChatUsersDetailArguments>(context)!;
 
     final searchResults = store.state.searchStore.searchResults;
 
@@ -99,13 +101,13 @@ class ChatUsersDetailState extends State<ChatUsersDetailScreen> with Lifecycle<C
                 title: Text(
                   formatUsername(user),
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyLarge,
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
                 subtitle: Text(
                   user.userId!,
-                  style: Theme.of(context).textTheme.bodySmall!.merge(
+                  style: Theme.of(context).textTheme.caption!.merge(
                         TextStyle(
-                          color: props.loading ? const Color(AppColors.greyDisabled) : null,
+                          color: props.loading ? Color(AppColors.greyDisabled) : null,
                         ),
                       ),
                 ),

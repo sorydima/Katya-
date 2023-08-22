@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:katya/domain/settings/theme-settings/model.dart';
-import 'package:katya/domain/settings/theme-settings/selectors.dart';
-import 'package:katya/domain/user/model.dart';
+
 import 'package:katya/global/dimensions.dart';
+import 'package:katya/store/settings/theme-settings/model.dart';
+import 'package:katya/store/settings/theme-settings/selectors.dart';
+import 'package:katya/store/user/model.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
 
 class AppBarAvatar extends StatelessWidget {
   const AppBarAvatar({
-    super.key,
+    Key? key,
     this.user,
     this.themeType = ThemeType.Light,
     this.syncing = false,
@@ -15,7 +16,7 @@ class AppBarAvatar extends StatelessWidget {
     this.unauthed = false,
     this.tooltip,
     this.onPressed,
-  });
+  }) : super(key: key);
 
   final User? user;
   final bool syncing;
@@ -28,11 +29,11 @@ class AppBarAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        margin: const EdgeInsets.only(right: 8),
+        margin: EdgeInsets.only(right: 8),
         child: Stack(
           children: <Widget>[
             IconButton(
-              padding: const EdgeInsets.all(4),
+              padding: EdgeInsets.all(4),
               icon: Avatar(
                 uri: user!.avatarUri,
                 alt: user!.displayName ?? user!.userId,
@@ -54,7 +55,7 @@ class AppBarAvatar extends StatelessWidget {
                     height: 16,
                     width: 16,
                     color: selectIconBackground(themeType),
-                    child: const Icon(
+                    child: Icon(
                       Icons.offline_bolt,
                       color: Colors.white,
                       size: 16,
@@ -76,7 +77,7 @@ class AppBarAvatar extends StatelessWidget {
                     height: 16,
                     width: 16,
                     color: selectIconBackground(themeType),
-                    child: const Icon(
+                    child: Icon(
                       Icons.block,
                       color: Colors.white,
                       size: 16,
@@ -97,7 +98,7 @@ class AppBarAvatar extends StatelessWidget {
                   child: Container(
                     height: 16,
                     width: 16,
-                    padding: const EdgeInsets.all(2),
+                    padding: EdgeInsets.all(2),
                     child: CircularProgressIndicator(
                       strokeWidth: Dimensions.strokeWidthThin,
                       color: computeContrastColorText(

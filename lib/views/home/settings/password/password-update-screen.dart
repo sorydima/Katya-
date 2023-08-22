@@ -2,17 +2,17 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:katya/domain/auth/actions.dart';
-import 'package:katya/domain/index.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
+import 'package:katya/store/auth/actions.dart';
+import 'package:katya/store/index.dart';
 import 'package:katya/views/behaviors.dart';
 import 'package:katya/views/widgets/buttons/button-solid.dart';
 
 import 'password-update-step.dart';
 
 class PasswordUpdateScreen extends StatefulWidget {
-  const PasswordUpdateScreen({super.key});
+  const PasswordUpdateScreen({Key? key}) : super(key: key);
 
   @override
   PasswordUpdateState createState() => PasswordUpdateState();
@@ -25,7 +25,7 @@ class PasswordUpdateState extends State<PasswordUpdateScreen> {
   bool onboarding = false;
   PageController? pageController;
 
-  var sections = [const PasswordUpdateStep()];
+  var sections = [PasswordUpdateStep()];
 
   PasswordUpdateState();
 
@@ -82,7 +82,7 @@ class PasswordUpdateState extends State<PasswordUpdateScreen> {
                           children: <Widget>[
                             Container(
                               width: width,
-                              constraints: const BoxConstraints(
+                              constraints: BoxConstraints(
                                 minHeight: Dimensions.pageViewerHeightMin,
                                 maxHeight: Dimensions.heightMax * 0.5,
                               ),
@@ -90,7 +90,7 @@ class PasswordUpdateState extends State<PasswordUpdateScreen> {
                                 pageSnapping: true,
                                 allowImplicitScrolling: false,
                                 controller: pageController,
-                                physics: const NeverScrollableScrollPhysics(),
+                                physics: NeverScrollableScrollPhysics(),
                                 children: sections,
                                 onPageChanged: (index) {
                                   setState(() {
@@ -112,7 +112,7 @@ class PasswordUpdateState extends State<PasswordUpdateScreen> {
                             Container(
                               width: width * 0.66,
                               height: Dimensions.inputHeight,
-                              constraints: const BoxConstraints(
+                              constraints: BoxConstraints(
                                 minWidth: Dimensions.buttonWidthMin,
                                 maxWidth: Dimensions.buttonWidthMax,
                               ),
@@ -163,8 +163,8 @@ class _Props extends Equatable {
 
   static _Props mapStateToProps(Store<AppState> store) => _Props(
         loading: store.state.authStore.loading,
-        isPasswordValid:
-            store.state.authStore.isPasswordValid && store.state.authStore.passwordCurrent.isNotEmpty,
+        isPasswordValid: store.state.authStore.isPasswordValid &&
+            store.state.authStore.passwordCurrent.isNotEmpty,
         interactiveAuths: store.state.authStore.interactiveAuths,
         onSavePassword: () async {
           final valid = store.state.authStore.isPasswordValid;

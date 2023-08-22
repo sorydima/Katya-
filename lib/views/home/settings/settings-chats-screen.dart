@@ -1,20 +1,21 @@
 import 'package:equatable/equatable.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:katya/domain/alerts/actions.dart';
-import 'package:katya/domain/index.dart';
-import 'package:katya/domain/settings/actions.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/global/values.dart';
+import 'package:katya/store/alerts/actions.dart';
+import 'package:katya/store/index.dart';
+import 'package:katya/store/settings/actions.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/appbars/appbar-normal.dart';
 import 'package:katya/views/widgets/containers/card-section.dart';
 
 class SettingsChatsScreen extends StatelessWidget {
-  const SettingsChatsScreen({super.key});
+  const SettingsChatsScreen({Key? key}) : super(key: key);
 
   displayThemeType(String themeTypeName) {
     return themeTypeName.split('.')[1].toLowerCase();
@@ -33,7 +34,7 @@ class SettingsChatsScreen extends StatelessWidget {
             ),
             body: SingleChildScrollView(
               child: Container(
-                  padding: const EdgeInsets.only(bottom: 24),
+                  padding: EdgeInsets.only(bottom: 24),
                   child: Column(
                     children: <Widget>[
                       CardSection(
@@ -45,7 +46,7 @@ class SettingsChatsScreen extends StatelessWidget {
                               child: Text(
                                 Strings.headerGeneral,
                                 textAlign: TextAlign.start,
-                                style: Theme.of(context).textTheme.titleSmall,
+                                style: Theme.of(context).textTheme.subtitle2,
                               ),
                             ),
                             GestureDetector(
@@ -69,11 +70,11 @@ class SettingsChatsScreen extends StatelessWidget {
                                 ),
                                 subtitle: Text(
                                   Strings.subtitleShowMembershipEvents,
-                                  style: Theme.of(context).textTheme.bodySmall,
+                                  style: Theme.of(context).textTheme.caption,
                                 ),
                                 trailing: Switch(
                                   value: false,
-                                  inactiveThumbColor: const Color(AppColors.greyDisabled),
+                                  inactiveThumbColor: Color(AppColors.greyDisabled),
                                   onChanged: (showMembershipEvents) {},
                                 ),
                               ),
@@ -86,7 +87,7 @@ class SettingsChatsScreen extends StatelessWidget {
                               ),
                               subtitle: Text(
                                 Strings.subtitleEnterSends,
-                                style: Theme.of(context).textTheme.bodySmall,
+                                style: Theme.of(context).textTheme.caption,
                               ),
                               trailing: Switch(
                                 value: props.enterSend,
@@ -99,7 +100,7 @@ class SettingsChatsScreen extends StatelessWidget {
                               title: Text(Strings.titleToggleAutocorrect),
                               subtitle: Text(
                                 Strings.subtitleToggleAutocorrect,
-                                style: Theme.of(context).textTheme.bodySmall,
+                                style: Theme.of(context).textTheme.caption,
                               ),
                               trailing: Switch(
                                 value: props.autocorrect,
@@ -112,7 +113,7 @@ class SettingsChatsScreen extends StatelessWidget {
                               title: Text(Strings.titleToggleSuggestions),
                               subtitle: Text(
                                 Strings.subtitleToggleSuggestions,
-                                style: Theme.of(context).textTheme.bodySmall,
+                                style: Theme.of(context).textTheme.caption,
                               ),
                               trailing: Switch(
                                 value: props.suggestions,
@@ -127,7 +128,7 @@ class SettingsChatsScreen extends StatelessWidget {
                               ),
                               subtitle: Text(
                                 Strings.subtitle24hFormat,
-                                style: Theme.of(context).textTheme.bodySmall,
+                                style: Theme.of(context).textTheme.caption,
                               ),
                               trailing: Switch(
                                 value: props.timeFormat24,
@@ -142,7 +143,7 @@ class SettingsChatsScreen extends StatelessWidget {
                               ),
                               subtitle: Text(
                                 Strings.subtitleDismissKeyboard,
-                                style: Theme.of(context).textTheme.bodySmall,
+                                style: Theme.of(context).textTheme.caption,
                               ),
                               trailing: Switch(
                                 value: props.dismissKeyboard,
@@ -161,7 +162,7 @@ class SettingsChatsScreen extends StatelessWidget {
                               child: Text(
                                 Strings.headerOrdering,
                                 textAlign: TextAlign.start,
-                                style: Theme.of(context).textTheme.titleSmall,
+                                style: Theme.of(context).textTheme.subtitle2,
                               ),
                             ),
                             GestureDetector(
@@ -173,7 +174,7 @@ class SettingsChatsScreen extends StatelessWidget {
                                 ),
                                 trailing: Text(
                                   Strings.labelTimestamp, //TODO
-                                  style: Theme.of(context).textTheme.titleMedium,
+                                  style: Theme.of(context).textTheme.subtitle1,
                                 ),
                               ),
                             ),
@@ -186,7 +187,7 @@ class SettingsChatsScreen extends StatelessWidget {
                                 ),
                                 trailing: Text(
                                   Strings.labelNone, //TODO
-                                  style: Theme.of(context).textTheme.titleMedium,
+                                  style: Theme.of(context).textTheme.subtitle1,
                                 ),
                               ),
                             ),
@@ -202,7 +203,7 @@ class SettingsChatsScreen extends StatelessWidget {
                               child: Text(
                                 Strings.headerMedia,
                                 textAlign: TextAlign.start,
-                                style: Theme.of(context).textTheme.titleSmall,
+                                style: Theme.of(context).textTheme.subtitle2,
                               ),
                             ),
                             GestureDetector(
@@ -215,7 +216,7 @@ class SettingsChatsScreen extends StatelessWidget {
                                 ),
                                 subtitle: Text(
                                   Strings.subtitleViewUploadedMedia,
-                                  style: Theme.of(context).textTheme.bodySmall,
+                                  style: Theme.of(context).textTheme.caption,
                                 ),
                               ),
                             ),
@@ -231,7 +232,7 @@ class SettingsChatsScreen extends StatelessWidget {
                               child: Text(
                                 Strings.headerMediaAutoDownload,
                                 textAlign: TextAlign.start,
-                                style: Theme.of(context).textTheme.titleSmall,
+                                style: Theme.of(context).textTheme.subtitle2,
                               ),
                             ),
                             ListTile(
@@ -242,7 +243,7 @@ class SettingsChatsScreen extends StatelessWidget {
                               ),
                               subtitle: Text(
                                 props.autoDownload ? Strings.labelOn : Strings.labelOff,
-                                style: Theme.of(context).textTheme.bodySmall,
+                                style: Theme.of(context).textTheme.caption,
                               ),
                               trailing: Switch(
                                 value: props.autoDownload,
@@ -259,7 +260,7 @@ class SettingsChatsScreen extends StatelessWidget {
                                 ),
                                 subtitle: Text(
                                   Strings.subtitleImagesAudioVideoFiles, //TODO
-                                  style: Theme.of(context).textTheme.bodySmall,
+                                  style: Theme.of(context).textTheme.caption,
                                 ),
                               ),
                             ),
@@ -273,7 +274,7 @@ class SettingsChatsScreen extends StatelessWidget {
                                 ),
                                 subtitle: Text(
                                   Strings.subtitleImagesAudioVideoFiles, //TODO
-                                  style: Theme.of(context).textTheme.bodySmall,
+                                  style: Theme.of(context).textTheme.caption,
                                 ),
                               ),
                             ),
@@ -287,7 +288,7 @@ class SettingsChatsScreen extends StatelessWidget {
                                 ),
                                 subtitle: Text(
                                   Strings.subtitleImagesAudioVideoFiles, //TODO
-                                  style: Theme.of(context).textTheme.bodySmall,
+                                  style: Theme.of(context).textTheme.caption,
                                 ),
                               ),
                             ),

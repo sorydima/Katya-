@@ -1,14 +1,16 @@
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:katya/domain/index.dart';
-import 'package:katya/domain/settings/theme-settings/model.dart';
-import 'package:katya/domain/settings/theme-settings/selectors.dart';
+
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/formatters.dart';
+import 'package:katya/store/index.dart';
+import 'package:katya/store/settings/theme-settings/model.dart';
+import 'package:katya/store/settings/theme-settings/selectors.dart';
 import 'package:katya/views/widgets/image-matrix.dart';
 
 ///
@@ -20,7 +22,7 @@ import 'package:katya/views/widgets/image-matrix.dart';
 /// params. Should be fixed in the parser.
 class Avatar extends StatelessWidget {
   const Avatar({
-    super.key,
+    Key? key,
     this.uri = '',
     this.url = '',
     this.file,
@@ -33,7 +35,7 @@ class Avatar extends StatelessWidget {
     this.selected = false,
     this.rebuild = true,
     this.computeColors = false,
-  });
+  }) : super(key: key);
 
   final bool force;
   final bool selected;
@@ -55,7 +57,8 @@ class Avatar extends StatelessWidget {
         builder: (context, props) {
           // TODO: uri is parsed as an empty string under dendrite
           final bool emptyAvi = uri == null && url == null || (uri?.isEmpty ?? true);
-          final Color backgroundColor = !emptyAvi || force ? Colors.transparent : background ?? Colors.grey;
+          final Color backgroundColor =
+              !emptyAvi || force ? Colors.transparent : background ?? Colors.grey;
 
           var borderRadius = BorderRadius.circular(size);
 
@@ -145,8 +148,8 @@ class Avatar extends StatelessWidget {
                         ),
                         width: Dimensions.badgeAvatarSize,
                         height: Dimensions.badgeAvatarSize,
-                        margin: const EdgeInsets.only(left: 4),
-                        child: const Icon(
+                        margin: EdgeInsets.only(left: 4),
+                        child: Icon(
                           Icons.check,
                           size: Dimensions.iconSizeMini,
                           color: Colors.white,

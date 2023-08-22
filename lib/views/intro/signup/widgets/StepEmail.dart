@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:redux/redux.dart';
-import 'package:katya/domain/auth/actions.dart';
-import 'package:katya/domain/index.dart';
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/dimensions.dart';
-import 'package:katya/global/libraries/matrix/auth/types.dart';
+import 'package:katya/global/libs/matrix/auth.dart';
 import 'package:katya/global/strings.dart';
+import 'package:katya/store/auth/actions.dart';
+import 'package:katya/store/index.dart';
 import 'package:katya/views/widgets/dialogs/dialog-explaination.dart';
 import 'package:katya/views/widgets/input/text-field-secure.dart';
 
@@ -19,7 +19,7 @@ import 'package:katya/views/widgets/input/text-field-secure.dart';
 // Styling
 
 class EmailStep extends StatefulWidget {
-  const EmailStep({super.key});
+  const EmailStep({Key? key}) : super(key: key);
 
   @override
   EmailStepState createState() => EmailStepState();
@@ -50,22 +50,22 @@ class EmailStepState extends State<EmailStep> {
         final double height = MediaQuery.of(context).size.height;
 
         Color suffixBackgroundColor = Colors.grey;
-        Widget suffixWidget = const CircularProgressIndicator(
+        Widget suffixWidget = CircularProgressIndicator(
           strokeWidth: Dimensions.strokeWidthDefault,
-          valueColor: AlwaysStoppedAnimation<Color>(
+          valueColor: const AlwaysStoppedAnimation<Color>(
             Colors.white,
           ),
         );
 
         if (!props.loading && typingTimeout == null) {
           if (props.isEmailValid && props.isEmailAvailable) {
-            suffixWidget = const Icon(
+            suffixWidget = Icon(
               Icons.check,
               color: Colors.white,
             );
             suffixBackgroundColor = Theme.of(context).primaryColor;
           } else {
-            suffixWidget = const Icon(
+            suffixWidget = Icon(
               Icons.close,
               color: Colors.white,
             );
@@ -86,7 +86,7 @@ class EmailStepState extends State<EmailStep> {
                 flex: 2,
                 child: Container(
                   width: Dimensions.contentWidth(context),
-                  constraints: const BoxConstraints(
+                  constraints: BoxConstraints(
                     maxHeight: Dimensions.mediaSizeMax,
                     maxWidth: Dimensions.mediaSizeMax,
                   ),
@@ -103,25 +103,25 @@ class EmailStepState extends State<EmailStep> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      padding: const EdgeInsets.only(bottom: 8, top: 8),
+                      padding: EdgeInsets.only(bottom: 8, top: 8),
                       child: Text(
                         'This homeserver requires an email\n for account creation.',
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: Theme.of(context).textTheme.caption,
                       ),
                     ),
                     Stack(
                       clipBehavior: Clip.none,
                       children: <Widget>[
                         Container(
-                          padding: const EdgeInsets.symmetric(
+                          padding: EdgeInsets.symmetric(
                             vertical: 8,
                             horizontal: 24,
                           ),
                           child: Text(
                             'Enter an email address',
                             textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headlineSmall,
+                            style: Theme.of(context).textTheme.headline5,
                           ),
                         ),
                         Positioned(
@@ -156,11 +156,11 @@ class EmailStepState extends State<EmailStep> {
                     Visibility(
                       visible: !props.isEmailAvailable,
                       child: Container(
-                        padding: const EdgeInsets.only(top: 16),
+                        padding: EdgeInsets.only(top: 16),
                         child: Text(
                           '* Email is already in use by another user',
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          style: Theme.of(context).textTheme.caption!.copyWith(
                                 color: Colors.red,
                               ),
                         ),
@@ -174,7 +174,7 @@ class EmailStepState extends State<EmailStep> {
                 child: Container(
                   width: Dimensions.contentWidthWide(context),
                   height: Dimensions.inputHeight,
-                  constraints: const BoxConstraints(
+                  constraints: BoxConstraints(
                     minWidth: Dimensions.inputWidthMin,
                     maxWidth: Dimensions.inputWidthMax,
                   ),
@@ -203,7 +203,7 @@ class EmailStepState extends State<EmailStep> {
 
                       // Run check after 1 second of no typing
                       typingTimeout = Timer(
-                        const Duration(milliseconds: 1000),
+                        Duration(milliseconds: 1000),
                         () {
                           setState(() {
                             typingTimeout = null;
@@ -216,13 +216,13 @@ class EmailStepState extends State<EmailStep> {
                       child: Container(
                         width: 12,
                         height: 12,
-                        margin: const EdgeInsets.all(6),
+                        margin: EdgeInsets.all(6),
                         decoration: BoxDecoration(
                           color: suffixBackgroundColor,
                           borderRadius: BorderRadius.circular(24),
                         ),
                         child: Container(
-                          padding: const EdgeInsets.all(6),
+                          padding: EdgeInsets.all(6),
                           child: suffixWidget,
                         ),
                       ),
