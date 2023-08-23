@@ -45,13 +45,13 @@ unset(_expectedTargets)
 add_library(Olm::Olm SHARED IMPORTED)
 
 set_target_properties(Olm::Olm PROPERTIES
-  INTERFACE_INCLUDE_DIRECTORIES "/Users/sorydima/katya/android/olm/include"
+  INTERFACE_INCLUDE_DIRECTORIES "/Users/sorydima/Documents/GitHub/Katya-/android/olm/include"
 )
 
 # Import target "Olm::Olm" for configuration "Release"
 set_property(TARGET Olm::Olm APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(Olm::Olm PROPERTIES
-  IMPORTED_LOCATION_RELEASE "/Users/sorydima/katya/android/app/.cxx/cmake/release/x86_64/libolm.so"
+  IMPORTED_LOCATION_RELEASE "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/release/x86_64/libolm.so"
   IMPORTED_SONAME_RELEASE "libolm.so"
   )
 

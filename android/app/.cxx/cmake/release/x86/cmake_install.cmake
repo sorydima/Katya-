@@ -1,4 +1,4 @@
-# Install script for directory: /Users/sorydima/katya/android/olm
+# Install script for directory: /Users/sorydima/Documents/GitHub/Katya-/android/olm
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -43,7 +43,7 @@ if(NOT DEFINED CMAKE_OBJDUMP)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE SHARED_LIBRARY FILES "/Users/sorydima/katya/android/app/.cxx/cmake/release/x86/libolm.so")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE SHARED_LIBRARY FILES "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/release/x86/libolm.so")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libolm.so" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libolm.so")
     if(CMAKE_INSTALL_DO_STRIP)
@@ -57,25 +57,25 @@ endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/olm" TYPE FILE FILES
-    "/Users/sorydima/katya/android/olm/include/olm/olm.h"
-    "/Users/sorydima/katya/android/olm/include/olm/olm_export.h"
-    "/Users/sorydima/katya/android/olm/include/olm/outbound_group_session.h"
-    "/Users/sorydima/katya/android/olm/include/olm/inbound_group_session.h"
-    "/Users/sorydima/katya/android/olm/include/olm/pk.h"
-    "/Users/sorydima/katya/android/olm/include/olm/sas.h"
-    "/Users/sorydima/katya/android/olm/include/olm/error.h"
+    "/Users/sorydima/Documents/GitHub/Katya-/android/olm/include/olm/olm.h"
+    "/Users/sorydima/Documents/GitHub/Katya-/android/olm/include/olm/olm_export.h"
+    "/Users/sorydima/Documents/GitHub/Katya-/android/olm/include/olm/outbound_group_session.h"
+    "/Users/sorydima/Documents/GitHub/Katya-/android/olm/include/olm/inbound_group_session.h"
+    "/Users/sorydima/Documents/GitHub/Katya-/android/olm/include/olm/pk.h"
+    "/Users/sorydima/Documents/GitHub/Katya-/android/olm/include/olm/sas.h"
+    "/Users/sorydima/Documents/GitHub/Katya-/android/olm/include/olm/error.h"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/Users/sorydima/katya/android/app/.cxx/cmake/release/x86/olm.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/release/x86/olm.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/Olm/OlmTargets.cmake")
     file(DIFFERENT EXPORT_FILE_CHANGED FILES
          "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/Olm/OlmTargets.cmake"
-         "/Users/sorydima/katya/android/app/.cxx/cmake/release/x86/CMakeFiles/Export/lib/cmake/Olm/OlmTargets.cmake")
+         "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/release/x86/CMakeFiles/Export/lib/cmake/Olm/OlmTargets.cmake")
     if(EXPORT_FILE_CHANGED)
       file(GLOB OLD_CONFIG_FILES "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/Olm/OlmTargets-*.cmake")
       if(OLD_CONFIG_FILES)
@@ -84,16 +84,16 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
       endif()
     endif()
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/Olm" TYPE FILE FILES "/Users/sorydima/katya/android/app/.cxx/cmake/release/x86/CMakeFiles/Export/lib/cmake/Olm/OlmTargets.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/Olm" TYPE FILE FILES "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/release/x86/CMakeFiles/Export/lib/cmake/Olm/OlmTargets.cmake")
   if("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
-    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/Olm" TYPE FILE FILES "/Users/sorydima/katya/android/app/.cxx/cmake/release/x86/CMakeFiles/Export/lib/cmake/Olm/OlmTargets-release.cmake")
+    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/Olm" TYPE FILE FILES "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/release/x86/CMakeFiles/Export/lib/cmake/Olm/OlmTargets-release.cmake")
   endif()
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/Olm" TYPE FILE FILES
-    "/Users/sorydima/katya/android/app/.cxx/cmake/release/x86/OlmConfig.cmake"
-    "/Users/sorydima/katya/android/app/.cxx/cmake/release/x86/OlmConfigVersion.cmake"
+    "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/release/x86/OlmConfig.cmake"
+    "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/release/x86/OlmConfigVersion.cmake"
     )
 endif()
 
@@ -105,5 +105,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/sorydima/katya/android/app/.cxx/cmake/release/x86/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/release/x86/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

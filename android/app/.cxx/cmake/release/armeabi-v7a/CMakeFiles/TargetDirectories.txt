@@ -1,7 +1,7 @@
-/Users/sorydima/katya/android/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/install/local.dir
-/Users/sorydima/katya/android/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/install/strip.dir
-/Users/sorydima/katya/android/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/install.dir
-/Users/sorydima/katya/android/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/list_install_components.dir
-/Users/sorydima/katya/android/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/rebuild_cache.dir
-/Users/sorydima/katya/android/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/edit_cache.dir
-/Users/sorydima/katya/android/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/olm.dir
+/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/install/local.dir
+/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/install/strip.dir
+/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/install.dir
+/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/list_install_components.dir
+/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/olm.dir

@@ -1,0 +1,7 @@
+Executable : /Users/sorydima/Library/Android/sdk/cmake/3.18.1/bin/ninja
+arguments : 
+-C
+/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/release/x86_64
+olm
+jvmArgs : 
+

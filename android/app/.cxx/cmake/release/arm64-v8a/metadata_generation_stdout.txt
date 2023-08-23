@@ -16,4 +16,4 @@
 -- Performing Test COMPILER_HAS_DEPRECATED_ATTR - Success
 -- Configuring done
 -- Generating done
--- Build files have been written to: /Users/sorydima/katya/android/app/.cxx/cmake/release/arm64-v8a
+-- Build files have been written to: /Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/release/arm64-v8a

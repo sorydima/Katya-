@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(Katya ® 👽 LANGUAGES CXX)
+project(Katya LANGUAGES CXX)
 
-set(BINARY_NAME "Katya ® 👽")
+set(BINARY_NAME "Katya")
 
 cmake_policy(SET CMP0063 NEW)
 

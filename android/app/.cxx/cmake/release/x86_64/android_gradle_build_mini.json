@@ -1,27 +1,27 @@
 {
   "buildFiles": [
-    "/Users/sorydima/katya/android/olm/CMakeLists.txt",
-    "/Users/sorydima/katya/android/olm/cmake/OlmConfig.cmake.in"
+    "/Users/sorydima/Documents/GitHub/Katya-/android/olm/CMakeLists.txt",
+    "/Users/sorydima/Documents/GitHub/Katya-/android/olm/cmake/OlmConfig.cmake.in"
   ],
   "cleanCommandsComponents": [
     [
       "/Users/sorydima/Library/Android/sdk/cmake/3.18.1/bin/ninja",
       "-C",
-      "/Users/sorydima/katya/android/app/.cxx/cmake/release/x86_64",
+      "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/release/x86_64",
       "clean"
     ]
   ],
   "buildTargetsCommandComponents": [
     "/Users/sorydima/Library/Android/sdk/cmake/3.18.1/bin/ninja",
     "-C",
-    "/Users/sorydima/katya/android/app/.cxx/cmake/release/x86_64",
+    "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/release/x86_64",
     "{LIST_OF_TARGETS_TO_BUILD}"
   ],
   "libraries": {
     "olm::@6890427a1f51a3e7e1df": {
       "artifactName": "olm",
       "abi": "x86_64",
-      "output": "/Users/sorydima/katya/android/app/.cxx/cmake/release/x86_64/libolm.so",
+      "output": "/Users/sorydima/Documents/GitHub/Katya-/android/app/.cxx/cmake/release/x86_64/libolm.so",
       "runtimeFiles": []
     }
   }
