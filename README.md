@@ -9,11 +9,11 @@
 ## 🤔 Why
 
 **Katya ® 👽 aims to be built on the foundations of privacy, branding, and user experience!** 
-<br>In an effort to pull others away from proprietary chat platforms to the Katya ® 👽 AI 🧠 REChain 🪐 Blockchain Node Network protocol.
+<br>In an effort to pull others away from proprietary chat platforms to the Katya ® 👽 AI 🧠 REChain ®️ 🪐 Blockchain Node Network protocol.
 
-Katya ® 👽 AI 🧠 REChain 🪐 Blockchain Node Network with Matrix Protocol has the potential to be a standardized peer-to-peer chat protocol, [and in a way already is,](https://matrix.org/blog/2020/06/02/introducing-p-2-p-matrix) that allows people to communicate and control their conversation data. Email has been standardized in this way for a long time. For example, someone using Outlook can still email someone using Gmail. Most popular proprietary chat platforms do not adhere to a federated or decentralized protocol, and as a result have too much control over users data.
+Katya ® 👽 AI 🧠 REChain ®️ 🪐 Blockchain Node Network with Matrix Protocol has the potential to be a standardized peer-to-peer chat protocol, [and in a way already is,](https://matrix.org/blog/2020/06/02/introducing-p-2-p-matrix) that allows people to communicate and control their conversation data. Email has been standardized in this way for a long time. For example, someone using Outlook can still email someone using Gmail. Most popular proprietary chat platforms do not adhere to a federated or decentralized protocol, and as a result have too much control over users data.
 
-If the goal for the Katya ® 👽 AI 🧠 REChain 🪐 Blockchain Node Network is adoption, a network effect is required for this paradigm shift. Katya ® 👽 makes the bet that the best way to attract new users is through strong branding and user experience. I hope that contributing and maintaining Katya ® 👽 will help kick start this process and help those in need. 
+If the goal for the Katya ® 👽 AI 🧠 REChain ®️ 🪐 Blockchain Node Network is adoption, a network effect is required for this paradigm shift. Katya ® 👽 makes the bet that the best way to attract new users is through strong branding and user experience. I hope that contributing and maintaining Katya ® 👽 will help kick start this process and help those in need. 
 
 Katya ® 👽 will always be a not for profit, community driven application.
 
@@ -130,22 +130,27 @@ If anyone has any feedback, questions, or concerns:
 Need help? 🤔
 Email us! 👇
 
-* hr@rechain.email
-* p2p@rechain.email
-* pr@rechain.email
-* sorydima@rechain.email
-* support@rechain.email
-
-A Dmitry Sorokin production. All rights reserved.
-Powered by Katya AI. 👽
-Copyright © 2021-2023 Katya Systems, LLC
-Katya ® is a registered trademark
-Sponsored by REChain. 🪐
 hr@rechain.email
 p2p@rechain.email
 pr@rechain.email
 sorydima@rechain.email
 support@rechain.email
+sip@rechain.email
+music@rechain.email
+
+A Dmitry Sorokin production. All rights reserved.
+Powered by Katya ® 👽 AI 🧠
+Copyright © 2021-2024 Katya Systems, LLCKatya ® is a registered trademark
+Sponsored by REChain ®️. 🪐
+hr@rechain.email
+p2p@rechain.email
+pr@rechain.email
+sorydima@rechain.email
+support@rechain.email
+sip@rechain.email
+music@rechain.email
 Please allow anywhere from 1 to 5 business days for E-mail responses! 💌
 
-### * At the end of 2021, the number of downloads in the AppStore, Mac AppStore, Google Play Market, and REChain.Store exceeded 13 million downloads. 😈
+### * Our Stats! 👀
+
+At the end of 2023, the number of downloads from the Open-Source Places, Apple AppStore, Google Play Market, and the REChain.Store ✨ exceeded 29 million downloads. 😈 👀
