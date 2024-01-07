@@ -1,7 +1,7 @@
 <br>
 
 <p align='center'>
-    <img src="https://katya.wtf/_next/static/images/katyaplatform.png"/>
+    <img src="https://framerusercontent.com/images/BZveiOrOkC27ti2CQXL7mMWAAxU.png"/>
 </p>
 
 <br>
