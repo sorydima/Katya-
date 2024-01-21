@@ -1,0 +1,107 @@
+{
+    "app-id": "com.katya.wtf",
+    "runtime": "org.freedesktop.Platform",
+    "runtime-version": "23.08",
+    "sdk": "org.freedesktop.Sdk",
+    "command": "katya",
+    "separate-locales": false,
+    "finish-args": [
+        "--share=ipc",
+        "--socket=fallback-x11",
+        "--socket=wayland",
+        "--socket=pulseaudio",
+        "--share=network",
+        "--device=all",
+        "--filesystem=xdg-download",
+        "--talk-name=org.freedesktop.Notifications",
+        "--own-name=com.katya.wtf"
+    ],
+    "modules": [
+        {
+            "name": "libjsoncpp",
+            "only_arches": [
+                "x86_64"
+            ],
+            "buildsystem": "meson",
+            "config-opts": [
+                "--buildtype=release",
+                "--default-library=shared"
+            ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://github.com/open-source-parsers/jsoncpp/archive/refs/tags/1.9.5.tar.gz",
+                    "sha256": "f409856e5920c18d0c2fb85276e24ee607d2a09b5e7d5f0a371368903c275da2"
+                }
+            ]
+        },
+        {
+            "name": "olm",
+            "buildsystem": "cmake",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://gitlab.matrix.org/matrix-org/olm.git",
+                    "tag": "3.2.14"
+                }
+            ]
+        },
+        {
+            "name": "libsecret",
+            "buildsystem": "meson",
+            "config-opts": [
+                "-Dvapi=false",
+                "-Dgtk_doc=false"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://gitlab.gnome.org/GNOME/libsecret.git",
+                    "tag": "0.20.5"
+                }
+            ]
+        },
+        {
+            "name": "katya",
+            "buildsystem": "simple",
+            "only-arches": [
+                "x86_64"
+            ],
+            "build-commands": [
+                "ls katya",
+                "cp -r katya /app/katya",
+                "chmod +x /app/katya/katya",
+                "install -Dm644 logo.svg /app/share/icons/hicolor/scalable/apps/com.katya.wtf.svg",
+                "mkdir -p /app/bin",
+                "ln -s /usr/lib/x86_64-linux-gnu/libsqlite3.so.0 /app/lib/libsqlite3.so",
+                "if [ ! -e '/app/lib/libsqlite3.so' ]; then ln -s -f /usr/lib/aarch64-linux-gnu/libsqlite3.so.0 /app/lib/libsqlite3.so; fi",
+                "ln -s /app/katya/katya /app/bin/katya",
+                "if [ $(arch) == \"aarch64\"  ]; then sed -si \"/Exec=/cExec=env GDK_GL=gles katya %U\" com.katya.wtf.desktop; fi",
+                "install -Dm644 com.katya.wtf.desktop /app/share/applications/com.katya.wtf.desktop",
+                "install -Dm644 com.katya.wtf.metainfo.xml /app/share/appdata/com.katya.wtf.metainfo.xml"
+            ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "only-arches": [
+                        "x86_64"
+                    ],
+                    "url": "https://github.com/sorydima/Katya-/releases/download/0.3.16/Katya.tar.gz",
+                    "dest": "Katya"
+                },
+                {
+                    "type": "file",
+                    "path": "com.katya.wtf.metainfo.xml"
+                },
+                {
+                    "type": "file",
+                    "path": "com.katya.wtf.desktop"
+                },
+                {
+                    "type": "file",
+                    "path": "logo.svg"
+                }
+            ]
+        }
+    ]
+}

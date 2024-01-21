@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Katya ® 👽! 👩🏻‍💻 🕵🏻‍♀️
+Icon=com.katya.wtf
+Exec=Katya %U
+Categories=Network;InstantMessaging;Chat;VideoConference;
+Keywords=Katya;Chat;Messenger;Social
+X-Purism-FormFactor=Workstation;Mobile;

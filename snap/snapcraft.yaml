@@ -1,0 +1,140 @@
+name: katya
+title: Katya ® 👽! 👩🏻‍💻 🕵🏻‍♀️
+base: core22
+version: git
+license: GPL-3.0
+summary: Hi! I'm Katya ® 👽! 👩🏻‍💻 🕵🏻‍♀️ An AI 🧠 multifunctional social blockchain platform! 👽*
+description: |
+🤔 Why
+
+🚀 **Unleash the Future with Katya® - Your Ultimate AI Multifunctional Social Blockchain Platform!** 👽👩🏻‍💻🕵🏻‍♀️
+
+Embark on a journey into the technological frontier as we proudly present the Katya® Super Platform—an unparalleled fusion of cutting-edge AI, multifunctionality, and the power of blockchain! 🌐💡
+
+🌟 **Artificial Intelligence at its Zenith:** Katya's® state-of-the-art AI core redefines intelligent interactions. Seamlessly adapting to your preferences, this cognitive marvel transforms your digital experience into a personalized and efficient adventure. Get ready to witness a platform that learns, evolves, and connects with you on a whole new level.
+
+🔗 **Multifunctional Mastery:** Elevate your digital presence with Katya's® multifunctional prowess. From social networking to content creation, financial transactions to smart contracts—Katya® is the epitome of versatility. It's not just a platform; it's a universe where all your needs find a home, effortlessly merging technology and human connection.
+
+🌐 **Blockchain Brilliance:** Immerse yourself in the secure embrace of Katya's® blockchain technology. Your data is guarded, transactions are tamper-proof, and interactions are governed by the transparency and reliability of the blockchain. Trust and decentralization are not just promises; they are the pillars of Katya's® digital ecosystem.
+
+🌍 **Connect Globally, Thrive Locally:** Break down geographical barriers and foster connections worldwide. Katya® redefines social networking by providing a global stage where cultures converge, collaborations flourish, and friendships know no boundaries. It's not just a platform; it's a bridge connecting minds across the globe.
+
+🎨 **Aesthetic Simplicity, Functional Brilliance:** Immerse yourself in a sleek, modern, and user-friendly interface that defines Katya's® essence. Navigating through the platform is a visual delight, offering an intuitive experience that seamlessly integrates style and functionality.
+
+🚀 **Fast-Track to Tomorrow:** Katya's® Super Platform propels you into the future of technology. Stay at the forefront with regular updates, ensuring you are always equipped with the latest features and security enhancements. Katya® isn't just a platform; it's a dynamic force constantly evolving to meet the demands of tomorrow.
+
+⚡ **Katya® - Redefining Digital Horizons:** Join us as we reshape the landscape of digital interaction. Katya® is not just a platform; it's an extraordinary blend of AI, multifunctionality, and blockchain—an innovation that invites you to explore, connect, and thrive in a future where possibilities are limitless. 🌟👾🚀
+
+**Katya ® 👽 aims to be built on the foundations of privacy, branding, and user experience!** 
+In an effort to pull others away from proprietary chat platforms to the Katya ® 👽 AI 🧠 REChain ®️ 🪐 Blockchain Node Network protocol.
+
+Katya ® 👽 AI 🧠 REChain ®️ 🪐 Blockchain Node Network with Matrix Protocol has the potential to be a standardized peer-to-peer chat protocol, [and in a way already is,](https://matrix.org/blog/2020/06/02/introducing-p-2-p-matrix) that allows people to communicate and control their conversation data. Email has been standardized in this way for a long time. For example, someone using Outlook can still email someone using Gmail. Most popular proprietary chat platforms do not adhere to a federated or decentralized protocol, and as a result have too much control over users data.
+
+If the goal for the Katya ® 👽 AI 🧠 REChain ®️ 🪐 Blockchain Node Network is adoption, a network effect is required for this paradigm shift. Katya ® 👽 makes the bet that the best way to attract new users is through strong branding and user experience. I hope that contributing and maintaining Katya ® 👽 will help kick start this process and help those in need. 
+
+Katya ® 👽 will always be a not for profit, community driven application.
+
+✨ Features
+- No analytics.
+- No proprietary third party services.
+- iOS will have APNS support, but will be made clear to the user.
+- All data is AES-256 encrypted at rest.
+- E2EE for direct chats using [Olm/Megolm](https://gitlab.matrix.org/matrix-org/olm) .
+- All indicators of presence are opt-in only (typing indicators, read receipts, etc).
+- Customize themes and colors throughout the app.
+
+    Donate US! ⌛️
+    
+    For tea, coffee! For the future of decentralized and distributed internet. We do cool and, in my opinion, useful things for the safety and security of users' personal data. And on a completely non-commercial basis! 😎
+    
+    Tether - (TRC20) - Tron 🍕: TRZ7jyMBNtRtqokkkJ7g5BJDzFycDv8cBm
+
+    Please, send US an E-Mail to support@rechain.email for the build instructions! 👻
+
+Email us! 👇
+A Dmitry Sorokin production. All rights reserved.
+Powered by Katya ® 👽 AI 🧠
+Copyright © 2021-2024 Katya Systems, LLCKatya ® is a registered trademark
+Sponsored by REChain ®️. 🪐
+hr@rechain.email
+p2p@rechain.email
+pr@rechain.email
+sorydima@rechain.email
+support@rechain.email
+sip@rechain.email
+music@rechain.email
+Please allow anywhere from 1 to 5 business days for E-mail responses! 💌
+
+Our Stats! 👀
+At the end of 2023, the number of downloads from the Open-Source Places, Apple AppStore, Google Play Market, and the REChain.Store ✨ exceeded 29 million downloads. 😈 👀
+
+grade: stable
+confinement: strict
+
+architectures:
+  - build-on: amd64
+  - build-on: arm64
+
+parts:
+  olm:
+    plugin: cmake
+    cmake-parameters:
+      - -DCMAKE_INSTALL_PREFIX=/usr
+    source: https://gitlab.matrix.org/matrix-org/olm.git
+    source-type: git
+    source-tag: '3.2.14'
+    build-packages:
+      - g++
+
+  zenity-integration:
+    plugin: nil
+    stage-snaps:
+      - zenity-integration
+
+  katya:
+    plugin: flutter
+    source: .
+    override-build: |
+      # Workaround for Flutter build error:
+      rm -rf build
+      craftctl default
+    build-packages:
+      - libjsoncpp-dev
+      - curl
+    stage-packages:
+      - libsecret-1-dev
+      - libjsoncpp-dev
+      - libsqlite3-0
+      - libsqlite3-dev
+
+slots:
+  dbus-svc:
+    interface: dbus
+    bus: session
+    name: com.katya.wtf
+
+apps:
+  katya:
+    command: katya
+    extensions: [gnome]
+    plugs:
+      - audio-playback
+      - desktop
+      - desktop-legacy
+      - home
+      - network
+      - network-manager
+      - network-manager-observe
+      - opengl
+      - removable-media
+      - browser-support
+      - password-manager-service
+    slots:
+      - dbus-svc
+    # Workaround for:
+    # https://github.com/flutter-webrtc/flutter-webrtc/issues/1212#issuecomment-1611899344
+    environment:
+      XDG_DATA_HOME: $SNAP_USER_DATA
+      XDG_DATA_DIRS: $SNAP/usr/share
+      GDK_GL: gles
+      LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:$SNAP/lib:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET"
