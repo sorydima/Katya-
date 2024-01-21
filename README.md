@@ -6,6 +6,8 @@
 
 <br>
 
+[![Codemagic build status](https://api.codemagic.io/apps/65ad420b50aeb373baeb3800/65ad420b50aeb373baeb37ff/status_badge.svg)](https://codemagic.io/apps/65ad420b50aeb373baeb3800/65ad420b50aeb373baeb37ff/latest_build)
+
 ## 🤔 Why
 
 🚀 **Unleash the Future with Katya® - Your Ultimate AI Multifunctional Social Blockchain Platform!** 👽👩🏻‍💻🕵🏻‍♀️
@@ -34,6 +36,8 @@ Katya ® 👽 AI 🧠 REChain ®️ 🪐 Blockchain Node Network with Matrix Pro
 If the goal for the Katya ® 👽 AI 🧠 REChain ®️ 🪐 Blockchain Node Network is adoption, a network effect is required for this paradigm shift. Katya ® 👽 makes the bet that the best way to attract new users is through strong branding and user experience. I hope that contributing and maintaining Katya ® 👽 will help kick start this process and help those in need. 
 
 Katya ® 👽 will always be a not for profit, community driven application.
+
+https://api.codemagic.io/apps/65ad420b50aeb373baeb3800/65ad420b50aeb373baeb37ff/status_badge.svg
 
 ## ✨ Features
 - No analytics.
