@@ -37,7 +37,7 @@ If the goal for the Katya ® 👽 AI 🧠 REChain ®️ 🪐 Blockchain Node Net
 
 Katya ® 👽 will always be a not for profit, community driven application.
 
-https://api.codemagic.io/apps/65ad420b50aeb373baeb3800/65ad420b50aeb373baeb37ff/status_badge.svg
+<img src="https://api.codemagic.io/apps/65ad420b50aeb373baeb3800/65ad420b50aeb373baeb37ff/status_badge.svg">
 
 ## ✨ Features
 - No analytics.
