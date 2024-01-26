@@ -3,8 +3,8 @@ description: Katya ®! An AI multifunctional social blockchain platform!
 version: 0.3.17+1015
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
-  flutter: 3.16.8
+  sdk: ">=2.19.6 <4.0.0"
+  flutter: 3.7.12
 
 scripts:
   start: flutter run # -d <device_id>
@@ -80,7 +80,7 @@ dependencies:
   ### services
   http: ^0.13.1
   html: ^0.15.0
-  intl: ^0.18.1
+  intl: ^0.17.0
   connectivity_plus: ^3.0.4
   http_parser: ^4.0.0
   easy_localization: ^3.0.0
