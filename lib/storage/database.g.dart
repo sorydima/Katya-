@@ -515,7 +515,6 @@ class MessagesCompanion extends UpdateCompanion<Message> {
   final Value<String?> deviceId;
   final Value<String?> relatedEventId;
   final Value<List<String>> editIds;
-  final Value<int> rowid;
   const MessagesCompanion({
     this.id = const Value.absent(),
     this.roomId = const Value.absent(),
@@ -547,7 +546,6 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     this.deviceId = const Value.absent(),
     this.relatedEventId = const Value.absent(),
     this.editIds = const Value.absent(),
-    this.rowid = const Value.absent(),
   });
   MessagesCompanion.insert({
     required String id,
@@ -580,7 +578,6 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     this.deviceId = const Value.absent(),
     this.relatedEventId = const Value.absent(),
     this.editIds = const Value.absent(),
-    this.rowid = const Value.absent(),
   })  : id = Value(id),
         pending = Value(pending),
         syncing = Value(syncing),
@@ -620,7 +617,6 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     Expression<String>? deviceId,
     Expression<String>? relatedEventId,
     Expression<String>? editIds,
-    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -653,7 +649,6 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       if (deviceId != null) 'device_id': deviceId,
       if (relatedEventId != null) 'related_event_id': relatedEventId,
       if (editIds != null) 'edit_ids': editIds,
-      if (rowid != null) 'rowid': rowid,
     });
   }
 
@@ -687,8 +682,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       Value<String?>? senderKey,
       Value<String?>? deviceId,
       Value<String?>? relatedEventId,
-      Value<List<String>>? editIds,
-      Value<int>? rowid}) {
+      Value<List<String>>? editIds}) {
     return MessagesCompanion(
       id: id ?? this.id,
       roomId: roomId ?? this.roomId,
@@ -720,7 +714,6 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       deviceId: deviceId ?? this.deviceId,
       relatedEventId: relatedEventId ?? this.relatedEventId,
       editIds: editIds ?? this.editIds,
-      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -819,9 +812,6 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       final converter = $MessagesTable.$convertereditIds;
       map['edit_ids'] = Variable<String>(converter.toSql(editIds.value));
     }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
     return map;
   }
 
@@ -857,8 +847,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
           ..write('senderKey: $senderKey, ')
           ..write('deviceId: $deviceId, ')
           ..write('relatedEventId: $relatedEventId, ')
-          ..write('editIds: $editIds, ')
-          ..write('rowid: $rowid')
+          ..write('editIds: $editIds')
           ..write(')'))
         .toString();
   }
@@ -1377,7 +1366,6 @@ class DecryptedCompanion extends UpdateCompanion<Message> {
   final Value<String?> deviceId;
   final Value<String?> relatedEventId;
   final Value<List<String>> editIds;
-  final Value<int> rowid;
   const DecryptedCompanion({
     this.id = const Value.absent(),
     this.roomId = const Value.absent(),
@@ -1409,7 +1397,6 @@ class DecryptedCompanion extends UpdateCompanion<Message> {
     this.deviceId = const Value.absent(),
     this.relatedEventId = const Value.absent(),
     this.editIds = const Value.absent(),
-    this.rowid = const Value.absent(),
   });
   DecryptedCompanion.insert({
     required String id,
@@ -1442,7 +1429,6 @@ class DecryptedCompanion extends UpdateCompanion<Message> {
     this.deviceId = const Value.absent(),
     this.relatedEventId = const Value.absent(),
     this.editIds = const Value.absent(),
-    this.rowid = const Value.absent(),
   })  : id = Value(id),
         pending = Value(pending),
         syncing = Value(syncing),
@@ -1482,7 +1468,6 @@ class DecryptedCompanion extends UpdateCompanion<Message> {
     Expression<String>? deviceId,
     Expression<String>? relatedEventId,
     Expression<String>? editIds,
-    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -1515,7 +1500,6 @@ class DecryptedCompanion extends UpdateCompanion<Message> {
       if (deviceId != null) 'device_id': deviceId,
       if (relatedEventId != null) 'related_event_id': relatedEventId,
       if (editIds != null) 'edit_ids': editIds,
-      if (rowid != null) 'rowid': rowid,
     });
   }
 
@@ -1549,8 +1533,7 @@ class DecryptedCompanion extends UpdateCompanion<Message> {
       Value<String?>? senderKey,
       Value<String?>? deviceId,
       Value<String?>? relatedEventId,
-      Value<List<String>>? editIds,
-      Value<int>? rowid}) {
+      Value<List<String>>? editIds}) {
     return DecryptedCompanion(
       id: id ?? this.id,
       roomId: roomId ?? this.roomId,
@@ -1582,7 +1565,6 @@ class DecryptedCompanion extends UpdateCompanion<Message> {
       deviceId: deviceId ?? this.deviceId,
       relatedEventId: relatedEventId ?? this.relatedEventId,
       editIds: editIds ?? this.editIds,
-      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -1681,9 +1663,6 @@ class DecryptedCompanion extends UpdateCompanion<Message> {
       final converter = $DecryptedTable.$convertereditIds;
       map['edit_ids'] = Variable<String>(converter.toSql(editIds.value));
     }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
     return map;
   }
 
@@ -1719,8 +1698,7 @@ class DecryptedCompanion extends UpdateCompanion<Message> {
           ..write('senderKey: $senderKey, ')
           ..write('deviceId: $deviceId, ')
           ..write('relatedEventId: $relatedEventId, ')
-          ..write('editIds: $editIds, ')
-          ..write('rowid: $rowid')
+          ..write('editIds: $editIds')
           ..write(')'))
         .toString();
   }
@@ -2218,7 +2196,6 @@ class RoomsCompanion extends UpdateCompanion<Room> {
   final Value<Message?> draft;
   final Value<Message?> reply;
   final Value<List<String>> userIds;
-  final Value<int> rowid;
   const RoomsCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
@@ -2246,7 +2223,6 @@ class RoomsCompanion extends UpdateCompanion<Room> {
     this.draft = const Value.absent(),
     this.reply = const Value.absent(),
     this.userIds = const Value.absent(),
-    this.rowid = const Value.absent(),
   });
   RoomsCompanion.insert({
     required String id,
@@ -2275,7 +2251,6 @@ class RoomsCompanion extends UpdateCompanion<Room> {
     this.draft = const Value.absent(),
     this.reply = const Value.absent(),
     this.userIds = const Value.absent(),
-    this.rowid = const Value.absent(),
   })  : id = Value(id),
         drafting = Value(drafting),
         direct = Value(direct),
@@ -2313,7 +2288,6 @@ class RoomsCompanion extends UpdateCompanion<Room> {
     Expression<String>? draft,
     Expression<String>? reply,
     Expression<String>? userIds,
-    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2342,7 +2316,6 @@ class RoomsCompanion extends UpdateCompanion<Room> {
       if (draft != null) 'draft': draft,
       if (reply != null) 'reply': reply,
       if (userIds != null) 'user_ids': userIds,
-      if (rowid != null) 'rowid': rowid,
     });
   }
 
@@ -2372,8 +2345,7 @@ class RoomsCompanion extends UpdateCompanion<Room> {
       Value<int>? namePriority,
       Value<Message?>? draft,
       Value<Message?>? reply,
-      Value<List<String>>? userIds,
-      Value<int>? rowid}) {
+      Value<List<String>>? userIds}) {
     return RoomsCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -2401,7 +2373,6 @@ class RoomsCompanion extends UpdateCompanion<Room> {
       draft: draft ?? this.draft,
       reply: reply ?? this.reply,
       userIds: userIds ?? this.userIds,
-      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -2489,9 +2460,6 @@ class RoomsCompanion extends UpdateCompanion<Room> {
       final converter = $RoomsTable.$converteruserIds;
       map['user_ids'] = Variable<String>(converter.toSql(userIds.value));
     }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
     return map;
   }
 
@@ -2523,8 +2491,7 @@ class RoomsCompanion extends UpdateCompanion<Room> {
           ..write('namePriority: $namePriority, ')
           ..write('draft: $draft, ')
           ..write('reply: $reply, ')
-          ..write('userIds: $userIds, ')
-          ..write('rowid: $rowid')
+          ..write('userIds: $userIds')
           ..write(')'))
         .toString();
   }
@@ -2689,7 +2656,6 @@ class UsersCompanion extends UpdateCompanion<User> {
   final Value<String?> accessToken;
   final Value<String?> displayName;
   final Value<String?> avatarUri;
-  final Value<int> rowid;
   const UsersCompanion({
     this.userId = const Value.absent(),
     this.deviceId = const Value.absent(),
@@ -2699,7 +2665,6 @@ class UsersCompanion extends UpdateCompanion<User> {
     this.accessToken = const Value.absent(),
     this.displayName = const Value.absent(),
     this.avatarUri = const Value.absent(),
-    this.rowid = const Value.absent(),
   });
   UsersCompanion.insert({
     required String userId,
@@ -2710,7 +2675,6 @@ class UsersCompanion extends UpdateCompanion<User> {
     this.accessToken = const Value.absent(),
     this.displayName = const Value.absent(),
     this.avatarUri = const Value.absent(),
-    this.rowid = const Value.absent(),
   }) : userId = Value(userId);
   static Insertable<User> custom({
     Expression<String>? userId,
@@ -2721,7 +2685,6 @@ class UsersCompanion extends UpdateCompanion<User> {
     Expression<String>? accessToken,
     Expression<String>? displayName,
     Expression<String>? avatarUri,
-    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (userId != null) 'id': userId,
@@ -2732,7 +2695,6 @@ class UsersCompanion extends UpdateCompanion<User> {
       if (accessToken != null) 'access_token': accessToken,
       if (displayName != null) 'display_name': displayName,
       if (avatarUri != null) 'avatar_uri': avatarUri,
-      if (rowid != null) 'rowid': rowid,
     });
   }
 
@@ -2744,8 +2706,7 @@ class UsersCompanion extends UpdateCompanion<User> {
       Value<String?>? homeserverName,
       Value<String?>? accessToken,
       Value<String?>? displayName,
-      Value<String?>? avatarUri,
-      Value<int>? rowid}) {
+      Value<String?>? avatarUri}) {
     return UsersCompanion(
       userId: userId ?? this.userId,
       deviceId: deviceId ?? this.deviceId,
@@ -2755,7 +2716,6 @@ class UsersCompanion extends UpdateCompanion<User> {
       accessToken: accessToken ?? this.accessToken,
       displayName: displayName ?? this.displayName,
       avatarUri: avatarUri ?? this.avatarUri,
-      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -2786,9 +2746,6 @@ class UsersCompanion extends UpdateCompanion<User> {
     if (avatarUri.present) {
       map['avatar_uri'] = Variable<String>(avatarUri.value);
     }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
     return map;
   }
 
@@ -2802,8 +2759,7 @@ class UsersCompanion extends UpdateCompanion<User> {
           ..write('homeserverName: $homeserverName, ')
           ..write('accessToken: $accessToken, ')
           ..write('displayName: $displayName, ')
-          ..write('avatarUri: $avatarUri, ')
-          ..write('rowid: $rowid')
+          ..write('avatarUri: $avatarUri')
           ..write(')'))
         .toString();
   }
@@ -2897,34 +2853,29 @@ class MediasCompanion extends UpdateCompanion<Media> {
   final Value<Uint8List?> data;
   final Value<String?> type;
   final Value<EncryptInfo?> info;
-  final Value<int> rowid;
   const MediasCompanion({
     this.mxcUri = const Value.absent(),
     this.data = const Value.absent(),
     this.type = const Value.absent(),
     this.info = const Value.absent(),
-    this.rowid = const Value.absent(),
   });
   MediasCompanion.insert({
     required String mxcUri,
     this.data = const Value.absent(),
     this.type = const Value.absent(),
     this.info = const Value.absent(),
-    this.rowid = const Value.absent(),
   }) : mxcUri = Value(mxcUri);
   static Insertable<Media> custom({
     Expression<String>? mxcUri,
     Expression<Uint8List>? data,
     Expression<String>? type,
     Expression<String>? info,
-    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (mxcUri != null) 'mxc_uri': mxcUri,
       if (data != null) 'data': data,
       if (type != null) 'type': type,
       if (info != null) 'info': info,
-      if (rowid != null) 'rowid': rowid,
     });
   }
 
@@ -2932,14 +2883,12 @@ class MediasCompanion extends UpdateCompanion<Media> {
       {Value<String>? mxcUri,
       Value<Uint8List?>? data,
       Value<String?>? type,
-      Value<EncryptInfo?>? info,
-      Value<int>? rowid}) {
+      Value<EncryptInfo?>? info}) {
     return MediasCompanion(
       mxcUri: mxcUri ?? this.mxcUri,
       data: data ?? this.data,
       type: type ?? this.type,
       info: info ?? this.info,
-      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -2959,9 +2908,6 @@ class MediasCompanion extends UpdateCompanion<Media> {
       final converter = $MediasTable.$converterinfo;
       map['info'] = Variable<String>(converter.toSql(info.value));
     }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
     return map;
   }
 
@@ -2971,8 +2917,7 @@ class MediasCompanion extends UpdateCompanion<Media> {
           ..write('mxcUri: $mxcUri, ')
           ..write('data: $data, ')
           ..write('type: $type, ')
-          ..write('info: $info, ')
-          ..write('rowid: $rowid')
+          ..write('info: $info')
           ..write(')'))
         .toString();
   }
@@ -3183,7 +3128,6 @@ class ReactionsCompanion extends UpdateCompanion<Reaction> {
   final Value<String?> body;
   final Value<String?> relType;
   final Value<String?> relEventId;
-  final Value<int> rowid;
   const ReactionsCompanion({
     this.id = const Value.absent(),
     this.roomId = const Value.absent(),
@@ -3197,7 +3141,6 @@ class ReactionsCompanion extends UpdateCompanion<Reaction> {
     this.body = const Value.absent(),
     this.relType = const Value.absent(),
     this.relEventId = const Value.absent(),
-    this.rowid = const Value.absent(),
   });
   ReactionsCompanion.insert({
     required String id,
@@ -3212,7 +3155,6 @@ class ReactionsCompanion extends UpdateCompanion<Reaction> {
     this.body = const Value.absent(),
     this.relType = const Value.absent(),
     this.relEventId = const Value.absent(),
-    this.rowid = const Value.absent(),
   })  : id = Value(id),
         timestamp = Value(timestamp);
   static Insertable<Reaction> custom({
@@ -3228,7 +3170,6 @@ class ReactionsCompanion extends UpdateCompanion<Reaction> {
     Expression<String>? body,
     Expression<String>? relType,
     Expression<String>? relEventId,
-    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -3243,7 +3184,6 @@ class ReactionsCompanion extends UpdateCompanion<Reaction> {
       if (body != null) 'body': body,
       if (relType != null) 'rel_type': relType,
       if (relEventId != null) 'rel_event_id': relEventId,
-      if (rowid != null) 'rowid': rowid,
     });
   }
 
@@ -3259,8 +3199,7 @@ class ReactionsCompanion extends UpdateCompanion<Reaction> {
       Value<int>? timestamp,
       Value<String?>? body,
       Value<String?>? relType,
-      Value<String?>? relEventId,
-      Value<int>? rowid}) {
+      Value<String?>? relEventId}) {
     return ReactionsCompanion(
       id: id ?? this.id,
       roomId: roomId ?? this.roomId,
@@ -3274,7 +3213,6 @@ class ReactionsCompanion extends UpdateCompanion<Reaction> {
       body: body ?? this.body,
       relType: relType ?? this.relType,
       relEventId: relEventId ?? this.relEventId,
-      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -3317,9 +3255,6 @@ class ReactionsCompanion extends UpdateCompanion<Reaction> {
     if (relEventId.present) {
       map['rel_event_id'] = Variable<String>(relEventId.value);
     }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
     return map;
   }
 
@@ -3337,8 +3272,7 @@ class ReactionsCompanion extends UpdateCompanion<Reaction> {
           ..write('timestamp: $timestamp, ')
           ..write('body: $body, ')
           ..write('relType: $relType, ')
-          ..write('relEventId: $relEventId, ')
-          ..write('rowid: $rowid')
+          ..write('relEventId: $relEventId')
           ..write(')'))
         .toString();
   }
@@ -3424,43 +3358,36 @@ class ReceiptsCompanion extends UpdateCompanion<Receipt> {
   final Value<String> eventId;
   final Value<int?> latestRead;
   final Value<Map<String, dynamic>?> userReads;
-  final Value<int> rowid;
   const ReceiptsCompanion({
     this.eventId = const Value.absent(),
     this.latestRead = const Value.absent(),
     this.userReads = const Value.absent(),
-    this.rowid = const Value.absent(),
   });
   ReceiptsCompanion.insert({
     required String eventId,
     this.latestRead = const Value.absent(),
     this.userReads = const Value.absent(),
-    this.rowid = const Value.absent(),
   }) : eventId = Value(eventId);
   static Insertable<Receipt> custom({
     Expression<String>? eventId,
     Expression<int>? latestRead,
     Expression<String>? userReads,
-    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (eventId != null) 'event_id': eventId,
       if (latestRead != null) 'latest_read': latestRead,
       if (userReads != null) 'user_reads': userReads,
-      if (rowid != null) 'rowid': rowid,
     });
   }
 
   ReceiptsCompanion copyWith(
       {Value<String>? eventId,
       Value<int?>? latestRead,
-      Value<Map<String, dynamic>?>? userReads,
-      Value<int>? rowid}) {
+      Value<Map<String, dynamic>?>? userReads}) {
     return ReceiptsCompanion(
       eventId: eventId ?? this.eventId,
       latestRead: latestRead ?? this.latestRead,
       userReads: userReads ?? this.userReads,
-      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -3477,9 +3404,6 @@ class ReceiptsCompanion extends UpdateCompanion<Receipt> {
       final converter = $ReceiptsTable.$converteruserReads;
       map['user_reads'] = Variable<String>(converter.toSql(userReads.value));
     }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
     return map;
   }
 
@@ -3488,8 +3412,7 @@ class ReceiptsCompanion extends UpdateCompanion<Receipt> {
     return (StringBuffer('ReceiptsCompanion(')
           ..write('eventId: $eventId, ')
           ..write('latestRead: $latestRead, ')
-          ..write('userReads: $userReads, ')
-          ..write('rowid: $rowid')
+          ..write('userReads: $userReads')
           ..write(')'))
         .toString();
   }
@@ -3622,37 +3545,29 @@ class Auth extends DataClass implements Insertable<Auth> {
 class AuthsCompanion extends UpdateCompanion<Auth> {
   final Value<String> id;
   final Value<Map<String, dynamic>?> store;
-  final Value<int> rowid;
   const AuthsCompanion({
     this.id = const Value.absent(),
     this.store = const Value.absent(),
-    this.rowid = const Value.absent(),
   });
   AuthsCompanion.insert({
     required String id,
     this.store = const Value.absent(),
-    this.rowid = const Value.absent(),
   }) : id = Value(id);
   static Insertable<Auth> custom({
     Expression<String>? id,
     Expression<String>? store,
-    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (store != null) 'store': store,
-      if (rowid != null) 'rowid': rowid,
     });
   }
 
   AuthsCompanion copyWith(
-      {Value<String>? id,
-      Value<Map<String, dynamic>?>? store,
-      Value<int>? rowid}) {
+      {Value<String>? id, Value<Map<String, dynamic>?>? store}) {
     return AuthsCompanion(
       id: id ?? this.id,
       store: store ?? this.store,
-      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -3666,9 +3581,6 @@ class AuthsCompanion extends UpdateCompanion<Auth> {
       final converter = $AuthsTable.$converterstore;
       map['store'] = Variable<String>(converter.toSql(store.value));
     }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
     return map;
   }
 
@@ -3676,8 +3588,7 @@ class AuthsCompanion extends UpdateCompanion<Auth> {
   String toString() {
     return (StringBuffer('AuthsCompanion(')
           ..write('id: $id, ')
-          ..write('store: $store, ')
-          ..write('rowid: $rowid')
+          ..write('store: $store')
           ..write(')'))
         .toString();
   }
@@ -3810,37 +3721,29 @@ class Sync extends DataClass implements Insertable<Sync> {
 class SyncsCompanion extends UpdateCompanion<Sync> {
   final Value<String> id;
   final Value<Map<String, dynamic>?> store;
-  final Value<int> rowid;
   const SyncsCompanion({
     this.id = const Value.absent(),
     this.store = const Value.absent(),
-    this.rowid = const Value.absent(),
   });
   SyncsCompanion.insert({
     required String id,
     this.store = const Value.absent(),
-    this.rowid = const Value.absent(),
   }) : id = Value(id);
   static Insertable<Sync> custom({
     Expression<String>? id,
     Expression<String>? store,
-    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (store != null) 'store': store,
-      if (rowid != null) 'rowid': rowid,
     });
   }
 
   SyncsCompanion copyWith(
-      {Value<String>? id,
-      Value<Map<String, dynamic>?>? store,
-      Value<int>? rowid}) {
+      {Value<String>? id, Value<Map<String, dynamic>?>? store}) {
     return SyncsCompanion(
       id: id ?? this.id,
       store: store ?? this.store,
-      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -3854,9 +3757,6 @@ class SyncsCompanion extends UpdateCompanion<Sync> {
       final converter = $SyncsTable.$converterstore;
       map['store'] = Variable<String>(converter.toSql(store.value));
     }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
     return map;
   }
 
@@ -3864,8 +3764,7 @@ class SyncsCompanion extends UpdateCompanion<Sync> {
   String toString() {
     return (StringBuffer('SyncsCompanion(')
           ..write('id: $id, ')
-          ..write('store: $store, ')
-          ..write('rowid: $rowid')
+          ..write('store: $store')
           ..write(')'))
         .toString();
   }
@@ -3998,37 +3897,29 @@ class Crypto extends DataClass implements Insertable<Crypto> {
 class CryptosCompanion extends UpdateCompanion<Crypto> {
   final Value<String> id;
   final Value<Map<String, dynamic>?> store;
-  final Value<int> rowid;
   const CryptosCompanion({
     this.id = const Value.absent(),
     this.store = const Value.absent(),
-    this.rowid = const Value.absent(),
   });
   CryptosCompanion.insert({
     required String id,
     this.store = const Value.absent(),
-    this.rowid = const Value.absent(),
   }) : id = Value(id);
   static Insertable<Crypto> custom({
     Expression<String>? id,
     Expression<String>? store,
-    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (store != null) 'store': store,
-      if (rowid != null) 'rowid': rowid,
     });
   }
 
   CryptosCompanion copyWith(
-      {Value<String>? id,
-      Value<Map<String, dynamic>?>? store,
-      Value<int>? rowid}) {
+      {Value<String>? id, Value<Map<String, dynamic>?>? store}) {
     return CryptosCompanion(
       id: id ?? this.id,
       store: store ?? this.store,
-      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -4042,9 +3933,6 @@ class CryptosCompanion extends UpdateCompanion<Crypto> {
       final converter = $CryptosTable.$converterstore;
       map['store'] = Variable<String>(converter.toSql(store.value));
     }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
     return map;
   }
 
@@ -4052,8 +3940,7 @@ class CryptosCompanion extends UpdateCompanion<Crypto> {
   String toString() {
     return (StringBuffer('CryptosCompanion(')
           ..write('id: $id, ')
-          ..write('store: $store, ')
-          ..write('rowid: $rowid')
+          ..write('store: $store')
           ..write(')'))
         .toString();
   }
@@ -4324,7 +4211,6 @@ class MessageSessionsCompanion extends UpdateCompanion<MessageSession> {
   final Value<String> session;
   final Value<bool> inbound;
   final Value<int> createdAt;
-  final Value<int> rowid;
   const MessageSessionsCompanion({
     this.id = const Value.absent(),
     this.roomId = const Value.absent(),
@@ -4333,7 +4219,6 @@ class MessageSessionsCompanion extends UpdateCompanion<MessageSession> {
     this.session = const Value.absent(),
     this.inbound = const Value.absent(),
     this.createdAt = const Value.absent(),
-    this.rowid = const Value.absent(),
   });
   MessageSessionsCompanion.insert({
     required String id,
@@ -4343,7 +4228,6 @@ class MessageSessionsCompanion extends UpdateCompanion<MessageSession> {
     required String session,
     required bool inbound,
     required int createdAt,
-    this.rowid = const Value.absent(),
   })  : id = Value(id),
         roomId = Value(roomId),
         index = Value(index),
@@ -4358,7 +4242,6 @@ class MessageSessionsCompanion extends UpdateCompanion<MessageSession> {
     Expression<String>? session,
     Expression<bool>? inbound,
     Expression<int>? createdAt,
-    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -4368,7 +4251,6 @@ class MessageSessionsCompanion extends UpdateCompanion<MessageSession> {
       if (session != null) 'session': session,
       if (inbound != null) 'inbound': inbound,
       if (createdAt != null) 'created_at': createdAt,
-      if (rowid != null) 'rowid': rowid,
     });
   }
 
@@ -4379,8 +4261,7 @@ class MessageSessionsCompanion extends UpdateCompanion<MessageSession> {
       Value<String?>? identityKey,
       Value<String>? session,
       Value<bool>? inbound,
-      Value<int>? createdAt,
-      Value<int>? rowid}) {
+      Value<int>? createdAt}) {
     return MessageSessionsCompanion(
       id: id ?? this.id,
       roomId: roomId ?? this.roomId,
@@ -4389,7 +4270,6 @@ class MessageSessionsCompanion extends UpdateCompanion<MessageSession> {
       session: session ?? this.session,
       inbound: inbound ?? this.inbound,
       createdAt: createdAt ?? this.createdAt,
-      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -4417,9 +4297,6 @@ class MessageSessionsCompanion extends UpdateCompanion<MessageSession> {
     if (createdAt.present) {
       map['created_at'] = Variable<int>(createdAt.value);
     }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
     return map;
   }
 
@@ -4432,8 +4309,7 @@ class MessageSessionsCompanion extends UpdateCompanion<MessageSession> {
           ..write('identityKey: $identityKey, ')
           ..write('session: $session, ')
           ..write('inbound: $inbound, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('rowid: $rowid')
+          ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
@@ -4623,20 +4499,17 @@ class KeySessionsCompanion extends UpdateCompanion<KeySession> {
   final Value<String> sessionId;
   final Value<String> identityKey;
   final Value<String?> session;
-  final Value<int> rowid;
   const KeySessionsCompanion({
     this.id = const Value.absent(),
     this.sessionId = const Value.absent(),
     this.identityKey = const Value.absent(),
     this.session = const Value.absent(),
-    this.rowid = const Value.absent(),
   });
   KeySessionsCompanion.insert({
     required String id,
     required String sessionId,
     required String identityKey,
     this.session = const Value.absent(),
-    this.rowid = const Value.absent(),
   })  : id = Value(id),
         sessionId = Value(sessionId),
         identityKey = Value(identityKey);
@@ -4645,14 +4518,12 @@ class KeySessionsCompanion extends UpdateCompanion<KeySession> {
     Expression<String>? sessionId,
     Expression<String>? identityKey,
     Expression<String>? session,
-    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (sessionId != null) 'session_id': sessionId,
       if (identityKey != null) 'identity_key': identityKey,
       if (session != null) 'session': session,
-      if (rowid != null) 'rowid': rowid,
     });
   }
 
@@ -4660,14 +4531,12 @@ class KeySessionsCompanion extends UpdateCompanion<KeySession> {
       {Value<String>? id,
       Value<String>? sessionId,
       Value<String>? identityKey,
-      Value<String?>? session,
-      Value<int>? rowid}) {
+      Value<String?>? session}) {
     return KeySessionsCompanion(
       id: id ?? this.id,
       sessionId: sessionId ?? this.sessionId,
       identityKey: identityKey ?? this.identityKey,
       session: session ?? this.session,
-      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -4686,9 +4555,6 @@ class KeySessionsCompanion extends UpdateCompanion<KeySession> {
     if (session.present) {
       map['session'] = Variable<String>(session.value);
     }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
     return map;
   }
 
@@ -4698,8 +4564,7 @@ class KeySessionsCompanion extends UpdateCompanion<KeySession> {
           ..write('id: $id, ')
           ..write('sessionId: $sessionId, ')
           ..write('identityKey: $identityKey, ')
-          ..write('session: $session, ')
-          ..write('rowid: $rowid')
+          ..write('session: $session')
           ..write(')'))
         .toString();
   }
@@ -4832,37 +4697,29 @@ class Setting extends DataClass implements Insertable<Setting> {
 class SettingsCompanion extends UpdateCompanion<Setting> {
   final Value<String> id;
   final Value<Map<String, dynamic>?> store;
-  final Value<int> rowid;
   const SettingsCompanion({
     this.id = const Value.absent(),
     this.store = const Value.absent(),
-    this.rowid = const Value.absent(),
   });
   SettingsCompanion.insert({
     required String id,
     this.store = const Value.absent(),
-    this.rowid = const Value.absent(),
   }) : id = Value(id);
   static Insertable<Setting> custom({
     Expression<String>? id,
     Expression<String>? store,
-    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (store != null) 'store': store,
-      if (rowid != null) 'rowid': rowid,
     });
   }
 
   SettingsCompanion copyWith(
-      {Value<String>? id,
-      Value<Map<String, dynamic>?>? store,
-      Value<int>? rowid}) {
+      {Value<String>? id, Value<Map<String, dynamic>?>? store}) {
     return SettingsCompanion(
       id: id ?? this.id,
       store: store ?? this.store,
-      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -4876,9 +4733,6 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
       final converter = $SettingsTable.$converterstore;
       map['store'] = Variable<String>(converter.toSql(store.value));
     }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
     return map;
   }
 
@@ -4886,8 +4740,7 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
   String toString() {
     return (StringBuffer('SettingsCompanion(')
           ..write('id: $id, ')
-          ..write('store: $store, ')
-          ..write('rowid: $rowid')
+          ..write('store: $store')
           ..write(')'))
         .toString();
   }
