@@ -1,10 +1,10 @@
 name: katya
 description: Katya ®! An AI multifunctional social blockchain platform!
-version: 0.3.17+1015
+version: 0.3.16+1013
 
 environment:
-  sdk: ">=2.18.0 <2.19.0"
-  flutter: 3.3.10
+  sdk: ">=2.19.6 <4.0.0"
+  flutter: 3.7.12
 
 scripts:
   start: flutter run # -d <device_id>
@@ -75,7 +75,7 @@ dependencies:
   sqlcipher_flutter_libs: ^0.5.1
   sqlcipher_library_windows: ^1.0.1
   flutter_secure_storage: ^8.0.0
-  drift: ^2.4.2
+  drift: ^2.6.0
 
   ### services
   http: ^0.13.1
@@ -86,7 +86,7 @@ dependencies:
   easy_localization: ^3.0.0
   flutter_dotenv: ^5.0.2
   android_alarm_manager_plus: ^2.0.3
-  workmanager: 0.5.0 
+  workmanager: 0.5.0
   # background_fetch: 1.1.0
   uni_links: ^0.5.0
   # flutter_apns: 1.1.0  # TODO: extract only the iOS code and remove
@@ -95,7 +95,7 @@ dependencies:
   swipeable: ^1.1.0
   cupertino_icons: ^1.0.2
   url_launcher: ^6.0.3
-  flutter_svg: ^1.1.6
+  flutter_svg: ^2.0.5
   flutter_keyboard_visibility: ^5.0.3
   flutter_markdown: ^0.6.6
   webview_flutter: ^2.0.13
@@ -109,7 +109,7 @@ dependencies:
   fab_circular_menu: ^1.0.2
   flutter_screen_lock: ^4.0.4 # TODO: this is very old
   photo_view: ^0.14.0
-  vector_math: 2.1.2
+  vector_math: 2.1.4
   flutter_hooks: ^0.18.6
   font_awesome_flutter: ^10.4.0
   flutter_lints: ^2.0.2
@@ -119,7 +119,7 @@ dependencies:
   file_picker: ^5.2.7
   image_picker: ^0.8.4
   permission_handler: ^10.2.0
-  local_image_provider: ^4.3.0 
+  local_image_provider: ^4.3.0
   flutter_image_compress: ^1.1.3
   share_plus: ^6.3.2
 
@@ -136,10 +136,10 @@ dependencies:
 dev_dependencies:
   build_config: ^1.0.0
   build_runner: ^2.1.4
-  drift_dev: ^2.4.1
+  drift_dev: ^2.6.0
   lint: ^2.0.1
   json_serializable: ^6.1.3
-  flutter_launcher_icons: ^0.12.0
+  flutter_launcher_icons: ^0.13.0
   test: any
 
 # TODO: remove when similar functionality is merged
@@ -182,7 +182,7 @@ flutter:
     - family: Poppins
       fonts:
         - asset: assets/fonts/Poppins-Italic.ttf
-        - asset: assets/fonts/Poppins-Regular.ttf 
+        - asset: assets/fonts/Poppins-Regular.ttf
         - asset: assets/fonts/Poppins-Medium.ttf
         - asset: assets/fonts/Poppins-Light.ttf
         - asset: assets/fonts/Poppins-Thin.ttf

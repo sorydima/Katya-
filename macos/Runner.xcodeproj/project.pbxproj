@@ -78,6 +78,8 @@
 		44D3F96BA0BD76231659CF33 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		B88353692BA9A9FA00597CA8 /* connectivity_plus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = connectivity_plus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B883536E2BA9AB0B00597CA8 /* connectivity_plus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = connectivity_plus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9D833B3E037FA761D00EF30 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 		C1CD66FF4A25F1396737BF9C /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D23E4F2026694FFA0064E72D /* libolm.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libolm.3.dylib; sourceTree = "<group>"; };
@@ -177,6 +179,8 @@
 		D73912EC22F37F3D000D13A0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B883536E2BA9AB0B00597CA8 /* connectivity_plus.framework */,
+				B88353692BA9A9FA00597CA8 /* connectivity_plus.framework */,
 				D23E4F2026694FFA0064E72D /* libolm.3.dylib */,
 				D2743EC22651BBF5006FDB28 /* libolm.3.2.2.dylib */,
 				C1CD66FF4A25F1396737BF9C /* Pods_Runner.framework */,
@@ -441,6 +445,8 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FLUTTER_BUILD_NAME = 0.3.17;
+				FLUTTER_BUILD_NUMBER = 1015;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -576,6 +582,8 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				FLUTTER_BUILD_NAME = 0.3.17;
+				FLUTTER_BUILD_NUMBER = 1015;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -629,6 +637,8 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FLUTTER_BUILD_NAME = 0.3.17;
+				FLUTTER_BUILD_NUMBER = 1015;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
