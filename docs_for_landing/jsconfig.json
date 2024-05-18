@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "module": "commonjs",
+        "baseUrl": "src", // all paths are relative to the baseUrl
+        "allowSyntheticDefaultImports": true,
+        "paths": {
+            "pages/*": [
+                "./pages"
+            ], // resolve any `~/foo/bar` to `<baseUrl>/foo/bar`
+            "components/*": [
+                "./components"
+            ], // resolve any `~/foo/bar` to `<baseUrl>/foo/bar`
+            "global/*": [
+                "./components"
+            ] // resolve any `~/foo/bar` to `<baseUrl>/foo/bar`
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "Katya • A multifunctional blockchain platform",
+  "short_name": "Katya",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FEFEFE",
+  "theme_color": "#FEFEFE",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "/app-logo.png",
+      "type": "image/png",
+      "sizes": "1200x500"
+    }
+  ]
+}

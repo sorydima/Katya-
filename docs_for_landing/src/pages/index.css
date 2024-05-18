@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+
+/* Start purging... */
+@tailwind utilities;
+/* Stop purging. */
+
+
+.bg-color-brand {
+    background-color:rgba(52, 199, 181, 1)
+}
+
+.color-brand {
+    color: rgba(52, 199, 181, 1)
+}
+
+.app {
+    height: 100vh;
+}
+
+.splash {
+    height: 100vh;
+}
+
+@font-face{
+    font-family: Rubik;
+    src: url('/fonts/Rubik-Regular.ttf');
+}
+
+span {
+    font-family: Rubik, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.rubik {
+    font-family: Rubik, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";  
+}
+
+.app-padding {
+    padding-top: 10vh;
+}
+
+.gradient {
+    background: linear-gradient(90deg, rgba(52, 199, 181, 1) 20%, rgba(52, 199, 181, 0.8) 100%);
+}
+
+.header {
+    background: linear-gradient(90deg, rgba(52, 199, 181, 1) 0%, rgba(52, 199, 181, 0.8) 100%);
+}
+   
+  
+.menu { 
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+    cursor: pointer;  
+}
+
+input#menu {
+    display: none;
+} 
+
+@media only screen and (max-width: 768px) {
+    .menu label { 
+        font-size: 56px;
+        display: block;
+        padding: 10px 0 10px 50px;
+    }
+
+    .menu label:hover { 
+        font-size: 56px;
+        display: block;
+        padding: 10px 0 10px 50px;
+    }
+
+    .menu-content {
+        max-height: 0;
+        overflow: hidden;
+        font-family: 'Oswald', sans-serif; 
+        padding: 0 0 0 50px;
+    }
+
+    /* Toggle Effect */
+    input:checked ~ label {  
+        background-color: white;  
+        color: teal;
+    }
+
+    input:checked ~ label:hover {  
+        background-color: white; 
+        color: teal;
+    }
+
+    input:checked ~ .menu-content {
+        max-height: 100%;
+    }
+}
+ 

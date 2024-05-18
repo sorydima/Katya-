@@ -1,0 +1,21 @@
+
+.logo {
+    font-family: Rubik-Light;
+}
+
+.header {
+    background: linear-gradient(90deg, rgba(52, 199, 181, 1) 0%, rgba(52, 199, 181, 0.8) 100%);
+}
+ 
+
+.app-padding {
+  padding-top: 10vh;
+}
+
+.color-brand {
+  color: rgba(52, 199, 181, 1)
+} 
+
+.bg-color-brand {
+    background-color:rgba(52, 199, 181, 1)
+}

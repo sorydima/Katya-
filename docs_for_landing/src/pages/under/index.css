@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bg-color-brand {
+    background-color:rgba(52, 199, 181, 1)
+}
+
+.color-brand {
+    color: rgba(52, 199, 181, 1)
+}
+
+.app {
+    height: 100vh;
+}
+
+.splash {
+    height: 100vh;
+}
+
+span {
+    font-family: Rubik;
+}
+
+.app-padding {
+    padding-top: 10vh;
+}
+
+.gradient {
+    background: linear-gradient(90deg, rgba(52, 199, 181, 1) 20%, rgba(52, 199, 181, 0.8) 100%);
+}
+ 
