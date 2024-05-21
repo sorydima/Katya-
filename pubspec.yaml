@@ -1,6 +1,6 @@
 name: katya
 description: Katya ®! An AI multifunctional social blockchain platform!
-version: 0.3.16+1013
+version: 0.3.18+1016
 
 environment:
   sdk: ">=2.19.6 <4.0.0"
