@@ -147,7 +147,9 @@ decoration: BoxDecoration(
 ```
 - Understanding why OLM chose the world's 'pickle' for serialization, [It's from Python](https://gitlab.matrix.org/matrix-org/olm/-/tree/master/python) .
 
-Donate US! ⌛️
+Visit https://katya.wtf for more information.
+Try it right now for the Apple 🧃 Vision Pro: https://katya.framer.website
+Analytics for developers! 🤳 https://notkatya.framer.website - For Katya, Inc Products!
 
 // Katya ® 👽 is just sex!
 import { Katya ® 👽 } from "Katya Systems, LLC";
@@ -163,8 +165,39 @@ function Component() {
 
 If anyone has any feedback, questions, or concerns:
 
-Copyright © 2019-2024 Need help? 🤔 Donate US! ⌛️ For tea, coffee! For the future of decentralized and distributed internet. We do cool and, in my opinion, useful things for the safety and security of users' personal data. And on a completely non-commercial basis! 😎 Email us! 👇 A Dmitry Sorokin production. All rights reserved. Powered by REChain ®️. 🪐 Copyright © 2019-2024 REChain, Inc REChain ® is a registered trademark hr@rechain.email p2p@rechain.email pr@rechain.email sorydima@rechain.email support@rechain.email sip@rechain.email music@rechain.email cfa@rechain.email anti@rechain.email mot_cfa@rechain.email Please allow anywhere from 1 to 5 business days for E-mail responses! 💌 Our Stats! 👀 At the end of 2023, the number of downloads from the Open-Source Places, Apple AppStore, Google Play Market, and the REChain.Store ✨ exceeded 29 million downloads. 😈 👀
+Need help? 🤔
+Email us! 👇
 
-### * Our Stats! 👀
+hr@rechain.email
+p2p@rechain.email
+pr@rechain.email
+sorydima@rechain.email
+support@rechain.email
+sip@rechain.email
+music@rechain.email
+cfa@rechain.email
+anti@rechain.email
+mot_cfa@rechain.email
+rechainstore@rechain.email
+models@rechain.email
 
-At the end of 2023, the number of downloads from the Open-Source Places, Apple AppStore, Google Play Market, and the REChain.Store ✨ exceeded 29 million downloads. 😈 👀
+A Dmitry Sorokin production. All rights reserved.
+Powered by Katya ® 👽 AI 🧠
+Copyright © 2021-2024 Katya Systems, LLC
+Katya ® is a registered trademark
+Sponsored by REChain ®️. 🪐
+hr@rechain.email
+p2p@rechain.email
+pr@rechain.email
+sorydima@rechain.email
+support@rechain.email
+sip@rechain.email
+music@rechain.email
+cfa@rechain.email
+anti@rechain.email
+mot_cfa@rechain.email
+rechainstore@rechain.email
+models@rechain.email
+Please allow anywhere from 1 to 5 business days for E-mail responses! 💌
+
+### * Our Stats! 👀 At the end of 2023, the number of downloads from the Open-Source Places, Apple AppStore, Google Play Market, and the REChain.Store ✨ exceeded 29 million downloads. 😈 👀
