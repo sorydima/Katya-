@@ -75,7 +75,7 @@
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<string>YES</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Camera access is needed to take picture!</string>
+	<string>The camera is used to take photos that can be added to your profile!</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Uploading a profile photo for the user!</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
