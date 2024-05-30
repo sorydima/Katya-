@@ -100,14 +100,14 @@ PODS:
   - sqflite (0.0.3):
     - Flutter
     - FMDB (>= 2.7.5)
-  - SQLCipher (4.5.2):
-    - SQLCipher/standard (= 4.5.2)
-  - SQLCipher/common (4.5.2)
-  - SQLCipher/standard (4.5.2):
+  - SQLCipher (4.5.4):
+    - SQLCipher/standard (= 4.5.4)
+  - SQLCipher/common (4.5.4)
+  - SQLCipher/standard (4.5.4):
     - SQLCipher/common
   - sqlcipher_flutter_libs (0.0.1):
     - Flutter
-    - SQLCipher (~> 4.5.2)
+    - SQLCipher (~> 4.5.4)
   - SwiftyGif (5.4.3)
   - uni_links (0.0.1):
     - Flutter
