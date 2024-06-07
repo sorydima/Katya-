@@ -333,7 +333,7 @@ ThunkAction<AppState> sendMessageEncrypted({
 
       if (hasReply) {
         unencryptedData['m.relates_to'] = {
-          'm.in_reply_to': {'event_id': reply!.id}
+          'm.in_reply_to': {'event_id': reply?.id}
         };
 
         pending = formatMessageReply(room, pending, reply);
