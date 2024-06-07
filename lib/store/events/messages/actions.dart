@@ -339,12 +339,12 @@ ThunkAction<AppState> sendMessageEncrypted({
       //   pending = formatMessageReply(room, pending, reply);
       // }
 
-      if (hasReplacement) {
-        unencryptedData['m.relates_to'] = {
-          'event_id': related.id,
-          'rel_type': RelationTypes.replace,
-        };
-      }
+      // if (hasReplacement) {
+      //   unencryptedData['m.relates_to'] = {
+      //     'event_id': related.id,
+      //     'rel_type': RelationTypes.replace,
+      //   };
+      // }
 
       if (!edit) {
         store.dispatch(SaveOutboxMessage(
