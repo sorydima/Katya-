@@ -372,7 +372,7 @@ ThunkAction<AppState> sendMessageEncrypted({
       if (hasReplacement) {
         unencryptedData['m.relates_to'] = {
           'event_id': related.id,
-          'rel_type': RelationTypes.replace,
+          // 'rel_type': RelationTypes.replace,
         };
       }
 
