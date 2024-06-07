@@ -4,23 +4,31 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
-import 'package:katya/global/libs/matrix/constants.dart';
-import 'package:katya/global/libs/matrix/index.dart';
-import 'package:katya/global/print.dart';
-import 'package:katya/store/alerts/actions.dart';
-import 'package:katya/store/crypto/actions.dart';
-import 'package:katya/store/crypto/events/actions.dart';
-import 'package:katya/store/events/actions.dart';
-import 'package:katya/store/events/messages/formatters.dart';
-import 'package:katya/store/events/messages/model.dart';
-import 'package:katya/store/events/reactions/model.dart';
-import 'package:katya/store/events/selectors.dart';
-import 'package:katya/store/index.dart';
-import 'package:katya/store/media/encryption.dart';
-import 'package:katya/store/rooms/actions.dart';
-import 'package:katya/store/rooms/room/model.dart';
-import 'package:katya/store/user/model.dart';
+import 'package:katya/domain/alerts/actions.dart';
+import 'package:katya/domain/crypto/actions.dart';
+import 'package:katya/domain/crypto/events/actions.dart';
+import 'package:katya/domain/events/actions.dart';
+import 'package:katya/domain/events/messages/formatters.dart';
+import 'package:katya/domain/events/messages/model.dart';
+import 'package:katya/domain/events/reactions/model.dart';
+import 'package:katya/domain/events/selectors.dart';
+import 'package:katya/domain/index.dart';
+import 'package:katya/domain/media/encryption.dart';
+import 'package:katya/domain/rooms/actions.dart';
+import 'package:katya/domain/rooms/room/model.dart';
+import 'package:katya/domain/user/model.dart';
 
+import 'package:katya/global/libraries/matrix/events/types.dart';
+import 'package:katya/global/libraries/matrix/index.dart';
+import 'package:katya/global/print.dart';
+
+///
+/// Mutate Messages
+///
+/// Add/mutate to accomodate all the required, necessary
+/// mutations by matrix after the message has been sent
+/// such as reactions, redactions, and edits
+///
 Future<List<Message>> reviseMessages({
   List<Message>? messages,
   List<Message>? existing,
@@ -32,6 +40,13 @@ Future<List<Message>> reviseMessages({
   });
 }
 
+///
+/// Mutate Messages
+///
+/// Add/mutate to accomodate all the required, necessary
+/// mutations by matrix after the message has been sent
+/// such as reactions, redactions, and edits
+///
 ThunkAction<AppState> mutateMessages({
   List<Message>? messages,
   List<Message>? existing,
@@ -49,6 +64,13 @@ ThunkAction<AppState> mutateMessages({
   };
 }
 
+///
+/// Mutate Messages All
+///
+/// Run through all room messages to accomodate the required,
+/// necessary mutations by matrix after the message has been sent
+/// such as reactions, redactions, and edits
+///
 ThunkAction<AppState> mutateMessagesRoom({required Room room}) {
   return (Store<AppState> store) async {
     final messages = store.state.eventStore.messages[room.id];
@@ -85,6 +107,13 @@ ThunkAction<AppState> mutateMessagesRoom({required Room room}) {
   };
 }
 
+///
+/// Mutate Messages All
+///
+/// Add/mutate to accomodate all messages avaiable with
+/// the required, necessary mutations by matrix after the
+/// message has been sent (such as reactions, redactions, and edits)
+///
 ThunkAction<AppState> mutateMessagesAll() {
   return (Store<AppState> store) async {
     final rooms = store.state.roomStore.roomList;
@@ -121,7 +150,7 @@ ThunkAction<AppState> mutateMessagesAll() {
         messagesUpdated.addAll({room.id: allUpdated[0]});
         decryptedUpdated.addAll({room.id: allUpdated[1]});
       } catch (error) {
-        log.error('[mutateMessagesAll] ${room.id} ${error.toString()}');
+        console.error('[mutateMessagesAll] ${room.id} $error');
       }
     });
 
@@ -282,7 +311,7 @@ ThunkAction<AppState> sendMessage({
       store.dispatch(UpdateRoom(
         id: room.id,
         sending: false,
-        reply: Message(),
+        reply: const Message(),
       ));
     }
   };
@@ -411,13 +440,12 @@ ThunkAction<AppState> sendMessageEncrypted({
       );
       return false;
     } finally {
-      store.dispatch(UpdateRoom(id: roomId, sending: false, reply: Message()));
+      store.dispatch(UpdateRoom(id: roomId, sending: false, reply: const Message()));
     }
   };
 }
 
-Future<bool> isMessageDeletable(
-    {required Message message, User? user, Room? room}) async {
+Future<bool> isMessageDeletable({required Message message, User? user, Room? room}) async {
   try {
     final powerLevels = await MatrixApi.fetchPowerLevels(
       room: room,
@@ -438,7 +466,7 @@ Future<bool> isMessageDeletable(
 
     return false;
   } catch (error) {
-    log.debug('[isMessageDeletable] $error');
+    console.error('[isMessageDeletable] $error');
     return false;
   }
 }
