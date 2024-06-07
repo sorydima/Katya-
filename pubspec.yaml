@@ -80,7 +80,7 @@ dependencies:
   ### services
   http: ^0.13.1
   html: ^0.15.0
-  intl: ^0.19.0
+  intl: ^0.18.1
   connectivity_plus: ^5.0.2
   http_parser: ^4.0.0
   easy_localization: ^3.0.0
