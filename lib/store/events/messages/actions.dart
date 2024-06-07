@@ -18,8 +18,8 @@ import 'package:katya/store/rooms/actions.dart';
 import 'package:katya/store/rooms/room/model.dart';
 import 'package:katya/store/user/model.dart';
 
-import 'package:katya/global/libraries/matrix/events/types.dart';
-import 'package:katya/global/libraries/matrix/index.dart';
+import 'package:katya/global/libs/matrix/events/types.dart';
+import 'package:katya/global/libs/matrix/index.dart';
 import 'package:katya/global/print.dart';
 
 ///
