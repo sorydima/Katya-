@@ -413,7 +413,7 @@ ThunkAction<AppState> sendMessageEncrypted({
     } finally {
       store.dispatch(UpdateRoom(id: roomId, sending: false, reply: Message()));
     }
-  };
+  }
 }
 
 Future<bool> isMessageDeletable(
