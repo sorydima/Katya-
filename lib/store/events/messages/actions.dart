@@ -331,13 +331,13 @@ ThunkAction<AppState> sendMessageEncrypted({
       // spec requires some data is unencrypted
       final unencryptedData = {};
 
-      if (hasReply) {
-      //   unencryptedData['m.relates_to'] = {
-      //     'm.in_reply_to': {'event_id': reply.id}
-      //   };
+      // if (hasReply) {
+      //  unencryptedData['m.relates_to'] = {
+      //    'm.in_reply_to': {'event_id': reply.id}
+      //  };
 
-        pending = formatMessageReply(room, pending, reply);
-      }
+      //   pending = formatMessageReply(room, pending, reply);
+      // }
 
       if (hasReplacement) {
         unencryptedData['m.relates_to'] = {
