@@ -175,11 +175,11 @@ class ProfileScreen extends HookWidget {
                                   )
                                 ],
                               ),
-                              child: Icon(
-                                Icons.camera_alt,
-                                color: Theme.of(context).iconTheme.color,
-                                size: Dimensions.iconSizeLite,
-                              ),
+                              // child: Icon(
+                              //   Icons.camera_alt,
+                              //   color: Theme.of(context).iconTheme.color,
+                              //   size: Dimensions.iconSizeLite,
+                              // ),
                             ),
                           ),
                         ],
