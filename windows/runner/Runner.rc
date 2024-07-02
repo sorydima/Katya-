@@ -63,13 +63,13 @@ IDI_APP_ICON            ICON                    "resources\\app_icon.ico"
 #ifdef FLUTTER_BUILD_NUMBER
 #define VERSION_AS_NUMBER FLUTTER_BUILD_NUMBER
 #else
-#define VERSION_AS_NUMBER 0,3,17
+#define VERSION_AS_NUMBER 0,3,19
 #endif
 
 #ifdef FLUTTER_BUILD_NAME
 #define VERSION_AS_STRING #FLUTTER_BUILD_NAME
 #else
-#define VERSION_AS_STRING "0.3.17"
+#define VERSION_AS_STRING "0.3.19"
 #endif
 
 VS_VERSION_INFO VERSIONINFO
@@ -93,7 +93,8 @@ BEGIN
             VALUE "FileDescription", "An AI 🧠 multifunctional social blockchain platform 👽!" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "Katya ® 👽" "\0"
-            VALUE "LegalCopyright", "Email us! 👇 A Dmitry Sorokin production. All rights reserved. Powered by Katya ® 👽 AI 🧠 Copyright © 2021-2024 Katya Systems, LLCKatya ® is a registered trademark Sponsored by REChain ®️. 🪐 hr@rechain.email p2p@rechain.email pr@rechain.email sorydima@rechain.email support@rechain.email sip@rechain.email music@rechain.email Please allow anywhere from 1 to 5 business days for E-mail responses! 💌 Our Stats! 👀 At the end of 2023, the number of downloads from the Open-Source Places, Apple AppStore, Google Play Market, and the REChain.Store ✨ exceeded 29 million downloads. 😈 👀" "\0"
+            VALUE "LegalCopyright", "Need help? 🤔 Donate US! ⌛️ Email us! 👇 A Dmitry Sorokin production. All rights reserved. Powered by Katya ® 👽 AI 🧠 Copyright © 2021-2024 Katya Systems, LLC Katya ® is a registered trademark Sponsored by REChain ®️. 🪐
+hr@rechain.email p2p@rechain.email pr@rechain.email sorydima@rechain.email support@rechain.email sip@rechain.email music@rechain.email cfa@rechain.email anti@rechain.email mot_cfa@rechain.email rechainstore@rechain.email models@rechain.email Please allow anywhere from 1 to 5 business days for E-mail responses! 💌 Our Stats! 👀 At the end of 2023, the number of downloads from the Open-Source Places, Apple AppStore, Google Play Market, and the REChain.Store ✨ exceeded 29 million downloads. 😈 👀" "\0"
             VALUE "OriginalFilename", "Katya ® 👽.exe" "\0"
             VALUE "ProductName", "Katya ® 👽" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
