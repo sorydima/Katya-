@@ -36,7 +36,7 @@ class Values {
   static const openHelpUrl = 'mailto:support@rechain.email';
 
   // Matrix values
-  static const homeserverDefault = 'matrix.org';
+  static const homeserverDefault = 'matrix.tanya.city';
   static const clientSecretMatrix = 'MDWVwN79p5xIz7bgazVXvO8aabbVD0LN';
   static const captchaMatrixSiteKey = '6LcgI54UAAAAABGdGmruw6DdOocFpYVdjYBRe4zb';
   static const matrixSSOUrl = '/_matrix/client/r0/login/sso/redirect?redirectUrl=katya://matrix.katya.wtf/login/token';
