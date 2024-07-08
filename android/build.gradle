@@ -11,7 +11,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:7.1.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "com.huawei.aqconnect:aqcp:1.4.2:300"
+        classpath "com.huawei.aqconnect:aqcp:1.9.1:303"
     }
 }
 
