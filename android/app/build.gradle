@@ -68,11 +68,11 @@ android {
    buildTypes {
        release {
            signingConfig signingConfigs.release
-           resValue "string", "app_name", "Katya ® 👽"
+           resValue "string", "app_name", "Katya"
        }
        debug {
             signingConfig signingConfigs.debug
-            resValue "string", "app_name", "Katya ® 👽 Debug"
+            resValue "string", "app_name", "Katya Debug"
             applicationIdSuffix ".debug"
         }
    }
