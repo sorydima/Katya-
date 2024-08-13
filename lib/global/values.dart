@@ -7,10 +7,10 @@ import 'package:katya/global/strings.dart';
 /// taken as a convention from Android
 class Values {
   static const appId = 'com.katya.wtf';
-  static const appName = 'Katya ® 👽';
-  static const appLabel = 'Katya ® 👽';
+  static const appName = 'Katya';
+  static const appLabel = 'Katya';
   static const appNameLong = 'Katya ® 👽 AI 🧠 Platform - Messenger';
-  static const appDisplayName = 'Katya ® 👽';
+  static const appDisplayName = 'Katya';
 
   static const empty = '';
   static const UNKNOWN = 'Unknown';
