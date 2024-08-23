@@ -30,10 +30,10 @@ class Values {
       '$appName messaging client message and status notifications';
 
   // Katya ® 👽 AI 🧠 Platform related
-  static const supportChatId = '!kcrUYUfUEIcbnpOIGz:matrix.katya.wtf';
-  static const supportChatAlias = '#chatting:matrix.katya.wtf';
-  static const supportEmail = 'support@rechain.email';
-  static const openHelpUrl = 'mailto:support@rechain.email';
+  static const supportChatId = '!GpEgGzkouTmdJhstKv:matrix.tanya.city';
+  static const supportChatAlias = '#d2d:matrix.tanya.city';
+  static const supportEmail = 'support@adminmarina.ru';
+  static const openHelpUrl = 'mailto:support@adminmarina.ru';
 
   // Matrix values
   static const homeserverDefault = 'matrix.tanya.city';
