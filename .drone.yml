@@ -1,0 +1,46 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: setup
+    image: cirrusci/flutter:stable
+    commands:
+      - flutter pub get
+
+  - name: format
+    image: cirrusci/flutter:stable
+    commands:
+      - flutter format --set-exit-if-changed .
+
+  - name: analyze
+    image: cirrusci/flutter:stable
+    commands:
+      - flutter analyze
+
+  - name: test
+    image: cirrusci/flutter:stable
+    commands:
+      - flutter test
+
+  - name: build-web
+    image: cirrusci/flutter:stable
+    commands:
+      - flutter build web
+
+  - name: build-apk
+    image: cirrusci/flutter:stable
+    commands:
+      - flutter build apk
+
+  - name: build-ios
+    image: cirrusci/flutter:stable
+    commands:
+      - flutter build ios
+
+trigger:
+  event:
+    - push
+    - pull_request
+  branch:
+    - main
