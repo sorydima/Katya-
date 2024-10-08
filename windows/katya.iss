@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Katya ® 👽! 👩🏻‍💻 🕵🏻‍♀️"
-#define MyAppVersion "0.3.19+1020"
+#define MyAppVersion "0.3.20 (Build 1023)"
 #define MyAppPublisher "Katya Systems, LLC"
 #define MyAppURL "https://www.katya.wtf/"
 #define MyAppExeName "Katya.exe"
@@ -78,8 +78,8 @@ Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\MSI\Documents\GitHub\Katya-\build\windows\runner\Release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\MSI\Documents\GitHub\Katya-\build\windows\runner\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\MSI\Documents\GitHub\Katya-\windows\release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\MSI\Documents\GitHub\Katya-\windows\release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]

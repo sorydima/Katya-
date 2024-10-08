@@ -185,14 +185,13 @@ If anyone has any feedback, questions, or concerns:
 Need help? 🤔
 Email us! 👇
 
-hr@rechain.email p2p@rechain.email pr@rechain.email sorydima@rechain.email support@rechain.email sip@rechain.email music@rechain.email cfa@rechain.email anti@rechain.email mot_cfa@rechain.email rechainstore@rechain.email models@rechain.email dex@rechain.email email@rechain.email musicdapp@rechain.email pitomec@rechain.emaill
+hr@adminmarina.ru p2p@adminmarina.ru pr@adminmarina.ru sorydima@adminmarina.ru support@adminmarina.ru sip@adminmarina.ru music@adminmarina.ru cfa@adminmarina.ru anti@adminmarina.ru mot_cfa@adminmarina.ru rechainstore@adminmarina.ru models@adminmarina.ru dex@adminmarina.ru email@adminmarina.ru musicdapp@adminmarina.ru pitomec@adminmarina.ru delus@adminmarina.ru gateway@adminmarina.ru husco@adminmarina.ru info@adminmarina.ru maring@adminmarina.ru modus@adminmarina.ru rechainnetworkhost@adminmarina.ru tanyacity@adminmarina.ru support@xn--90ao4a.tech
 
 A Dmitry Sorokin production. All rights reserved.
 Powered by Katya ® 👽 AI 🧠
 Copyright © 2021-2024 Katya Systems, LLC
 Katya ® is a registered trademark
 Sponsored by REChain ®️. 🪐
-hr@rechain.email p2p@rechain.email pr@rechain.email sorydima@rechain.email support@rechain.email sip@rechain.email music@rechain.email cfa@rechain.email anti@rechain.email mot_cfa@rechain.email rechainstore@rechain.email models@rechain.email dex@rechain.email email@rechain.email musicdapp@rechain.email pitomec@rechain.email
-Please allow anywhere from 1 to 5 business days for E-mail responses! 💌
+hr@adminmarina.ru p2p@adminmarina.ru pr@adminmarina.ru sorydima@adminmarina.ru support@adminmarina.ru sip@adminmarina.ru music@adminmarina.ru cfa@adminmarina.ru anti@adminmarina.ru mot_cfa@adminmarina.ru rechainstore@adminmarina.ru models@adminmarina.ru dex@adminmarina.ru email@adminmarina.ru musicdapp@adminmarina.ru pitomec@adminmarina.ru delus@adminmarina.ru gateway@adminmarina.ru husco@adminmarina.ru info@adminmarina.ru maring@adminmarina.ru modus@adminmarina.ru rechainnetworkhost@adminmarina.ru tanyacity@adminmarina.ru support@xn--90ao4a.tech Please allow anywhere from 1 to 5 business days for E-mail responses! 💌 Our Stats! 👀 At the end of 2023, the number of downloads from the Open-Source Places, Apple AppStore, Google Play Market, and the REChain.Store, namely the Domestic application store from the REChain ®️ brand 🪐, а именно Отечественный магазин приложений от бренда REChain ®️ 🪐 ✨ exceeded 29 million downloads. 😈 👀
 
 ### * Our Stats! 👀 At the end of 2023, the number of downloads from the Open-Source Places, Apple AppStore, Google Play Market, and the REChain.Store ✨ exceeded 29 million downloads. 😈 👀
