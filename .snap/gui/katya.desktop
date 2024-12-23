@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=Katya ® 👽! 👩🏻‍💻 🕵🏻‍♀️
-GenericName=Katya ® 👽! 👩🏻‍💻 🕵🏻‍♀️ Platform
-Comment=Hi! I'm Katya ® 👽! 👩🏻‍💻 🕵🏻‍♀️ An AI 🧠 multifunctional social blockchain platform! 👽
-Exec=Katya
-Icon=${SNAP}/meta/gui/katya.png
-Terminal=false
-Type=Application
-Categories=Network;Chat;InstantMessaging;
