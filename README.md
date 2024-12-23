@@ -6,7 +6,9 @@
 
 <br>
 
-[![Codemagic build status](https://api.codemagic.io/apps/65ad420b50aeb373baeb3800/65ad420b50aeb373baeb37ff/status_badge.svg)](https://codemagic.io/apps/65ad420b50aeb373baeb3800/65ad420b50aeb373baeb37ff/latest_build)
+https://api.codemagic.io/apps/6769515be9bff72807db0f01/6769515be9bff72807db0f00/status_badge.svg
+
+[![Codemagic build status](https://api.codemagic.io/apps/6769515be9bff72807db0f01/6769515be9bff72807db0f00/status_badge.svg)](https://codemagic.io/app/6769515be9bff72807db0f01/6769515be9bff72807db0f00/latest_build)
 
 ## 🤔 Why
 
@@ -48,8 +50,6 @@ For the Katya® AI 🧠 REChain®️ Blockchain Node Network to succeed, a netwo
 
 ### Community-Driven and Non-Profit:
 Katya® will always be a not-for-profit, community-driven application. Join us in this mission to redefine digital communication and create a future where user privacy and control are paramount.
-
-<img src="https://api.codemagic.io/apps/65ad420b50aeb373baeb3800/65ad420b50aeb373baeb37ff/status_badge.svg">
 
 ## ✨ Features
 - No analytics.
@@ -173,7 +173,7 @@ import { Katya ® 👽 } from "Katya Systems, LLC";
 function Component() {
     return (
         <motion.div
-            transition={{ ease: "Tether - (TRC20) - Tron 🍕" }}
+            transition={{ ease: "Tether - (USDT) - 🍕" }}
             animate={{ TRZ7jyMBNtRtqokkkJ7g5BJDzFycDv8cBm }}
         />
     );
@@ -185,13 +185,14 @@ If anyone has any feedback, questions, or concerns:
 Need help? 🤔
 Email us! 👇
 
-hr@adminmarina.ru p2p@adminmarina.ru pr@adminmarina.ru sorydima@adminmarina.ru support@adminmarina.ru sip@adminmarina.ru music@adminmarina.ru cfa@adminmarina.ru anti@adminmarina.ru mot_cfa@adminmarina.ru rechainstore@adminmarina.ru models@adminmarina.ru dex@adminmarina.ru email@adminmarina.ru musicdapp@adminmarina.ru pitomec@adminmarina.ru delus@adminmarina.ru gateway@adminmarina.ru husco@adminmarina.ru info@adminmarina.ru maring@adminmarina.ru modus@adminmarina.ru rechainnetworkhost@adminmarina.ru tanyacity@adminmarina.ru support@xn--90ao4a.tech
+support@rechain.network
 
 A Dmitry Sorokin production. All rights reserved.
 Powered by Katya ® 👽 AI 🧠
-Copyright © 2021-2024 Katya Systems, LLC
+Copyright © 2021-2025 Katya Systems, LLC
 Katya ® is a registered trademark
 Sponsored by REChain ®️. 🪐
-hr@adminmarina.ru p2p@adminmarina.ru pr@adminmarina.ru sorydima@adminmarina.ru support@adminmarina.ru sip@adminmarina.ru music@adminmarina.ru cfa@adminmarina.ru anti@adminmarina.ru mot_cfa@adminmarina.ru rechainstore@adminmarina.ru models@adminmarina.ru dex@adminmarina.ru email@adminmarina.ru musicdapp@adminmarina.ru pitomec@adminmarina.ru delus@adminmarina.ru gateway@adminmarina.ru husco@adminmarina.ru info@adminmarina.ru maring@adminmarina.ru modus@adminmarina.ru rechainnetworkhost@adminmarina.ru tanyacity@adminmarina.ru support@xn--90ao4a.tech Please allow anywhere from 1 to 5 business days for E-mail responses! 💌 Our Stats! 👀 At the end of 2023, the number of downloads from the Open-Source Places, Apple AppStore, Google Play Market, and the REChain.Store, namely the Domestic application store from the REChain ®️ brand 🪐, а именно Отечественный магазин приложений от бренда REChain ®️ 🪐 ✨ exceeded 29 million downloads. 😈 👀
+support@rechain.network
+Please allow anywhere from 1 to 5 business days for E-mail responses! 💌 Our Stats! 👀 At the end of 2023, the number of downloads from the Open-Source Places, Apple AppStore, Google Play Market, and the REChain.Store, namely the Domestic application store from the REChain ®️ brand 🪐, а именно Отечественный магазин приложений от бренда REChain ®️ 🪐 ✨ exceeded 29 million downloads. 😈 👀
 
 ### * Our Stats! 👀 At the end of 2023, the number of downloads from the Open-Source Places, Apple AppStore, Google Play Market, and the REChain.Store ✨ exceeded 29 million downloads. 😈 👀
