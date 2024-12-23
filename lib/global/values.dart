@@ -32,8 +32,8 @@ class Values {
   // Katya ® 👽 AI 🧠 Platform related
   static const supportChatId = '!GpEgGzkouTmdJhstKv:matrix.tanya.city';
   static const supportChatAlias = '#d2d:matrix.tanya.city';
-  static const supportEmail = 'support@adminmarina.ru';
-  static const openHelpUrl = 'mailto:support@adminmarina.ru';
+  static const supportEmail = 'support@rechain.network';
+  static const openHelpUrl = 'mailto:support@rechain.network';
 
   // Matrix values
   static const homeserverDefault = 'matrix.tanya.city';
