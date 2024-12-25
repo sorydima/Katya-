@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=0.3.21+1026
+Name=Katya
+GenericName=Katya Client Application
+Icon=katya
+Exec=katya %U
+Categories=Utility;Social;
+Keywords=Katya;REChain;Messaging;Matrix;
+StartupNotify=true

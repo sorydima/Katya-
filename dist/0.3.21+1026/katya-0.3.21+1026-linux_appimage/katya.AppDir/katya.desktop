@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Katya
+GenericName=Katya Client
+Exec=LD_LIBRARY_PATH=usr/lib katya %u
+Icon=katya
+Type=Application
+StartupNotify=true
+MimeType=null
+Categories=Utility
+Keywords=Katya;Matrix;REChain;Messaging
+

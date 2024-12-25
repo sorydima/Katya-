@@ -1,0 +1,28 @@
+icon: assets/logo.png
+summary: Katya App Client
+group: Application/Emulator
+vendor: Katya Systems, LLC
+packager: Sorokin Dmitry Olegovich
+packagerEmail: dmitry.justdev@gmail.com
+license: AGPLv3
+url: https://github.com/sorydima/Katya-.git
+
+display_name: Katya
+
+keywords:
+  - Katya
+  - REChain
+  - Messaging
+  - Matrix
+
+generic_name: Katya Client Application
+
+categories:
+  - Utility
+  - Social
+
+startup_notify: true
+
+# You can also specify [metainfo](https://freedesktop.org/software/appstream/docs/chap-Quickstart.html) file
+# which contains metadata of the app.
+# metainfo: linux/packaging/myappid.appdata.xml
