@@ -1,46 +1,46 @@
 From the latest update:
 
-### CHANGELOG ###
+ CHANGELOG 
 
-# Katya® 0.3.20 (Build 1023) - Changelog
+ Katya® 0.3.22 (Build 1027) - Changelog
 
-**Release Date:** October 2024
+Release Date: March 2025 
 
-## New Features:
-- **Enhanced Privacy Controls:**
-  - Added advanced privacy settings for user data protection.
-  - New user-friendly interface for configuring security preferences.
-  
-- **Multi-Language Support:**
-  - Introduced support for additional languages including Spanish, German, and Mandarin.
-  - Automatic detection of language preference based on device settings.
+ 🔐 Enhanced Security & Privacy  
+- End-to-End Encryption (E2EE) Improvements – Optimized encryption protocols for faster and more secure messaging.  
+- Self-Destructing Messages – New timer-based feature allowing messages to auto-delete after a set duration.  
+- Stealth Mode – Enhanced privacy settings that hide online status and read receipts.  
 
-## Improvements:
-- **UI/UX Enhancements:**
-  - Refined user interface for smoother navigation.
-  - Improved accessibility options for visually impaired users.
-  
-- **Performance Optimization:**
-  - Reduced startup time by 25% for faster load times.
-  - Optimized memory usage, improving app performance on lower-end devices.
+ ⚡ Performance & Stability  
+- Faster Message Syncing – Improved real-time synchronization across devices.  
+- Reduced App Latency – Optimized backend processes for smoother performance.  
+- Lower Battery Consumption – More efficient resource management, reducing energy usage on mobile devices.  
 
-- **Bug Fixes:**
-  - Fixed an issue where the app would crash under certain network conditions.
-  - Resolved synchronization issues between local and cloud data.
-  - Addressed minor UI glitches in dark mode.
+ 📲 New Features & UI Enhancements  
+- Voice & Video Call Enhancements – Clearer audio, reduced lag, and improved connection stability.  
+- Custom Chat Themes – New personalization options with dynamic wallpapers and font styles.  
+- Reactions & Quick Replies – React to messages with emojis and use predefined quick replies for faster communication.  
 
-## Under the Hood:
-- **Security Patch:**
-  - Implemented critical security updates to safeguard against potential vulnerabilities.
-  
-- **Flutter Engine Upgrade:**
-  - Migrated to the latest stable Flutter version for enhanced compatibility and performance.
+ 🔗 Blockchain & Web3 Integrations  
+- Decentralized Message Storage – Enhanced support for storing messages securely on a distributed network.  
+- Crypto Payments in Chat – Seamless integration of crypto transfers within conversations.  
+- WalletConnect Support – Directly link your crypto wallet for secure transactions.  
 
-Visit https://katya.wtf for more information.
+ 🐞 Bug Fixes & Miscellaneous Improvements  
+- Fixed occasional message delivery delays.  
+- Resolved issues with file sharing in group chats.  
+- General UI/UX improvements for better user experience.  
 
-Try it right now for the Apple 🧃 Vision Pro: https://katya.framer.website
+🔥 Upgrade now to experience the best version of Katya® 👽 yet!  
 
-Analytics for developers! 🤳 
+Let me know if you’d like to tweak or add anything!
+
+Visit https://katya.rechain.network for more information.
+
+Try it right now for the Apple Vision Pro: https://katya.framer.website
+
+Analytics for developers!
+🤳 
 https://notkatya.framer.website - For Katya, Inc Products!
 
 ```
@@ -50,7 +50,7 @@ import { Katya ® 👽 } from "Katya Systems, LLC";
 function Component() {
     return (
         <motion.div
-            transition={{ ease: "Tether - (TRC20) - Tron 🍕" }}
+            transition={{ ease: "Tether - (USDT)" }}
             animate={{ TRZ7jyMBNtRtqokkkJ7g5BJDzFycDv8cBm }}
         />
     );
@@ -62,14 +62,14 @@ If anyone has any feedback, questions, or concerns:
 Need help? 🤔
 Email us! 👇
 
-hr@adminmarina.ru p2p@adminmarina.ru pr@adminmarina.ru sorydima@adminmarina.ru support@adminmarina.ru sip@adminmarina.ru music@adminmarina.ru cfa@adminmarina.ru anti@adminmarina.ru mot_cfa@adminmarina.ru rechainstore@adminmarina.ru models@adminmarina.ru dex@adminmarina.ru email@adminmarina.ru musicdapp@adminmarina.ru pitomec@adminmarina.ru delus@adminmarina.ru gateway@adminmarina.ru husco@adminmarina.ru info@adminmarina.ru maring@adminmarina.ru modus@adminmarina.ru rechainnetworkhost@adminmarina.ru tanyacity@adminmarina.ru support@xn--90ao4a.tech
+support@rechain.network
 
 A Dmitry Sorokin production. All rights reserved.
 Powered by Katya ® 👽 AI 🧠
-Copyright © 2021-2024 Katya Systems, LLC
+Copyright © 2021-2025 Katya Systems, LLC
 Katya ® is a registered trademark
 Sponsored by REChain ®️ 🪐 ✨
-hr@adminmarina.ru p2p@adminmarina.ru pr@adminmarina.ru sorydima@adminmarina.ru support@adminmarina.ru sip@adminmarina.ru music@adminmarina.ru cfa@adminmarina.ru anti@adminmarina.ru mot_cfa@adminmarina.ru rechainstore@adminmarina.ru models@adminmarina.ru dex@adminmarina.ru email@adminmarina.ru musicdapp@adminmarina.ru pitomec@adminmarina.ru delus@adminmarina.ru gateway@adminmarina.ru husco@adminmarina.ru info@adminmarina.ru maring@adminmarina.ru modus@adminmarina.ru rechainnetworkhost@adminmarina.ru tanyacity@adminmarina.ru support@xn--90ao4a.tech
+support@rechain.network
 Please allow anywhere from 1 to 5 business days for E-mail responses! 💌
 
-### * Our Stats! 👀 At the end of 2023, the number of downloads from the Open-Source Places, Apple AppStore, Google Play Market, and the REChain.Store, namely the Domestic application store from the REChain ®️ brand 🪐, namely the Domestic application store from the brand REChain ®️ 🪐 ✨ exceeded 29 million downloads. 😈 👀
+  Our Stats! At the end of 2023, the number of downloads from the Open-Source Places, Apple AppStore, Google Play Market, and the REChain.Store, namely the Domestic application store from the REChain ®️ brand, namely the Domestic application store from the brand REChain ®️ exceeded 29 million downloads. 😈

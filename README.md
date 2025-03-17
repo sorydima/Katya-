@@ -159,7 +159,7 @@ decoration: BoxDecoration(
 ```
 - Understanding why OLM chose the world's 'pickle' for serialization, [It's from Python](https://gitlab.matrix.org/matrix-org/olm/-/tree/master/python) .
 
-Visit https://katya.wtf for more information.
+Visit https://katya.rechain.network for more information.
 
 Try it right now for the Apple 🧃 Vision Pro: https://katya.framer.website
 
