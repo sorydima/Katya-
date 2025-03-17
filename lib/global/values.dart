@@ -30,16 +30,16 @@ class Values {
       '$appName messaging client message and status notifications';
 
   // Katya ® 👽 AI 🧠 Platform related
-  static const supportChatId = '!GpEgGzkouTmdJhstKv:matrix.tanya.city';
-  static const supportChatAlias = '#d2d:matrix.tanya.city';
+  static const supportChatId = '!ehXvUhWNASUkSLvAGP:matrix.org';
+  static const supportChatAlias = '#matrix-dev:matrix.org';
   static const supportEmail = 'support@rechain.network';
   static const openHelpUrl = 'mailto:support@rechain.network';
 
   // Matrix values
-  static const homeserverDefault = 'matrix.tanya.city';
+  static const homeserverDefault = 'node.marinchik.ink';
   static const clientSecretMatrix = 'MDWVwN79p5xIz7bgazVXvO8aabbVD0LN';
   static const captchaMatrixSiteKey = '6LcgI54UAAAAABGdGmruw6DdOocFpYVdjYBRe4zb';
-  static const matrixSSOUrl = '/_matrix/client/r0/login/sso/redirect?redirectUrl=katya://matrix.katya.wtf/login/token';
+  static const matrixSSOUrl = '/_matrix/client/r0/login/sso/redirect?redirectUrl=katya://node.marinchik.ink/login/token';
 
   // regexs - hello darkness, my old friend
   static const emailRegex =
@@ -65,9 +65,9 @@ class Values {
 
 // ignore: non_constant_identifier_names
 const bool DEBUG_MODE = !kReleaseMode;
-const bool SHOW_BORDERS = false;
-const bool DEBUG_PAYLOADS_MODE = false;
-const bool DEBUG_OLM_MODE = false;
+const bool SHOW_BORDERS = true;
+const bool DEBUG_PAYLOADS_MODE = true;
+const bool DEBUG_OLM_MODE = true;
 
 class SupportedLanguages {
   static const defaultLang = 'en';
