@@ -250,16 +250,16 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
             Container(
               padding: EdgeInsets.only(right: 4),
               child: new ElevatedButton(
-                  onPressed: _launchURL,
+                  onTap: _launchURL,
                   child: new Text('Show Privacy Policy!'),
                 ),
-            ),
-            _launchURL() async {
+                _launchURL() async {
                  final Uri _url = Uri.parse('https://katya.rechain.network/PrivacyPolicy.html');
                  if (!await launchUrl(url)) {
                       throw Exception('Could not launch $_url');
                   }
               },
+            ),
           ],
         ),
       ]);
