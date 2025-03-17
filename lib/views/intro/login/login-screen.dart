@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:redux/redux.dart';
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/colors.dart';
@@ -248,27 +249,17 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
           children: <Widget>[
             Container(
               padding: EdgeInsets.only(right: 4),
-              child: TouchableOpacity(
-                activeOpacity: 0.4,
-                onTap: () async {
-                    String url = 'https://katya.rechain.network/PrivacyPolicy.html';
-                    _url;
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const <Widget>[
-                    Text(
-                      'Privacy Policy',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w100,
-                      ),
-                    ),
-                  ],
+              child: new ElevatedButton(
+                  onPressed: _launchURL,
+                  child: new Text('Show Privacy Policy!'),
                 ),
-              ),
             ),
+            _launchURL() async {
+                 final Uri _url = Uri.parse('https://katya.rechain.network/PrivacyPolicy.html');
+                 if (!await launchUrl(url)) {
+                      throw Exception('Could not launch $_url');
+                  }
+              },
           ],
         ),
       ]);
