@@ -252,12 +252,13 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
                 activeOpacity: 0.4,
                 onTap: () async {
                     String url = 'https://katya.rechain.network/PrivacyPolicy.html';
+                    _url;
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const <Widget>[
                     Text(
-                      'Forgot Password?',
+                      'Privacy Policy',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 14,
