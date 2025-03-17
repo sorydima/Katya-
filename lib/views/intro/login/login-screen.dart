@@ -241,6 +241,35 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
             ),
           ],
         ),
+        Flex(
+          direction: Axis.horizontal,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.only(right: 4),
+              child: TouchableOpacity(
+                activeOpacity: 0.4,
+                onTap: () async {
+                    String url = 'https://katya.rechain.network/PrivacyPolicy.html';
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const <Widget>[
+                    Text(
+                      'Forgot Password?',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w100,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ]);
 
   @override
