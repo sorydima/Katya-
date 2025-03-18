@@ -86,7 +86,7 @@
                     "only-arches": [
                         "x86_64"
                     ],
-                    "url": "https://github.com/sorydima/Katya-/releases/download/0.3.16/Katya.tar.gz",
+                    "url": "https://github.com/sorydima/Katya-/releases/download/0.3.22/Katya.tar.gz",
                     "dest": "Katya"
                 },
                 {

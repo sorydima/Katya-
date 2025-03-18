@@ -2,9 +2,9 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Katya ® 👽! 👩🏻‍💻 🕵🏻‍♀️"
-#define MyAppVersion "0.3.21 (Build 1026)"
+#define MyAppVersion "0.3.22 (Build 1027)"
 #define MyAppPublisher "Katya Systems, LLC"
-#define MyAppURL "https://www.katya.wtf/"
+#define MyAppURL "https://www.katya.rechain.network/"
 #define MyAppExeName "Katya.exe"
 #define MyAppAssocName MyAppName + " File"
 #define MyAppAssocExt ".katya"
