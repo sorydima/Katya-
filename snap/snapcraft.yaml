@@ -52,7 +52,7 @@ parts:
     source: .
     override-build: |
       flutter pub get || true
-      flutter build linux --release -v
+      flutter build linux --release --no-sound-null-safety -v
       mkdir -p $CRAFT_PART_INSTALL/bin
       cp -r build/linux/*/release/bundle/* $CRAFT_PART_INSTALL/bin/
     build-packages:
