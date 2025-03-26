@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=katya
+Comment=Katya now boasts an advanced artificial intelligence brain, enhancing user experiences like never before. With unparalleled learning capabilities, Katya adapts to user preferences, making every interaction personalized and efficient.
+Icon=com.katya.katya
+Exec=/usr/bin/com.katya.katya
+X-Nemo-Application-Type=silica-qt5
+
+[X-Application]
+Permissions=Audio;AuthService;Call;Camera;DeviceInfo;Documents;Downloads;Internet;Location;LogSecurityEvents;MediaIndexing;Microphone;Music;NFC;Pictures;PublicDir;PushNotifications;RemovableMedia;ScreenCapture;SecureStorage;Videos;VPN;WebView;
+OrganizationName=com.katya
+ApplicationName=katya
