@@ -86,7 +86,7 @@ dependencies:
   http_parser: ^4.0.0
   easy_localization: ^3.0.0
   flutter_dotenv: ^5.0.2
-  android_alarm_manager_plus: ^2.0.3
+  android_alarm_manager_plus: ^4.0.5
   workmanager: 0.5.0
   # background_fetch: 1.1.0
   uni_links: ^0.5.0
