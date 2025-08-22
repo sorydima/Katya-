@@ -78,12 +78,20 @@ android {
         }
    }
     externalNativeBuild {
-        // Encapsulates your CMake build configurations.
         cmake {
-            // Provides a relative path to your CMake build script.
             path "../olm/CMakeLists.txt"
             version "3.18.1"
         }
+    }
+
+    // 🔥 Выровняем JVM для Java и Kotlin
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
     }
 }
 
