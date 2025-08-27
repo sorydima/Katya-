@@ -17,6 +17,7 @@ import 'package:katya/store/rooms/selectors.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/appbars/appbar-normal.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class MediaPreviewArguments {
   final String? roomId;

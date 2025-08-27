@@ -9,6 +9,7 @@ import 'package:katya/store/user/model.dart';
 import 'package:katya/store/user/selectors.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
 import 'package:katya/views/widgets/containers/card-section.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 enum ListItemUserType {
   Selectable,

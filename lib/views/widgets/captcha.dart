@@ -5,6 +5,8 @@ import 'package:katya/global/values.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
 import 'package:katya/views/widgets/loader/loading-indicator.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 class Captcha extends StatefulWidget {
   final String? baseUrl;
@@ -31,46 +33,49 @@ class CaptchaState extends State<Captcha> with Lifecycle<Captcha> {
 
   CaptchaState();
 
-  loadLocalHtml() async {
+  Future<String> _loadCaptchaHTML() async {
     final recaptchaHTML = await rootBundle.loadString(Assets.captchaHTML);
-    final recaptchaWithSiteKeyHTML = recaptchaHTML.replaceFirst(
+    return recaptchaHTML.replaceFirst(
       's%',
       widget.publicKey ?? Values.captchaMatrixSiteKey,
     );
-
-    await controller?.loadHtml(recaptchaWithSiteKeyHTML);
   }
 
   // Matrix Public Key
   @override
   Widget build(BuildContext context) => Stack(
         children: [
-          WebView(
-            baseUrl: widget.baseUrl != null ? 'https://${widget.baseUrl}' : 'matrix.katya.wtf',
-            javascriptMode: JavascriptMode.unrestricted,
-            javascriptChannels: {
-              JavascriptChannel(
-                name: 'Captcha',
-                onMessageReceived: (JavascriptMessage message) {
-                  String token = message.message;
-                  if (token.contains('verify')) {
-                    token = token.substring(7);
-                  }
-                  widget.onVerified(token);
-                },
-              ),
-            },
-            onPageFinished: (_) {
-              setState(() {
-                loading = false;
-              });
-            },
-            onWebViewCreated: (WebViewController webViewController) {
-              setState(() {
-                loading = true;
-              });
-              controller = webViewController;
-              loadLocalHtml();
+          FutureBuilder<String>(
+            future: _loadCaptchaHTML(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return WebViewWidget(
+                  controller: WebViewController()
+                    ..setJavaScriptMode(JavaScriptMode.unrestricted)
+                    ..setBackgroundColor(Colors.transparent)
+                    ..setNavigationDelegate(
+                      NavigationDelegate(
+                        onPageFinished: (String url) {
+                          setState(() {
+                            loading = false;
+                          });
+                        },
+                      ),
+                    )
+                    ..addJavaScriptChannel(
+                      'Captcha',
+                      onMessageReceived: (JavaScriptMessage message) {
+                        String token = message.message;
+                        if (token.contains('verify')) {
+                          token = token.substring(7);
+                        }
+                        widget.onVerified(token);
+                      },
+                    )
+                    ..loadHtmlString(snapshot.data!),
+                );
+              }
+              return const Center(child: CircularProgressIndicator());
             },
           ),
           Visibility(

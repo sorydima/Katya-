@@ -12,6 +12,7 @@ import 'package:katya/views/behaviors.dart';
 import 'package:katya/views/widgets/buttons/button-solid.dart';
 import 'package:katya/views/widgets/buttons/button-text.dart';
 import 'package:katya/views/widgets/dialogs/dialog-explaination.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class VerificationScreen extends StatefulWidget {
   const VerificationScreen({Key? key}) : super(key: key);

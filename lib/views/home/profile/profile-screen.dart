@@ -20,6 +20,7 @@ import 'package:katya/views/widgets/buttons/button-solid.dart';
 import 'package:katya/views/widgets/input/text-field-secure.dart';
 import 'package:katya/views/widgets/modals/modal-image-options.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 const imageSize = Dimensions.avatarSizeDetails;
 
@@ -62,7 +63,7 @@ class ProfileScreen extends HookWidget {
 
     // local widget functionality
     final onCopyToClipboard = useCallback(() async {
-      await Clipboard.setData(ClipboardData(text: user?.userId));
+      await Clipboard.setData(ClipboardData(text: user?.userId ?? ''));
       dispatch(addInfo(message: 'Copied User ID to clipboard'));
     }, [dispatch, user]);
 

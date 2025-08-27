@@ -23,6 +23,7 @@ import 'package:katya/views/widgets/avatars/avatar.dart';
 import 'package:katya/views/widgets/dialogs/dialog-start-chat.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
 import 'package:katya/views/widgets/loader/index.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class ChatSearchArguments {
   User? user;

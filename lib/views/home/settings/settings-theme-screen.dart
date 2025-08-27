@@ -13,6 +13,7 @@ import 'package:katya/views/widgets/appbars/appbar-normal.dart';
 import 'package:katya/views/widgets/containers/card-section.dart';
 import 'package:katya/views/widgets/dialogs/dialog-color-picker.dart';
 import 'package:katya/views/widgets/dialogs/dialog-confirm.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class ThemeSettingsScreen extends StatefulWidget {
   const ThemeSettingsScreen({Key? key}) : super(key: key);

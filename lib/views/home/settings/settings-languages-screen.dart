@@ -9,6 +9,7 @@ import 'package:katya/store/alerts/actions.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/settings/actions.dart';
 import 'package:katya/views/widgets/appbars/appbar-normal.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class LanguageSettingsScreen extends StatelessWidget {
   const LanguageSettingsScreen({Key? key}) : super(key: key);

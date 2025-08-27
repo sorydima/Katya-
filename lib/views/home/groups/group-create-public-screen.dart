@@ -23,6 +23,7 @@ import 'package:katya/views/widgets/buttons/button-text-opacity.dart';
 import 'package:katya/views/widgets/input/text-field-secure.dart';
 import 'package:katya/views/widgets/lists/list-user-bubbles.dart';
 import 'package:katya/views/widgets/modals/modal-image-options.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class CreatePublicGroupScreen extends StatefulWidget {
   const CreatePublicGroupScreen({Key? key}) : super(key: key);

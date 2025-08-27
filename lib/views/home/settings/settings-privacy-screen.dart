@@ -38,6 +38,7 @@ import 'package:katya/views/widgets/dialogs/dialog-confirm.dart';
 import 'package:katya/views/widgets/dialogs/dialog-rounded.dart';
 import 'package:katya/views/widgets/dialogs/dialog-text-input.dart';
 import 'package:katya/views/widgets/modals/modal-lock-overlay/show-lock-overlay.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class _Props extends Equatable {
   final bool loading;
@@ -149,7 +150,7 @@ class _Props extends Equatable {
           );
         },
         copyToClipboard: (String? clipboardData) async {
-          await Clipboard.setData(ClipboardData(text: clipboardData));
+          await Clipboard.setData(ClipboardData(text: clipboardData ?? ''));
           store.dispatch(addInfo(message: Strings.alertCopiedToClipboard));
           HapticFeedback.vibrate();
         },

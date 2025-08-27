@@ -15,6 +15,7 @@ import 'package:katya/views/widgets/dialogs/dialog-confirm-password.dart';
 import 'package:katya/views/widgets/dialogs/dialog-text-input.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
 import 'package:katya/views/widgets/loader/index.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class DevicesScreen extends StatefulWidget {
   @override

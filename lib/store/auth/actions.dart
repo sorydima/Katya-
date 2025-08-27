@@ -41,7 +41,7 @@ import 'package:katya/store/sync/actions.dart';
 import 'package:katya/store/sync/service/actions.dart';
 import 'package:katya/store/sync/service/storage.dart';
 import 'package:katya/store/user/actions.dart';
-import 'package:uni_links/uni_links.dart';
+import 'package:app_links/app_links.dart';
 
 import '../user/model.dart';
 
@@ -196,12 +196,17 @@ ThunkAction<AppState> initDeepLinks() => (Store<AppState> store) async {
           return;
         }
 
-        _deeplinkSubscription = uriLinkStream.listen((Uri? uri) {
-          final token = uri!.queryParameters['loginToken'];
-          store.dispatch(SetLoading(loading: true));
-          store.dispatch(loginUserSSO(token: token));
+        final appLinks = AppLinks();
+        _deeplinkSubscription = appLinks.uriLinkStream.listen((Uri? uri) {
+          if (uri != null) {
+            final token = uri.queryParameters['loginToken'];
+            if (token != null) {
+              store.dispatch(SetLoading(loading: true));
+              store.dispatch(loginUserSSO(token: token));
+            }
+          }
         }, onError: (err) {
-          log.error('[streamUniLinks] $err');
+          log.error('[streamAppLinks] $err');
           store.dispatch(SetLoading(loading: false));
         });
       } on PlatformException {

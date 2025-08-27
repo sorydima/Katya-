@@ -9,6 +9,7 @@ import 'package:katya/global/strings.dart';
 import 'package:katya/store/auth/actions.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/views/widgets/input/text-field-secure.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class PasswordUpdateStep extends StatefulWidget {
   const PasswordUpdateStep({Key? key}) : super(key: key);

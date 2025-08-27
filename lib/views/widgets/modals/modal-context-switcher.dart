@@ -16,6 +16,7 @@ import 'package:katya/views/intro/login/login-screen.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/katya.dart';
 import 'package:katya/views/widgets/lists/list-item-account.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class ModalContextSwitcher extends StatelessWidget {
   onNavigateToMultiLogin({required BuildContext context, required _Props props}) async {

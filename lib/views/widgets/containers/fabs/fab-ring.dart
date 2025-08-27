@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:fab_circular_menu/fab_circular_menu.dart';
+// import 'package:fab_circular_menu/fab_circular_menu.dart'; // Temporarily disabled for compatibility
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -17,7 +17,7 @@ calculatePosition(int copyLength) => copyLength * 3.4;
 class FabRing extends StatelessWidget {
   final bool showLabels;
   final Alignment alignment;
-  final GlobalKey<FabCircularMenuState>? fabKey;
+  final GlobalKey? fabKey; // Simplified for compatibility
 
   const FabRing({
     Key? key,
@@ -28,25 +28,21 @@ class FabRing extends StatelessWidget {
 
   onNavigateToPublicSearch(context) {
     HapticFeedback.lightImpact();
-    fabKey!.currentState!.close();
     Navigator.pushNamed(context, Routes.searchGroups);
   }
 
   onNavigateToDraft(context) {
     HapticFeedback.lightImpact();
-    fabKey!.currentState!.close();
     Navigator.pushNamed(context, Routes.searchUsers);
   }
 
   onNavigateToCreateGroup(context) {
     HapticFeedback.lightImpact();
-    fabKey!.currentState!.close();
     Navigator.pushNamed(context, Routes.groupCreate);
   }
 
   onNavigateToCreateGroupPublic(context) {
     HapticFeedback.lightImpact();
-    fabKey!.currentState!.close();
     Navigator.pushNamed(context, Routes.groupCreatePublic);
   }
 
@@ -64,169 +60,64 @@ class FabRing extends StatelessWidget {
         builder: (context, props) {
           final modifier = alignment == Alignment.bottomRight ? -1.0 : .425;
 
-          return FabCircularMenu(
+          return FloatingActionButton(
             key: fabKey,
-            fabSize: 58,
-            fabElevation: 4.0,
-            alignment: alignment,
-            fabOpenIcon: Icon(
+            heroTag: 'fab_main',
+            tooltip: Strings.semanticsOpenActionsRing,
+            backgroundColor: props.primaryColor,
+            onPressed: () {
+              // Show a simple dialog with options for now
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text('Actions'),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ListTile(
+                        leading: Icon(Icons.public),
+                        title: Text(Strings.labelFabCreatePublic),
+                        onTap: () {
+                          Navigator.pop(context);
+                          onNavigateToCreateGroupPublic(context);
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.group),
+                        title: Text('Create Group'),
+                        onTap: () {
+                          Navigator.pop(context);
+                          onNavigateToCreateGroup(context);
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.search),
+                        title: Text('Search Groups'),
+                        onTap: () {
+                          Navigator.pop(context);
+                          onNavigateToPublicSearch(context);
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.person_search),
+                        title: Text('Search Users'),
+                        onTap: () {
+                          Navigator.pop(context);
+                          onNavigateToDraft(context);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+            child: Icon(
               Icons.bubble_chart,
               size: Dimensions.iconSizeLarge,
-              semanticLabel: Strings.semanticsOpenActionsRing,
               color: Colors.white,
             ),
-            fabCloseIcon: Icon(
-              Icons.close,
-              semanticLabel: Strings.semanticsCloseActionsRing,
-              color: Colors.white,
-            ),
-            fabColor: props.primaryColor,
-            ringColor: props.primaryColor.withAlpha(144),
-            ringDiameter: actionRingDefaultDimensions(context),
-            animationDuration: Duration(milliseconds: 275),
-            onDisplayChange: (opened) {},
-            children: [
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  FloatingActionButton(
-                    heroTag: 'fab1',
-                    tooltip: Strings.labelFabCreatePublic,
-                    backgroundColor: props.primaryColor,
-                    onPressed: () => onNavigateToCreateGroupPublic(context),
-                    child: SvgPicture.asset(
-                      Assets.iconPublicAddBeing,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    bottom: 0,
-                    left: 148 * modifier,
-                    child: Visibility(
-                      visible: showLabels,
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 4),
-                        child: Chip(
-                          label: Text(
-                            Strings.labelFabCreatePublic,
-                            style: Theme.of(context).textTheme.subtitle2?.copyWith(
-                                  color: Colors.white,
-                                ),
-                          ),
-                          backgroundColor: props.primaryColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  FloatingActionButton(
-                    heroTag: 'fab2',
-                    tooltip: Strings.labelFabCreateGroup,
-                    backgroundColor: props.primaryColor,
-                    onPressed: () => onNavigateToCreateGroup(context),
-                    child: SvgPicture.asset(
-                      Assets.iconGroupAddBeing,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    bottom: 0,
-                    left: 148 * modifier,
-                    child: Visibility(
-                      visible: showLabels,
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 4),
-                        child: Chip(
-                          label: Text(
-                            Strings.labelFabCreateGroup,
-                            style: Theme.of(context).textTheme.subtitle2?.copyWith(
-                                  color: Colors.white,
-                                ),
-                          ),
-                          backgroundColor: props.primaryColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  FloatingActionButton(
-                    heroTag: 'fab3',
-                    tooltip: Strings.labelFabCreateDM,
-                    backgroundColor: props.primaryColor,
-                    onPressed: () => onNavigateToDraft(context),
-                    child: SvgPicture.asset(
-                      Assets.iconMessageCircleBeing,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Positioned(
-                    top: -4,
-                    left: 136 * modifier,
-                    child: Visibility(
-                      visible: showLabels,
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 4),
-                        child: Chip(
-                          label: Text(
-                            Strings.labelFabCreateDM,
-                            style: Theme.of(context).textTheme.subtitle2?.copyWith(
-                                  color: Colors.white,
-                                ),
-                          ),
-                          backgroundColor: props.primaryColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  FloatingActionButton(
-                    heroTag: 'fab4',
-                    tooltip: Strings.labelFabSearch,
-                    backgroundColor: props.primaryColor,
-                    onPressed: () => onNavigateToPublicSearch(context),
-                    child: SvgPicture.asset(
-                      Assets.iconSearchPublicCondensedBeing,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Positioned(
-                    top: -68,
-                    bottom: 0,
-                    left: 112 * modifier,
-                    child: Visibility(
-                      visible: showLabels,
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 4),
-                        child: Chip(
-                          label: Text(
-                            Strings.labelFabSearch,
-                            style: Theme.of(context).textTheme.subtitle2?.copyWith(
-                                  color: Colors.white,
-                                ),
-                          ),
-                          backgroundColor: props.primaryColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
           );
+              // All FAB actions are now handled in the dialog
         },
       );
 }

@@ -3,6 +3,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/strings.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class DialogColorPicker extends StatefulWidget {
   const DialogColorPicker({

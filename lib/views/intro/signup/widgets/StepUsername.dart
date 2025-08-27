@@ -13,6 +13,7 @@ import 'package:katya/store/index.dart';
 import 'package:katya/store/user/selectors.dart';
 import 'package:katya/views/widgets/input/text-field-secure.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class UsernameStep extends StatefulWidget {
   const UsernameStep({Key? key}) : super(key: key);

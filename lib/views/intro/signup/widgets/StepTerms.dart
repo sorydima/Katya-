@@ -11,6 +11,7 @@ import 'package:katya/global/libs/matrix/auth.dart';
 import 'package:katya/global/weburl.dart';
 import 'package:katya/store/auth/actions.dart';
 import 'package:katya/store/index.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class TermsStep extends StatelessWidget {
   TermsStep({Key? key}) : super(key: key);

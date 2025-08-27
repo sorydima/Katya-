@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class ModalImageOptions extends StatelessWidget {
   const ModalImageOptions({

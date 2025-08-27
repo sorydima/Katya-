@@ -16,6 +16,7 @@ import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/appbars/appbar-avatar.dart';
 import 'package:katya/views/widgets/containers/menu-rounded.dart';
 import 'package:katya/views/widgets/dialogs/dialog-options.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 enum Options {
   newGroup,

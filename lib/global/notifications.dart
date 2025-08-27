@@ -40,7 +40,6 @@ Future<FlutterLocalNotificationsPlugin?> initNotifications({
     requestSoundPermission: false,
     requestBadgePermission: false,
     requestAlertPermission: false,
-    onDidReceiveLocalNotification: onDidReceiveLocalNotification,
   );
 
   final initializationSettings = InitializationSettings(

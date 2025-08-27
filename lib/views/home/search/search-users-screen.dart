@@ -19,6 +19,7 @@ import 'package:katya/views/widgets/dialogs/dialog-start-chat.dart';
 import 'package:katya/views/widgets/lists/list-item-user.dart';
 import 'package:katya/views/widgets/loader/index.dart';
 import 'package:katya/views/widgets/modals/modal-user-details.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class SearchUserScreen extends StatefulWidget {
   const SearchUserScreen({Key? key}) : super(key: key);

@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:redux/redux.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
@@ -20,6 +20,7 @@ import 'package:katya/store/user/model.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/appbars/appbar-normal.dart';
 import 'package:katya/views/widgets/dialogs/dialog-text-input.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class _Props extends Equatable {
   final bool syncing;

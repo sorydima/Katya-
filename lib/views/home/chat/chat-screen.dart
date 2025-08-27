@@ -44,6 +44,8 @@ import 'package:katya/views/widgets/appbars/appbar-chat.dart';
 import 'package:katya/views/widgets/appbars/appbar-options-message.dart';
 import 'package:katya/views/widgets/loader/index.dart';
 import 'package:katya/views/widgets/modals/modal-user-details.dart';
+import 'package:flutter/material.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class ChatScreenArguments {
   final String? roomId;

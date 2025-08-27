@@ -20,6 +20,7 @@ import 'package:katya/views/home/search/search-chats-screen.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
 import 'package:katya/views/widgets/dialogs/dialog-start-chat.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 
 class ModalUserDetails extends StatelessWidget {
@@ -179,7 +180,7 @@ class ModalUserDetails extends StatelessWidget {
                             style: Theme.of(context).textTheme.subtitle1,
                           ),
                             onLongPress: () async  {
-                              await Clipboard.setData(ClipboardData(text: props.user.userId));
+                              await Clipboard.setData(ClipboardData(text: props.user.userId ?? ''));
                               await props.onAddConfirmation('Username copied to clipboard');
                               Navigator.pop(context);
                             },

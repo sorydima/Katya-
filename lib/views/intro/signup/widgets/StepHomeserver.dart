@@ -17,6 +17,7 @@ import 'package:katya/views/widgets/avatars/avatar.dart';
 import 'package:katya/views/widgets/input/text-field-secure.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class HomeserverStep extends StatefulWidget {
   const HomeserverStep({Key? key}) : super(key: key);

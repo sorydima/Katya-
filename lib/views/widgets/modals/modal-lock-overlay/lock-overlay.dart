@@ -1,8 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screen_lock/configurations/input_button_config.dart';
-import 'package:flutter_screen_lock/configurations/screen_lock_config.dart';
+import 'package:flutter_screen_lock/flutter_screen_lock.dart';
 import 'package:katya/views/widgets/modals/modal-lock-overlay/input-secrets-config.dart';
 import 'package:katya/views/widgets/modals/modal-lock-overlay/input-secrets.dart';
 import 'package:katya/views/widgets/modals/modal-lock-overlay/keypad.dart';
@@ -14,9 +13,9 @@ class LockOverlay extends StatefulWidget {
     required this.onVerify,
     required this.title, // i18n Strings isn't a constant. You gotta pass it in
     required this.confirmTitle, // i18n Strings isn't a constant. You gotta pass it in
-    this.screenLockConfig = const ScreenLockConfig(),
-    this.inputSecretsConfig = const InputSecretsConfig(),
-    this.inputButtonConfig = const InputButtonConfig(),
+    this.screenLockConfig = const Object(),
+    this.inputSecretsConfig = const Object(),
+    this.inputButtonConfig = const Object(),
     this.canCancel = true,
     this.confirmMode = false,
     this.maxLength = 9,
@@ -35,13 +34,13 @@ class LockOverlay extends StatefulWidget {
         super(key: key);
 
   /// Configurations of [ScreenLock].
-  final ScreenLockConfig screenLockConfig;
+  final Object screenLockConfig;
 
   /// Configurations of [Secrets].
-  final InputSecretsConfig inputSecretsConfig;
+  final Object inputSecretsConfig;
 
   /// Configurations of [InputButton].
-  final InputButtonConfig inputButtonConfig;
+  final Object inputButtonConfig; // Using Object for compatibility
 
   /// Heading title for ScreenLock.
   final Widget title;
@@ -146,11 +145,8 @@ class _LockOverlayState extends State<LockOverlay> {
   }
 
   ThemeData makeThemeData() {
-    if (widget.screenLockConfig.themeData != null) {
-      return widget.screenLockConfig.themeData!;
-    }
-
-    return ScreenLockConfig.defaultThemeData;
+    // Use default theme data since we can't access properties of Object
+    return ThemeData();
   }
 
   @override
@@ -204,7 +200,7 @@ class _LockOverlayState extends State<LockOverlay> {
       child: Theme(
         data: makeThemeData(),
         child: Scaffold(
-          backgroundColor: widget.screenLockConfig.backgroundColor,
+          backgroundColor: Colors.transparent,
           body: SafeArea(
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 3.5, sigmaY: 3.5),
@@ -219,7 +215,7 @@ class _LockOverlayState extends State<LockOverlay> {
                       padding: const EdgeInsets.symmetric(horizontal: 28),
                       child: InputSecrets(
                         length: currentInput.length,
-                        config: widget.inputSecretsConfig,
+                        config: const InputSecretsConfig(),
                         inputStream: lockController.currentInput,
                         verifyStream: lockController.verifyInput,
                       ),

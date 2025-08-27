@@ -28,6 +28,8 @@ import 'package:katya/views/widgets/dialogs/dialog-confirm.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
 import 'package:katya/views/widgets/lists/list-user-bubbles.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
+import 'package:flutter/material.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class ChatDetailsArguments {
   final String? roomId;

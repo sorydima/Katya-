@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:swipeable/swipeable.dart';
+// import 'package:swipeable/swipeable.dart'; // Temporarily disabled for compatibility
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/formatters.dart';
@@ -328,39 +328,7 @@ class MessageWidget extends StatelessWidget {
       replyColor = HSLColor.fromColor(bubbleColor).withLightness(isLight ? 0.5 : 0.25).toColor();
     }
 
-    return Swipeable(
-      onSwipeLeft: isUserSent ? () => onSwipeMessage(message) : () => {},
-      onSwipeRight: !isUserSent ? () => onSwipeMessage(message) : () => {},
-      background: Positioned(
-        top: 0,
-        bottom: 0,
-        left: !isUserSent ? 0 : null,
-        right: isUserSent ? 0 : null,
-        child: Opacity(
-          // HACK: hide the reply icon under the message
-          opacity: opacity == 0.5 ? 0 : 1,
-          child: Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: isUserSent ? 24 : 50,
-            ),
-            child: Flex(
-              direction: Axis.horizontal,
-              mainAxisAlignment: alignmentMessage,
-              // ignore: avoid_redundant_argument_values
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Transform(
-                  transform: isUserSent ? Matrix4.rotationY(-185) : Matrix4.rotationY(0),
-                  child: Icon(
-                    Icons.reply,
-                    size: Dimensions.iconSizeLarge,
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
+    return Container(
       child: GestureDetector(
         onTap: () {
           if (message.failed) {

@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:katya/context/storage.dart';
 import 'package:katya/global/platform.dart';
 import 'package:katya/global/values.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/prelock.dart';
 
 // ignore: avoid_void_async

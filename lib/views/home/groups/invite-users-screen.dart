@@ -29,6 +29,7 @@ import 'package:katya/views/widgets/lifecycle.dart';
 import 'package:katya/views/widgets/lists/list-item-user.dart';
 import 'package:katya/views/widgets/loader/index.dart';
 import 'package:katya/views/widgets/modals/modal-user-details.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class InviteUsersArguments {
   final String? roomId;

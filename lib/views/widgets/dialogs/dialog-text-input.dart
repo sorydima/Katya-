@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/store/auth/actions.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 import 'package:katya/views/widgets/loader/loading-indicator.dart';
 

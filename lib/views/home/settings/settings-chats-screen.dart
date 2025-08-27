@@ -13,6 +13,7 @@ import 'package:katya/store/settings/actions.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/appbars/appbar-normal.dart';
 import 'package:katya/views/widgets/containers/card-section.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class SettingsChatsScreen extends StatelessWidget {
   const SettingsChatsScreen({Key? key}) : super(key: key);

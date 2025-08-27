@@ -19,6 +19,7 @@ import 'package:katya/views/widgets/appbars/appbar-search.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
 import 'package:katya/views/widgets/loader/index.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class SearchHomeserverArguments {
   final bool signup;

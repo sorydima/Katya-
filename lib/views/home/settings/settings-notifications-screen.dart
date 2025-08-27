@@ -17,6 +17,7 @@ import 'package:katya/store/sync/service/service.dart';
 import 'package:katya/views/widgets/appbars/appbar-normal.dart';
 import 'package:katya/views/widgets/containers/card-section.dart';
 import 'package:katya/views/widgets/dialogs/dialog-confirm.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class NotificationSettingsScreen extends StatelessWidget {
   const NotificationSettingsScreen({Key? key}) : super(key: key);

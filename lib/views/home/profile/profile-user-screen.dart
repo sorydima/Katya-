@@ -11,6 +11,7 @@ import 'package:katya/views/widgets/avatars/avatar.dart';
 import 'package:katya/views/widgets/containers/card-section.dart';
 import 'package:katya/views/widgets/dialogs/dialog-color-picker.dart';
 import 'package:katya/views/widgets/dialogs/dialog-confirm.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class UserProfileArguments {
   final User? user;

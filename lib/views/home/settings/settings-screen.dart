@@ -16,6 +16,7 @@ import 'package:katya/views/navigation.dart';
 import 'package:katya/views/katya.dart';
 import 'package:katya/views/widgets/dialogs/dialog-confirm.dart';
 import 'package:katya/views/widgets/modals/modal-context-switcher.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 import 'widgets/profile-preview.dart';
 

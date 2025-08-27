@@ -31,6 +31,7 @@ import 'package:katya/views/home/home-screen.dart';
 import 'package:katya/views/intro/intro-screen.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/prelock.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class katya extends StatefulWidget {
   final Database? cache;
@@ -172,6 +173,9 @@ class katyaState extends State<katya> with WidgetsBindingObserver {
       case AppLifecycleState.detached:
         store.dispatch(updateLatestLastSince());
         store.dispatch(setBackgrounded(true));
+        break;
+      case AppLifecycleState.hidden:
+        // Handle hidden state if needed
         break;
     }
   }

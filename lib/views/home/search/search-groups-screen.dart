@@ -20,6 +20,7 @@ import 'package:katya/store/settings/theme-settings/model.dart';
 import 'package:katya/views/widgets/appbars/appbar-search.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
 import 'package:katya/views/widgets/loader/index.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class GroupSearchScreen extends StatefulWidget {
   const GroupSearchScreen({Key? key}) : super(key: key);

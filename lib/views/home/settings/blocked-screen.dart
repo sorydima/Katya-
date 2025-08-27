@@ -13,6 +13,7 @@ import 'package:katya/views/widgets/avatars/avatar.dart';
 import 'package:katya/views/widgets/containers/card-section.dart';
 import 'package:katya/views/widgets/loader/index.dart';
 import 'package:katya/views/widgets/modals/modal-user-details.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class BlockedScreen extends StatefulWidget {
   const BlockedScreen({Key? key}) : super(key: key);

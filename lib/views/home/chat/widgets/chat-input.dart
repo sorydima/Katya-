@@ -636,16 +636,9 @@ class ChatInputState extends State<ChatInput> {
                           maxWidth: width,
                           maxHeight: imageHeight, // HACK: figure out why it overflows on Nexus 5x
                         ),
-                        child: ListLocalImages(
-                          imageSize: imageWidth,
-                          onSelectImage: (file) {
-                            widget.onAddMedia(
-                              file: file,
-                              type: MessageType.image,
-                            );
-
-                            onToggleMediaOptions();
-                          },
+                        child: Container(
+                          // ListLocalImages temporarily disabled for compatibility
+                          child: Text('Image picker disabled'),
                         ),
                       ),
                       Row(children: [

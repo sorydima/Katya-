@@ -32,6 +32,8 @@ import 'package:katya/views/widgets/buttons/button-text.dart';
 import 'package:katya/views/widgets/input/text-field-secure.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
+import 'package:flutter/material.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class LoginScreenArguments {
   final bool multiaccount;

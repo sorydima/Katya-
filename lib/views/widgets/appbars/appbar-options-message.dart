@@ -152,7 +152,7 @@ class AppBarMessageOptionState extends State<AppBarMessageOptions> {
               onPressed: () {
                 Clipboard.setData(
                   ClipboardData(
-                    text: widget.message!.formattedBody ?? widget.message!.body,
+                    text: widget.message!.formattedBody ?? widget.message!.body ?? '',
                   ),
                 );
 

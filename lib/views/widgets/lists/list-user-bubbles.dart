@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';

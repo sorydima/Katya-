@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 import 'package:katya/global/dimensions.dart';
 
@@ -80,7 +81,7 @@ class TextFieldSecure extends StatelessWidget {
 
     if (!valid && dirty) {
       return BorderSide(
-        color: Theme.of(context).errorColor,
+        color: Theme.of(context).errorColor ?? Colors.red,
         width: DEFAULT_BORDER_WIDTH,
       );
     }
@@ -100,7 +101,7 @@ class TextFieldSecure extends StatelessWidget {
 
     if (!valid && dirty) {
       return BorderSide(
-        color: Theme.of(context).errorColor.withOpacity(0.75),
+        color: (Theme.of(context).errorColor ?? Colors.red).withOpacity(0.75),
         width: DEFAULT_BORDER_WIDTH,
       );
     }

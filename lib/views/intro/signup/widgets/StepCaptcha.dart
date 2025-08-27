@@ -14,6 +14,7 @@ import 'package:katya/store/index.dart';
 import 'package:katya/views/widgets/buttons/button-text.dart';
 import 'package:katya/views/widgets/dialogs/dialog-captcha.dart';
 import 'package:katya/views/widgets/dialogs/dialog-confirm.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class CaptchaStep extends StatefulWidget {
   const CaptchaStep({Key? key}) : super(key: key);

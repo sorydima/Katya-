@@ -17,6 +17,7 @@ import 'package:katya/store/settings/chat-settings/selectors.dart';
 import 'package:katya/store/sync/selectors.dart';
 import 'package:katya/store/user/model.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class HomeChatList extends HookWidget {
   const HomeChatList({

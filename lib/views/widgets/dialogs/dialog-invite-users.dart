@@ -7,6 +7,7 @@ import 'package:katya/store/auth/actions.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/user/model.dart';
 import 'package:katya/views/widgets/buttons/button-text.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class DialogInviteUsers extends StatelessWidget {
   const DialogInviteUsers({

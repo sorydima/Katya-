@@ -6,6 +6,7 @@ import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/views/widgets/loader/loading-indicator.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class DialogConfirmPassword extends HookWidget {
   const DialogConfirmPassword({

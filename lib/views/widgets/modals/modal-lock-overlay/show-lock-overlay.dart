@@ -1,18 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screen_lock/configurations/input_button_config.dart';
-import 'package:flutter_screen_lock/configurations/screen_lock_config.dart';
-import 'package:flutter_screen_lock/heading_title.dart';
-import 'package:flutter_screen_lock/screen_lock.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/widgets/modals/modal-lock-overlay/input-secrets-config.dart';
 import 'package:katya/views/widgets/modals/modal-lock-overlay/lock-controller.dart';
 import 'package:katya/views/widgets/modals/modal-lock-overlay/lock-overlay.dart';
 
+class ShowLockOverlayArguments {
+  final Object screenLockConfig;
+  final Object inputButtonConfig;
+  final Object inputSecretsConfig;
+  final bool canCancel;
+  final bool confirmMode;
+  final int digits;
+  final int maxRetries;
+  final LockController? lockController;
+  final void Function(String pin)? onUnlocked;
+  final void Function(int retries)? onError;
+  final void Function(int retries)? onMaxRetries;
+  final void Function()? onOpened;
+  final void Function(String matchedText)? onConfirmed;
+  final Future<void> Function()? onLeftButtonTap;
+  final Widget? rightButtonChild;
+  final Widget? footer;
+  final Widget? cancelButton;
+  final Widget? deleteButton;
+  final Widget title;
+  final Widget confirmTitle;
+
+  ShowLockOverlayArguments({
+    required this.screenLockConfig,
+    required this.inputButtonConfig,
+    required this.inputSecretsConfig,
+    this.canCancel = true,
+    this.confirmMode = false,
+    this.digits = 9,
+    this.maxRetries = 0,
+    this.lockController,
+    this.onUnlocked,
+    this.onError,
+    this.onMaxRetries,
+    this.onOpened,
+    this.onConfirmed,
+    this.onLeftButtonTap,
+    this.rightButtonChild,
+    this.footer,
+    this.cancelButton,
+    this.deleteButton,
+    required this.title,
+    required this.confirmTitle,
+  });
+}
+
 Future<void>? showLockOverlay({
   required BuildContext context,
   required Future<bool> Function(String) onVerify,
-  ScreenLockConfig screenLockConfig = const ScreenLockConfig(),
-  InputSecretsConfig secretsConfig = const InputSecretsConfig(),
-  InputButtonConfig inputButtonConfig = const InputButtonConfig(),
+  Object screenLockConfig = const Object(),
+  Object secretsConfig = const Object(),
+  Object inputButtonConfig = const Object(),
   bool canCancel = true,
   bool confirmMode = false,
   int digits = 9,
@@ -28,8 +71,8 @@ Future<void>? showLockOverlay({
   Widget? footer,
   Widget? cancelButton,
   Widget? deleteButton,
-  Widget title = const HeadingTitle(text: 'Please enter your passcode.'),
-  Widget confirmTitle = const HeadingTitle(text: 'Please enter confirm passcode.'),
+  Widget title = const Text('Please enter your passcode.'),
+  Widget confirmTitle = const Text('Please enter confirm passcode.'),
 }) {
   Navigator.push(
     context,

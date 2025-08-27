@@ -4,6 +4,7 @@ import 'package:katya/global/dimensions.dart';
 import 'package:katya/store/events/reactions/model.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class ReactionRow extends StatefulWidget {
   final String currentUserId;

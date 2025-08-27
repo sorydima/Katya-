@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/strings.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class ActionPage extends StatelessWidget {
   const ActionPage({Key? key, this.title}) : super(key: key);
