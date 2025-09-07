@@ -1,0 +1,355 @@
+name: Release Drafter
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  update_release_draft:
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Update release draft
+        uses: release-drafter/release-drafter@v6
+        with:
+          config-name: release-drafter.yml
+          publish-to-tag: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  validate-release:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'release')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.0'
+
+      - name: Run pre-release checks
+        run: |
+          echo "Running pre-release validation..."
+
+          # Check if version is properly updated
+          CURRENT_VERSION=$(grep 'version:' pubspec.yaml | head -1 | sed 's/version: //')
+          echo "Current version: $CURRENT_VERSION"
+
+          # Validate version format
+          if [[ ! $CURRENT_VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+            echo "❌ Invalid version format: $CURRENT_VERSION"
+            echo "Version should be in format: major.minor.patch"
+            exit 1
+          fi
+
+          # Check if CHANGELOG.md has been updated
+          if ! git diff --name-only HEAD~1 | grep -q "CHANGELOG.md"; then
+            echo "⚠️ CHANGELOG.md has not been updated"
+            echo "Please update the changelog with the new version changes"
+          fi
+
+          # Run tests
+          flutter test --coverage
+          if [ $? -ne 0 ]; then
+            echo "❌ Tests failed"
+            exit 1
+          fi
+
+          # Check test coverage
+          COVERAGE=$(flutter test --coverage --machine | jq -r '.coverage // 0')
+          if (( $(echo "$COVERAGE < 80" | bc -l) )); then
+            echo "❌ Test coverage too low: $COVERAGE%"
+            echo "Minimum required coverage: 80%"
+            exit 1
+          fi
+
+          # Validate pubspec.yaml
+          flutter pub get
+          if [ $? -ne 0 ]; then
+            echo "❌ Failed to resolve dependencies"
+            exit 1
+          fi
+
+          # Check for any TODO comments in code
+          TODO_COUNT=$(grep -r "TODO\|FIXME\|XXX" lib/ --include="*.dart" | wc -l)
+          if [ $TODO_COUNT -gt 0 ]; then
+            echo "⚠️ Found $TODO_COUNT TODO/FIXME comments in code"
+            echo "Please review and address these before release"
+          fi
+
+          echo "✅ Pre-release validation passed"
+
+      - name: Generate build artifacts
+        run: |
+          echo "Generating build artifacts..."
+
+          # Build Android APK
+          flutter build apk --release
+          cp build/app/outputs/flutter-apk/app-release.apk katya-$CURRENT_VERSION.apk
+
+          # Build iOS (if on macOS runner)
+          # flutter build ios --release
+
+          # Generate platform-specific builds
+          flutter build linux --release
+          flutter build windows --release
+          flutter build macos --release
+
+          echo "Build artifacts generated successfully"
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts
+          path: |
+            katya-*.apk
+            build/linux/release/bundle/
+            build/windows/release/bundle/
+            build/macos/release/bundle/
+
+  create-release:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/v')
+    needs: [update_release_draft]
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.0'
+
+      - name: Get version from tag
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Releasing version: $VERSION"
+
+      - name: Build release artifacts
+        run: |
+          echo "Building release artifacts for version $VERSION..."
+
+          # Android APK
+          flutter build apk --release --build-name=$VERSION
+          cp build/app/outputs/flutter-apk/app-release.apk katya-$VERSION.apk
+
+          # Android AAB (for Google Play)
+          flutter build appbundle --build-name=$VERSION
+          cp build/app/outputs/bundle/release/app-release.aab katya-$VERSION.aab
+
+          # Linux
+          flutter build linux --release
+          tar -czf katya-$VERSION-linux.tar.gz build/linux/release/bundle/
+
+          # Windows
+          flutter build windows --release
+          zip -r katya-$VERSION-windows.zip build/windows/release/bundle/
+
+          # Web
+          flutter build web --release
+          zip -r katya-$VERSION-web.zip build/web/
+
+          echo "Release artifacts built successfully"
+
+      - name: Generate checksums
+        run: |
+          echo "Generating checksums..."
+          sha256sum katya-$VERSION.apk > katya-$VERSION.apk.sha256
+          sha256sum katya-$VERSION.aab > katya-$VERSION.aab.sha256
+          sha256sum katya-$VERSION-linux.tar.gz > katya-$VERSION-linux.tar.gz.sha256
+          sha256sum katya-$VERSION-windows.zip > katya-$VERSION-windows.zip.sha256
+          sha256sum katya-$VERSION-web.zip > katya-$VERSION-web.zip.sha256
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.VERSION }}
+          name: Release v${{ env.VERSION }}
+          body_path: .github/release-drafter.yml
+          draft: false
+          prerelease: false
+          files: |
+            katya-${{ env.VERSION }}.apk
+            katya-${{ env.VERSION }}.aab
+            katya-${{ env.VERSION }}-linux.tar.gz
+            katya-${{ env.VERSION }}-windows.zip
+            katya-${{ env.VERSION }}-web.zip
+            katya-${{ env.VERSION }}.apk.sha256
+            katya-${{ env.VERSION }}.aab.sha256
+            katya-${{ env.VERSION }}-linux.tar.gz.sha256
+            katya-${{ env.VERSION }}-windows.zip.sha256
+            katya-${{ env.VERSION }}-web.zip.sha256
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update Homebrew formula (if applicable)
+        run: |
+          # This would update a Homebrew formula if Katya is distributed via Homebrew
+          echo "Homebrew formula update would go here"
+
+      - name: Update Snap package (if applicable)
+        run: |
+          # This would update the Snap package
+          echo "Snap package update would go here"
+
+      - name: Update Flatpak package (if applicable)
+        run: |
+          # This would update the Flatpak package
+          echo "Flatpak package update would go here"
+
+      - name: Send release notification
+        run: |
+          # Create notification payload
+          cat > release-notification.json << EOF
+          {
+            "channel": "#releases",
+            "username": "Katya Release Bot",
+            "icon_emoji": ":rocket:",
+            "attachments": [
+              {
+                "color": "good",
+                "title": "🚀 Katya v${{ env.VERSION }} Released!",
+                "title_link": "${{ github.server_url }}/${{ github.repository }}/releases/tag/v${{ env.VERSION }}",
+                "fields": [
+                  {
+                    "title": "Version",
+                    "value": "v${{ env.VERSION }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Repository",
+                    "value": "${{ github.repository }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Release Notes",
+                    "value": "View full release notes on GitHub",
+                    "short": false
+                  }
+                ],
+                "footer": "GitHub Actions",
+                "ts": $(date +%s)
+              }
+            ]
+          }
+          EOF
+
+          # Send to Slack if webhook is configured
+          if [ ! -z "${{ secrets.SLACK_WEBHOOK }}" ]; then
+            curl -X POST -H 'Content-type: application/json' \
+              --data @release-notification.json \
+              ${{ secrets.SLACK_WEBHOOK }}
+          fi
+
+      - name: Update release documentation
+        run: |
+          echo "Updating release documentation..."
+
+          # Update version in documentation
+          sed -i "s/version: .*/version: $VERSION/" docs/installation.md
+          sed -i "s/Latest Version: .*/Latest Version: v$VERSION/" README.md
+
+          # Commit documentation updates
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add docs/installation.md README.md
+          git commit -m "docs: update version to v$VERSION" || echo "No documentation changes to commit"
+
+          # Push documentation updates
+          git push origin main || echo "Failed to push documentation updates"
+
+  post-release:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && !github.event.release.prerelease
+    needs: [create-release]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create next development version
+        run: |
+          # Extract current version
+          CURRENT_TAG=${GITHUB_REF#refs/tags/v}
+          IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_TAG"
+
+          # Increment patch version for next development
+          NEXT_PATCH=$((VERSION_PARTS[2] + 1))
+          NEXT_VERSION="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.$NEXT_PATCH-dev"
+
+          echo "Next development version: $NEXT_VERSION"
+
+          # Update pubspec.yaml for development
+          sed -i "s/version: .*/version: $NEXT_VERSION/" pubspec.yaml
+
+          # Create development branch
+          git checkout -b develop-$NEXT_VERSION
+          git add pubspec.yaml
+          git commit -m "chore: prepare for next development version $NEXT_VERSION"
+          git push origin develop-$NEXT_VERSION
+
+      - name: Update milestone
+        run: |
+          # Close current milestone
+          gh api -X PATCH repos/${{ github.repository }}/milestones/$(gh api repos/${{ github.repository }}/milestones | jq -r '.[] | select(.title == "v'"$CURRENT_TAG"'") | .number') -f state=closed
+
+          # Create next milestone
+          NEXT_MILESTONE="v${VERSION_PARTS[0]}.$((VERSION_PARTS[1] + 1)).0"
+          gh api -X POST repos/${{ github.repository }}/milestones -f title="$NEXT_MILESTONE" -f description="Next release milestone"
+
+      - name: Send post-release notification
+        run: |
+          cat > post-release-notification.json << EOF
+          {
+            "channel": "#development",
+            "username": "Katya Release Bot",
+            "icon_emoji": ":tada:",
+            "text": ":tada: Katya v${{ env.VERSION }} has been successfully released! Development for the next version has begun.",
+            "attachments": [
+              {
+                "color": "good",
+                "fields": [
+                  {
+                    "title": "Current Release",
+                    "value": "v${{ env.VERSION }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Next Development",
+                    "value": "$NEXT_VERSION",
+                    "short": true
+                  },
+                  {
+                    "title": "New Milestone",
+                    "value": "$NEXT_MILESTONE",
+                    "short": true
+                  }
+                ]
+              }
+            ]
+          }
+          EOF
+
+          if [ ! -z "${{ secrets.SLACK_WEBHOOK }}" ]; then
+            curl -X POST -H 'Content-type: application/json' \
+              --data @post-release-notification.json \
+              ${{ secrets.SLACK_WEBHOOK }}
+          fi

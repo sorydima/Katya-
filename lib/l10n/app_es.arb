@@ -1,0 +1,111 @@
+{
+  "@@locale": "es",
+  "appName": "Katya",
+  "@appName": {
+    "description": "The name of the application"
+  },
+  "welcome": "Bienvenido a Katya",
+  "@welcome": {
+    "description": "Welcome message shown to users"
+  },
+  "login": "Iniciar Sesión",
+  "@login": {
+    "description": "Login button text"
+  },
+  "logout": "Cerrar Sesión",
+  "@logout": {
+    "description": "Logout button text"
+  },
+  "settings": "Configuración",
+  "@settings": {
+    "description": "Settings menu item"
+  },
+  "chat": "Chat",
+  "@chat": {
+    "description": "Chat section title"
+  },
+  "send": "Enviar",
+  "@send": {
+    "description": "Send message button"
+  },
+  "message": "Mensaje",
+  "@message": {
+    "description": "Message input placeholder"
+  },
+  "connecting": "Conectando...",
+  "@connecting": {
+    "description": "Connection status message"
+  },
+  "connected": "Conectado",
+  "@connected": {
+    "description": "Connected status message"
+  },
+  "disconnected": "Desconectado",
+  "@disconnected": {
+    "description": "Disconnected status message"
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Generic error message"
+  },
+  "retry": "Reintentar",
+  "@retry": {
+    "description": "Retry button text"
+  },
+  "cancel": "Cancelar",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "save": "Guardar",
+  "@save": {
+    "description": "Save button text"
+  },
+  "delete": "Eliminar",
+  "@delete": {
+    "description": "Delete button text"
+  },
+  "edit": "Editar",
+  "@edit": {
+    "description": "Edit button text"
+  },
+  "search": "Buscar",
+  "@search": {
+    "description": "Search input placeholder"
+  },
+  "loading": "Cargando...",
+  "@loading": {
+    "description": "Loading indicator text"
+  },
+  "noResults": "No se encontraron resultados",
+  "@noResults": {
+    "description": "No results found message"
+  },
+  "profile": "Perfil",
+  "@profile": {
+    "description": "User profile section"
+  },
+  "notifications": "Notificaciones",
+  "@notifications": {
+    "description": "Notifications settings"
+  },
+  "privacy": "Privacidad",
+  "@privacy": {
+    "description": "Privacy settings"
+  },
+  "security": "Seguridad",
+  "@security": {
+    "description": "Security settings"
+  },
+  "about": "Acerca de",
+  "@about": {
+    "description": "About section"
+  },
+  "help": "Ayuda",
+  "@help": {
+    "description": "Help section"
+  },
+  "feedback": "Comentarios",
+  "@feedback": {
+    "description": "Feedback section"
+  }
+}

@@ -1,0 +1,407 @@
+name: Automated Backup
+
+on:
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      backup_type:
+        description: 'Type of backup to perform'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - incremental
+          - database-only
+          - config-only
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+          - development
+
+env:
+  BACKUP_RETENTION_DAYS: 30
+  BACKUP_BUCKET: ${{ secrets.BACKUP_BUCKET }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  DB_HOST: ${{ secrets.DB_HOST }}
+  DB_NAME: ${{ secrets.DB_NAME }}
+  DB_USER: ${{ secrets.DB_USER }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || 'production' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mysql-client postgresql-client mongodb-clients redis-tools
+
+      - name: Create backup directory
+        run: |
+          mkdir -p backup-$(date +%Y%m%d-%H%M%S)
+          echo "BACKUP_DIR=backup-$(date +%Y%m%d-%H%M%S)" >> $GITHUB_ENV
+
+      - name: Database backup
+        if: ${{ github.event.inputs.backup_type != 'config-only' }}
+        run: |
+          echo "Starting database backup..."
+
+          # MySQL/MariaDB backup
+          if [ "${{ secrets.DB_TYPE }}" = "mysql" ]; then
+            mysqldump -h ${{ env.DB_HOST }} -u ${{ env.DB_USER }} -p${{ env.DB_PASSWORD }} ${{ env.DB_NAME }} > ${{ env.BACKUP_DIR }}/database.sql
+            gzip ${{ env.BACKUP_DIR }}/database.sql
+          fi
+
+          # PostgreSQL backup
+          if [ "${{ secrets.DB_TYPE }}" = "postgresql" ]; then
+            pg_dump -h ${{ env.DB_HOST }} -U ${{ env.DB_USER }} -d ${{ env.DB_NAME }} > ${{ env.BACKUP_DIR }}/database.sql
+            gzip ${{ env.BACKUP_DIR }}/database.sql
+          fi
+
+          # MongoDB backup
+          if [ "${{ secrets.DB_TYPE }}" = "mongodb" ]; then
+            mongodump --host ${{ env.DB_HOST }} --db ${{ env.DB_NAME }} --out ${{ env.BACKUP_DIR }}/mongodb_backup
+            tar -czf ${{ env.BACKUP_DIR }}/mongodb_backup.tar.gz -C ${{ env.BACKUP_DIR }} mongodb_backup
+            rm -rf ${{ env.BACKUP_DIR }}/mongodb_backup
+          fi
+
+          echo "Database backup completed"
+
+      - name: File system backup
+        if: ${{ github.event.inputs.backup_type == 'full' }}
+        run: |
+          echo "Starting file system backup..."
+
+          # Backup user uploads
+          if [ -d "/var/katya/uploads" ]; then
+            tar -czf ${{ env.BACKUP_DIR }}/uploads.tar.gz -C /var/katya uploads
+          fi
+
+          # Backup configuration files
+          tar -czf ${{ env.BACKUP_DIR }}/config.tar.gz \
+            --exclude='*.log' \
+            --exclude='*.tmp' \
+            -C /etc katya
+
+          # Backup SSL certificates
+          if [ -d "/etc/letsencrypt" ]; then
+            tar -czf ${{ env.BACKUP_DIR }}/ssl.tar.gz -C /etc letsencrypt
+          fi
+
+          echo "File system backup completed"
+
+      - name: Redis backup
+        if: ${{ github.event.inputs.backup_type != 'config-only' }}
+        run: |
+          echo "Starting Redis backup..."
+
+          # Redis RDB file backup
+          if [ -f "/var/lib/redis/dump.rdb" ]; then
+            cp /var/lib/redis/dump.rdb ${{ env.BACKUP_DIR }}/redis_dump.rdb
+          fi
+
+          # Redis configuration
+          if [ -f "/etc/redis/redis.conf" ]; then
+            cp /etc/redis/redis.conf ${{ env.BACKUP_DIR }}/redis.conf
+          fi
+
+          echo "Redis backup completed"
+
+      - name: Application configuration backup
+        run: |
+          echo "Starting application configuration backup..."
+
+          # Backup environment files
+          if [ -f ".env" ]; then
+            cp .env ${{ env.BACKUP_DIR }}/.env.backup
+          fi
+
+          # Backup docker-compose files
+          cp docker-compose.yml ${{ env.BACKUP_DIR }}/
+          cp docker-compose.prod.yml ${{ env.BACKUP_DIR }}/ 2>/dev/null || true
+
+          # Backup nginx configuration
+          if [ -f "/etc/nginx/sites-available/katya" ]; then
+            cp /etc/nginx/sites-available/katya ${{ env.BACKUP_DIR }}/nginx.conf
+          fi
+
+          echo "Application configuration backup completed"
+
+      - name: Create backup manifest
+        run: |
+          echo "Creating backup manifest..."
+
+          cat > ${{ env.BACKUP_DIR }}/MANIFEST.txt << EOF
+          Katya Backup Manifest
+          =====================
+
+          Backup Date: $(date)
+          Backup Type: ${{ github.event.inputs.backup_type || 'scheduled' }}
+          Environment: ${{ github.event.inputs.environment || 'production' }}
+          Git Commit: ${{ github.sha }}
+
+          Contents:
+          $(ls -la ${{ env.BACKUP_DIR }})
+
+          Database Info:
+          - Type: ${{ secrets.DB_TYPE }}
+          - Host: ${{ env.DB_HOST }}
+          - Database: ${{ env.DB_NAME }}
+
+          System Info:
+          - OS: $(uname -a)
+          - Kernel: $(uname -r)
+          - Uptime: $(uptime)
+
+          Created by: GitHub Actions
+          Workflow: ${{ github.workflow }}
+          Run ID: ${{ github.run_id }}
+          EOF
+
+      - name: Compress backup
+        run: |
+          echo "Compressing backup..."
+
+          # Create final backup archive
+          tar -czf ${{ env.BACKUP_DIR }}.tar.gz -C . ${{ env.BACKUP_DIR }}
+          echo "BACKUP_FILE=${{ env.BACKUP_DIR }}.tar.gz" >> $GITHUB_ENV
+
+          # Calculate backup size
+          BACKUP_SIZE=$(du -h ${{ env.BACKUP_FILE }} | cut -f1)
+          echo "BACKUP_SIZE=$BACKUP_SIZE" >> $GITHUB_ENV
+
+          echo "Backup compressed: ${{ env.BACKUP_FILE }} (${{ env.BACKUP_SIZE }})"
+
+      - name: Upload to S3
+        run: |
+          echo "Uploading backup to S3..."
+
+          aws s3 cp ${{ env.BACKUP_FILE }} s3://${{ env.BACKUP_BUCKET }}/backups/${{ env.BACKUP_DIR }}.tar.gz \
+            --metadata "backup-type=${{ github.event.inputs.backup_type || 'scheduled' }},environment=${{ github.event.inputs.environment || 'production' }},git-commit=${{ github.sha }}"
+
+          echo "Backup uploaded to S3"
+
+      - name: Verify backup integrity
+        run: |
+          echo "Verifying backup integrity..."
+
+          # Download and verify backup
+          aws s3 cp s3://${{ env.BACKUP_BUCKET }}/backups/${{ env.BACKUP_DIR }}.tar.gz verify_backup.tar.gz
+
+          # Check file integrity
+          if [ "$(md5sum ${{ env.BACKUP_FILE }} | cut -d' ' -f1)" = "$(md5sum verify_backup.tar.gz | cut -d' ' -f1)" ]; then
+            echo "✅ Backup integrity verified"
+          else
+            echo "❌ Backup integrity check failed"
+            exit 1
+          fi
+
+          # Clean up verification file
+          rm verify_backup.tar.gz
+
+      - name: Clean up old backups
+        run: |
+          echo "Cleaning up old backups..."
+
+          # List backups older than retention period
+          aws s3api list-objects-v2 \
+            --bucket ${{ env.BACKUP_BUCKET }} \
+            --prefix backups/ \
+            --query 'Contents[?LastModified<`'"$(date -d "${{ env.BACKUP_RETENTION_DAYS }} days ago" +%Y-%m-%d)"'`].Key' \
+            --output text | \
+          while read -r key; do
+            if [ ! -z "$key" ]; then
+              echo "Deleting old backup: $key"
+              aws s3 rm s3://${{ env.BACKUP_BUCKET }}/$key
+            fi
+          done
+
+      - name: Send notification
+        if: always()
+        run: |
+          # Send notification about backup status
+          if [ "${{ job.status }}" = "success" ]; then
+            STATUS="✅ SUCCESS"
+            COLOR="good"
+          else
+            STATUS="❌ FAILED"
+            COLOR="danger"
+          fi
+
+          # Create notification payload
+          cat > notification.json << EOF
+          {
+            "channel": "#backups",
+            "username": "Katya Backup Bot",
+            "icon_emoji": ":floppy_disk:",
+            "attachments": [
+              {
+                "color": "$COLOR",
+                "title": "Katya Backup $STATUS",
+                "fields": [
+                  {
+                    "title": "Backup Type",
+                    "value": "${{ github.event.inputs.backup_type || 'scheduled' }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Environment",
+                    "value": "${{ github.event.inputs.environment || 'production' }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Size",
+                    "value": "${{ env.BACKUP_SIZE }}",
+                    "short": true
+                  },
+                  {
+                    "title": "Duration",
+                    "value": "$(($(date +%s) - $(date +%s -r ${{ env.BACKUP_FILE }}))) seconds",
+                    "short": true
+                  }
+                ],
+                "footer": "GitHub Actions",
+                "ts": $(date +%s)
+              }
+            ]
+          }
+          EOF
+
+          # Send to Slack if webhook is configured
+          if [ ! -z "${{ secrets.SLACK_WEBHOOK }}" ]; then
+            curl -X POST -H 'Content-type: application/json' \
+              --data @notification.json \
+              ${{ secrets.SLACK_WEBHOOK }}
+          fi
+
+      - name: Clean up local files
+        if: always()
+        run: |
+          echo "Cleaning up local files..."
+
+          # Remove backup directory and files
+          rm -rf ${{ env.BACKUP_DIR }}
+          rm -f ${{ env.BACKUP_FILE }}
+          rm -f notification.json
+
+          echo "Cleanup completed"
+
+  backup-validation:
+    runs-on: ubuntu-latest
+    needs: backup
+    if: success()
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: List recent backups
+        run: |
+          echo "Recent backups in S3:"
+          aws s3 ls s3://${{ env.BACKUP_BUCKET }}/backups/ --recursive | tail -10
+
+      - name: Validate backup accessibility
+        run: |
+          echo "Validating backup accessibility..."
+
+          # Get latest backup
+          LATEST_BACKUP=$(aws s3 ls s3://${{ env.BACKUP_BUCKET }}/backups/ --recursive | sort | tail -1 | awk '{print $4}')
+
+          if [ ! -z "$LATEST_BACKUP" ]; then
+            echo "✅ Latest backup found: $LATEST_BACKUP"
+
+            # Check backup size
+            BACKUP_SIZE=$(aws s3 ls s3://${{ env.BACKUP_BUCKET }}/backups/$LATEST_BACKUP --summarize --human-readable | grep "Total Size" | awk '{print $3, $4}')
+            echo "✅ Backup size: $BACKUP_SIZE"
+
+            # Verify backup is not corrupted
+            aws s3 cp s3://${{ env.BACKUP_BUCKET }}/backups/$LATEST_BACKUP /tmp/test_backup.tar.gz
+            if tar -tzf /tmp/test_backup.tar.gz > /dev/null 2>&1; then
+              echo "✅ Backup archive is valid"
+            else
+              echo "❌ Backup archive is corrupted"
+              exit 1
+            fi
+
+            rm /tmp/test_backup.tar.gz
+          else
+            echo "❌ No backups found"
+            exit 1
+          fi
+
+  emergency-restore-test:
+    runs-on: ubuntu-latest
+    needs: backup
+    if: github.event.inputs.backup_type == 'full' && success()
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Test restore procedure
+        run: |
+          echo "Testing emergency restore procedure..."
+
+          # This would be a more comprehensive restore test
+          # For now, just verify the backup can be downloaded and extracted
+
+          # Get latest backup
+          LATEST_BACKUP=$(aws s3 ls s3://${{ env.BACKUP_BUCKET }}/backups/ --recursive | sort | tail -1 | awk '{print $4}')
+
+          if [ ! -z "$LATEST_BACKUP" ]; then
+            echo "Testing restore of: $LATEST_BACKUP"
+
+            # Download backup
+            mkdir -p /tmp/restore_test
+            aws s3 cp s3://${{ env.BACKUP_BUCKET }}/backups/$LATEST_BACKUP /tmp/restore_test/
+
+            # Extract backup
+            cd /tmp/restore_test
+            tar -xzf *.tar.gz
+
+            # Verify key files exist
+            if [ -f "MANIFEST.txt" ]; then
+              echo "✅ Backup manifest found"
+              cat MANIFEST.txt | head -10
+            else
+              echo "❌ Backup manifest missing"
+              exit 1
+            fi
+
+            # Clean up
+            cd /
+            rm -rf /tmp/restore_test
+
+            echo "✅ Emergency restore test passed"
+          else
+            echo "❌ No backup available for testing"
+            exit 1
+          fi

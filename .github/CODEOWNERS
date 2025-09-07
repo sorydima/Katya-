@@ -1,21 +1,116 @@
-# This is a CODEOWNERS file. It defines individuals or teams that are responsible for code in the repository.
-# More info: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+# This file defines the code owners for this repository.
+# When a pull request is opened, the users listed here will be automatically
+# requested for review.
 
-# Default owners for the entire repository
-* @sorydev
+# Global owners (apply to all files)
+* @katya-project/maintainers
 
-# Specific path owners
-# /src/ @frontend-team
-# /lib/ @backend-team
-# /docs/ @documentation-team
+# Core application code
+/lib/ @katya-project/core-team
+/lib/src/ @katya-project/core-team
+/lib/widgets/ @katya-project/ui-team
+/lib/services/ @katya-project/backend-team
+/lib/models/ @katya-project/core-team
 
-# Example: Assign owners for specific file types
-# *.dart @flutter-team
-# *.md @docs-team
+# Platform-specific code
+/android/ @katya-project/android-team
+/ios/ @katya-project/ios-team
+/linux/ @katya-project/desktop-team
+/macos/ @katya-project/desktop-team
+/windows/ @katya-project/desktop-team
+/web/ @katya-project/web-team
 
-# Example: Assign owners for specific directories
-# /android/ @android-team
-# /ios/ @ios-team
-# /web/ @web-team
+# Documentation
+/docs/ @katya-project/docs-team
+*.md @katya-project/docs-team
+/README.md @katya-project/docs-team
+/CONTRIBUTING.md @katya-project/docs-team
 
-# Uncomment and customize the above lines based on your project structure and team members.
+# Configuration files
+/pubspec.yaml @katya-project/core-team
+/analysis_options.yaml @katya-project/core-team
+/.github/ @katya-project/devops-team
+/.github/workflows/ @katya-project/devops-team
+/docker-compose.yml @katya-project/devops-team
+/Dockerfile @katya-project/devops-team
+
+# Testing
+/test/ @katya-project/qa-team
+/integration_test/ @katya-project/qa-team
+
+# Security-related files
+/SECURITY.md @katya-project/security-team
+/.github/SECURITY.md @katya-project/security-team
+/security/ @katya-project/security-team
+
+# Build and CI/CD
+/build/ @katya-project/devops-team
+/scripts/ @katya-project/devops-team
+/fastlane/ @katya-project/devops-team
+/codemagic.yaml @katya-project/devops-team
+
+# Translations and localization
+/assets/translations/ @katya-project/translations-team
+/i18n/ @katya-project/translations-team
+/translations/ @katya-project/translations-team
+
+# Bridges and integrations
+/bridges/ @katya-project/integrations-team
+/matrix_bridge_setup_bundle/ @katya-project/integrations-team
+
+# Assets and branding
+/assets/ @katya-project/design-team
+/AppIcons/ @katya-project/design-team
+/branding/ @katya-project/design-team
+
+# Dependencies and package management
+/package.json @katya-project/devops-team
+/requirements.txt @katya-project/devops-team
+/Gemfile @katya-project/devops-team
+
+# Legal and compliance
+/LICENSE @katya-project/legal-team
+/CODE_OF_CONDUCT.md @katya-project/legal-team
+/GOVERNANCE.md @katya-project/legal-team
+/compliance/ @katya-project/legal-team
+
+# Research and experimental features
+/research/ @katya-project/research-team
+/experiments/ @katya-project/research-team
+/ai/ @katya-project/research-team
+
+# Performance and monitoring
+/performance/ @katya-project/performance-team
+/monitoring/ @katya-project/devops-team
+/benchmarks/ @katya-project/performance-team
+
+# Backup and disaster recovery
+/backup/ @katya-project/devops-team
+/restore/ @katya-project/devops-team
+/disaster-recovery/ @katya-project/devops-team
+
+# Community and mentorship
+/community/ @katya-project/community-team
+/mentorship/ @katya-project/community-team
+
+# Project management
+/ROADMAP.md @katya-project/pm-team
+/milestones/ @katya-project/pm-team
+/planning/ @katya-project/pm-team
+/project-management/ @katya-project/pm-team
+
+# Special file types
+*.dart @katya-project/core-team
+*.java @katya-project/android-team
+*.swift @katya-project/ios-team
+*.py @katya-project/devops-team
+*.js @katya-project/web-team
+*.ts @katya-project/web-team
+*.yml @katya-project/devops-team
+*.yaml @katya-project/devops-team
+*.json @katya-project/devops-team
+*.lock @katya-project/devops-team
+
+# Emergency contacts (for critical security issues)
+# These users will be notified for high-priority security issues
+/security/ @katya-project/security-lead @katya-project/ceo

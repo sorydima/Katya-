@@ -1,0 +1,80 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy-production:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.10.0'
+
+    - name: Cache Flutter dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.pub-cache
+        key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-flutter-
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Run tests
+      run: flutter test --coverage
+
+    - name: Build Android APK
+      run: flutter build apk --release --target-platform android-arm,android-arm64
+
+    - name: Build iOS
+      run: |
+        flutter build ios --release --no-codesign
+        cd build/ios/iphoneos
+        mkdir Payload
+        mv Runner.app Payload/
+        zip -r Katya.ipa Payload
+
+    - name: Build Web
+      run: flutter build web --release
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: katya-production-${{ github.sha }}
+        path: |
+          build/app/outputs/flutter-apk/app-release.apk
+          build/ios/iphoneos/Katya.ipa
+          build/web/
+
+    - name: Canary Deployment
+      run: |
+        echo "Starting canary deployment..."
+        # Add canary deployment logic here
+
+    - name: Production Deployment
+      run: |
+        echo "Deploying to production environment..."
+        # Add production deployment commands here
+
+    - name: Health Check
+      run: |
+        echo "Performing health checks..."
+        # Add health check commands here
+
+    - name: Notify deployment
+      if: always()
+      run: |
+        echo "Deployment completed with status: ${{ job.status }}"
+        # Add notification logic (Slack, Discord, etc.)

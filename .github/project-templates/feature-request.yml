@@ -1,0 +1,27 @@
+name: Feature Request
+description: Template for tracking feature requests
+body: |
+  ### Feature Description
+  [Describe the feature you want to implement]
+
+  ### Problem Statement
+  [What problem does this feature solve?]
+
+  ### Proposed Solution
+  [How do you propose to implement this feature?]
+
+  ### Alternative Solutions
+  [Have you considered any alternative approaches?]
+
+  ### Additional Context
+  [Any other context or screenshots]
+
+  ### Acceptance Criteria
+  - [ ] Criteria 1
+  - [ ] Criteria 2
+  - [ ] Criteria 3
+
+  ### Implementation Plan
+  - [ ] Task 1
+  - [ ] Task 2
+  - [ ] Task 3

@@ -1,337 +1,152 @@
-# Development Guide
+# 🛠️ Katya Development Guide
 
-This guide covers the development practices, project structure, and workflows for contributing to Katya.
+## Introduction
+
+This document provides guidelines and instructions for setting up a development environment, coding standards, and best practices for contributing to the Katya project.
 
 ## Table of Contents
+
+- [Getting Started](#getting-started)
+- [Development Environment Setup](#development-environment-setup)
 - [Project Structure](#project-structure)
-- [Development Setup](#development-setup)
 - [Coding Standards](#coding-standards)
-- [Common Development Tasks](#common-development-tasks)
+- [State Management](#state-management)
 - [Testing](#testing)
 - [Debugging](#debugging)
-- [Performance Optimization](#performance-optimization)
-- [Code Review Process](#code-review-process)
-- [Dependency Management](#dependency-management)
+- [Code Reviews](#code-reviews)
+- [Commit Messages](#commit-messages)
+- [Pull Requests](#pull-requests)
+- [Continuous Integration](#continuous-integration)
+- [Useful Tools](#useful-tools)
+- [Community and Support](#community-and-support)
+
+## Getting Started
+
+### Prerequisites
+
+- Flutter SDK (version 3.10.0 or later)
+- Dart SDK (version 3.0.0 or later)
+- Android Studio or VS Code with Flutter extensions
+- Git for version control
+- CMake and Ninja for native builds
+- Access to Matrix homeserver for testing
+
+### Cloning the Repository
+
+```bash
+git clone https://github.com/your-org/katya.git
+cd katya
+git submodule update --init --recursive
+flutter pub get
+flutter pub run build_runner build
+```
+
+## Development Environment Setup
+
+### IDE Configuration
+
+- Use VS Code or Android Studio with Flutter and Dart plugins installed.
+- Recommended VS Code extensions:
+  - Flutter
+  - Dart
+  - GitLens
+  - Bracket Pair Colorizer
+  - Pubspec Assist
+
+### Environment Variables
+
+- Copy `.env.example` to `.env` and configure your local environment variables.
+
+### Running the App
+
+```bash
+flutter run
+```
+
+- Use `flutter run -d <device_id>` to target specific devices.
 
 ## Project Structure
 
-```
-Katya/
-├── lib/                    # Dart source code
-│   ├── main.dart          # Application entry point
-│   ├── core/              # Core functionality
-│   ├── features/          # Feature modules
-│   ├── services/          # Business logic services
-│   ├── models/            # Data models
-│   ├── repositories/      # Data access layer
-│   ├── widgets/           # Reusable widgets
-│   └── utils/             # Utility functions
-├── test/                  # Test files
-├── android/               # Android-specific code
-├── ios/                   # iOS-specific code
-├── web/                   # Web-specific code
-├── linux/                 # Linux-specific code
-├── windows/               # Windows-specific code
-├── macos/                 # macOS-specific code
-├── assets/                # Static assets
-└── docs/                  # Documentation
-```
-
-## Development Setup
-
-### Prerequisites
-- Flutter SDK (version 3.0+)
-- Dart SDK
-- IDE: VS Code, Android Studio, or IntelliJ IDEA
-- Flutter and Dart plugins for your IDE
-
-### Initial Setup
-1. Clone the repository
-2. Run `flutter pub get` to install dependencies
-3. Run `flutter doctor` to verify your setup
-4. Configure your IDE with Flutter/Dart support
-
-### IDE Configuration
-Recommended VS Code settings (`.vscode/settings.json`):
-```json
-{
-  "dart.lineLength": 80,
-  "editor.formatOnSave": true,
-  "editor.rulers": [80],
-  "dart.debugExternalLibraries": true,
-  "dart.debugSdkLibraries": false
-}
-```
+- `lib/`: Main application source code
+- `test/`: Unit, widget, and integration tests
+- `android/`, `ios/`, `linux/`, `macos/`, `windows/`: Platform-specific code
+- `scripts/`: Utility scripts for build, test, deploy
+- `examples/`: Sample implementations and usage examples
+- `docs/`: Documentation files
 
 ## Coding Standards
 
-### Dart Style Guide
-Follow the [official Dart style guide](https://dart.dev/guides/language/effective-dart/style).
+- Follow Dart style guide: https://dart.dev/guides/language/effective-dart/style
+- Use `flutter format` to format code before commits
+- Write clear, concise comments and documentation
+- Use meaningful variable and function names
+- Avoid large functions; break into smaller reusable components
 
-#### Key Points:
-- Use 2 spaces for indentation
-- Maximum line length: 80 characters
-- Use `lowerCamelCase` for variables, functions, and methods
-- Use `UpperCamelCase` for classes and types
-- Use `lowercase_with_underscores` for library prefixes
-- Prefer final and const where possible
+## State Management
 
-#### Example:
-```dart
-// Good
-class UserRepository {
-  final UserService userService;
-  
-  Future<User> getUserById(int id) async {
-    return await userService.fetchUser(id);
-  }
-}
-
-// Bad
-class user_repository {
-  final UserService _userService;
-  
-  Future<User> get_user_by_id(int id) async {
-    return await _userService.fetchUser(id);
-  }
-}
-```
-
-### Flutter Best Practices
-- Use `const` widgets where possible for better performance
-- Prefer composition over inheritance
-- Use `Key` widgets appropriately for state management
-- Avoid deep widget trees; extract into smaller widgets
-- Use `Theme` for consistent styling
-
-## Common Development Tasks
-
-### Adding a New Feature
-1. Create feature branch: `git checkout -b feature/your-feature-name`
-2. Add your code in the appropriate directory structure
-3. Write tests for your feature
-4. Update documentation if needed
-5. Run tests: `flutter test`
-6. Format code: `flutter format .`
-7. Create pull request
-
-### Creating a New Widget
-```dart
-// lib/widgets/custom_button.dart
-import 'package:flutter/material.dart';
-
-class CustomButton extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
-  final bool isDisabled;
-
-  const CustomButton({
-    required this.text,
-    required this.onPressed,
-    this.isDisabled = false,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: isDisabled ? null : onPressed,
-      child: Text(text),
-    );
-  }
-}
-```
-
-### Adding a New Service
-```dart
-// lib/services/user_service.dart
-import 'package:http/http.dart' as http;
-
-class UserService {
-  final String baseUrl;
-
-  UserService({required this.baseUrl});
-
-  Future<User> fetchUser(int id) async {
-    final response = await http.get(Uri.parse('$baseUrl/users/$id'));
-    if (response.statusCode == 200) {
-      return User.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to load user');
-    }
-  }
-}
-```
+- Use Redux for global state management
+- Use BLoC pattern for business logic separation
+- Use `redux_persist` for state persistence
+- Follow unidirectional data flow principles
 
 ## Testing
 
-### Unit Tests
-Place unit tests in `test/` directory with `_test.dart` suffix.
-
-```dart
-// test/services/user_service_test.dart
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-import 'package:katya/services/user_service.dart';
-
-@GenerateMocks([http.Client])
-void main() {
-  group('UserService', () {
-    test('fetches user successfully', () async {
-      // Test implementation
-    });
-  });
-}
-```
-
-### Widget Tests
-```dart
-// test/widgets/custom_button_test.dart
-import 'package:flutter_test/flutter_test.dart';
-import 'package:katya/widgets/custom_button.dart';
-
-void main() {
-  testWidgets('CustomButton renders correctly', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        home: CustomButton(
-          text: 'Test Button',
-          onPressed: () {},
-        ),
-      ),
-    );
-
-    expect(find.text('Test Button'), findsOneWidget);
-  });
-}
-```
-
-### Running Tests
-```bash
-# Run all tests
-flutter test
-
-# Run specific test file
-flutter test test/services/user_service_test.dart
-
-# Run with coverage
-flutter test --coverage
-```
+- Write unit tests for all business logic
+- Write widget tests for UI components
+- Write integration tests for end-to-end scenarios
+- Use `flutter test` to run tests
+- Aim for high test coverage and maintainability
 
 ## Debugging
 
-### Common Debugging Techniques
-- Use `print()` statements for simple debugging
-- Use breakpoints in your IDE
-- Use `flutter analyze` to catch issues
-- Use `flutter doctor -v` for detailed environment info
+- Use Flutter DevTools for performance and widget inspection
+- Use logging for tracing issues
+- Use breakpoints and step-through debugging in IDE
 
-### DevTools
-```bash
-# Start DevTools
-flutter pub global run devtools
+## Code Reviews
 
-# Or connect from IDE
-# In VS Code: Ctrl+Shift+P -> "Flutter: Open DevTools"
-```
+- Submit pull requests for all changes
+- Ensure tests pass before requesting review
+- Review code for readability, performance, and security
+- Provide constructive feedback
 
-### Common Issues
-- **Hot reload not working**: Try hot restart (`flutter run --hot-restart`)
-- **Build failures**: Run `flutter clean` and `flutter pub get`
-- **Platform-specific issues**: Check `flutter doctor` output
+## Commit Messages
 
-## Performance Optimization
+- Use conventional commits format:
+  - `feat:` for new features
+  - `fix:` for bug fixes
+  - `docs:` for documentation changes
+  - `style:` for formatting
+  - `refactor:` for code changes without feature or bug fix
+  - `test:` for adding or updating tests
+  - `chore:` for maintenance tasks
 
-### Widget Optimization
-- Use `const` constructors for static widgets
-- Use `ListView.builder` for long lists
-- Avoid unnecessary rebuilds with `const` and `final`
-- Use `RepaintBoundary` for complex animations
+## Pull Requests
 
-### Memory Management
-- Dispose controllers and streams in `dispose()` method
-- Use `AutomaticKeepAliveClientMixin` for state preservation
-- Monitor memory usage with DevTools
-
-### Build Optimization
-```bash
-# Analyze app size
-flutter build apk --analyze-size
-flutter build ios --analyze-size
-
-# Build with performance profiling
-flutter run --profile
-```
-
-## Code Review Process
-
-### Before Submitting PR
-- [ ] Code follows Dart style guide
-- [ ] All tests pass
-- [ ] Documentation updated
-- [ ] No breaking changes
-- [ ] Performance considerations addressed
-- [ ] Security considerations addressed
-
-### Review Checklist
-- [ ] Code is readable and maintainable
-- [ ] Proper error handling implemented
-- [ ] Tests cover new functionality
-- [ ] No unnecessary dependencies added
-- [ ] Follows existing patterns and conventions
-
-## Dependency Management
-
-### Adding Dependencies
-Add to `pubspec.yaml`:
-```yaml
-dependencies:
-  http: ^0.13.0
-  provider: ^6.0.0
-
-dev_dependencies:
-  mockito: ^5.0.0
-  build_runner: ^2.0.0
-```
-
-### Updating Dependencies
-```bash
-# Update all dependencies
-flutter pub upgrade
-
-# Update specific package
-flutter pub upgrade package_name
-
-# Check for outdated packages
-flutter pub outdated
-```
-
-### Version Constraints
-- Use caret syntax (`^1.2.3`) for compatible versions
-- Use exact version (`1.2.3`) when necessary
-- Avoid wildcard versions (`*`)
+- Link related issues in PR description
+- Provide clear description of changes
+- Include screenshots or logs if applicable
+- Request reviews from maintainers
 
 ## Continuous Integration
 
-The project uses GitHub Actions for CI. See [Workflow Templates](../.github/workflows/) for details.
+- All PRs trigger CI workflows
+- Ensure all checks pass before merging
+- Use GitHub Actions for automation
 
-### Local CI Checks
-```bash
-# Run all checks locally
-flutter analyze
-flutter test
-flutter format --set-exit-if-changed .
-flutter pub run dart_code_metrics:metrics analyze lib
-```
+## Useful Tools
 
-## Getting Help
+- `flutter pub run build_runner build` for code generation
+- `flutter analyze` for static analysis
+- `flutter format` for code formatting
+- `flutter test` for running tests
 
-- Check existing [issues](https://github.com/sorydima/Katya-/issues)
-- Ask in [discussions](https://github.com/sorydima/Katya-/discussions)
-- Review [Flutter documentation](https://flutter.dev/docs)
-- Consult [Dart language tour](https://dart.dev/guides/language/language-tour)
+## Community and Support
 
-## Changelog
+- Join the Katya community channels for help and discussion
+- Report issues via GitHub Issues
+- Contribute via pull requests
 
-See [CHANGELOG.md](../CHANGELOG.md) for development-related changes and updates.
+---
+
+Thank you for contributing to Katya! Your efforts help make this project better for everyone.

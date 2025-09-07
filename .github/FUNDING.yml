@@ -1,4 +1,12 @@
 # These are supported funding model platforms
 
-github: [sorydima, sorokin-cyber]
-Tether - (TRC20) - Tron: [TRZ7jyMBNtRtqokkkJ7g5BJDzFycDv8cBm]
+github: [katya-project] # Replace with your GitHub username
+patreon: katya_project # Replace with your Patreon username
+open_collective: katya # Replace with your Open Collective username
+ko_fi: katya_project # Replace with your Ko-fi username
+tidelift: npm/katya # Replace with your Tidelift platform/package
+community_bridge: katya-project # Replace with your Community Bridge project
+liberapay: katya-project # Replace with your Liberapay username
+issuehunt: katya-project # Replace with your IssueHunt username
+otechie: katya-project # Replace with your Otechie username
+custom: ['https://katya.rechain.network/donate', 'https://www.paypal.me/katyaproject'] # Replace with your custom sponsorship URLs

@@ -1,43 +1,82 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
-
 version: 2
 updates:
-  # Enable version updates for Dart/Flutter
-  - package-ecosystem: "flutter"
-    # Look for `pubspec.yaml` and `pubspec.lock` in the `root` directory
+  # Enable version updates for npm
+  - package-ecosystem: "npm"
     directory: "/"
-    # Check for updates once every week
     schedule:
       interval: "weekly"
-    # Allow up to 10 open pull requests for dependency updates
+      day: "monday"
+      time: "09:00"
     open-pull-requests-limit: 10
-    # Apply labels to all pull requests
-    labels:
-      - "dependencies"
-      - "automated"
-    # Group updates by dependency type
-    groups:
-      flutter_dependencies:
-        patterns:
-          - "flutter_*"
-      dart_dependencies:
-        patterns:
-          - "dart:*"
-      other_dependencies:
-        patterns:
-          - "*"
+    reviewers:
+      - "katya-project/maintainers"
+    assignees:
+      - "katya-project/maintainers"
+    commit-message:
+      prefix: "deps"
+      prefix-development: "deps-dev"
+      include: "scope"
+
+  # Enable version updates for pub (Dart/Flutter)
+  - package-ecosystem: "pub"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "katya-project/maintainers"
+    assignees:
+      - "katya-project/maintainers"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
 
   # Enable version updates for GitHub Actions
   - package-ecosystem: "github-actions"
-    # Look for GitHub Actions in `.github/workflows`
-    directory: "/.github/workflows"
-    # Check for updates once every month
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "katya-project/maintainers"
+    assignees:
+      - "katya-project/maintainers"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+
+  # Enable version updates for Docker
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "katya-project/maintainers"
+    assignees:
+      - "katya-project/maintainers"
+    commit-message:
+      prefix: "docker"
+      include: "scope"
+
+  # Enable version updates for Python (if used in scripts)
+  - package-ecosystem: "pip"
+    directory: "/scripts"
     schedule:
       interval: "monthly"
-    # Apply labels to all pull requests
-    labels:
-      - "github-actions"
-      - "automated"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "katya-project/maintainers"
+    assignees:
+      - "katya-project/maintainers"
+    commit-message:
+      prefix: "deps"
+      include: "scope"

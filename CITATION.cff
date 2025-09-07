@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "Katya"
+abstract: "A secure, private messaging application built with Flutter"
+authors:
+  - family-names: "Katya Team"
+    given-names: ""
+    orcid: ""
+repository-code: "https://github.com/katya-project/katya"
+url: "https://katya.rechain.network"
+license: Apache-2.0
+preferred-citation:
+  type: software
+  title: "Katya: Secure Private Messaging"
+  authors:
+    - family-names: "Katya Development Team"
+      given-names: ""
+  repository-code: "https://github.com/katya-project/katya"
+  url: "https://katya.rechain.network"
+  license: Apache-2.0
+  version: "2.0.0"
+  date-released: 2024-01-15

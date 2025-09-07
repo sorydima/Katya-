@@ -1,0 +1,176 @@
+{
+  "default": true,
+  "MD001": false,
+  "MD002": false,
+  "MD003": {
+    "style": "atx"
+  },
+  "MD004": {
+    "style": "dash"
+  },
+  "MD005": true,
+  "MD006": true,
+  "MD007": {
+    "indent": 2,
+    "start_indented": false
+  },
+  "MD008": false,
+  "MD009": {
+    "br_spaces": 2,
+    "list_item_empty_lines": false,
+    "strict": false
+  },
+  "MD010": {
+    "code_blocks": false,
+    "spaces_per_tab": 2
+  },
+  "MD011": true,
+  "MD012": true,
+  "MD013": {
+    "line_length": 120,
+    "heading_line_length": 120,
+    "code_block_line_length": 120,
+    "code_blocks": true,
+    "tables": true,
+    "headings": true,
+    "strict": false,
+    "stern": false
+  },
+  "MD014": true,
+  "MD015": true,
+  "MD016": true,
+  "MD017": true,
+  "MD018": true,
+  "MD019": true,
+  "MD020": true,
+  "MD021": true,
+  "MD022": true,
+  "MD023": true,
+  "MD024": {
+    "allow_different_nesting": true,
+    "siblings_only": true
+  },
+  "MD025": {
+    "level": 1,
+    "front_matter_title": ""
+  },
+  "MD026": {
+    "punctuation": ".,;:!?。，；：！？"
+  },
+  "MD027": true,
+  "MD028": true,
+  "MD029": {
+    "style": "ordered"
+  },
+  "MD030": {
+    "ul_single": 1,
+    "ol_single": 1,
+    "ul_multi": 1,
+    "ol_multi": 1
+  },
+  "MD031": {
+    "list_items": true
+  },
+  "MD032": true,
+  "MD033": {
+    "allowed_elements": [
+      "a",
+      "abbr",
+      "acronym",
+      "b",
+      "blockquote",
+      "br",
+      "caption",
+      "cite",
+      "code",
+      "col",
+      "colgroup",
+      "dd",
+      "del",
+      "details",
+      "dfn",
+      "div",
+      "dl",
+      "dt",
+      "em",
+      "h1",
+      "h2",
+      "h3",
+      "h4",
+      "h5",
+      "h6",
+      "hr",
+      "i",
+      "img",
+      "ins",
+      "kbd",
+      "li",
+      "ol",
+      "p",
+      "pre",
+      "q",
+      "rp",
+      "rt",
+      "ruby",
+      "s",
+      "samp",
+      "section",
+      "small",
+      "span",
+      "strike",
+      "strong",
+      "sub",
+      "summary",
+      "sup",
+      "table",
+      "tbody",
+      "td",
+      "tfoot",
+      "th",
+      "thead",
+      "tr",
+      "tt",
+      "u",
+      "ul",
+      "var"
+    ]
+  },
+  "MD034": {
+    "relaxed": true
+  },
+  "MD035": {
+    "style": "---"
+  },
+  "MD036": {
+    "punctuation": ".,;:!?。，；：！？"
+  },
+  "MD037": true,
+  "MD038": true,
+  "MD039": true,
+  "MD040": {
+    "allowed_languages": [
+      "bash",
+      "console",
+      "dart",
+      "diff",
+      "dockerfile",
+      "git-commit",
+      "git-rebase",
+      "go",
+      "graphql",
+      "ini",
+      "java",
+      "javascript",
+      "jinja2",
+      "json",
+      "kotlin",
+      "latex",
+      "lua",
+      "makefile",
+      "markdown",
+      "matlab",
+      "nginx",
+      "objective-c",
+      "perl",
+      "php",
+      "plaintext",

@@ -1,0 +1,264 @@
+# Pre-commit hooks configuration for Katya
+# See https://pre-commit.com for more information
+
+repos:
+  # General hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+        name: Remove trailing whitespace
+        description: Remove trailing whitespace from all files
+        types: [text]
+        exclude: ^.*\.(md|txt|rst)$
+
+      - id: end-of-file-fixer
+        name: Fix end of files
+        description: Ensure files end with a newline
+        types: [text]
+        exclude: ^.*\.(md|txt|rst)$
+
+      - id: check-yaml
+        name: Check YAML syntax
+        description: Validate YAML file syntax
+        files: \.(yaml|yml)$
+
+      - id: check-json
+        name: Check JSON syntax
+        description: Validate JSON file syntax
+        files: \.(json|jsonc)$
+
+      - id: check-toml
+        name: Check TOML syntax
+        description: Validate TOML file syntax
+        files: \.(toml)$
+
+      - id: check-merge-conflict
+        name: Check for merge conflicts
+        description: Check for unresolved merge conflict markers
+        types: [text]
+
+      - id: check-added-large-files
+        name: Check for large files
+        description: Prevent accidentally committing large files
+        args: ['--maxkb=500']
+
+      - id: check-case-conflict
+        name: Check for case conflicts
+        description: Check for files with names that would conflict on case-insensitive filesystems
+
+      - id: check-executables-have-shebangs
+        name: Check executables have shebangs
+        description: Ensure executable files have shebang lines
+        types: [executable]
+
+      - id: check-shebang-scripts-are-executable
+        name: Check shebang scripts are executable
+        description: Ensure scripts with shebangs are executable
+        types: [text]
+
+      - id: mixed-line-ending
+        name: Fix mixed line endings
+        description: Normalize line endings to LF
+        types: [text]
+
+  # Dart/Flutter hooks
+  - repo: https://github.com/fluttercommunity/import_sorter
+    rev: v4.6.0
+    hooks:
+      - id: import_sorter
+        name: Sort Dart imports
+        description: Sort Dart import statements
+        files: \.dart$
+        args: [--sort-only]
+
+  - repo: https://github.com/fluttercommunity/dart_format
+    rev: v1.0.0
+    hooks:
+      - id: dart_format
+        name: Format Dart code
+        description: Format Dart code using dart format
+        files: \.dart$
+        args: [--line-length=120]
+
+  # Python hooks (for scripts and tools)
+  - repo: https://github.com/psf/black
+    rev: 23.7.0
+    hooks:
+      - id: black
+        name: Format Python code
+        description: Format Python code using Black
+        files: \.py$
+        language_version: python3
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        name: Sort Python imports
+        description: Sort Python import statements
+        files: \.py$
+        args: [--profile=black]
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+        name: Check Python code style
+        description: Check Python code style and quality
+        files: \.py$
+        args: [--max-line-length=88, --extend-ignore=E203,W503]
+
+  # JavaScript/TypeScript hooks (for web components)
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v8.45.0
+    hooks:
+      - id: eslint
+        name: Run ESLint
+        description: Run ESLint for JavaScript/TypeScript code
+        files: \.(js|jsx|ts|tsx)$
+        types: [file]
+        additional_dependencies:
+          - eslint@^8.0.0
+          - '@typescript-eslint/parser@^5.0.0'
+          - '@typescript-eslint/eslint-plugin@^5.0.0'
+          - eslint-plugin-react@^7.0.0
+          - eslint-plugin-react-hooks@^4.0.0
+
+  # Markdown hooks
+  - repo: https://github.com/executablebooks/mdformat
+    rev: 0.7.16
+    hooks:
+      - id: mdformat
+        name: Format Markdown
+        description: Format Markdown files
+        additional_dependencies:
+          - mdformat-gfm
+          - mdformat-frontmatter
+          - mdformat-footnote
+
+  # Security hooks
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        name: Detect secrets
+        description: Detect secrets in code and configuration files
+        args: [--baseline, .secrets.baseline]
+
+  # License and copyright hooks
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.5.1
+    hooks:
+      - id: insert-license
+        name: Insert license headers
+        description: Insert license headers in source files
+        files: \.(dart|py|js|ts|java|kt)$
+        args:
+          - --license-filepath
+          - LICENSE
+          - --comment-style
+          - '/*| *| */'
+
+  # Git hooks
+  - repo: https://github.com/jorisroovers/gitlint
+    rev: v0.19.1
+    hooks:
+      - id: gitlint
+        name: Check git commit messages
+        description: Check git commit message format
+        args: [--config, .gitlint]
+
+  # Docker hooks
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.12.0
+    hooks:
+      - id: hadolint
+        name: Check Docker files
+        description: Check Docker files with Hadolint
+        files: Dockerfile.*
+        args: [--ignore, DL3008, --ignore, DL3018]
+
+  # Shell script hooks
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.9.0.5
+    hooks:
+      - id: shellcheck
+        name: Check shell scripts
+        description: Check shell scripts with ShellCheck
+        files: \.(sh|bash)$
+        args: [--severity=warning]
+
+  # YAML formatting
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.0.3
+    hooks:
+      - id: prettier
+        name: Format YAML, JSON, and Markdown
+        description: Format YAML, JSON, and Markdown files
+        types: [yaml, json, markdown]
+        exclude: ^.*\.min\.(json|js)$
+
+# Local hooks (custom hooks for this project)
+  - repo: local
+    hooks:
+      - id: check-dart-analyze
+        name: Run Dart analyze
+        description: Run Dart static analysis
+        entry: bash -c 'find . -name "*.dart" -not -path "./build/*" -not -path "./.dart_tool/*" | head -10 | xargs dart analyze --fatal-infos --fatal-warnings || true'
+        language: system
+        files: \.dart$
+        pass_filenames: false
+
+      - id: check-pubspec
+        name: Validate pubspec.yaml
+        description: Validate Flutter/Dart pubspec.yaml files
+        entry: bash -c 'find . -name "pubspec.yaml" -exec dart pub get --directory $(dirname {}) \; || true'
+        language: system
+        files: pubspec\.yaml$
+        pass_filenames: false
+
+      - id: check-package-json
+        name: Validate package.json
+        description: Validate Node.js package.json files
+        entry: bash -c 'find . -name "package.json" -exec npm audit --audit-level moderate --json {} \; || true'
+        language: system
+        files: package\.json$
+        pass_filenames: false
+
+      - id: check-requirements-txt
+        name: Validate Python requirements
+        description: Validate Python requirements.txt files
+        entry: bash -c 'find . -name "requirements.txt" -exec python -m pip check --dry-run -r {} \; || true'
+        language: system
+        files: requirements\.txt$
+        pass_filenames: false
+
+      - id: check-license-headers
+        name: Check license headers
+        description: Ensure all source files have proper license headers
+        entry: bash -c 'find . -name "*.dart" -o -name "*.py" -o -name "*.js" -o -name "*.ts" | head -20 | xargs grep -L "Copyright" || true'
+        language: system
+        files: \.(dart|py|js|ts)$
+        pass_filenames: false
+
+      - id: check-todo-comments
+        name: Check TODO comments
+        description: Find and report TODO comments in code
+        entry: bash -c 'find . -name "*.dart" -o -name "*.py" -o -name "*.js" -o -name "*.ts" | xargs grep -n "TODO\|FIXME\|XXX" || true'
+        language: system
+        files: \.(dart|py|js|ts)$
+        pass_filenames: false
+
+# CI-specific configuration
+ci:
+  autofix_commit_msg: |
+    [pre-commit.ci] auto fixes from pre-commit hooks
+
+    for more information, see https://pre-commit.ci
+  autofix_prs: true
+  autoupdate_branch: ''
+  autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+  autoupdate_schedule: weekly
+  skip: []
+  submodules: false

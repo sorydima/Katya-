@@ -1,0 +1,106 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [ develop ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+        - staging
+        - canary
+
+jobs:
+  deploy-staging:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.10.0'
+
+    - name: Cache Flutter dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.pub-cache
+        key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-flutter-
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Run tests
+      run: flutter test --coverage
+
+    - name: Build Android APK
+      run: flutter build apk --release --target-platform android-arm,android-arm64
+
+    - name: Build iOS
+      run: |
+        flutter build ios --release --no-codesign
+        cd build/ios/iphoneos
+        mkdir Payload
+        mv Runner.app Payload/
+        zip -r Katya.ipa Payload
+
+    - name: Build Web
+      run: flutter build web --release
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: katya-staging-${{ github.sha }}
+        path: |
+          build/app/outputs/flutter-apk/app-release.apk
+          build/ios/iphoneos/Katya.ipa
+          build/web/
+
+    - name: Deploy to Firebase Hosting (Web)
+      if: github.event.inputs.environment != 'canary'
+      uses: FirebaseExtended/action-hosting-deploy@v0
+      with:
+        repoToken: '${{ secrets.GITHUB_TOKEN }}'
+        firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+        channelId: live
+        projectId: katya-staging
+
+    - name: Deploy to TestFlight (iOS)
+      if: github.event.inputs.environment != 'canary'
+      run: |
+        echo "Deploying to TestFlight..."
+        # Add TestFlight deployment commands here
+
+    - name: Deploy to Google Play Beta (Android)
+      if: github.event.inputs.environment != 'canary'
+      run: |
+        echo "Deploying to Google Play Beta..."
+        # Add Google Play deployment commands here
+
+    - name: Canary Deployment
+      if: github.event.inputs.environment == 'canary'
+      run: |
+        echo "Performing canary deployment..."
+        # Add canary deployment logic here
+
+    - name: Health Check
+      run: |
+        echo "Performing health checks..."
+        # Add health check commands here
+
+    - name: Notify deployment
+      if: always()
+      run: |
+        echo "Deployment completed with status: ${{ job.status }}"
+        # Add notification logic (Slack, Discord, etc.)

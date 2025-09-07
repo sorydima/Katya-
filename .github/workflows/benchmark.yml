@@ -1,0 +1,44 @@
+name: Performance Benchmarks
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run weekly on Mondays at 9 AM UTC
+    - cron: '0 9 * * 1'
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.10.0'
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Run tests with coverage
+      run: flutter test --coverage
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage/lcov.info
+        flags: unittests
+        name: codecov-umbrella
+
+    - name: Run performance benchmarks
+      run: |
+        chmod +x benchmarks/run_benchmarks.sh
+        ./benchmarks/run_benchmarks.sh
+
+    - name: Store benchmark results
+      uses: actions/upload-artifact@v3
+      with:
+        name: benchmark-results
+        path: benchmarks/results/

@@ -1,143 +1,252 @@
-# EditorConfig is a file format and collection of text editor plugins
-# for maintaining consistent coding styles between different editors and IDEs
-# See: https://editorconfig.org
+# EditorConfig is awesome: https://EditorConfig.org
 
+# top-most EditorConfig file
 root = true
 
+# All files
 [*]
 charset = utf-8
 end_of_line = lf
+indent_style = space
+indent_size = 2
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-# Dart/Flutter files
+# Dart files
 [*.dart]
-indent_style = space
 indent_size = 2
-max_line_length = 80
+max_line_length = 120
 
-# YAML files (pubspec.yaml, workflow files)
-[*.yaml]
-indent_style = space
-indent_size = 2
+# Python files
+[*.py]
+indent_size = 4
+max_line_length = 88
 
-[*.yml]
-indent_style = space
+# JavaScript/TypeScript files
+[*.{js,jsx,ts,tsx}]
 indent_size = 2
+max_line_length = 100
 
 # JSON files
-[*.json]
-indent_style = space
+[*.{json,jsonc}]
+indent_size = 2
+
+# YAML files
+[*.{yaml,yml}]
 indent_size = 2
 
 # Markdown files
 [*.md]
 trim_trailing_whitespace = false
-max_line_length = 80
-
-# XML files (Android, iOS configs)
-[*.xml]
-indent_style = space
-indent_size = 2
-
-# Gradle files
-[*.gradle]
-indent_style = space
-indent_size = 2
+max_line_length = 120
 
 # Shell scripts
-[*.sh]
-indent_style = space
-indent_size = 2
+[*.{sh,bash}]
+end_of_line = lf
+indent_style = tab
+indent_size = 4
 
-# Git ignore and similar files
-[.gitignore]
-indent_style = space
-indent_size = 2
-
-# License files
-[LICENSE*]
-indent_style = space
-indent_size = 2
-max_line_length = 80
-
-# Documentation files
-[README*]
-trim_trailing_whitespace = false
-max_line_length = 80
-
-[CHANGELOG*]
-trim_trailing_whitespace = false
-max_line_length = 80
-
-[CONTRIBUTING*]
-trim_trailing_whitespace = false
-max_line_length = 80
-
-[CODE_OF_CONDUCT*]
-trim_trailing_whitespace = false
-max_line_length = 80
-
-[SUPPORT*]
-trim_trailing_whitespace = false
-max_line_length = 80
-
-# Makefiles
+# Make files
 [Makefile]
 indent_style = tab
-
-# Python files (if any scripts)
-[*.py]
-indent_style = space
 indent_size = 4
-max_line_length = 79
 
-# JavaScript/TypeScript files (if any)
-[*.js]
-indent_style = space
-indent_size = 2
-max_line_length = 80
+# Docker files
+[Dockerfile*]
+indent_size = 4
 
-[*.ts]
-indent_style = space
-indent_size = 2
-max_line_length = 80
+# Git commit messages
+[.git/COMMIT_EDITMSG]
+max_line_length = 72
 
-# HTML files
-[*.html]
-indent_style = space
-indent_size = 2
-max_line_length = 80
-
-# CSS files
-[*.css]
-indent_style = space
-indent_size = 2
-max_line_length = 80
+# Configuration files
+[*.{conf,config,ini}]
+indent_size = 4
 
 # SQL files
 [*.sql]
-indent_style = space
-indent_size = 2
-max_line_length = 80
+indent_size = 4
+max_line_length = 120
 
-# Exclude package directories and build outputs
-[pubspec.lock]
-indent_style = space
+# HTML files
+[*.{html,htm}]
 indent_size = 2
+max_line_length = 120
 
-[build/]
-indent_style = space
+# CSS/SCSS files
+[*.{css,scss,sass}]
 indent_size = 2
+max_line_length = 120
 
-[.dart_tool/]
-indent_style = space
+# XML files
+[*.xml]
 indent_size = 2
+max_line_length = 120
 
-[.idea/]
+# Properties files
+[*.properties]
 indent_style = space
-indent_size = 2
+indent_size = 4
 
-[.vscode/]
-indent_style = space
+# Gradle files
+[*.gradle]
+indent_size = 4
+
+# Kotlin files
+[*.kt]
+indent_size = 4
+max_line_length = 120
+
+# Swift files
+[*.swift]
+indent_size = 4
+max_line_length = 120
+
+# Go files
+[*.go]
+indent_size = 4
+max_line_length = 120
+
+# Rust files
+[*.rs]
+indent_size = 4
+max_line_length = 120
+
+# C/C++ files
+[*.{c,cpp,h,hpp}]
+indent_size = 4
+max_line_length = 120
+
+# Java files
+[*.java]
+indent_size = 4
+max_line_length = 120
+
+# Ruby files
+[*.rb]
 indent_size = 2
+max_line_length = 120
+
+# PHP files
+[*.php]
+indent_size = 4
+max_line_length = 120
+
+# R files
+[*.r]
+indent_size = 2
+max_line_length = 120
+
+# Julia files
+[*.jl]
+indent_size = 4
+max_line_length = 120
+
+# LaTeX files
+[*.{tex,latex}]
+indent_size = 2
+max_line_length = 120
+
+# BibTeX files
+[*.bib]
+indent_size = 2
+max_line_length = 120
+
+# TOML files
+[*.toml]
+indent_size = 4
+
+# Lock files (should not be edited manually)
+[*lock*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Generated files
+[*.{min.js,min.css}]
+indent_style = ignore
+trim_trailing_whitespace = ignore
+
+# Binary files
+[*.{png,jpg,jpeg,gif,ico,svg,pdf,zip,tar,gz,bz2,xz,7z,rar}]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+indent_style = unset
+indent_size = unset
+
+# Documentation files
+[docs/**/*]
+max_line_length = 120
+
+# Test files
+[test/**/*]
+max_line_length = 120
+
+# Example files
+[example/**/*]
+max_line_length = 120
+
+# Tool files
+[tools/**/*]
+max_line_length = 120
+
+# Build files
+[build/**/*]
+max_line_length = 120
+
+# Cache files
+[*.cache]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+indent_style = unset
+indent_size = unset
+
+# Log files
+[*.log]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = false
+trim_trailing_whitespace = false
+indent_style = ignore
+indent_size = ignore
+
+# Temporary files
+[*.tmp]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = false
+trim_trailing_whitespace = false
+indent_style = ignore
+indent_size = ignore
+
+# Backup files
+[*~]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = ignore
+indent_size = ignore
+
+# Swap files
+[*.swp]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+indent_style = unset
+indent_size = unset
+
+# Vim undo files
+[*.un~]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+indent_style = unset
+indent_size = unset

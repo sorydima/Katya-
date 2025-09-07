@@ -1,0 +1,132 @@
+name: "Close stale issues and PRs"
+
+on:
+  schedule:
+    - cron: "30 1 * * *"
+  workflow_dispatch:
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/stale@v9
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+          # Issues configuration
+          days-before-issue-stale: 60
+          days-before-issue-close: 14
+          stale-issue-message: |
+            This issue has been automatically marked as stale because it has not had recent activity. It will be closed in 14 days if no further activity occurs.
+
+            If this issue is still relevant, please:
+            - Add a comment explaining why this issue is still important
+            - Update the issue with any new information
+            - Add the `pinned` label if this should never be closed
+
+            Thank you for your contributions to Katya!
+
+          close-issue-message: |
+            This issue has been automatically closed due to inactivity. If you believe this issue should be reopened, please:
+
+            1. Add a comment explaining why this issue is still relevant
+            2. Provide any additional information or context
+            3. Request a maintainer to reopen it
+
+            You can also create a new issue if this problem persists.
+
+          stale-issue-label: "stale"
+          exempt-issue-labels: "pinned,security,bug,enhancement,help wanted"
+
+          # PRs configuration
+          days-before-pr-stale: 30
+          days-before-pr-close: 7
+          stale-pr-message: |
+            This pull request has been automatically marked as stale because it has not had recent activity. It will be closed in 7 days if no further activity occurs.
+
+            To keep this PR open:
+            - Add a comment explaining the current status
+            - Push new commits if changes are needed
+            - Request a review if it's ready for review
+
+            If this PR is no longer needed, feel free to close it yourself.
+
+          close-pr-message: |
+            This pull request has been automatically closed due to inactivity.
+
+            If you still want to work on this:
+            1. Create a new branch from your changes
+            2. Open a new pull request
+            3. Reference this PR for context
+
+            Thank you for your contribution to Katya!
+
+          stale-pr-label: "stale"
+          exempt-pr-labels: "pinned,work-in-progress,wip,do-not-merge"
+
+          # General configuration
+          operations-per-run: 100
+          remove-stale-when-updated: true
+          debug-only: false
+
+  cleanup-stale-branches:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Clean up merged branches
+        run: |
+          echo "Cleaning up old branches..."
+
+          # Get all remote branches
+          git branch -r | grep -v '\->' | while read remote; do
+            branch="${remote#origin/}"
+
+            # Skip protected branches
+            if [[ "$branch" =~ ^(main|master|develop|staging|production)$ ]]; then
+              continue
+            fi
+
+            # Check if branch is merged
+            if git log --oneline -1 "$remote" --not main | grep -q "."; then
+              echo "Branch $branch has unmerged commits"
+            else
+              echo "Deleting merged branch: $branch"
+              git push origin --delete "$branch" 2>/dev/null || echo "Failed to delete $branch"
+            fi
+          done
+
+      - name: Clean up old branches (force delete after 90 days)
+        run: |
+          echo "Checking for branches older than 90 days..."
+
+          git branch -r --format="%(refname:short) %(committerdate:unix)" | \
+          grep -v "origin/HEAD\|origin/main\|origin/master\|origin/develop" | \
+          while read branch date; do
+            branch_name="${branch#origin/}"
+
+            # Calculate age in days
+            current_time=$(date +%s)
+            age_days=$(( (current_time - date) / 86400 ))
+
+            if [ $age_days -gt 90 ]; then
+              echo "Branch $branch_name is $age_days days old"
+
+              # Check if it has any unmerged commits
+              if ! git log --oneline "$branch" --not main | grep -q "." 2>/dev/null; then
+                echo "Force deleting old branch: $branch_name"
+                git push origin --delete "$branch_name" 2>/dev/null || echo "Failed to delete $branch_name"
+              fi
+            fi
+          done

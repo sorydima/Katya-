@@ -1,0 +1,14 @@
+# Example Discord Bridge Configuration
+bridge:
+  domain: example.com
+  homeserverUrl: https://matrix.example.com
+  port: 8443
+  tls: true
+
+discord:
+  token: "your-discord-bot-token"
+  guildId: "your-guild-id"
+
+logging:
+  level: info
+  file: logs/discord-bridge.log

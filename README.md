@@ -9,6 +9,9 @@
 https://api.codemagic.io/apps/68bd8d5ba7b9336e28030270/68bd8d5ba7b9336e2803026f/status_badge.svg
 
 [![Codemagic build status](https://api.codemagic.io/apps/68bd8d5ba7b9336e28030270/68bd8d5ba7b9336e2803026f/status_badge.svg)](https://codemagic.io/app/68bd8d5ba7b9336e28030270/68bd8d5ba7b9336e2803026f/latest_build)
+[![codecov](https://codecov.io/gh/your-username/katya/branch/main/graph/badge.svg)](https://codecov.io/gh/your-username/katya)
+[![CodeQL](https://github.com/your-username/katya/workflows/CodeQL/badge.svg)](https://github.com/your-username/katya/security/code-scanning)
+[![Contributors](https://img.shields.io/github/contributors/your-username/katya)](https://github.com/your-username/katya/graphs/contributors)
 
 ## 🤔 Why
 
@@ -140,6 +143,21 @@ You may notice Katya ® 👽 does not look very dart-y (for example, no \_privat
 - Freezed (future):
   - Because every object in Katya ® 👽 is immutable, freezed will help create objects doing the same thing all the 'copyWith' helper functions do today, with the improvement of allowing 'null' values to overwrite non-null values.
 
+## 📚 Documentation
+- [Troubleshooting](TROUBLESHOOTING.md) - Common issues and solutions
+- [Contributors](CONTRIBUTORS.md) - List of contributors and how to contribute
+- [Glossary](GLOSSARY.md) - Key terms and definitions
+- [Migration Guide](MIGRATION_GUIDE.md) - Upgrading between versions
+- [Roadmap](ROADMAP.md) - Project roadmap and future plans
+- [Examples](examples/) - Sample code and configurations
+- [Scripts](scripts/) - Build and utility scripts
+- [Demo Videos](videos/) - Feature demonstrations
+
+## 🎮 Demo & Playground
+- [Web Demo](https://katya.framer.website) - Try Katya in your browser
+- [Apple Vision Pro Demo](https://katya.framer.website) - Experience Katya on Vision Pro
+- [Analytics Dashboard](https://notkatya.framer.website) - Developer analytics
+
 ### References
 - [Redux tutorial](https://www.netguru.com/codestories/-implement-redux-with-flutter-app)
 - [Redux examples](https://github.com/brianegan/flutter_architecture_samples/blob/master/firestore_redux/)
@@ -150,7 +168,7 @@ You may notice Katya ® 👽 does not look very dart-y (for example, no \_privat
 - [Keyboard dismissal](https://stackoverflow.com/questions/55863766/how-to-prevent-keyboard-from-dismissing-on-pressing-submit-key-in-flutter)
 - [Changing transition styles](https://stackoverflow.com/questions/50196913/how-to-change-navigation-animation-using-flutter)
 - [Animations](https://flutter.dev/docs/development/ui/animations)
-- [Serialize Uint8List bytes](https://stackoverflow.com/questions/63716036/how-to-serialize-uint8list-to-json-with-json-annotation-in-dart)
+- [Serialize Uint8List bytes](https://stackoverflow.com/questions/63716036/how-to-serialize-uint8list-to-json-with/json-annotation-in-dart)
 - Adding a border without needing Ctrl-P
 ```Dart
 decoration: BoxDecoration(

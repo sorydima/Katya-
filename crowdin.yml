@@ -1,0 +1,52 @@
+project_id: "katya"
+api_token_env: CROWDIN_PERSONAL_TOKEN
+base_path: "."
+
+files:
+  - source: "/lib/l10n/app_en.arb"
+    translation: "/lib/l10n/app_%two_letters_code%.arb"
+    languages_mapping:
+      two_letters_code:
+        zh-CN: zh
+        zh-TW: zh
+        pt-BR: pt
+        pt-PT: pt
+
+  - source: "/web/locales/en/**/*.json"
+    translation: "/web/locales/%two_letters_code%/**/%original_file_name%"
+    languages_mapping:
+      two_letters_code:
+        zh-CN: zh
+        zh-TW: zh
+        pt-BR: pt
+        pt-PT: pt
+
+  - source: "/docs/**/*.md"
+    translation: "/docs/%two_letters_code%/%original_file_name%"
+    ignore:
+      - "/docs/api/**"
+      - "/docs/adr/**"
+    languages_mapping:
+      two_letters_code:
+        zh-CN: zh
+        zh-TW: zh
+        pt-BR: pt
+        pt-PT: pt
+
+  - source: "/README.md"
+    translation: "/README_%two_letters_code%.md"
+    languages_mapping:
+      two_letters_code:
+        zh-CN: zh
+        zh-TW: zh
+        pt-BR: pt
+        pt-PT: pt
+
+pull_request_title: "Update translations"
+pull_request_labels:
+  - "translations"
+  - "automated"
+
+commit_message: "[i18n] Update translations from Crowdin"
+
+append_commit_message: false

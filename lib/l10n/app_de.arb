@@ -1,0 +1,111 @@
+{
+  "@@locale": "de",
+  "appName": "Katya",
+  "@appName": {
+    "description": "The name of the application"
+  },
+  "welcome": "Willkommen bei Katya",
+  "@welcome": {
+    "description": "Welcome message shown to users"
+  },
+  "login": "Anmelden",
+  "@login": {
+    "description": "Login button text"
+  },
+  "logout": "Abmelden",
+  "@logout": {
+    "description": "Logout button text"
+  },
+  "settings": "Einstellungen",
+  "@settings": {
+    "description": "Settings menu item"
+  },
+  "chat": "Chat",
+  "@chat": {
+    "description": "Chat section title"
+  },
+  "send": "Senden",
+  "@send": {
+    "description": "Send message button"
+  },
+  "message": "Nachricht",
+  "@message": {
+    "description": "Message input placeholder"
+  },
+  "connecting": "Verbinden...",
+  "@connecting": {
+    "description": "Connection status message"
+  },
+  "connected": "Verbunden",
+  "@connected": {
+    "description": "Connected status message"
+  },
+  "disconnected": "Getrennt",
+  "@disconnected": {
+    "description": "Disconnected status message"
+  },
+  "error": "Fehler",
+  "@error": {
+    "description": "Generic error message"
+  },
+  "retry": "Wiederholen",
+  "@retry": {
+    "description": "Retry button text"
+  },
+  "cancel": "Abbrechen",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "save": "Speichern",
+  "@save": {
+    "description": "Save button text"
+  },
+  "delete": "Löschen",
+  "@delete": {
+    "description": "Delete button text"
+  },
+  "edit": "Bearbeiten",
+  "@edit": {
+    "description": "Edit button text"
+  },
+  "search": "Suchen",
+  "@search": {
+    "description": "Search input placeholder"
+  },
+  "loading": "Laden...",
+  "@loading": {
+    "description": "Loading indicator text"
+  },
+  "noResults": "Keine Ergebnisse gefunden",
+  "@noResults": {
+    "description": "No results found message"
+  },
+  "profile": "Profil",
+  "@profile": {
+    "description": "User profile section"
+  },
+  "notifications": "Benachrichtigungen",
+  "@notifications": {
+    "description": "Notifications settings"
+  },
+  "privacy": "Datenschutz",
+  "@privacy": {
+    "description": "Privacy settings"
+  },
+  "security": "Sicherheit",
+  "@security": {
+    "description": "Security settings"
+  },
+  "about": "Über",
+  "@about": {
+    "description": "About section"
+  },
+  "help": "Hilfe",
+  "@help": {
+    "description": "Help section"
+  },
+  "feedback": "Feedback",
+  "@feedback": {
+    "description": "Feedback section"
+  }
+}

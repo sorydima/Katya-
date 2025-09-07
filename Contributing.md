@@ -43,11 +43,59 @@ There are several ways you can contribute to the Katya project:
 - Follow the Dart style guide: https://dart.dev/guides/language/effective-dart/style
 - Use `dart format` to format your code before committing
 - Follow existing patterns and conventions in the codebase
+- Use descriptive variable and function names
+- Add comments for complex logic
+- Keep functions small and focused on a single responsibility
+- Use const constructors where possible
+- Prefer final over var when the type is clear
+- Use trailing commas in multi-line collections for cleaner diffs
+- Maximum line length: 120 characters
+- Use snake_case for file names and directories
+- Use PascalCase for class names
+- Use camelCase for method and variable names
+- Use UPPER_SNAKE_CASE for constants
 
 ### Testing
 - Write unit tests for new functionality
 - Ensure all tests pass before submitting a PR
 - Run tests: `flutter test`
+- Write integration tests for complex features
+- Test on multiple platforms when possible
+
+### Commit Message Conventions
+We follow conventional commit format for clear and consistent commit messages:
+
+```
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer]
+```
+
+**Types:**
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `style`: Code style changes (formatting, etc.)
+- `refactor`: Code refactoring
+- `test`: Adding or updating tests
+- `chore`: Maintenance tasks
+
+**Examples:**
+- `feat(auth): add biometric login support`
+- `fix(ui): resolve crash on theme change`
+- `docs(readme): update installation instructions`
+
+### Branching Strategy
+- `main`: Production-ready code
+- `develop`: Latest development changes
+- `feature/*`: New features
+- `bugfix/*`: Bug fixes
+- `hotfix/*`: Critical fixes for production
+- `release/*`: Release preparation
+
+Always create feature branches from `develop` and merge back via pull request.
 
 ## Pull Request Process
 
@@ -59,11 +107,33 @@ There are several ways you can contribute to the Katya project:
 6. Link any related issues in the PR description
 
 ### PR Requirements
-- Code must be properly formatted
-- All tests must pass
+- Code must be properly formatted (`dart format`)
+- All tests must pass (`flutter test`)
 - New features should include appropriate tests
 - Documentation should be updated if necessary
 - Follow the [pull request template](.github/PULL_REQUEST_TEMPLATE.md)
+- Keep PRs focused on a single feature or fix
+- Ensure CI checks pass
+
+### Code Review Process
+- All PRs require at least one approval from a maintainer
+- Reviewers will check for:
+  - Code quality and adherence to style guidelines
+  - Test coverage
+  - Performance implications
+  - Security considerations
+  - Documentation updates
+- Address all review comments and make requested changes
+- Once approved, a maintainer will merge the PR
+- Use squash merge for feature branches to keep history clean
+
+### PR Labels
+- `bug`: Bug fixes
+- `enhancement`: New features
+- `documentation`: Documentation updates
+- `refactor`: Code refactoring
+- `breaking-change`: Breaking changes
+- `work-in-progress`: Not ready for review
 
 ## Code of Conduct
 

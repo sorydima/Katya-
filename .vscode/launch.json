@@ -1,0 +1,97 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Flutter: Debug",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "flutterMode": "debug",
+            "args": [
+                "--dart-define=ENV=development"
+            ]
+        },
+        {
+            "name": "Flutter: Profile",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "Flutter: Release",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "Flutter: Attach to Device",
+            "type": "dart",
+            "request": "attach",
+            "program": "lib/main.dart"
+        },
+        {
+            "name": "Flutter: Run Tests",
+            "type": "dart",
+            "request": "launch",
+            "program": "test/",
+            "flutterMode": "debug"
+        },
+        {
+            "name": "Flutter: Run Integration Tests",
+            "type": "dart",
+            "request": "launch",
+            "program": "integration_test/",
+            "flutterMode": "debug"
+        },
+        {
+            "name": "Flutter: Web Debug",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "flutterMode": "debug",
+            "deviceId": "chrome"
+        },
+        {
+            "name": "Flutter: Android Debug",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "flutterMode": "debug",
+            "deviceId": "android"
+        },
+        {
+            "name": "Flutter: iOS Debug",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "flutterMode": "debug",
+            "deviceId": "ios"
+        },
+        {
+            "name": "Flutter: Windows Debug",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "flutterMode": "debug",
+            "deviceId": "windows"
+        },
+        {
+            "name": "Flutter: macOS Debug",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "flutterMode": "debug",
+            "deviceId": "macos"
+        },
+        {
+            "name": "Flutter: Linux Debug",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "flutterMode": "debug",
+            "deviceId": "linux"
+        }
+    ]
+}

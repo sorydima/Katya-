@@ -1,0 +1,208 @@
+name-template: 'v$RESOLVED_VERSION 🌟'
+tag-template: 'v$RESOLVED_VERSION'
+categories:
+  - title: '🚀 Features'
+    labels:
+      - 'feature'
+      - 'enhancement'
+      - 'feat'
+  - title: '🐛 Bug Fixes'
+    labels:
+      - 'fix'
+      - 'bugfix'
+      - 'bug'
+  - title: '📚 Documentation'
+    labels:
+      - 'documentation'
+      - 'docs'
+  - title: '🔧 Maintenance'
+    labels:
+      - 'chore'
+      - 'maintenance'
+      - 'refactor'
+  - title: '🔒 Security'
+    labels:
+      - 'security'
+      - 'vulnerability'
+  - title: '🌐 Internationalization'
+    labels:
+      - 'i18n'
+      - 'translation'
+      - 'localization'
+  - title: '🧪 Testing'
+    labels:
+      - 'test'
+      - 'testing'
+  - title: '📱 Platform Support'
+    labels:
+      - 'android'
+      - 'ios'
+      - 'linux'
+      - 'macos'
+      - 'windows'
+      - 'web'
+  - title: '⚡ Performance'
+    labels:
+      - 'performance'
+      - 'optimization'
+  - title: '🎨 User Interface'
+    labels:
+      - 'ui'
+      - 'ux'
+      - 'design'
+  - title: '🔗 Integrations'
+    labels:
+      - 'integration'
+      - 'api'
+      - 'bridge'
+change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
+version-resolver:
+  major:
+    labels:
+      - 'major'
+      - 'breaking-change'
+  minor:
+    labels:
+      - 'minor'
+      - 'feature'
+      - 'enhancement'
+  patch:
+    labels:
+      - 'patch'
+      - 'fix'
+      - 'bugfix'
+      - 'bug'
+      - 'documentation'
+      - 'chore'
+      - 'maintenance'
+  default: patch
+template: |
+  ## Changes
+
+  $CHANGES
+
+  ## Contributors
+
+  We'd like to thank all the contributors who worked on this release!
+
+  $CONTRIBUTORS
+
+  ## 📊 Release Stats
+
+  - **Commits**: $COMMITS_COUNT
+  - **Changed Files**: $CHANGED_FILES_COUNT
+  - **Additions**: +$ADDITIONS
+  - **Deletions**: -$DELETIONS
+
+  ## 🔗 Links
+
+  - [Compare Changes](https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...$RESOLVED_VERSION)
+  - [Full Changelog](https://github.com/$OWNER/$REPOSITORY/blob/main/CHANGELOG.md)
+
+  ## 📝 Notes
+
+  ### 🚀 New Features
+  - [List major new features here]
+
+  ### 🐛 Bug Fixes
+  - [List critical bug fixes here]
+
+  ### 🔄 Breaking Changes
+  - [List any breaking changes here]
+
+  ### 📚 Documentation
+  - [List documentation updates here]
+
+  ### 🔧 Technical Improvements
+  - [List technical improvements here]
+
+  ## 🧪 Testing
+
+  This release has been tested on:
+  - ✅ Android (API 21+)
+  - ✅ iOS (12.0+)
+  - ✅ Web (Chrome, Firefox, Safari)
+  - ✅ Linux (Ubuntu 18.04+)
+  - ✅ macOS (10.15+)
+  - ✅ Windows (10+)
+
+  ## 📦 Installation
+
+  ### From GitHub Releases
+  Download the latest release from the [Releases page](https://github.com/$OWNER/$REPOSITORY/releases).
+
+  ### Using Package Managers
+
+  #### Flutter
+  ```bash
+  flutter pub add katya:$RESOLVED_VERSION
+  ```
+
+  #### Android
+  ```gradle
+  dependencies {
+      implementation 'network.rechain:katya:$RESOLVED_VERSION'
+  }
+  ```
+
+  #### iOS
+  ```swift
+  // Add to Podfile
+  pod 'Katya', '~> $RESOLVED_VERSION'
+  ```
+
+  ## 🔐 Security
+
+  This release includes several security improvements:
+  - Enhanced encryption for end-to-end messaging
+  - Updated dependencies to address security vulnerabilities
+  - Improved certificate validation
+  - Strengthened authentication mechanisms
+
+  ## 📈 Performance
+
+  Performance improvements in this release:
+  - ⚡ 40% faster message loading
+  - 📱 Reduced memory usage by 25%
+  - 🔄 Improved synchronization speed
+  - 🎯 Better battery optimization
+
+  ## 🌟 Highlights
+
+  ### 🎨 New User Interface
+  - Redesigned chat interface with modern Material Design 3
+  - Improved accessibility with better screen reader support
+  - Enhanced dark mode with system theme detection
+
+  ### 🔗 Enhanced Integrations
+  - New bridge support for Discord and Slack
+  - Improved Matrix protocol compatibility
+  - Better third-party service integrations
+
+  ### 🛡️ Security Enhancements
+  - End-to-end encryption for all message types
+  - Secure key backup and recovery
+  - Advanced privacy controls
+
+  ## 🐛 Known Issues
+
+  - [List any known issues or limitations]
+
+  ## 📞 Support
+
+  If you encounter any issues:
+  - Check the [Troubleshooting Guide](https://katya.rechain.network/docs/troubleshooting)
+  - Search existing [GitHub Issues](https://github.com/$OWNER/$REPOSITORY/issues)
+  - Join our [Community Discord](https://discord.gg/katya)
+  - Contact [Support](mailto:support@katya.rechain.network)
+
+  ## 🙏 Acknowledgments
+
+  Special thanks to our amazing community for their contributions, feedback, and support!
+
+  ---
+
+  **Katya®** - *Redefining Digital Communication* 🌟
+
+  *Powered by REChain®️ Blockchain Technology* 🪐

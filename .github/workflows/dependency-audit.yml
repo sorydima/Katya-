@@ -1,0 +1,99 @@
+name: Dependency Audit
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Daily at 6 AM UTC
+  workflow_dispatch:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'pubspec.yaml'
+      - 'pubspec.lock'
+
+jobs:
+  audit-flutter:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.10.0'
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Run flutter pub outdated
+      run: flutter pub outdated
+
+    - name: Check for vulnerable dependencies
+      run: |
+        # Install safety for Python dependencies if any
+        pip install safety
+
+        # Check Flutter dependencies for known vulnerabilities
+        echo "Checking Flutter dependencies..."
+        flutter pub deps | grep -E "(http|crypto|encrypt)" || echo "No critical dependencies found"
+
+    - name: Generate dependency report
+      run: |
+        echo "## Dependency Audit Report" > dependency-report.md
+        echo "" >> dependency-report.md
+        echo "### Flutter Dependencies" >> dependency-report.md
+        flutter pub deps >> dependency-report.md
+        echo "" >> dependency-report.md
+        echo "### Outdated Packages" >> dependency-report.md
+        flutter pub outdated >> dependency-report.md
+
+    - name: Upload dependency report
+      uses: actions/upload-artifact@v3
+      with:
+        name: dependency-audit-report
+        path: dependency-report.md
+
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v2
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+  license-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Check licenses
+      run: |
+        # Install license checker
+        npm install -g license-checker
+
+        # Generate license report
+        license-checker --json > licenses.json
+
+        # Check for problematic licenses
+        echo "Checking for GPL licenses..."
+        cat licenses.json | jq '.[] | select(.licenses | contains("GPL"))' || echo "No GPL licenses found"
+
+        echo "Checking for unknown licenses..."
+        cat licenses.json | jq '.[] | select(.licenses == "UNKNOWN")' || echo "No unknown licenses found"
+
+    - name: Upload license report
+      uses: actions/upload-artifact@v3
+      with:
+        name: license-report
+        path: licenses.json

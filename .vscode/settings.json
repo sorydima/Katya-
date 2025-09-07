@@ -1,0 +1,20 @@
+{
+  "dart.flutterSdkPath": "flutter",
+  "dart.lineLength": 120,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "dart.analysisExcludedFolders": [
+    "build/",
+    "android/",
+    "ios/"
+  ],
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/build": true,
+    "**/.dart_tool": true
+  }
+}

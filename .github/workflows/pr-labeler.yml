@@ -1,0 +1,355 @@
+name: PR Labeler
+
+on:
+  pull_request_target:
+    types: [opened, edited, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  labeler:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Label pull requests
+        uses: actions/labeler@v5
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          configuration-path: .github/labeler.yml
+
+  size-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Label PR by size
+        uses: codacy/git-version@2.7.1
+        with:
+          release-branch: main
+          dev-branch: develop
+
+      - name: Size label
+        uses: codelytv/pr-size-labeler@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          xs_label: 'size/xs'
+          xs_max_size: 10
+          s_label: 'size/s'
+          s_max_size: 100
+          m_label: 'size/m'
+          m_max_size: 500
+          l_label: 'size/l'
+          l_max_size: 1000
+          xl_label: 'size/xl'
+          message_if_xl: |
+            This PR is very large. Consider splitting it into multiple smaller PRs for easier review.
+
+            ## 📊 PR Size Analysis
+            - **Files changed**: ${{ github.event.pull_request.changed_files }}
+            - **Additions**: ${{ github.event.pull_request.additions }}
+            - **Deletions**: ${{ github.event.pull_request.deletions }}
+
+            ## 💡 Suggestions
+            - Break down into logical commits
+            - Consider creating separate PRs for different features
+            - Ensure comprehensive testing for each change
+
+  impact-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Analyze PR impact
+        id: pr-analysis
+        run: |
+          # Get PR details
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          CHANGED_FILES=${{ github.event.pull_request.changed_files }}
+          ADDITIONS=${{ github.event.pull_request.additions }}
+          DELETIONS=${{ github.event.pull_request.deletions }}
+
+          echo "PR #$PR_NUMBER"
+          echo "Changed files: $CHANGED_FILES"
+          echo "Additions: $ADDITIONS"
+          echo "Deletions: $DELETIONS"
+
+          # Determine impact level
+          if [ $CHANGED_FILES -gt 50 ] || [ $ADDITIONS -gt 1000 ] || [ $DELETIONS -gt 500 ]; then
+            IMPACT="high-impact"
+            echo "High impact PR detected"
+          elif [ $CHANGED_FILES -gt 20 ] || [ $ADDITIONS -gt 500 ] || [ $DELETIONS -gt 200 ]; then
+            IMPACT="medium-impact"
+            echo "Medium impact PR detected"
+          else
+            IMPACT="low-impact"
+            echo "Low impact PR detected"
+          fi
+
+          echo "impact=$IMPACT" >> $GITHUB_OUTPUT
+
+      - name: Add impact label
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: ${{ steps.pr-analysis.outputs.impact }}
+
+  priority-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Determine priority
+        id: priority
+        run: |
+          # Check PR title and body for priority keywords
+          TITLE="${{ github.event.pull_request.title }}"
+          BODY="${{ github.event.pull_request.body }}"
+
+          if echo "$TITLE $BODY" | grep -qi "urgent\|critical\|emergency\|security\|hotfix"; then
+            PRIORITY="priority/critical"
+            echo "Critical priority detected"
+          elif echo "$TITLE $BODY" | grep -qi "high\|important\|blocking"; then
+            PRIORITY="priority/high"
+            echo "High priority detected"
+          elif echo "$TITLE $BODY" | grep -qi "medium\|normal"; then
+            PRIORITY="priority/medium"
+            echo "Medium priority detected"
+          else
+            PRIORITY="priority/low"
+            echo "Low priority (default)"
+          fi
+
+          echo "priority=$PRIORITY" >> $GITHUB_OUTPUT
+
+      - name: Add priority label
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: ${{ steps.priority.outputs.priority }}
+
+  type-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Determine PR type
+        id: pr-type
+        run: |
+          TITLE="${{ github.event.pull_request.title }}"
+          BODY="${{ github.event.pull_request.body }}"
+          FILES=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files[].path')
+
+          # Check for different types
+          if echo "$TITLE $BODY" | grep -qi "feat\|feature\|add"; then
+            TYPE="type/feature"
+          elif echo "$TITLE $BODY" | grep -qi "fix\|bug\|issue"; then
+            TYPE="type/bugfix"
+          elif echo "$TITLE $BODY" | grep -qi "docs\|documentation"; then
+            TYPE="type/documentation"
+          elif echo "$TITLE $BODY" | grep -qi "test\|testing"; then
+            TYPE="type/testing"
+          elif echo "$TITLE $BODY" | grep -qi "refactor\|cleanup"; then
+            TYPE="type/refactor"
+          elif echo "$TITLE $BODY" | grep -qi "style\|format"; then
+            TYPE="type/style"
+          elif echo "$FILES" | grep -q "pubspec.yaml\|package.json"; then
+            TYPE="type/dependencies"
+          elif echo "$FILES" | grep -q ".github/"; then
+            TYPE="type/ci-cd"
+          else
+            TYPE="type/maintenance"
+          fi
+
+          echo "type=$TYPE" >> $GITHUB_OUTPUT
+
+      - name: Add type label
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: ${{ steps.pr-type.outputs.type }}
+
+  area-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Determine affected areas
+        id: areas
+        run: |
+          FILES=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files[].path')
+
+          AREAS=""
+
+          if echo "$FILES" | grep -q "^lib/"; then
+            AREAS="$AREAS,area/core"
+          fi
+          if echo "$FILES" | grep -q "^android/"; then
+            AREAS="$AREAS,area/android"
+          fi
+          if echo "$FILES" | grep -q "^ios/"; then
+            AREAS="$AREAS,area/ios"
+          fi
+          if echo "$FILES" | grep -q "^web/"; then
+            AREAS="$AREAS,area/web"
+          fi
+          if echo "$FILES" | grep -q "^linux/\|^macos/\|^windows/"; then
+            AREAS="$AREAS,area/desktop"
+          fi
+          if echo "$FILES" | grep -q "^docs/\|.*\.md$"; then
+            AREAS="$AREAS,area/documentation"
+          fi
+          if echo "$FILES" | grep -q "^test/\|^integration_test/"; then
+            AREAS="$AREAS,area/testing"
+          fi
+          if echo "$FILES" | grep -q "^.github/"; then
+            AREAS="$AREAS,area/devops"
+          fi
+
+          # Remove leading comma
+          AREAS=$(echo "$AREAS" | sed 's/^,//')
+
+          if [ -z "$AREAS" ]; then
+            AREAS="area/misc"
+          fi
+
+          echo "areas=$AREAS" >> $GITHUB_OUTPUT
+
+      - name: Add area labels
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: ${{ steps.areas.outputs.areas }}
+
+  review-required:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Determine review requirements
+        id: review
+        run: |
+          CHANGED_FILES=${{ github.event.pull_request.changed_files }}
+          ADDITIONS=${{ github.event.pull_request.additions }}
+          DELETIONS=${{ github.event.pull_request.deletions }}
+
+          # High-risk files that require senior review
+          HIGH_RISK_FILES=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files[].path' | grep -E "(security|auth|encryption|crypto|payment|billing)" | wc -l)
+
+          # Large changes require senior review
+          if [ $CHANGED_FILES -gt 20 ] || [ $ADDITIONS -gt 500 ] || [ $HIGH_RISK_FILES -gt 0 ]; then
+            echo "requires_senior_review=true" >> $GITHUB_OUTPUT
+            echo "Senior review required due to change size or sensitive files"
+          else
+            echo "requires_senior_review=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Request senior review
+        if: steps.review.outputs.requires_senior_review == 'true'
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: "review/senior-required"
+
+      - name: Add review checklist comment
+        uses: actions-ecosystem/action-create-comment@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            ## 🔍 PR Review Checklist
+
+            **Automated Analysis Complete** ✅
+
+            ### 📊 PR Metrics
+            - **Files Changed**: ${{ github.event.pull_request.changed_files }}
+            - **Additions**: ${{ github.event.pull_request.additions }}
+            - **Deletions**: ${{ github.event.pull_request.deletions }}
+            - **Size**: ${{ steps.size.outputs.size || 'unknown' }}
+            - **Impact**: ${{ steps.pr-analysis.outputs.impact || 'unknown' }}
+
+            ### ✅ Review Requirements
+            - [ ] **Code Quality**: Code follows project standards
+            - [ ] **Tests**: Adequate test coverage for changes
+            - [ ] **Documentation**: Documentation updated if needed
+            - [ ] **Security**: No security vulnerabilities introduced
+            - [ ] **Performance**: No performance regressions
+            - [ ] **Breaking Changes**: Breaking changes properly documented
+
+            ### 🎯 Reviewers
+            ${{
+              steps.review.outputs.requires_senior_review == 'true'
+              && '@katya-project/senior-reviewers Please review this high-impact change'
+              || 'Standard review process applies'
+            }}
+
+            ### 🚀 Testing Checklist
+            - [ ] Unit tests pass
+            - [ ] Integration tests pass
+            - [ ] Manual testing completed
+            - [ ] Cross-platform testing done
+            - [ ] Accessibility testing completed
+
+            ---
+            *This checklist was automatically generated. Reviewers, please check off items as you complete them.*
+
+  pr-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate PR title
+        run: |
+          TITLE="${{ github.event.pull_request.title }}"
+
+          # Check for conventional commit format
+          if ! echo "$TITLE" | grep -qE "^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert)(\(.+\))?: "; then
+            echo "⚠️ PR title doesn't follow conventional commit format"
+            echo "Expected format: type(scope): description"
+            echo "Examples:"
+            echo "  feat(auth): add biometric login"
+            echo "  fix(ui): resolve crash on settings screen"
+            echo "  docs(readme): update installation instructions"
+          else
+            echo "✅ PR title follows conventional commit format"
+          fi
+
+      - name: Check PR description
+        run: |
+          BODY="${{ github.event.pull_request.body }}"
+
+          if [ -z "$BODY" ] || [ ${#BODY} -lt 50 ]; then
+            echo "⚠️ PR description is too short or missing"
+            echo "Please provide a detailed description of the changes"
+          else
+            echo "✅ PR description looks good"
+          fi
+
+      - name: Check for linked issues
+        run: |
+          BODY="${{ github.event.pull_request.body }}"
+
+          if echo "$BODY" | grep -qi "closes\|fixes\|resolves" && echo "$BODY" | grep -q "#[0-9]"; then
+            echo "✅ PR is properly linked to issues"
+          else
+            echo "ℹ️ Consider linking this PR to related issues"
+            echo "Use: Closes #123, Fixes #456, etc."
+          fi
+
+  notify-reviewers:
+    runs-on: ubuntu-latest
+    if: github.event.action == 'opened'
+    steps:
+      - name: Notify reviewers
+        run: |
+          # This would send notifications to relevant teams based on labels
+          echo "Notifying reviewers based on PR labels and CODEOWNERS"
+
+          # In a real implementation, this could:
+          # - Send Slack notifications to relevant channels
+          # - Email notifications to team leads
+          # - Create tasks in project management tools

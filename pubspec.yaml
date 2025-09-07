@@ -171,6 +171,18 @@ flutter_icons:
   adaptive_icon_background: "#34C7B5"
   adaptive_icon_foreground: "assets/icons/current/app_icon_foreground.png"
 
+# The following section is specific to Flutter localization
+# It tells Flutter where to find the localization files
+# and which locales to support.
+generate: true
+localization:
+  arb-dir: lib/l10n
+  template-arb-file: app_en.arb
+  output-localization-file: app_localizations.dart
+  supported-locales:
+    - en
+    - ru
+
 # The following section is specific to Flutter.
 flutter:
   # The following line ensures that the Material Icons font is

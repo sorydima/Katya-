@@ -1,0 +1,32 @@
+# Issue Template Configuration
+# This file configures the issue templates for the Katya repository
+
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Community Discussion
+    url: https://matrix.to/#/#katya:matrix.org
+    about: Join our Matrix community for general discussions and questions
+
+  - name: 📖 Documentation
+    url: https://github.com/katya-project/katya/tree/main/docs
+    about: Check our documentation for guides and FAQs
+
+  - name: 🐛 Bug Report
+    url: https://github.com/katya-project/katya/issues/new?template=bug_report.yml
+    about: Report a bug or unexpected behavior
+
+  - name: ✨ Feature Request
+    url: https://github.com/katya-project/katya/issues/new?template=feature_request.yml
+    about: Suggest a new feature or enhancement
+
+  - name: 🤝 Contribution
+    url: https://github.com/katya-project/katya/blob/main/docs/CONTRIBUTING.md
+    about: Learn how to contribute to Katya
+
+  - name: 🔒 Security Issue
+    url: https://github.com/katya-project/katya/security/advisories/new
+    about: Report a security vulnerability privately
+
+  - name: 📊 Project Roadmap
+    url: https://github.com/katya-project/katya/blob/main/ROADMAP.md
+    about: View our project roadmap and upcoming features

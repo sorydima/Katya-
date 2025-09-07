@@ -1,0 +1,71 @@
+name: Flutter CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.10.0'
+    - run: flutter pub get
+    - run: flutter analyze
+    - run: flutter test --coverage
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage/lcov.info
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+
+  build-android:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.10.0'
+    - run: flutter pub get
+    - run: flutter build apk --release
+
+  build-ios:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.10.0'
+    - run: flutter pub get
+    - run: flutter build ios --release --no-codesign
+
+  codeql:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - uses: github/codeql-action/init@v2
+      with:
+        languages: dart
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.10.0'
+    - run: flutter pub get
+    - uses: github/codeql-action/analyze@v2

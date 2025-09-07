@@ -1,0 +1,60 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v2
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+    - name: Dependency Check
+      uses: dependency-check/Dependency-Check_Action@main
+      with:
+        project: 'Katya'
+        path: '.'
+        format: 'ALL'
+
+    - name: Upload Dependency Check results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: dependency-check-report
+        path: reports/
+
+    - name: Run Snyk to check for vulnerabilities
+      uses: snyk/actions/flutter@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        args: --file=pubspec.yaml
+
+    - name: Flutter Security Linter
+      run: |
+        flutter pub get
+        # Add security linting rules
+        echo "Running security analysis..."
+        flutter analyze --fatal-infos

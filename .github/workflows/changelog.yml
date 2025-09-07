@@ -1,0 +1,44 @@
+name: Generate Changelog
+
+on:
+  push:
+    branches: [ main ]
+  release:
+    types: [ published ]
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Generate changelog
+      uses: tj-actions/git-cliff@v1
+      id: git-cliff
+      with:
+        configuration: cliff.toml
+        args: --verbose --latest --strip header
+      env:
+        OUTPUT: CHANGELOG.md
+
+    - name: Update CHANGELOG.md
+      run: |
+        echo "# Changelog" > CHANGELOG_NEW.md
+        echo "" >> CHANGELOG_NEW.md
+        cat CHANGELOG.md >> CHANGELOG_NEW.md
+        mv CHANGELOG_NEW.md CHANGELOG.md
+
+    - name: Commit changelog
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add CHANGELOG.md
+        git commit -m "docs: update changelog" || echo "No changes to commit"
+
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}

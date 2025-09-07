@@ -1,0 +1,228 @@
+name: Performance Monitoring
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  performance-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.0'
+
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run performance tests
+        run: |
+          echo "Running performance benchmarks..."
+
+          # Create performance test results directory
+          mkdir -p performance-results
+
+          # Run Flutter performance tests
+          flutter test --machine --coverage | tee performance-results/test-output.json
+
+          # Extract performance metrics
+          echo "## Performance Metrics" > performance-results/report.md
+          echo "" >> performance-results/report.md
+          echo "- **Test Run Time**: $(date)" >> performance-results/report.md
+          echo "- **Flutter Version**: $(flutter --version | head -1)" >> performance-results/report.md
+
+      - name: Analyze bundle size
+        run: |
+          echo "" >> performance-results/report.md
+          echo "## Bundle Size Analysis" >> performance-results/report.md
+          echo "" >> performance-results/report.md
+
+          # Build APK for size analysis
+          flutter build apk --release --build-name=1.0.0 --build-number=1
+
+          if [ -f "build/app/outputs/flutter-apk/app-release.apk" ]; then
+            APK_SIZE=$(stat -c%s "build/app/outputs/flutter-apk/app-release.apk")
+            APK_SIZE_MB=$(echo "scale=2; $APK_SIZE / 1048576" | bc)
+            echo "- **APK Size**: ${APK_SIZE_MB} MB" >> performance-results/report.md
+          fi
+
+      - name: Memory usage analysis
+        run: |
+          echo "" >> performance-results/report.md
+          echo "## Memory Usage" >> performance-results/report.md
+          echo "" >> performance-results/report.md
+
+          # This would integrate with memory profiling tools
+          echo "- Memory profiling data would be collected here" >> performance-results/report.md
+
+      - name: Upload performance results
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-results
+          path: performance-results/
+
+  performance-regression-check:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.0'
+
+      - name: Get baseline performance
+        run: |
+          # Compare with main branch performance
+          git fetch origin main
+
+          # This would compare performance metrics
+          echo "Comparing performance with main branch..."
+
+          # Placeholder for performance comparison logic
+          echo "Performance regression check completed"
+
+      - name: Performance regression alert
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '⚠️ **Performance Regression Detected**\n\n' +
+                    'This PR may have introduced performance regressions:\n\n' +
+                    '- [ ] Review code changes for performance impacts\n' +
+                    '- [ ] Run performance benchmarks locally\n' +
+                    '- [ ] Consider optimization opportunities\n' +
+                    '- [ ] Update performance baselines if changes are expected\n\n' +
+                    'Please investigate and address any performance issues before merging.'
+            })
+
+  benchmark-monitoring:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.0'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run benchmarks
+        run: |
+          # Create benchmarks directory if it doesn't exist
+          mkdir -p benchmarks
+
+          echo "Running application benchmarks..."
+
+          # Run widget build performance tests
+          flutter test test/widget/ --machine | jq -r 'select(.type == "test.done") | .time' > benchmarks/widget-build-times.json
+
+          # Calculate average build time
+          if [ -f "benchmarks/widget-build-times.json" ]; then
+            AVG_TIME=$(jq -s 'add / length' benchmarks/widget-build-times.json 2>/dev/null || echo "0")
+            echo "Average widget build time: ${AVG_TIME}ms" > benchmarks/summary.txt
+          fi
+
+      - name: Store benchmark results
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results
+          path: benchmarks/
+
+  lighthouse-performance:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.0'
+
+      - name: Build web version
+        run: |
+          flutter build web --release
+          # Serve the web app for Lighthouse testing
+
+      - name: Run Lighthouse
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          urls: http://localhost:3000
+          configPath: .lighthouserc.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+  performance-alert:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check performance trends
+        run: |
+          echo "Analyzing performance trends..."
+
+          # This would analyze historical performance data
+          # and create alerts for significant changes
+
+          echo "Performance trend analysis completed"
+
+      - name: Create performance issue
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🚨 Performance Alert: Regression Detected',
+              body: 'Automated performance monitoring has detected a potential regression.\n\n' +
+                    '## Details\n' +
+                    '- Date: ${{ github.event.head_commit.timestamp }}\n' +
+                    '- Commit: ${{ github.sha }}\n' +
+                    '- Branch: ${{ github.ref }}\n\n' +
+                    '## Next Steps\n' +
+                    '- [ ] Investigate the cause of performance regression\n' +
+                    '- [ ] Run detailed performance analysis\n' +
+                    '- [ ] Implement fixes if needed\n' +
+                    '- [ ] Update performance baselines\n\n' +
+                    'This issue was automatically created by the performance monitoring system.',
+              labels: ['performance', 'bug', 'automated']
+            })

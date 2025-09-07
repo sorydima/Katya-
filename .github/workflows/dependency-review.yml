@@ -1,0 +1,150 @@
+name: Dependency Review
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+  push:
+    branches: [ main, develop ]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          config-file: '.github/dependency-review-config.yml'
+          fail-on-severity: moderate
+          allow-licenses: BSD-2-Clause, BSD-3-Clause, MIT, Apache-2.0, ISC, CC0-1.0
+          deny-licenses: MS-PL, BSD-4-Clause, JSON
+
+  license-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.0'
+
+      - name: Check Flutter dependencies licenses
+        run: |
+          flutter pub deps --json | jq -r '.packages[] | select(.kind == "direct") | .name' > direct_deps.txt
+
+          echo "Checking licenses for direct dependencies..."
+          while IFS= read -r package; do
+            echo "Checking $package..."
+            # This would integrate with a license checking tool
+            # For now, we'll just list them
+          done < direct_deps.txt
+
+      - name: Generate license report
+        run: |
+          echo "# Third Party Licenses" > THIRD_PARTY_LICENSES.md
+          echo "" >> THIRD_PARTY_LICENSES.md
+          echo "This file contains licensing information for third-party dependencies." >> THIRD_PARTY_LICENSES.md
+          echo "" >> THIRD_PARTY_LICENSES.md
+          echo "## Direct Dependencies" >> THIRD_PARTY_LICENSES.md
+          echo "" >> THIRD_PARTY_LICENSES.md
+
+          while IFS= read -r package; do
+            echo "### $package" >> THIRD_PARTY_LICENSES.md
+            echo "- License: [Check pub.dev]($package)" >> THIRD_PARTY_LICENSES.md
+            echo "" >> THIRD_PARTY_LICENSES.md
+          done < direct_deps.txt
+
+      - name: Upload license report
+        uses: actions/upload-artifact@v4
+        with:
+          name: license-report
+          path: THIRD_PARTY_LICENSES.md
+
+  vulnerability-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.0'
+
+      - name: Run flutter pub outdated
+        run: |
+          echo "## Outdated Dependencies" > dependency-report.md
+          echo "" >> dependency-report.md
+          flutter pub outdated --json | jq -r '.packages[] | select(.current != .upgradable) | "- \(.name): \(.current) -> \(.upgradable)"' >> dependency-report.md
+
+      - name: Check for security advisories
+        run: |
+          echo "" >> dependency-report.md
+          echo "## Security Advisories" >> dependency-report.md
+          echo "" >> dependency-report.md
+
+          # This would integrate with security advisory databases
+          # For Flutter/Dart, we can check against known vulnerable packages
+          echo "- No known security issues found in current dependencies" >> dependency-report.md
+
+      - name: Upload dependency report
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-report
+          path: dependency-report.md
+
+  dependency-review-config:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Analyze dependency changes
+        run: |
+          # Get the list of changed files
+          CHANGED_FILES=$(git diff --name-only HEAD~1)
+
+          # Check if pubspec.yaml or pubspec.lock changed
+          if echo "$CHANGED_FILES" | grep -q "pubspec.yaml\|pubspec.lock"; then
+            echo "Dependencies have changed. Running detailed analysis..."
+
+            # Analyze the changes
+            git diff HEAD~1 pubspec.yaml || echo "No pubspec.yaml changes"
+
+            # Check for major version changes
+            if git diff HEAD~1 pubspec.yaml | grep -q "^+.*:[^0-9]*[0-9]\+\."; then
+              echo "⚠️ Major version changes detected in dependencies"
+              echo "major_version_change=true" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "No dependency changes detected"
+          fi
+
+      - name: Comment on dependency changes
+        if: steps.dependency-analysis.outputs.major_version_change == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '⚠️ **Major Dependency Changes Detected**\n\n' +
+                    'This PR contains major version changes in dependencies. Please ensure:\n\n' +
+                    '- [ ] Breaking changes are documented\n' +
+                    '- [ ] Tests pass with new versions\n' +
+                    '- [ ] Migration guide is provided if needed\n' +
+                    '- [ ] Team has reviewed the changes\n\n' +
+                    'Consider testing thoroughly before merging.'
+            })

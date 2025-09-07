@@ -1,0 +1,459 @@
+# Code Climate configuration for Katya
+# https://docs.codeclimate.com/docs/configuring-your-analysis
+
+version: "2"
+
+# Analysis configuration
+checks:
+  # Dart/Flutter specific checks
+  argument-count:
+    config:
+      threshold: 4
+  complex-logic:
+    config:
+      threshold: 4
+  file-lines:
+    config:
+      threshold: 300
+  method-complexity:
+    config:
+      threshold: 25
+  method-count:
+    config:
+      threshold: 20
+  method-lines:
+    config:
+      threshold: 25
+  nested-control-flow:
+    config:
+      threshold: 4
+  return-statements:
+    config:
+      threshold: 4
+  similar-code:
+    config:
+      threshold: # language default used
+  identical-code:
+    config:
+      threshold: # language default used
+
+# Plugins configuration
+plugins:
+  # Dart analyzer
+  dartanalyzer:
+    enabled: true
+    config:
+      strong-mode: true
+      implicit-casts: false
+      implicit-dynamic: false
+
+  # Flutter specific analysis
+  flutter:
+    enabled: true
+
+  # Security analysis
+  brakeman:
+    enabled: false  # Not applicable for Dart/Flutter
+
+  # Code duplication
+  duplication:
+    enabled: true
+    config:
+      languages:
+        - dart
+        - python
+        - javascript
+        - typescript
+
+  # Code coverage
+  coverage:
+    enabled: true
+    config:
+      threshold: 80
+
+  # Complexity analysis
+  complexity:
+    enabled: true
+    config:
+      threshold: 10
+
+  # Maintainability analysis
+  maintainability:
+    enabled: true
+    config:
+      threshold: 50
+
+  # Reliability analysis
+  reliability:
+    enabled: true
+    config:
+      threshold: 80
+
+  # Security analysis
+  security:
+    enabled: true
+    config:
+      threshold: 90
+
+# Exclude files and directories
+exclude_patterns:
+  # Generated files
+  - "**/*.g.dart"
+  - "**/*.freezed.dart"
+  - "**/*.config.dart"
+  - "**/generated/**"
+  - "**/build/**"
+  - "**/.dart_tool/**"
+
+  # Test files
+  - "**/test/**"
+  - "**/integration_test/**"
+  - "**/test_driver/**"
+
+  # Platform-specific code
+  - "**/android/**"
+  - "**/ios/**"
+  - "**/web/**"
+  - "**/windows/**"
+  - "**/linux/**"
+  - "**/macos/**"
+
+  # Third-party code
+  - "**/third_party/**"
+  - "**/vendor/**"
+
+  # Documentation
+  - "**/*.md"
+  - "**/docs/**"
+
+  # Configuration files
+  - "**/*.yaml"
+  - "**/*.yml"
+  - "**/*.json"
+  - "**/*.xml"
+  - "**/*.gradle"
+  - "**/*.plist"
+
+  # Asset files
+  - "**/assets/**"
+  - "**/images/**"
+  - "**/fonts/**"
+  - "**/icons/**"
+
+  # Tool files
+  - "**/tools/**"
+  - "**/scripts/**"
+
+  # CI/CD files
+  - "**/.github/**"
+  - "**/.gitlab-ci.yml"
+  - "**/Dockerfile*"
+  - "**/docker-compose*.yml"
+
+  # Dependency files
+  - "**/pubspec.lock"
+  - "**/package-lock.json"
+  - "**/yarn.lock"
+  - "**/Cargo.lock"
+  - "**/Gemfile.lock"
+
+  # Cache files
+  - "**/.cache/**"
+  - "**/node_modules/**"
+  - "**/.pub-cache/**"
+
+  # Log files
+  - "**/*.log"
+  - "**/logs/**"
+
+  # Temporary files
+  - "**/*.tmp"
+  - "**/*.temp"
+  - "**/tmp/**"
+  - "**/temp/**"
+
+  # Backup files
+  - "**/*~"
+  - "**/*.bak"
+  - "**/*.backup"
+
+  # IDE files
+  - "**/.vscode/**"
+  - "**/.idea/**"
+  - "**/*.swp"
+  - "**/*.swo"
+  - "**/.DS_Store"
+
+# Include patterns (override exclusions)
+include_patterns:
+  - "lib/**/*.dart"
+  - "packages/**/*.dart"
+  - "web/lib/**/*.dart"
+
+# Language-specific configuration
+languages:
+  dart:
+    mass_threshold: 50
+  python:
+    mass_threshold: 50
+  javascript:
+    mass_threshold: 50
+  typescript:
+    mass_threshold: 50
+
+# Analysis engines
+engines:
+  # Enable specific analysis engines
+  structure:
+    enabled: true
+  duplication:
+    enabled: true
+  metrics:
+    enabled: true
+  complexity:
+    enabled: true
+
+  # Disable engines not applicable to this project
+  brakeman:
+    enabled: false
+  bundler-audit:
+    enabled: false
+  csslint:
+    enabled: false
+  eslint:
+    enabled: false
+  fixme:
+    enabled: true
+  markdownlint:
+    enabled: true
+  radon:
+    enabled: false
+  rubocop:
+    enabled: false
+  scss-lint:
+    enabled: false
+  shellcheck:
+    enabled: true
+  sonar-python:
+    enabled: false
+  sqlint:
+    enabled: false
+  stylelint:
+    enabled: false
+  swiftlint:
+    enabled: false
+
+# Custom configuration for specific engines
+engine_config:
+  structure:
+    config:
+      threshold: 50
+  duplication:
+    config:
+      threshold: 50
+  metrics:
+    config:
+      threshold: 50
+  complexity:
+    config:
+      threshold: 10
+
+# Ratings configuration
+ratings:
+  paths:
+    - "lib/**"
+    - "packages/**"
+    - "web/lib/**"
+
+# Comment configuration
+comments:
+  # Require comments for public APIs
+  require_comment_for_public_api: true
+
+  # Minimum comment density
+  minimum_comment_density: 10
+
+# Prepare configuration
+prepare:
+  # Commands to run before analysis
+  - command: "flutter pub get"
+    directory: "."
+  - command: "flutter analyze"
+    directory: "."
+
+# Analysis configuration
+analysis:
+  # Analysis mode
+  mode: thorough
+
+  # Timeout configuration
+  timeout: 900
+
+  # Memory configuration
+  memory: 2048
+
+# Notifications configuration
+notifications:
+  # Email notifications
+  email: false
+
+  # Slack notifications
+  slack:
+    enabled: false
+
+  # Webhook notifications
+  webhooks:
+    enabled: false
+
+# Integration configuration
+integrations:
+  # GitHub integration
+  github:
+    enabled: true
+    checks: true
+    statuses: true
+
+  # GitLab integration
+  gitlab:
+    enabled: false
+
+  # Bitbucket integration
+  bitbucket:
+    enabled: false
+
+# Custom metrics
+custom_metrics:
+  # Flutter-specific metrics
+  flutter_widget_count:
+    enabled: true
+    threshold: 100
+
+  flutter_screen_count:
+    enabled: true
+    threshold: 20
+
+  flutter_test_coverage:
+    enabled: true
+    threshold: 80
+
+  flutter_performance_score:
+    enabled: true
+    threshold: 90
+
+# Quality gates
+quality_gate:
+  # Overall quality score threshold
+  threshold: 3.0
+
+  # Individual metric thresholds
+  metrics:
+    complexity:
+      threshold: 10
+    duplication:
+      threshold: 5
+    maintainability:
+      threshold: 50
+    reliability:
+      threshold: 80
+    security:
+      threshold: 90
+    test_coverage:
+      threshold: 80
+
+# Remediation configuration
+remediation:
+  # Enable auto-remediation
+  enabled: false
+
+  # Remediation strategies
+  strategies:
+    - type: "comment"
+      enabled: true
+    - type: "issue"
+      enabled: true
+    - type: "pr"
+      enabled: false
+
+# Reporting configuration
+reporting:
+  # Report formats
+  formats:
+    - "html"
+    - "json"
+    - "xml"
+
+  # Report paths
+  paths:
+    html: "reports/codeclimate.html"
+    json: "reports/codeclimate.json"
+    xml: "reports/codeclimate.xml"
+
+# Cache configuration
+cache:
+  # Enable caching
+  enabled: true
+
+  # Cache directory
+  directory: ".codeclimate/cache"
+
+  # Cache expiration
+  expiration: 7
+
+# Debug configuration
+debug:
+  # Enable debug mode
+  enabled: false
+
+  # Debug log level
+  level: "info"
+
+  # Debug output file
+  output: "codeclimate-debug.log"
+
+# Environment configuration
+environment:
+  # Test environment
+  test: false
+
+  # CI environment
+  ci: true
+
+  # Development environment
+  development: false
+
+  # Production environment
+  production: false
+
+# Custom configuration
+custom:
+  # Flutter-specific configuration
+  flutter:
+    enabled: true
+    analyze: true
+    test: true
+    coverage: true
+
+  # Security configuration
+  security:
+    enabled: true
+    sast: true
+    dependency_scanning: true
+    container_scanning: false
+
+  # Performance configuration
+  performance:
+    enabled: true
+    profiling: true
+    benchmarking: true
+
+  # Accessibility configuration
+  accessibility:
+    enabled: true
+    wcag_level: "AA"
+    automated_testing: true
+
+# Final configuration
+finalize:
+  # Commands to run after analysis
+  - command: "echo 'Code Climate analysis completed'"
+    directory: "."

@@ -1,0 +1,56 @@
+{
+    "name": "Katya Development Environment",
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+        "ghcr.io/devcontainers/features/flutter:1": {
+            "version": "stable",
+            "additionalVersions": "3.10.0"
+        },
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "18"
+        },
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {},
+        "ghcr.io/devcontainers/features/docker-in-docker:1": {}
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "Dart-Code.flutter",
+                "Dart-Code.dart-code",
+                "ms-vscode.vscode-json",
+                "redhat.vscode-yaml",
+                "ms-vscode.vscode-typescript-next",
+                "esbenp.prettier-vscode",
+                "ms-vscode.vscode-eslint",
+                "GitHub.copilot",
+                "GitHub.copilot-chat",
+                "ms-vscode.vscode-docker",
+                "ms-vscode-remote.remote-containers"
+            ],
+            "settings": {
+                "dart.flutterSdkPath": "/usr/local/flutter",
+                "dart.sdkPath": "/usr/local/flutter/bin/cache/dart-sdk",
+                "flutter.sdkPath": "/usr/local/flutter",
+                "editor.formatOnSave": true,
+                "editor.codeActionsOnSave": {
+                    "source.fixAll": "explicit",
+                    "source.organizeImports": "explicit"
+                },
+                "dart.lineLength": 120,
+                "flutter.hotReloadOnSave": "all"
+            }
+        }
+    },
+    "forwardPorts": [
+        3000,
+        5000,
+        8000,
+        8080
+    ],
+    "postCreateCommand": "flutter doctor && flutter pub get",
+    "remoteUser": "vscode",
+    "mounts": [
+        "source=${localWorkspaceFolder}/.git,target=/workspaces/${localWorkspaceFolderBasename}/.git,type=bind,consistency=cached"
+    ]
+}

@@ -1,0 +1,27 @@
+header:
+  license:
+    spdx-id: MIT
+    copyright-owner: Katya Systems, LLC
+
+  paths:
+    - '**/*.dart'
+    - '**/*.py'
+    - '**/*.sh'
+    - '**/*.yml'
+    - '**/*.yaml'
+    - '**/*.json'
+    - '**/*.md'
+
+  paths-ignore:
+    - 'android/**'
+    - 'ios/**'
+    - 'linux/**'
+    - 'macos/**'
+    - 'windows/**'
+    - 'build/**'
+    - '.dart_tool/**'
+    - 'pubspec.lock'
+    - 'coverage/**'
+    - 'test/**'
+
+  comment: on-failure

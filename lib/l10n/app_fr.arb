@@ -1,0 +1,111 @@
+{
+  "@@locale": "fr",
+  "appName": "Katya",
+  "@appName": {
+    "description": "The name of the application"
+  },
+  "welcome": "Bienvenue sur Katya",
+  "@welcome": {
+    "description": "Welcome message shown to users"
+  },
+  "login": "Se Connecter",
+  "@login": {
+    "description": "Login button text"
+  },
+  "logout": "Se Déconnecter",
+  "@logout": {
+    "description": "Logout button text"
+  },
+  "settings": "Paramètres",
+  "@settings": {
+    "description": "Settings menu item"
+  },
+  "chat": "Chat",
+  "@chat": {
+    "description": "Chat section title"
+  },
+  "send": "Envoyer",
+  "@send": {
+    "description": "Send message button"
+  },
+  "message": "Message",
+  "@message": {
+    "description": "Message input placeholder"
+  },
+  "connecting": "Connexion...",
+  "@connecting": {
+    "description": "Connection status message"
+  },
+  "connected": "Connecté",
+  "@connected": {
+    "description": "Connected status message"
+  },
+  "disconnected": "Déconnecté",
+  "@disconnected": {
+    "description": "Disconnected status message"
+  },
+  "error": "Erreur",
+  "@error": {
+    "description": "Generic error message"
+  },
+  "retry": "Réessayer",
+  "@retry": {
+    "description": "Retry button text"
+  },
+  "cancel": "Annuler",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "save": "Sauvegarder",
+  "@save": {
+    "description": "Save button text"
+  },
+  "delete": "Supprimer",
+  "@delete": {
+    "description": "Delete button text"
+  },
+  "edit": "Modifier",
+  "@edit": {
+    "description": "Edit button text"
+  },
+  "search": "Rechercher",
+  "@search": {
+    "description": "Search input placeholder"
+  },
+  "loading": "Chargement...",
+  "@loading": {
+    "description": "Loading indicator text"
+  },
+  "noResults": "Aucun résultat trouvé",
+  "@noResults": {
+    "description": "No results found message"
+  },
+  "profile": "Profil",
+  "@profile": {
+    "description": "User profile section"
+  },
+  "notifications": "Notifications",
+  "@notifications": {
+    "description": "Notifications settings"
+  },
+  "privacy": "Confidentialité",
+  "@privacy": {
+    "description": "Privacy settings"
+  },
+  "security": "Sécurité",
+  "@security": {
+    "description": "Security settings"
+  },
+  "about": "À Propos",
+  "@about": {
+    "description": "About section"
+  },
+  "help": "Aide",
+  "@help": {
+    "description": "Help section"
+  },
+  "feedback": "Commentaires",
+  "@feedback": {
+    "description": "Feedback section"
+  }
+}

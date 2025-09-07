@@ -2,44 +2,83 @@ name: Release
 
 on:
   push:
-    tags: [ 'v*' ]
+    tags:
+      - 'v*'
 
 jobs:
-  create-release:
-    name: Create Release
+  release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        with:
-          generate_release_notes: true
-          files: |
-            build/app/outputs/flutter-apk/app-release.apk
-            build/app/outputs/bundle/release/app-release.aab
-            build/web/
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
 
-  build-artifacts:
-    name: Build Artifacts
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.0.0'
-      - run: flutter pub get
-      - run: flutter build apk --release
-      - run: flutter build appbundle --release
-      - run: flutter build web --release
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: release-artifacts
-          path: |
-            build/app/outputs/flutter-apk/app-release.apk
-            build/app/outputs/bundle/release/app-release.aab
-            build/web/
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.10.0'
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Build Android APK
+      run: flutter build apk --release
+
+    - name: Build Android AAB
+      run: flutter build appbundle --release
+
+    - name: Build iOS
+      run: flutter build ios --release --no-codesign
+
+    - name: Build Web
+      run: flutter build web --release
+
+    - name: Generate changelog
+      id: changelog
+      run: |
+        echo "## What's Changed" > changelog.md
+        echo "" >> changelog.md
+        git log --pretty=format:"* %s (%h)" $(git describe --tags --abbrev=0 HEAD^)..HEAD >> changelog.md
+        echo "changelog<<EOF" >> $GITHUB_OUTPUT
+        cat changelog.md >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: ${{ steps.changelog.outputs.changelog }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Android APK
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./build/app/outputs/flutter-apk/app-release.apk
+        asset_name: katya-${{ github.ref_name }}-android.apk
+        asset_content_type: application/vnd.android.package-archive
+
+    - name: Upload Android AAB
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./build/app/outputs/bundle/release/app-release.aab
+        asset_name: katya-${{ github.ref_name }}-android.aab
+        asset_content_type: application/vnd.android.package-archive
+
+    - name: Upload Web Build
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./build/web
+        asset_name: katya-${{ github.ref_name }}-web.zip
+        asset_content_type: application/zip

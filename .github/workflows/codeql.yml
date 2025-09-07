@@ -1,35 +1,17 @@
-# For most projects, this workflow file will not need changing; you simply need
-# to commit it to your repository.
-#
-# You may wish to alter this file to override the set of languages analyzed,
-# or to provide custom queries or build logic.
-#
-# ******** NOTE ********
-# We have attempted to detect the languages in your repository. Please check
-# the `language` matrix defined below to confirm you have the correct set of
-# supported CodeQL languages.
-#
-name: "CodeQL"
+name: "CodeQL Security Scan"
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "master", "develop" ]
   pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [ "main" ]
+    branches: [ "main", "master", "develop" ]
   schedule:
-    - cron: '45 21 * * 2'
+    - cron: '0 6 * * 1'  # Weekly on Monday at 6 AM UTC
 
 jobs:
   analyze:
     name: Analyze
-    # Runner size impacts CodeQL analysis time. To learn more, please see:
-    #   - https://gh.io/recommended-hardware-resources-for-running-codeql
-    #   - https://gh.io/supported-runners-and-hardware-resources
-    #   - https://gh.io/using-larger-runners
-    # Consider using larger runners for possible analysis time improvements.
-    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
-    timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
+    runs-on: ubuntu-latest
     permissions:
       actions: read
       contents: read
@@ -38,45 +20,410 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'cpp', 'java', 'javascript', 'python', 'ruby', 'swift' ]
-        # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby', 'swift' ]
-        # Use only 'java' to analyze code written in Java, Kotlin or both
-        # Use only 'javascript' to analyze code written in JavaScript, TypeScript or both
+        language: [ 'javascript', 'python', 'java' ]
+        # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
         # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
-    # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
         # If you wish to specify custom queries, you can do so here or in a config file.
         # By default, queries listed here will override any specified in a config file.
         # Prefix the list here with "+" to use these queries and those in the config file.
 
-        # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
+        # Details on CodeQL's query packs refer to : https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
         # queries: security-extended,security-and-quality
 
+    - name: Setup Flutter (for Dart/Flutter analysis)
+      if: matrix.language == 'java'
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.19.0'
 
-    # Autobuild attempts to build any compiled languages (C/C++, C#, Go, Java, or Swift).
-    # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
+    - name: Install Flutter dependencies
+      if: matrix.language == 'java'
+      run: |
+        flutter pub get
+        flutter pub upgrade
 
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
+    - name: Setup Node.js (for JavaScript analysis)
+      if: matrix.language == 'javascript'
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
 
-    #   If the Autobuild fails above, remove it and uncomment the following three lines.
-    #   modify them (or add more) to build your code if your project, please refer to the EXAMPLE below for guidance.
+    - name: Install JavaScript dependencies
+      if: matrix.language == 'javascript'
+      run: |
+        npm ci
 
-    # - run: |
-    #     echo "Run, Build Application using script"
-    #     ./location_of_script_within_repo/buildscript.sh
+    - name: Setup Python (for Python analysis)
+      if: matrix.language == 'python'
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install Python dependencies
+      if: matrix.language == 'python'
+      run: |
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      uses: github/codeql-action/analyze@v3
       with:
         category: "/language:${{matrix.language}}"
+
+    - name: Upload SARIF results
+      if: always()
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: results.sarif
+        category: "/language:${{matrix.language}}"
+
+  security-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.19.0'
+
+    - name: Run Flutter security audit
+      run: |
+        flutter pub get
+        flutter pub outdated
+        flutter pub deps
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Run npm audit
+      run: |
+        npm audit --audit-level moderate
+        npm audit --json > npm-audit-results.json
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Run Python security scan
+      run: |
+        pip install safety
+        safety check --json > safety-results.json
+
+    - name: Generate security report
+      run: |
+        echo "# Security Audit Report" > security-report.md
+        echo "" >> security-report.md
+        echo "Generated: $(date)" >> security-report.md
+        echo "Commit: ${{ github.sha }}" >> security-report.md
+        echo "" >> security-report.md
+
+        echo "## Flutter Dependencies" >> security-report.md
+        flutter pub deps | head -20 >> security-report.md
+        echo "" >> security-report.md
+
+        echo "## NPM Audit Results" >> security-report.md
+        if [ -f npm-audit-results.json ]; then
+          cat npm-audit-results.json | jq '.metadata' >> security-report.md
+        else
+          echo "No npm audit results available" >> security-report.md
+        fi
+        echo "" >> security-report.md
+
+        echo "## Python Safety Results" >> security-report.md
+        if [ -f safety-results.json ]; then
+          cat safety-results.json >> security-report.md
+        else
+          echo "No safety scan results available" >> security-report.md
+        fi
+
+    - name: Upload security report
+      uses: actions/upload-artifact@v4
+      with:
+        name: security-audit-report
+        path: security-report.md
+
+    - name: Create security issue (if vulnerabilities found)
+      if: failure()
+      run: |
+        # Check if there are high/critical vulnerabilities
+        if grep -q '"severity": "high\|critical"' npm-audit-results.json 2>/dev/null || \
+           grep -q '"severity": "high\|critical"' safety-results.json 2>/dev/null; then
+
+          echo "High or critical vulnerabilities found!"
+
+          # Create GitHub issue
+          gh issue create \
+            --title "🚨 Security Vulnerabilities Detected" \
+            --body "Automated security scan has detected high or critical vulnerabilities that need immediate attention.
+
+**Details:**
+- Scan Date: $(date)
+- Commit: ${{ github.sha }}
+- Workflow: ${{ github.workflow }}
+
+Please review the security audit report and address these vulnerabilities promptly.
+
+**Next Steps:**
+1. Review the detailed security report
+2. Update vulnerable dependencies
+3. Test fixes thoroughly
+4. Deploy security patches
+
+/cc @katya-project/security-team" \
+            --label "security,urgent" \
+            --assignee "katya-project/security-team"
+        fi
+
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Dependency Review
+      uses: actions/dependency-review-action@v4
+      with:
+        # Optional: add configuration for severity threshold
+        # severity-threshold: moderate
+
+        # Optional: add configuration for license checking
+        # license-check: true
+        # allow-licenses: MIT, Apache-2.0, BSD-3-Clause
+
+        # Optional: add configuration for vulnerability checking
+        # vulnerability-check: true
+
+        # Optional: add configuration for dependency scanning
+        # dependency-scan: true
+
+        # Optional: add configuration for base ref
+        base-ref: 'main'
+        head-ref: '${{ github.event.pull_request.head.sha }}'
+
+  trivy-scan:
+    name: Trivy Security Scan
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v3
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+    - name: Generate Trivy report
+      if: always()
+      run: |
+        echo "# Trivy Security Scan Report" > trivy-report.md
+        echo "" >> trivy-report.md
+        echo "Generated: $(date)" >> trivy-report.md
+        echo "Commit: ${{ github.sha }}" >> trivy-report.md
+        echo "" >> trivy-report.md
+
+        # Convert SARIF to readable format
+        if [ -f trivy-results.sarif ]; then
+          # Extract vulnerability information
+          jq -r '.runs[0].results[]? | select(.level == "error" or .level == "warning") | "- **\(.ruleId)**: \(.message.text)"' trivy-results.sarif >> trivy-report.md 2>/dev/null || echo "No critical vulnerabilities found" >> trivy-report.md
+        else
+          echo "No scan results available" >> trivy-report.md
+        fi
+
+    - name: Upload Trivy report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: trivy-security-report
+        path: trivy-report.md
+
+  summary:
+    name: Security Scan Summary
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [analyze, security-audit, dependency-review, trivy-scan]
+
+    steps:
+    - name: Generate summary report
+      run: |
+        echo "# 🔒 Security Scan Summary" > summary.md
+        echo "" >> summary.md
+        echo "Generated: $(date)" >> summary.md
+        echo "Repository: ${{ github.repository }}" >> summary.md
+        echo "Workflow Run: ${{ github.run_id }}" >> summary.md
+        echo "" >> summary.md
+
+        echo "## 📊 Scan Results" >> summary.md
+        echo "" >> summary.md
+
+        # Analyze job status
+        if [ "${{ needs.analyze.result }}" == "success" ]; then
+          echo "✅ **CodeQL Analysis**: Passed" >> summary.md
+        elif [ "${{ needs.analyze.result }}" == "failure" ]; then
+          echo "❌ **CodeQL Analysis**: Failed" >> summary.md
+        else
+          echo "⚠️ **CodeQL Analysis**: Skipped/Inconclusive" >> summary.md
+        fi
+
+        # Security audit job status
+        if [ "${{ needs.security-audit.result }}" == "success" ]; then
+          echo "✅ **Security Audit**: Passed" >> summary.md
+        elif [ "${{ needs.security-audit.result }}" == "failure" ]; then
+          echo "❌ **Security Audit**: Failed" >> summary.md
+        else
+          echo "⚠️ **Security Audit**: Skipped/Inconclusive" >> summary.md
+        fi
+
+        # Dependency review job status
+        if [ "${{ needs.dependency-review.result }}" == "success" ]; then
+          echo "✅ **Dependency Review**: Passed" >> summary.md
+        elif [ "${{ needs.dependency-review.result }}" == "failure" ]; then
+          echo "❌ **Dependency Review**: Failed" >> summary.md
+        else
+          echo "⚠️ **Dependency Review**: Skipped/Inconclusive" >> summary.md
+        fi
+
+        # Trivy scan job status
+        if [ "${{ needs.trivy-scan.result }}" == "success" ]; then
+          echo "✅ **Trivy Scan**: Passed" >> summary.md
+        elif [ "${{ needs.trivy-scan.result }}" == "failure" ]; then
+          echo "❌ **Trivy Scan**: Failed" >> summary.md
+        else
+          echo "⚠️ **Trivy Scan**: Skipped/Inconclusive" >> summary.md
+        fi
+
+        echo "" >> summary.md
+        echo "## 📋 Recommendations" >> summary.md
+        echo "" >> summary.md
+
+        if [ "${{ needs.analyze.result }}" == "failure" ] || \
+           [ "${{ needs.security-audit.result }}" == "failure" ] || \
+           [ "${{ needs.dependency-review.result }}" == "failure" ] || \
+           [ "${{ needs.trivy-scan.result }}" == "failure" ]; then
+          echo "⚠️ **Action Required**: Some security scans failed. Please review the detailed reports and address any issues." >> summary.md
+          echo "" >> summary.md
+          echo "### Next Steps:" >> summary.md
+          echo "1. Review individual scan reports for details" >> summary.md
+          echo "2. Address high-priority security issues" >> summary.md
+          echo "3. Update vulnerable dependencies" >> summary.md
+          echo "4. Re-run security scans after fixes" >> summary.md
+          echo "5. Consider security training for team members" >> summary.md
+        else
+          echo "✅ **All Clear**: No critical security issues detected." >> summary.md
+          echo "" >> summary.md
+          echo "### Maintenance:" >> summary.md
+          echo "- Keep dependencies updated" >> summary.md
+          echo "- Monitor for new security advisories" >> summary.md
+          echo "- Regular security training" >> summary.md
+        fi
+
+        echo "" >> summary.md
+        echo "---" >> summary.md
+        echo "*This report was generated automatically by the Security Scan workflow.*" >> summary.md
+
+    - name: Upload summary report
+      uses: actions/upload-artifact@v4
+      with:
+        name: security-summary-report
+        path: summary.md
+
+    - name: Send notification
+      if: always()
+      run: |
+        if [ "${{ needs.analyze.result }}" == "failure" ] || \
+           [ "${{ needs.security-audit.result }}" == "failure" ] || \
+           [ "${{ needs.dependency-review.result }}" == "failure" ] || \
+           [ "${{ needs.trivy-scan.result }}" == "failure" ]; then
+          STATUS="❌ SECURITY ISSUES DETECTED"
+          COLOR="danger"
+        else
+          STATUS="✅ Security Scan Completed"
+          COLOR="good"
+        fi
+
+        # Create Slack notification payload
+        cat > slack-payload.json << EOF
+        {
+          "channel": "#security",
+          "username": "Katya Security Bot",
+          "icon_emoji": ":shield:",
+          "attachments": [
+            {
+              "color": "$COLOR",
+              "title": "$STATUS",
+              "fields": [
+                {
+                  "title": "Repository",
+                  "value": "${{ github.repository }}",
+                  "short": true
+                },
+                {
+                  "title": "Workflow",
+                  "value": "${{ github.workflow }}",
+                  "short": true
+                },
+                {
+                  "title": "CodeQL",
+                  "value": "${{ needs.analyze.result }}",
+                  "short": true
+                },
+                {
+                  "title": "Security Audit",
+                  "value": "${{ needs.security-audit.result }}",
+                  "short": true
+                },
+                {
+                  "title": "Dependencies",
+                  "value": "${{ needs.dependency-review.result }}",
+                  "short": true
+                },
+                {
+                  "title": "Trivy Scan",
+                  "value": "${{ needs.trivy-scan.result }}",
+                  "short": true
+                }
+              ],
+              "footer": "GitHub Actions",
+              "ts": $(date +%s)
+            }
+          ]
+        }
+        EOF
+
+        # Send to Slack if webhook is configured
+        if [ ! -z "${{ secrets.SLACK_WEBHOOK }}" ]; then
+          curl -X POST -H 'Content-type: application/json' \
+            --data @slack-payload.json \
+            ${{ secrets.SLACK_WEBHOOK }}
+        fi
