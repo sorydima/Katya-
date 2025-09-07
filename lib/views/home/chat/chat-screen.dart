@@ -460,18 +460,7 @@ class ChatScreenState extends State<ChatScreen> {
           ),
         ),
         child: EmojiPicker(
-          config: Config(
-            columns: 9,
-            indicatorColor: Theme.of(context).colorScheme.secondary,
-            bgColor: Theme.of(context).scaffoldBackgroundColor,
-            categoryIcons: CategoryIcons(
-              smileyIcon: Icons.tag_faces_rounded,
-              objectIcon: Icons.lightbulb,
-              travelIcon: Icons.flight,
-              activityIcon: Icons.sports_soccer,
-              symbolIcon: Icons.tag,
-            ),
-          ),
+          config: const Config(),
           onEmojiSelected: (category, emoji) {
             props!.onToggleReaction(
               emoji: emoji,

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 
 <head>
   <!--
@@ -12,23 +12,42 @@
     For more details:
     * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
   -->
-  <base href="/web/">
+  <base href="/">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0175C2">
   <meta name="description" content="Hi! I'm Katya ® 👽! 👩🏻‍💻 🕵🏻‍♀️ An AI 🧠 multifunctional social blockchain platform! 👽">
+  <meta property="og:title" content="Katya ® 👽 Social AI Platform">
+  <meta property="og:description" content="AI multifunctional social blockchain platform.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="icons/Icon-512.png">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="Hi! I'm Katya ® 👽! 👩🏻‍💻 🕵🏻‍♀️ An AI 🧠 multifunctional social blockchain platform! 👽">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/Icon-192.png">
+  <link rel="icon" sizes="192x192" href="icons/Icon-192.png">
+  <link rel="icon" sizes="512x512" href="icons/Icon-512.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+  <meta name="msapplication-TileColor" content="#0175C2">
+  <meta name="msapplication-config" content="/browserconfig.xml">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png" />
 
   <title>Katya ® 👽! 👩🏻‍💻 🕵🏻‍♀️</title>
+  <link rel="canonical" href="https://katya.wtf/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Katya ® 👽 Social AI Platform">
+  <meta name="twitter:description" content="AI multifunctional social blockchain platform.">
+  <meta name="twitter:image" content="icons/Icon-512.png">
   <link rel="manifest" href="manifest.json">
+  <link rel="preload" href="assets/fonts/MaterialIcons-Regular.otf" as="font" type="font/otf" crossorigin>
   <link rel="stylesheet" type="text/css" href="splash/style.css">
 </head>
 
@@ -37,7 +56,7 @@
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
   <script>
-    var serviceWorkerVersion = null;
+    var serviceWorkerVersion = "{{flutter_service_worker_version}}";
     var scriptLoaded = false;
     function loadMainDartJs() {
       if (scriptLoaded) {
@@ -100,7 +119,20 @@
       loadMainDartJs();
     }
   </script>
-  <script src="assets/assets/js/package/olm.js"></script>
+  <script>
+    (function loadOlm() {
+      try {
+        var s = document.createElement('script');
+        s.src = 'assets/assets/js/package/olm.js';
+        s.async = true;
+        s.onload = function () { console.log('olm.js loaded'); };
+        s.onerror = function () { console.warn('olm.js not found, continuing without it'); };
+        document.head.appendChild(s);
+      } catch (e) {
+        console.warn('olm.js load failed:', e);
+      }
+    })();
+  </script>
   <picture id="splash">
     <source srcset="splash/img/light-1x.png 1x, splash/img/light-2x.png 2x, splash/img/light-3x.png 3x, splash/img/light-4x.png 4x" media="(prefers-color-scheme: light) or (prefers-color-scheme: no-preference)">
     <source srcset="splash/img/dark-1x.png 1x, splash/img/dark-2x.png 2x, splash/img/dark-3x.png 3x, splash/img/dark-4x.png 4x" media="(prefers-color-scheme: dark)">

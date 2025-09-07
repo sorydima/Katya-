@@ -1,3 +1,30 @@
+# Keep Flutter/Dart entry points
+-keep class io.flutter.** { *; }
+-keep class io.flutter.plugins.** { *; }
+-keep class com.google.gson.** { *; }
+
+# Google Play Core splitinstall (deferred components)
+-dontwarn com.google.android.play.core.**
+-keep class com.google.android.play.core.** { *; }
+-keep interface com.google.android.play.core.** { *; }
+-keep class io.flutter.embedding.engine.deferredcomponents.** { *; }
+
+# Drift (Moor) generated classes and sqlite
+-keep class com.squareup.sqldelight.** { *; }
+-keep class androidx.sqlite.** { *; }
+
+# Kotlin metadata
+-keepclassmembers class ** {
+    @kotlin.Metadata *;
+}
+
+# Prevent stripping of classes with reflection usage
+-keepattributes *Annotation*
+
+# Suppress optional XML stream/Tika classes warnings (not used at runtime on Android)
+-dontwarn javax.xml.stream.**
+-dontwarn org.apache.tika.**
+
 # Keep SQLCipher
 -keep class net.sqlcipher.** { *; }
 

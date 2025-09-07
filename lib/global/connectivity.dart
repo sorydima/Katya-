@@ -5,7 +5,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 class ConnectionService {
   static ConnectivityResult? lastStatus;
   static ConnectivityResult? currentStatus;
-  static StreamSubscription<ConnectivityResult>? connectivity;
+  static StreamSubscription<List<ConnectivityResult>>? connectivity;
 
   static bool isConnected() {
     return currentStatus != null && currentStatus != ConnectivityResult.none;
@@ -14,10 +14,11 @@ class ConnectionService {
   static Future startListener() async {
     if (connectivity != null) return;
 
-    currentStatus = await Connectivity().checkConnectivity();
+    final statuses = await Connectivity().checkConnectivity();
+    currentStatus = statuses.isNotEmpty ? statuses.first : ConnectivityResult.none;
 
-    return connectivity = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      currentStatus = result;
+    return connectivity = Connectivity().onConnectivityChanged.listen((results) {
+      currentStatus = results.isNotEmpty ? results.first : ConnectivityResult.none;
     });
   }
 

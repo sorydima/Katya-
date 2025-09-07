@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:camera/camera.dart';
 import 'package:equatable/equatable.dart';
@@ -193,7 +194,8 @@ class ChatInputState extends State<ChatInput> {
     widget.focusNode.unfocus();
 
     setState(() {
-      showAttachments = !showAttachments;
+      // on web, limit attachments UI to avoid unsupported native flows
+      showAttachments = kIsWeb ? false : !showAttachments;
     });
   }
 
@@ -219,7 +221,7 @@ class ChatInputState extends State<ChatInput> {
     //   source: ImageSource.gallery,
     // );
 
-    final pickerResult = await ImagePicker().getImage(
+    final pickerResult = await ImagePicker().pickImage(
       source: ImageSource.gallery,
     );
 

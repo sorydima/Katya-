@@ -56,7 +56,7 @@ class ModalImageOptions extends StatelessWidget {
                 style: Theme.of(context).textTheme.subtitle1,
               ),
               onTap: () async {
-                final PickedFile? image = await ImagePicker().getImage(
+                final XFile? image = await ImagePicker().pickImage(
                   source: ImageSource.camera,
                   maxWidth: Dimensions.avatarSizeMax,
                   maxHeight: Dimensions.avatarSizeMax,
@@ -83,7 +83,7 @@ class ModalImageOptions extends StatelessWidget {
                 style: Theme.of(context).textTheme.subtitle1,
               ),
               onTap: () async {
-                final PickedFile? image = await ImagePicker().getImage(
+                final XFile? image = await ImagePicker().pickImage(
                   source: ImageSource.gallery,
                   maxWidth: Dimensions.avatarSizeMax,
                   maxHeight: Dimensions.avatarSizeMax,
