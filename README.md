@@ -10,7 +10,6 @@ https://api.codemagic.io/apps/68bd8d5ba7b9336e28030270/68bd8d5ba7b9336e2803026f/
 
 [![Codemagic build status](https://api.codemagic.io/apps/68bd8d5ba7b9336e28030270/68bd8d5ba7b9336e2803026f/status_badge.svg)](https://codemagic.io/app/68bd8d5ba7b9336e28030270/68bd8d5ba7b9336e2803026f/latest_build)
 [![codecov](https://codecov.io/gh/your-username/katya/branch/main/graph/badge.svg)](https://codecov.io/gh/your-username/katya)
-[![CodeQL](https://github.com/your-username/katya/workflows/CodeQL/badge.svg)](https://github.com/your-username/katya/security/code-scanning)
 [![Contributors](https://img.shields.io/github/contributors/your-username/katya)](https://github.com/your-username/katya/graphs/contributors)
 
 ## 🤔 Why
