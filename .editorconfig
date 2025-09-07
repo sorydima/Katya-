@@ -1,0 +1,143 @@
+# EditorConfig is a file format and collection of text editor plugins
+# for maintaining consistent coding styles between different editors and IDEs
+# See: https://editorconfig.org
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Dart/Flutter files
+[*.dart]
+indent_style = space
+indent_size = 2
+max_line_length = 80
+
+# YAML files (pubspec.yaml, workflow files)
+[*.yaml]
+indent_style = space
+indent_size = 2
+
+[*.yml]
+indent_style = space
+indent_size = 2
+
+# JSON files
+[*.json]
+indent_style = space
+indent_size = 2
+
+# Markdown files
+[*.md]
+trim_trailing_whitespace = false
+max_line_length = 80
+
+# XML files (Android, iOS configs)
+[*.xml]
+indent_style = space
+indent_size = 2
+
+# Gradle files
+[*.gradle]
+indent_style = space
+indent_size = 2
+
+# Shell scripts
+[*.sh]
+indent_style = space
+indent_size = 2
+
+# Git ignore and similar files
+[.gitignore]
+indent_style = space
+indent_size = 2
+
+# License files
+[LICENSE*]
+indent_style = space
+indent_size = 2
+max_line_length = 80
+
+# Documentation files
+[README*]
+trim_trailing_whitespace = false
+max_line_length = 80
+
+[CHANGELOG*]
+trim_trailing_whitespace = false
+max_line_length = 80
+
+[CONTRIBUTING*]
+trim_trailing_whitespace = false
+max_line_length = 80
+
+[CODE_OF_CONDUCT*]
+trim_trailing_whitespace = false
+max_line_length = 80
+
+[SUPPORT*]
+trim_trailing_whitespace = false
+max_line_length = 80
+
+# Makefiles
+[Makefile]
+indent_style = tab
+
+# Python files (if any scripts)
+[*.py]
+indent_style = space
+indent_size = 4
+max_line_length = 79
+
+# JavaScript/TypeScript files (if any)
+[*.js]
+indent_style = space
+indent_size = 2
+max_line_length = 80
+
+[*.ts]
+indent_style = space
+indent_size = 2
+max_line_length = 80
+
+# HTML files
+[*.html]
+indent_style = space
+indent_size = 2
+max_line_length = 80
+
+# CSS files
+[*.css]
+indent_style = space
+indent_size = 2
+max_line_length = 80
+
+# SQL files
+[*.sql]
+indent_style = space
+indent_size = 2
+max_line_length = 80
+
+# Exclude package directories and build outputs
+[pubspec.lock]
+indent_style = space
+indent_size = 2
+
+[build/]
+indent_style = space
+indent_size = 2
+
+[.dart_tool/]
+indent_style = space
+indent_size = 2
+
+[.idea/]
+indent_style = space
+indent_size = 2
+
+[.vscode/]
+indent_style = space
+indent_size = 2

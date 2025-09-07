@@ -1,0 +1,21 @@
+# This is a CODEOWNERS file. It defines individuals or teams that are responsible for code in the repository.
+# More info: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owners for the entire repository
+* @sorydev
+
+# Specific path owners
+# /src/ @frontend-team
+# /lib/ @backend-team
+# /docs/ @documentation-team
+
+# Example: Assign owners for specific file types
+# *.dart @flutter-team
+# *.md @docs-team
+
+# Example: Assign owners for specific directories
+# /android/ @android-team
+# /ios/ @ios-team
+# /web/ @web-team
+
+# Uncomment and customize the above lines based on your project structure and team members.

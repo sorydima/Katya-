@@ -1,0 +1,70 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  workflow_dispatch:
+
+jobs:
+  deploy-android:
+    name: Deploy Android
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.0.0'
+      - run: flutter pub get
+      - run: flutter build appbundle --release
+      - name: Upload to Google Play (example)
+        run: echo "Uploading app bundle to Google Play would happen here"
+        # Actual deployment would require Google Play API setup
+
+  deploy-ios:
+    name: Deploy iOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.0.0'
+      - run: flutter pub get
+      - run: flutter build ipa --release
+      - name: Upload to App Store (example)
+        run: echo "Uploading IPA to App Store Connect would happen here"
+        # Actual deployment would require Apple Developer account setup
+
+  deploy-web:
+    name: Deploy Web
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.0.0'
+      - run: flutter pub get
+      - run: flutter build web --release
+      - name: Deploy to Firebase Hosting (example)
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+          channelId: live
+          projectId: your-firebase-project-id
+        # Requires Firebase setup and secrets configured
+
+  deploy-desktop:
+    name: Deploy Desktop
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.0.0'
+      - run: flutter pub get
+      - run: flutter build linux --release
+      - run: flutter build windows --release
+      - run: flutter build macos --release
+      - name: Package for distribution (example)
+        run: echo "Packaging desktop applications for distribution"
