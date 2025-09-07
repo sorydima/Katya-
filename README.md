@@ -6,9 +6,9 @@
 
 <br>
 
-[https://api.codemagic.io/apps/6769515be9bff72807db0f01/6769515be9bff72807db0f00/status_badge.svg](https://api.codemagic.io/apps/67d83231739b8b256df330cc/67d83231739b8b256df330cb/status_badge.svg)
+https://api.codemagic.io/apps/68bd8d5ba7b9336e28030270/68bd8d5ba7b9336e2803026f/status_badge.svg
 
-[![Codemagic build status](https://api.codemagic.io/apps/67d83231739b8b256df330cc/67d83231739b8b256df330cb/status_badge.svg)](https://codemagic.io/app/67d83231739b8b256df330cc/67d83231739b8b256df330cb/latest_build)
+[![Codemagic build status](https://api.codemagic.io/apps/68bd8d5ba7b9336e28030270/68bd8d5ba7b9336e2803026f/status_badge.svg)](https://codemagic.io/app/68bd8d5ba7b9336e28030270/68bd8d5ba7b9336e2803026f/latest_build)
 
 ## 🤔 Why
 
