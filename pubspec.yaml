@@ -82,7 +82,7 @@ dependencies:
   http: ^1.5.0
   html: ^0.15.0
   intl: ^0.20.2
-  connectivity_plus: ^6.1.5
+  connectivity_plus: ">=6.1.5 <8.0.0"
   http_parser: ^4.0.0
   easy_localization: ^3.0.0
   flutter_dotenv: ^6.0.0
