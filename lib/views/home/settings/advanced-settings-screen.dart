@@ -1,10 +1,7 @@
 import 'package:equatable/equatable.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/notifications.dart';
@@ -17,10 +14,12 @@ import 'package:katya/store/sync/actions.dart';
 import 'package:katya/store/sync/service/actions.dart';
 import 'package:katya/store/sync/service/service.dart';
 import 'package:katya/store/user/model.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/appbars/appbar-normal.dart';
 import 'package:katya/views/widgets/dialogs/dialog-text-input.dart';
-import 'package:katya/utils/theme_compatibility.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:redux/redux.dart';
 
 class _Props extends Equatable {
   final bool syncing;
@@ -67,8 +66,7 @@ class _Props extends Equatable {
         currentUser: store.state.authStore.user,
         lastSince: store.state.syncStore.lastSince,
         syncInterval: store.state.settingsStore.syncInterval,
-        syncObserverActive: store.state.syncStore.syncObserver != null &&
-            store.state.syncStore.syncObserver!.isActive,
+        syncObserverActive: store.state.syncStore.syncObserver != null && store.state.syncStore.syncObserver!.isActive,
         onEditSyncInterval: (BuildContext context) {
           return showDialog(
             context: context,
@@ -127,7 +125,7 @@ class _Props extends Equatable {
 }
 
 class AdvancedSettingsScreen extends StatefulWidget {
-  const AdvancedSettingsScreen({Key? key}) : super(key: key);
+  const AdvancedSettingsScreen({super.key});
 
   @override
   AdvancedSettingsScreenState createState() => AdvancedSettingsScreenState();
@@ -204,8 +202,7 @@ class AdvancedSettingsScreenState extends State<AdvancedSettingsScreen> {
                       );
                     },
                     contentPadding: Dimensions.listPadding,
-                    title: Text(
-                        Strings.listItemAdvancedSettingsTestNotifications,
+                    title: Text(Strings.listItemAdvancedSettingsTestNotifications,
                         style: Theme.of(context).textTheme.subtitle1),
                   ),
                 ),
@@ -267,12 +264,10 @@ class AdvancedSettingsScreenState extends State<AdvancedSettingsScreen> {
                     Strings.subtitleSettingsSyncInterval,
                   ),
                   trailing: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Text(
-                      Duration(milliseconds: props.syncInterval)
-                          .inSeconds
-                          .toString(),
-                      style: TextStyle(fontSize: 18.0),
+                      Duration(milliseconds: props.syncInterval).inSeconds.toString(),
+                      style: const TextStyle(fontSize: 18.0),
                     ),
                   ),
                 ),
@@ -288,12 +283,10 @@ class AdvancedSettingsScreenState extends State<AdvancedSettingsScreen> {
                     Strings.subtitleSettingsSyncToggle,
                   ),
                   trailing: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Text(
-                      props.syncObserverActive
-                          ? Strings.labelSyncing
-                          : Strings.labelStopped,
-                      style: TextStyle(fontSize: 18.0),
+                      props.syncObserverActive ? Strings.labelSyncing : Strings.labelStopped,
+                      style: const TextStyle(fontSize: 18.0),
                     ),
                   ),
                 ),
@@ -301,30 +294,23 @@ class AdvancedSettingsScreenState extends State<AdvancedSettingsScreen> {
                   opacity: props.syncing ? 0.5 : 1,
                   child: ListTile(
                     dense: true,
-                    onTap: props.syncing
-                        ? null
-                        : props.onManualSync as void Function()?,
+                    onTap: props.syncing ? null : props.onManualSync as void Function()?,
                     contentPadding: Dimensions.listPadding,
                     title: Text(
                       Strings.listItemSettingsManualSync,
                       style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                            color: props.syncing
-                                ? Color(AppColors.greyDisabled)
-                                : null,
+                            color: props.syncing ? const Color(AppColors.greyDisabled) : null,
                           ),
                     ),
                     subtitle: Text(
                       Strings.subtitleManualSync,
                       style: TextStyle(
-                        color: props.syncing
-                            ? Color(AppColors.greyDisabled)
-                            : null,
+                        color: props.syncing ? const Color(AppColors.greyDisabled) : null,
                       ),
                     ),
                     trailing: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      child: CircularProgressIndicator(
-                          value: props.syncing ? null : 0),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: CircularProgressIndicator(value: props.syncing ? null : 0),
                     ),
                   ),
                 ),
@@ -332,23 +318,19 @@ class AdvancedSettingsScreenState extends State<AdvancedSettingsScreen> {
                   opacity: props.syncing ? 0.5 : 1,
                   child: ListTile(
                     dense: true,
-                    onTap: props.syncing
-                        ? null
-                        : props.onForceFullSync as void Function()?,
+                    onTap: props.syncing ? null : props.onForceFullSync as void Function()?,
                     contentPadding: Dimensions.listPadding,
                     title: Text(
                       Strings.listItemSettingsForceFullSync,
                       style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                            color: props.syncing
-                                ? Color(AppColors.greyDisabled)
-                                : null,
+                            color: props.syncing ? const Color(AppColors.greyDisabled) : null,
                           ),
                     ),
                     subtitle: Text(
                       Strings.subtitleForceFullSync,
                     ),
                     trailing: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: CircularProgressIndicator(
                         value: props.syncing ? null : 0,
                       ),

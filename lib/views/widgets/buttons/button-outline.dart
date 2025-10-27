@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:katya/global/colors.dart';
-
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/views/widgets/loader/loading-indicator.dart';
 
 class ButtonOutline extends StatelessWidget {
   const ButtonOutline({
-    Key? key,
+    super.key,
     this.text,
     this.loading = false,
     this.disabled = false,
@@ -14,7 +13,7 @@ class ButtonOutline extends StatelessWidget {
     this.height,
     this.child,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   final bool loading;
   final bool disabled;
@@ -36,30 +35,29 @@ class ButtonOutline extends StatelessWidget {
             color: Theme.of(context).primaryColor,
           ),
         ),
-        constraints: BoxConstraints(
+        constraints: const BoxConstraints(
           minWidth: Dimensions.buttonWidthMin,
           maxWidth: Dimensions.buttonWidthMax,
         ),
         child: TextButton(
           style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.resolveWith<Color?>(
-              (Set<MaterialState> states) => states.contains(MaterialState.disabled)
-                  ? Color(AppColors.greyLight)
+            foregroundColor: WidgetStateProperty.resolveWith<Color?>(
+              (Set<WidgetState> states) => states.contains(WidgetState.disabled)
+                  ? const Color(AppColors.greyLight)
                   : Theme.of(context).primaryColor,
             ),
-            backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-              (Set<MaterialState> states) =>
-                  states.contains(MaterialState.disabled) ? Colors.grey : null,
+            backgroundColor: WidgetStateProperty.resolveWith<Color?>(
+              (Set<WidgetState> states) => states.contains(WidgetState.disabled) ? Colors.grey : null,
             ),
-            shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
-              (Set<MaterialState> states) => RoundedRectangleBorder(
+            shape: WidgetStateProperty.resolveWith<OutlinedBorder>(
+              (Set<WidgetState> states) => RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(28.0),
               ),
             ),
           ),
           onPressed: disabled ? null : onPressed as void Function()?,
           child: loading
-              ? LoadingIndicator()
+              ? const LoadingIndicator()
               : (child != null
                   ? child!
                   : Text(
@@ -68,8 +66,7 @@ class ButtonOutline extends StatelessWidget {
                         fontSize: 20,
                         fontWeight: FontWeight.w100,
                         letterSpacing: 0.8,
-                        color:
-                            disabled ? Color(AppColors.greyLight) : Theme.of(context).primaryColor,
+                        color: disabled ? const Color(AppColors.greyLight) : Theme.of(context).primaryColor,
                       ),
                     )),
         ),

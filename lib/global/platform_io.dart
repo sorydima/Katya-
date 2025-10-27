@@ -4,13 +4,13 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:katya/global/libs/storage/secure-storage.dart';
+import 'package:katya/global/print.dart';
+import 'package:katya/store/sync/service/service.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:path_provider_linux/path_provider_linux.dart';
 import 'package:sqlite3/open.dart';
-import 'package:katya/global/libs/storage/secure-storage.dart';
-import 'package:katya/global/print.dart';
-import 'package:katya/store/sync/service/service.dart';
 
 Future<void> initPlatformDependencies() async {
   if (!kIsWeb && (Platform.isMacOS || Platform.isWindows || Platform.isLinux)) {
@@ -57,7 +57,7 @@ Future<void> initPlatformDependencies() async {
     try {
       DynamicLibrary.open('libolm.3.dylib');
     } catch (error) {
-      log.info('[macos] ${error.toString()}');
+      log.info('[macos] $error');
     }
   }
 
@@ -70,5 +70,3 @@ Future<void> initPlatformDependencies() async {
     log.info('[main] background service initialized $backgroundSyncStatus');
   }
 }
-
-

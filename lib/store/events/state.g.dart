@@ -63,6 +63,9 @@ EventStore _$EventStoreFromJson(Map<String, dynamic> json) => EventStore(
                 )),
           ) ??
           const {},
+      edit: json['edit'] == null
+          ? const EditState()
+          : EditState.fromJson(json['edit'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$EventStoreToJson(EventStore instance) =>
@@ -74,4 +77,5 @@ Map<String, dynamic> _$EventStoreToJson(EventStore instance) =>
       'receipts': instance.receipts,
       'outbox': instance.outbox,
       'messagesDecrypted': instance.messagesDecrypted,
+      'edit': instance.edit,
     };

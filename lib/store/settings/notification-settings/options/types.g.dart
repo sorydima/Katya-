@@ -10,7 +10,7 @@ NotificationOptions _$NotificationOptionsFromJson(Map<String, dynamic> json) =>
     NotificationOptions(
       muted: json['muted'] as bool? ?? false,
       enabled: json['enabled'] as bool? ?? false,
-      muteTimestamp: json['muteTimestamp'] as int? ?? 0,
+      muteTimestamp: (json['muteTimestamp'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$NotificationOptionsToJson(

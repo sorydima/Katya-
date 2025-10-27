@@ -18,12 +18,10 @@ String selectEventBody(Message message) {
       if (message.typeDecrypted == null && isBodyEmpty) {
         return Strings.labelEncryptedMessage;
       }
-      break;
     case EventTypes.message:
       if (isBodyEmpty) {
         return Strings.labelDeletedMessage;
       }
-      break;
   }
 
   // default encrypted message conditions
@@ -39,7 +37,6 @@ String selectEventBody(Message message) {
         if (isBodyEmpty) {
           return Strings.labelDeletedMessage;
         }
-        break;
       default:
         return Strings.labelEncryptedMessage;
     }
@@ -63,13 +60,11 @@ String selectEventBodyNew(Message message) {
       if (isBodyEmpty) {
         return Strings.labelEncryptedMessage;
       }
-      break;
     case EventTypes.message:
       // ignore: invariant_booleans
       if (isBodyEmpty) {
         return Strings.labelDeletedMessage;
       }
-      break;
     case EventTypes.callInvite:
       return Strings.labelCallInvite;
 
@@ -80,7 +75,6 @@ String selectEventBodyNew(Message message) {
       if (message.typeDecrypted != null) {
         return Strings.labelEncryptedMessage;
       }
-      break;
   }
 
   return message.body ?? '';
@@ -97,8 +91,6 @@ List<Message> filterMessages(
   return messages
     ..removeWhere(
       (message) =>
-          blocked.contains(message.sender) ||
-          message.replacement ||
-          message.typeDecrypted == EventTypes.callCandidates,
+          blocked.contains(message.sender) || message.replacement || message.typeDecrypted == EventTypes.callCandidates,
     );
 }

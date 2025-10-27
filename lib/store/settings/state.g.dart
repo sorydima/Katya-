@@ -9,8 +9,8 @@ part of 'state.dart';
 SettingsStore _$SettingsStoreFromJson(Map<String, dynamic> json) =>
     SettingsStore(
       language: json['language'] as String? ?? '',
-      syncInterval: json['syncInterval'] as int? ?? 2000,
-      syncPollTimeout: json['syncPollTimeout'] as int? ?? 10000,
+      syncInterval: (json['syncInterval'] as num?)?.toInt() ?? 2000,
+      syncPollTimeout: (json['syncPollTimeout'] as num?)?.toInt() ?? 10000,
       chatLists: (json['chatLists'] as List<dynamic>?)
               ?.map((e) => ChatList.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -29,6 +29,10 @@ SettingsStore _$SettingsStoreFromJson(Map<String, dynamic> json) =>
       timeFormat24Enabled: json['timeFormat24Enabled'] as bool? ?? false,
       dismissKeyboardEnabled: json['dismissKeyboardEnabled'] as bool? ?? false,
       autoDownloadEnabled: json['autoDownloadEnabled'] as bool? ?? false,
+      autoDownloadImages: json['autoDownloadImages'] as bool? ?? true,
+      autoDownloadAudio: json['autoDownloadAudio'] as bool? ?? false,
+      autoDownloadVideo: json['autoDownloadVideo'] as bool? ?? false,
+      autoDownloadFiles: json['autoDownloadFiles'] as bool? ?? false,
       chatSettings: (json['chatSettings'] as Map<String, dynamic>?)?.map(
             (k, e) =>
                 MapEntry(k, ChatSetting.fromJson(e as Map<String, dynamic>)),
@@ -78,6 +82,10 @@ Map<String, dynamic> _$SettingsStoreToJson(SettingsStore instance) =>
       'timeFormat24Enabled': instance.timeFormat24Enabled,
       'dismissKeyboardEnabled': instance.dismissKeyboardEnabled,
       'autoDownloadEnabled': instance.autoDownloadEnabled,
+      'autoDownloadImages': instance.autoDownloadImages,
+      'autoDownloadAudio': instance.autoDownloadAudio,
+      'autoDownloadVideo': instance.autoDownloadVideo,
+      'autoDownloadFiles': instance.autoDownloadFiles,
       'syncInterval': instance.syncInterval,
       'syncPollTimeout': instance.syncPollTimeout,
       'globalSortOrder': _$SortOrderEnumMap[instance.globalSortOrder]!,

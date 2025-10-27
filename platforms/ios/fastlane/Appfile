@@ -1,0 +1,20 @@
+app_identifier("com.katya.app")
+
+# iTunes Connect username
+apple_id("developer@katya.im")
+
+# iTunes Connect team ID
+itc_team_id("TEAM_ID")
+
+# Team ID
+team_id("TEAM_ID")
+
+# Fastlane match code signing
+match(
+  type: "development",
+  app_identifier: "com.katya.app",
+  readonly: true
+)
+
+# Provisioning profile
+provisioning_profile_specifier("match Development com.katya.app")

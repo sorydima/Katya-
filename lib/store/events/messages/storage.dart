@@ -38,14 +38,10 @@ extension MessageQueries on StorageDatabase {
     return (delete(messages)..where((tbl) => tbl.id.isIn(messageIds))).go();
   }
 
-
   Future<List<Message>> selectMessagesIds(List<String> messageIds) {
     return (select(messages)
           ..where((tbl) => tbl.id.isIn(messageIds))
-          ..orderBy([
-            (tbl) =>
-                OrderingTerm(expression: tbl.timestamp, mode: OrderingMode.desc)
-          ]))
+          ..orderBy([(tbl) => OrderingTerm(expression: tbl.timestamp, mode: OrderingMode.desc)]))
         .get();
   }
 
@@ -56,13 +52,8 @@ extension MessageQueries on StorageDatabase {
     int limit = DEFAULT_LOAD_LIMIT,
   }) {
     return (select(messages)
-          ..where((tbl) =>
-              tbl.roomId.equals(roomId!) &
-              tbl.timestamp.isSmallerOrEqualValue(timestamp!))
-          ..orderBy([
-            (tbl) =>
-                OrderingTerm(expression: tbl.timestamp, mode: OrderingMode.desc)
-          ])
+          ..where((tbl) => tbl.roomId.equals(roomId!) & tbl.timestamp.isSmallerOrEqualValue(timestamp!))
+          ..orderBy([(tbl) => OrderingTerm(expression: tbl.timestamp, mode: OrderingMode.desc)])
           ..limit(limit, offset: offset))
         .get();
   }
@@ -73,14 +64,10 @@ extension MessageQueries on StorageDatabase {
   /// Query the latest messages in time for a particular room
   /// Helps for the initial load from cold storage
   ///
-  Future<List<Message>> selectMessagesRoom(String roomId,
-      {int offset = 0, int limit = DEFAULT_LOAD_LIMIT}) {
+  Future<List<Message>> selectMessagesRoom(String roomId, {int offset = 0, int limit = DEFAULT_LOAD_LIMIT}) {
     return (select(messages)
           ..where((tbl) => tbl.roomId.equals(roomId))
-          ..orderBy([
-            (tbl) =>
-                OrderingTerm(expression: tbl.timestamp, mode: OrderingMode.desc)
-          ])
+          ..orderBy([(tbl) => OrderingTerm(expression: tbl.timestamp, mode: OrderingMode.desc)])
           ..limit(limit, offset: offset))
         .get();
   }
@@ -112,8 +99,7 @@ extension MessageQueries on StorageDatabase {
     return (select(messages)..where((tbl) => tbl.roomId.equals(roomId))).get();
   }
 
-  Future<List<Message>> searchMessageBodys(String text,
-      {int offset = 0, int limit = DEFAULT_LOAD_LIMIT}) {
+  Future<List<Message>> searchMessageBodys(String text, {int offset = 0, int limit = DEFAULT_LOAD_LIMIT}) {
     return (select(messages)
           ..where((tbl) => tbl.body.like('%$text%'))
           ..limit(limit, offset: offset))
@@ -139,12 +125,10 @@ Future<void> saveMessagesRedacted(
   List<Redaction> redactions, {
   required StorageDatabase storage,
 }) async {
-  final messageIds =
-      redactions.map((redaction) => redaction.redactId ?? '').toList();
+  final messageIds = redactions.map((redaction) => redaction.redactId ?? '').toList();
   final messages = await storage.selectMessagesIds(messageIds);
 
-  final messagesUpdated =
-      messages.map((message) => message.copyWith(body: null)).toList();
+  final messagesUpdated = messages.map((message) => message.copyMessageWith()).toList();
   await storage.insertMessagesBatched(messagesUpdated);
 }
 
@@ -244,13 +228,8 @@ extension DecryptedQueries on StorageDatabase {
     int limit = DEFAULT_LOAD_LIMIT,
   }) {
     return (select(decrypted)
-          ..where((tbl) =>
-              tbl.roomId.equals(roomId!) &
-              tbl.timestamp.isSmallerOrEqualValue(timestamp!))
-          ..orderBy([
-            (tbl) =>
-                OrderingTerm(expression: tbl.timestamp, mode: OrderingMode.desc)
-          ])
+          ..where((tbl) => tbl.roomId.equals(roomId!) & tbl.timestamp.isSmallerOrEqualValue(timestamp!))
+          ..orderBy([(tbl) => OrderingTerm(expression: tbl.timestamp, mode: OrderingMode.desc)])
           ..limit(limit, offset: offset))
         .get();
   }
@@ -262,10 +241,7 @@ extension DecryptedQueries on StorageDatabase {
   }) {
     return (select(decrypted)
           ..where((tbl) => tbl.roomId.equals(roomId))
-          ..orderBy([
-            (tbl) =>
-                OrderingTerm(expression: tbl.timestamp, mode: OrderingMode.desc)
-          ])
+          ..orderBy([(tbl) => OrderingTerm(expression: tbl.timestamp, mode: OrderingMode.desc)])
           ..limit(limit, offset: offset))
         .get();
   }

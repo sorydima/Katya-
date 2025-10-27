@@ -26,13 +26,12 @@ extension UserQueries on StorageDatabase {
     );
   }
 
-  Future<List<User>> selectUsers(List<String> ids,
-      {int offset = 0, int limit = 0}) {
+  Future<List<User>> selectUsers(List<String> ids, {int offset = 0, int limit = 0}) {
     return (select(users)..where((tbl) => tbl.userId.isIn(ids))).get();
   }
 
   Future<List<User>> selectUsersAll() {
-    return (select(users)).get();
+    return select(users).get();
   }
 }
 

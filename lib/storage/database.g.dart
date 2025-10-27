@@ -55,61 +55,46 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
   static const VerificationMeta _pendingMeta =
       const VerificationMeta('pending');
   @override
-  late final GeneratedColumn<bool> pending =
-      GeneratedColumn<bool>('pending', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: true,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("pending" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }));
+  late final GeneratedColumn<bool> pending = GeneratedColumn<bool>(
+      'pending', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("pending" IN (0, 1))'));
   static const VerificationMeta _syncingMeta =
       const VerificationMeta('syncing');
   @override
-  late final GeneratedColumn<bool> syncing =
-      GeneratedColumn<bool>('syncing', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: true,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("syncing" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }));
+  late final GeneratedColumn<bool> syncing = GeneratedColumn<bool>(
+      'syncing', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("syncing" IN (0, 1))'));
   static const VerificationMeta _failedMeta = const VerificationMeta('failed');
   @override
-  late final GeneratedColumn<bool> failed =
-      GeneratedColumn<bool>('failed', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: true,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("failed" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }));
+  late final GeneratedColumn<bool> failed = GeneratedColumn<bool>(
+      'failed', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("failed" IN (0, 1))'));
   static const VerificationMeta _editedMeta = const VerificationMeta('edited');
   @override
-  late final GeneratedColumn<bool> edited =
-      GeneratedColumn<bool>('edited', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: true,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("edited" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }));
+  late final GeneratedColumn<bool> edited = GeneratedColumn<bool>(
+      'edited', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("edited" IN (0, 1))'));
   static const VerificationMeta _replacementMeta =
       const VerificationMeta('replacement');
   @override
-  late final GeneratedColumn<bool> replacement =
-      GeneratedColumn<bool>('replacement', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: true,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("replacement" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }));
+  late final GeneratedColumn<bool> replacement = GeneratedColumn<bool>(
+      'replacement', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("replacement" IN (0, 1))'));
   static const VerificationMeta _timestampMeta =
       const VerificationMeta('timestamp');
   @override
@@ -125,16 +110,13 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
   static const VerificationMeta _hasLinkMeta =
       const VerificationMeta('hasLink');
   @override
-  late final GeneratedColumn<bool> hasLink =
-      GeneratedColumn<bool>('has_link', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("has_link" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }),
-          defaultValue: const Constant(false));
+  late final GeneratedColumn<bool> hasLink = GeneratedColumn<bool>(
+      'has_link', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("has_link" IN (0, 1))'),
+      defaultValue: const Constant(false));
   static const VerificationMeta _bodyMeta = const VerificationMeta('body');
   @override
   late final GeneratedColumn<String> body = GeneratedColumn<String>(
@@ -162,7 +144,6 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
   late final GeneratedColumn<String> url = GeneratedColumn<String>(
       'url', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _fileMeta = const VerificationMeta('file');
   @override
   late final GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String>
       file = GeneratedColumn<String>('file', aliasedName, true,
@@ -210,8 +191,6 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
   late final GeneratedColumn<String> relatedEventId = GeneratedColumn<String>(
       'related_event_id', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _editIdsMeta =
-      const VerificationMeta('editIds');
   @override
   late final GeneratedColumnWithTypeConverter<List<String>, String> editIds =
       GeneratedColumn<String>('edit_ids', aliasedName, false,
@@ -253,9 +232,10 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
         editIds
       ];
   @override
-  String get aliasedName => _alias ?? 'messages';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'messages';
+  String get actualTableName => $name;
+  static const String $name = 'messages';
   @override
   VerificationContext validateIntegrity(Insertable<Message> instance,
       {bool isInserting = false}) {
@@ -364,7 +344,6 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
       context.handle(
           _urlMeta, url.isAcceptableOrUnknown(data['url']!, _urlMeta));
     }
-    context.handle(_fileMeta, const VerificationResult.success());
     if (data.containsKey('type_decrypted')) {
       context.handle(
           _typeDecryptedMeta,
@@ -399,7 +378,6 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
           relatedEventId.isAcceptableOrUnknown(
               data['related_event_id']!, _relatedEventIdMeta));
     }
-    context.handle(_editIdsMeta, const VerificationResult.success());
     return context;
   }
 
@@ -411,62 +389,54 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
     return Message(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      userId: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}user_id']),
-      roomId: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}room_id']),
-      type: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}type']),
       sender: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}sender']),
-      stateKey: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}state_key']),
-      batch: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}batch']),
-      prevBatch: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}prev_batch']),
       timestamp: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}timestamp'])!,
-      body: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}body']),
-      typeDecrypted: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}type_decrypted']),
-      msgtype: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}msgtype']),
-      format: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}format']),
-      file: $MessagesTable.$converterfile.fromSql(attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}file'])),
-      url: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}url']),
-      formattedBody: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}formatted_body']),
-      received: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}received'])!,
-      ciphertext: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}ciphertext']),
-      senderKey: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}sender_key']),
-      deviceId: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}device_id']),
-      algorithm: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}algorithm']),
-      sessionId: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}session_id']),
-      relatedEventId: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}related_event_id']),
-      edited: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}edited'])!,
-      syncing: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}syncing'])!,
+      type: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}type']),
+      roomId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}room_id']),
       pending: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}pending'])!,
+      syncing: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}syncing'])!,
       failed: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}failed'])!,
+      edited: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}edited'])!,
       replacement: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}replacement'])!,
       hasLink: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}has_link'])!,
+      received: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}received'])!,
+      body: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}body']),
+      msgtype: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}msgtype']),
+      format: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}format']),
+      formattedBody: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}formatted_body']),
+      url: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}url']),
+      file: $MessagesTable.$converterfile.fromSql(attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}file'])),
+      typeDecrypted: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}type_decrypted']),
+      ciphertext: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}ciphertext']),
+      algorithm: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}algorithm']),
+      sessionId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}session_id']),
+      senderKey: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sender_key']),
+      deviceId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}device_id']),
+      relatedEventId: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}related_event_id']),
       editIds: $MessagesTable.$convertereditIds.fromSql(attachedDatabase
           .typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}edit_ids'])!),
@@ -791,8 +761,8 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       map['url'] = Variable<String>(url.value);
     }
     if (file.present) {
-      final converter = $MessagesTable.$converterfile;
-      map['file'] = Variable<String>(converter.toSql(file.value));
+      map['file'] =
+          Variable<String>($MessagesTable.$converterfile.toSql(file.value));
     }
     if (typeDecrypted.present) {
       map['type_decrypted'] = Variable<String>(typeDecrypted.value);
@@ -816,8 +786,8 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       map['related_event_id'] = Variable<String>(relatedEventId.value);
     }
     if (editIds.present) {
-      final converter = $MessagesTable.$convertereditIds;
-      map['edit_ids'] = Variable<String>(converter.toSql(editIds.value));
+      map['edit_ids'] = Variable<String>(
+          $MessagesTable.$convertereditIds.toSql(editIds.value));
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -917,61 +887,46 @@ class $DecryptedTable extends Decrypted
   static const VerificationMeta _pendingMeta =
       const VerificationMeta('pending');
   @override
-  late final GeneratedColumn<bool> pending =
-      GeneratedColumn<bool>('pending', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: true,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("pending" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }));
+  late final GeneratedColumn<bool> pending = GeneratedColumn<bool>(
+      'pending', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("pending" IN (0, 1))'));
   static const VerificationMeta _syncingMeta =
       const VerificationMeta('syncing');
   @override
-  late final GeneratedColumn<bool> syncing =
-      GeneratedColumn<bool>('syncing', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: true,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("syncing" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }));
+  late final GeneratedColumn<bool> syncing = GeneratedColumn<bool>(
+      'syncing', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("syncing" IN (0, 1))'));
   static const VerificationMeta _failedMeta = const VerificationMeta('failed');
   @override
-  late final GeneratedColumn<bool> failed =
-      GeneratedColumn<bool>('failed', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: true,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("failed" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }));
+  late final GeneratedColumn<bool> failed = GeneratedColumn<bool>(
+      'failed', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("failed" IN (0, 1))'));
   static const VerificationMeta _editedMeta = const VerificationMeta('edited');
   @override
-  late final GeneratedColumn<bool> edited =
-      GeneratedColumn<bool>('edited', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: true,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("edited" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }));
+  late final GeneratedColumn<bool> edited = GeneratedColumn<bool>(
+      'edited', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("edited" IN (0, 1))'));
   static const VerificationMeta _replacementMeta =
       const VerificationMeta('replacement');
   @override
-  late final GeneratedColumn<bool> replacement =
-      GeneratedColumn<bool>('replacement', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: true,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("replacement" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }));
+  late final GeneratedColumn<bool> replacement = GeneratedColumn<bool>(
+      'replacement', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("replacement" IN (0, 1))'));
   static const VerificationMeta _timestampMeta =
       const VerificationMeta('timestamp');
   @override
@@ -987,16 +942,13 @@ class $DecryptedTable extends Decrypted
   static const VerificationMeta _hasLinkMeta =
       const VerificationMeta('hasLink');
   @override
-  late final GeneratedColumn<bool> hasLink =
-      GeneratedColumn<bool>('has_link', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: false,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("has_link" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }),
-          defaultValue: const Constant(false));
+  late final GeneratedColumn<bool> hasLink = GeneratedColumn<bool>(
+      'has_link', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("has_link" IN (0, 1))'),
+      defaultValue: const Constant(false));
   static const VerificationMeta _bodyMeta = const VerificationMeta('body');
   @override
   late final GeneratedColumn<String> body = GeneratedColumn<String>(
@@ -1024,7 +976,6 @@ class $DecryptedTable extends Decrypted
   late final GeneratedColumn<String> url = GeneratedColumn<String>(
       'url', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _fileMeta = const VerificationMeta('file');
   @override
   late final GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String>
       file = GeneratedColumn<String>('file', aliasedName, true,
@@ -1072,8 +1023,6 @@ class $DecryptedTable extends Decrypted
   late final GeneratedColumn<String> relatedEventId = GeneratedColumn<String>(
       'related_event_id', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _editIdsMeta =
-      const VerificationMeta('editIds');
   @override
   late final GeneratedColumnWithTypeConverter<List<String>, String> editIds =
       GeneratedColumn<String>('edit_ids', aliasedName, false,
@@ -1115,9 +1064,10 @@ class $DecryptedTable extends Decrypted
         editIds
       ];
   @override
-  String get aliasedName => _alias ?? 'decrypted';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'decrypted';
+  String get actualTableName => $name;
+  static const String $name = 'decrypted';
   @override
   VerificationContext validateIntegrity(Insertable<Message> instance,
       {bool isInserting = false}) {
@@ -1226,7 +1176,6 @@ class $DecryptedTable extends Decrypted
       context.handle(
           _urlMeta, url.isAcceptableOrUnknown(data['url']!, _urlMeta));
     }
-    context.handle(_fileMeta, const VerificationResult.success());
     if (data.containsKey('type_decrypted')) {
       context.handle(
           _typeDecryptedMeta,
@@ -1261,7 +1210,6 @@ class $DecryptedTable extends Decrypted
           relatedEventId.isAcceptableOrUnknown(
               data['related_event_id']!, _relatedEventIdMeta));
     }
-    context.handle(_editIdsMeta, const VerificationResult.success());
     return context;
   }
 
@@ -1273,62 +1221,54 @@ class $DecryptedTable extends Decrypted
     return Message(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      userId: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}user_id']),
-      roomId: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}room_id']),
-      type: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}type']),
       sender: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}sender']),
-      stateKey: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}state_key']),
-      batch: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}batch']),
-      prevBatch: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}prev_batch']),
       timestamp: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}timestamp'])!,
-      body: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}body']),
-      typeDecrypted: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}type_decrypted']),
-      msgtype: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}msgtype']),
-      format: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}format']),
-      file: $DecryptedTable.$converterfile.fromSql(attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}file'])),
-      url: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}url']),
-      formattedBody: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}formatted_body']),
-      received: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}received'])!,
-      ciphertext: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}ciphertext']),
-      senderKey: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}sender_key']),
-      deviceId: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}device_id']),
-      algorithm: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}algorithm']),
-      sessionId: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}session_id']),
-      relatedEventId: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}related_event_id']),
-      edited: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}edited'])!,
-      syncing: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}syncing'])!,
+      type: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}type']),
+      roomId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}room_id']),
       pending: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}pending'])!,
+      syncing: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}syncing'])!,
       failed: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}failed'])!,
+      edited: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}edited'])!,
       replacement: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}replacement'])!,
       hasLink: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}has_link'])!,
+      received: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}received'])!,
+      body: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}body']),
+      msgtype: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}msgtype']),
+      format: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}format']),
+      formattedBody: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}formatted_body']),
+      url: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}url']),
+      file: $DecryptedTable.$converterfile.fromSql(attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}file'])),
+      typeDecrypted: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}type_decrypted']),
+      ciphertext: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}ciphertext']),
+      algorithm: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}algorithm']),
+      sessionId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}session_id']),
+      senderKey: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}sender_key']),
+      deviceId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}device_id']),
+      relatedEventId: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}related_event_id']),
       editIds: $DecryptedTable.$convertereditIds.fromSql(attachedDatabase
           .typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}edit_ids'])!),
@@ -1653,8 +1593,8 @@ class DecryptedCompanion extends UpdateCompanion<Message> {
       map['url'] = Variable<String>(url.value);
     }
     if (file.present) {
-      final converter = $DecryptedTable.$converterfile;
-      map['file'] = Variable<String>(converter.toSql(file.value));
+      map['file'] =
+          Variable<String>($DecryptedTable.$converterfile.toSql(file.value));
     }
     if (typeDecrypted.present) {
       map['type_decrypted'] = Variable<String>(typeDecrypted.value);
@@ -1678,8 +1618,8 @@ class DecryptedCompanion extends UpdateCompanion<Message> {
       map['related_event_id'] = Variable<String>(relatedEventId.value);
     }
     if (editIds.present) {
-      final converter = $DecryptedTable.$convertereditIds;
-      map['edit_ids'] = Variable<String>(converter.toSql(editIds.value));
+      map['edit_ids'] = Variable<String>(
+          $DecryptedTable.$convertereditIds.toSql(editIds.value));
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -1774,108 +1714,81 @@ class $RoomsTable extends Rooms with TableInfo<$RoomsTable, Room> {
   static const VerificationMeta _draftingMeta =
       const VerificationMeta('drafting');
   @override
-  late final GeneratedColumn<bool> drafting =
-      GeneratedColumn<bool>('drafting', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: true,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("drafting" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }));
+  late final GeneratedColumn<bool> drafting = GeneratedColumn<bool>(
+      'drafting', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("drafting" IN (0, 1))'));
   static const VerificationMeta _directMeta = const VerificationMeta('direct');
   @override
-  late final GeneratedColumn<bool> direct =
-      GeneratedColumn<bool>('direct', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: true,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("direct" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }));
+  late final GeneratedColumn<bool> direct = GeneratedColumn<bool>(
+      'direct', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("direct" IN (0, 1))'));
   static const VerificationMeta _sendingMeta =
       const VerificationMeta('sending');
   @override
-  late final GeneratedColumn<bool> sending =
-      GeneratedColumn<bool>('sending', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: true,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("sending" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }));
+  late final GeneratedColumn<bool> sending = GeneratedColumn<bool>(
+      'sending', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("sending" IN (0, 1))'));
   static const VerificationMeta _inviteMeta = const VerificationMeta('invite');
   @override
-  late final GeneratedColumn<bool> invite =
-      GeneratedColumn<bool>('invite', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: true,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("invite" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }));
+  late final GeneratedColumn<bool> invite = GeneratedColumn<bool>(
+      'invite', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("invite" IN (0, 1))'));
   static const VerificationMeta _guestEnabledMeta =
       const VerificationMeta('guestEnabled');
   @override
-  late final GeneratedColumn<bool> guestEnabled =
-      GeneratedColumn<bool>('guest_enabled', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: true,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("guest_enabled" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }));
+  late final GeneratedColumn<bool> guestEnabled = GeneratedColumn<bool>(
+      'guest_enabled', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("guest_enabled" IN (0, 1))'));
   static const VerificationMeta _encryptionEnabledMeta =
       const VerificationMeta('encryptionEnabled');
   @override
-  late final GeneratedColumn<bool> encryptionEnabled =
-      GeneratedColumn<bool>('encryption_enabled', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: true,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("encryption_enabled" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }));
+  late final GeneratedColumn<bool> encryptionEnabled = GeneratedColumn<bool>(
+      'encryption_enabled', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("encryption_enabled" IN (0, 1))'));
   static const VerificationMeta _worldReadableMeta =
       const VerificationMeta('worldReadable');
   @override
-  late final GeneratedColumn<bool> worldReadable =
-      GeneratedColumn<bool>('world_readable', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: true,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("world_readable" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }));
+  late final GeneratedColumn<bool> worldReadable = GeneratedColumn<bool>(
+      'world_readable', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("world_readable" IN (0, 1))'));
   static const VerificationMeta _hiddenMeta = const VerificationMeta('hidden');
   @override
-  late final GeneratedColumn<bool> hidden =
-      GeneratedColumn<bool>('hidden', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: true,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("hidden" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }));
+  late final GeneratedColumn<bool> hidden = GeneratedColumn<bool>(
+      'hidden', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("hidden" IN (0, 1))'));
   static const VerificationMeta _archivedMeta =
       const VerificationMeta('archived');
   @override
-  late final GeneratedColumn<bool> archived =
-      GeneratedColumn<bool>('archived', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: true,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("archived" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }));
+  late final GeneratedColumn<bool> archived = GeneratedColumn<bool>(
+      'archived', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("archived" IN (0, 1))'));
   static const VerificationMeta _lastBatchMeta =
       const VerificationMeta('lastBatch');
   @override
@@ -1926,20 +1839,16 @@ class $RoomsTable extends Rooms with TableInfo<$RoomsTable, Room> {
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultValue: const Constant(4));
-  static const VerificationMeta _draftMeta = const VerificationMeta('draft');
   @override
   late final GeneratedColumnWithTypeConverter<Message?, String> draft =
       GeneratedColumn<String>('draft', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<Message?>($RoomsTable.$converterdraft);
-  static const VerificationMeta _replyMeta = const VerificationMeta('reply');
   @override
   late final GeneratedColumnWithTypeConverter<Message?, String> reply =
       GeneratedColumn<String>('reply', aliasedName, true,
               type: DriftSqlType.string, requiredDuringInsert: false)
           .withConverter<Message?>($RoomsTable.$converterreply);
-  static const VerificationMeta _userIdsMeta =
-      const VerificationMeta('userIds');
   @override
   late final GeneratedColumnWithTypeConverter<List<String>, String> userIds =
       GeneratedColumn<String>('user_ids', aliasedName, false,
@@ -1977,9 +1886,10 @@ class $RoomsTable extends Rooms with TableInfo<$RoomsTable, Room> {
         userIds
       ];
   @override
-  String get aliasedName => _alias ?? 'rooms';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'rooms';
+  String get actualTableName => $name;
+  static const String $name = 'rooms';
   @override
   VerificationContext validateIntegrity(Insertable<Room> instance,
       {bool isInserting = false}) {
@@ -2110,9 +2020,6 @@ class $RoomsTable extends Rooms with TableInfo<$RoomsTable, Room> {
           namePriority.isAcceptableOrUnknown(
               data['name_priority']!, _namePriorityMeta));
     }
-    context.handle(_draftMeta, const VerificationResult.success());
-    context.handle(_replyMeta, const VerificationResult.success());
-    context.handle(_userIdsMeta, const VerificationResult.success());
     return context;
   }
 
@@ -2478,16 +2385,16 @@ class RoomsCompanion extends UpdateCompanion<Room> {
       map['name_priority'] = Variable<int>(namePriority.value);
     }
     if (draft.present) {
-      final converter = $RoomsTable.$converterdraft;
-      map['draft'] = Variable<String>(converter.toSql(draft.value));
+      map['draft'] =
+          Variable<String>($RoomsTable.$converterdraft.toSql(draft.value));
     }
     if (reply.present) {
-      final converter = $RoomsTable.$converterreply;
-      map['reply'] = Variable<String>(converter.toSql(reply.value));
+      map['reply'] =
+          Variable<String>($RoomsTable.$converterreply.toSql(reply.value));
     }
     if (userIds.present) {
-      final converter = $RoomsTable.$converteruserIds;
-      map['user_ids'] = Variable<String>(converter.toSql(userIds.value));
+      map['user_ids'] =
+          Variable<String>($RoomsTable.$converteruserIds.toSql(userIds.value));
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -2596,9 +2503,10 @@ class $UsersTable extends Users with TableInfo<$UsersTable, User> {
         avatarUri
       ];
   @override
-  String get aliasedName => _alias ?? 'users';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'users';
+  String get actualTableName => $name;
+  static const String $name = 'users';
   @override
   VerificationContext validateIntegrity(Insertable<User> instance,
       {bool isInserting = false}) {
@@ -2831,7 +2739,6 @@ class $MediasTable extends Medias with TableInfo<$MediasTable, Media> {
   late final GeneratedColumn<String> type = GeneratedColumn<String>(
       'type', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _infoMeta = const VerificationMeta('info');
   @override
   late final GeneratedColumnWithTypeConverter<EncryptInfo?, String> info =
       GeneratedColumn<String>('info', aliasedName, true,
@@ -2840,9 +2747,10 @@ class $MediasTable extends Medias with TableInfo<$MediasTable, Media> {
   @override
   List<GeneratedColumn> get $columns => [mxcUri, data, type, info];
   @override
-  String get aliasedName => _alias ?? 'medias';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'medias';
+  String get actualTableName => $name;
+  static const String $name = 'medias';
   @override
   VerificationContext validateIntegrity(Insertable<Media> instance,
       {bool isInserting = false}) {
@@ -2862,7 +2770,6 @@ class $MediasTable extends Medias with TableInfo<$MediasTable, Media> {
       context.handle(
           _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
     }
-    context.handle(_infoMeta, const VerificationResult.success());
     return context;
   }
 
@@ -2956,8 +2863,8 @@ class MediasCompanion extends UpdateCompanion<Media> {
       map['type'] = Variable<String>(type.value);
     }
     if (info.present) {
-      final converter = $MediasTable.$converterinfo;
-      map['info'] = Variable<String>(converter.toSql(info.value));
+      map['info'] =
+          Variable<String>($MediasTable.$converterinfo.toSql(info.value));
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -3067,9 +2974,10 @@ class $ReactionsTable extends Reactions
         relEventId
       ];
   @override
-  String get aliasedName => _alias ?? 'reactions';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'reactions';
+  String get actualTableName => $name;
+  static const String $name = 'reactions';
   @override
   VerificationContext validateIntegrity(Insertable<Reaction> instance,
       {bool isInserting = false}) {
@@ -3363,8 +3271,6 @@ class $ReceiptsTable extends Receipts with TableInfo<$ReceiptsTable, Receipt> {
   late final GeneratedColumn<int> latestRead = GeneratedColumn<int>(
       'latest_read', aliasedName, true,
       type: DriftSqlType.int, requiredDuringInsert: false);
-  static const VerificationMeta _userReadsMeta =
-      const VerificationMeta('userReads');
   @override
   late final GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String>
       userReads = GeneratedColumn<String>('user_reads', aliasedName, true,
@@ -3374,9 +3280,10 @@ class $ReceiptsTable extends Receipts with TableInfo<$ReceiptsTable, Receipt> {
   @override
   List<GeneratedColumn> get $columns => [eventId, latestRead, userReads];
   @override
-  String get aliasedName => _alias ?? 'receipts';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'receipts';
+  String get actualTableName => $name;
+  static const String $name = 'receipts';
   @override
   VerificationContext validateIntegrity(Insertable<Receipt> instance,
       {bool isInserting = false}) {
@@ -3394,7 +3301,6 @@ class $ReceiptsTable extends Receipts with TableInfo<$ReceiptsTable, Receipt> {
           latestRead.isAcceptableOrUnknown(
               data['latest_read']!, _latestReadMeta));
     }
-    context.handle(_userReadsMeta, const VerificationResult.success());
     return context;
   }
 
@@ -3474,8 +3380,8 @@ class ReceiptsCompanion extends UpdateCompanion<Receipt> {
       map['latest_read'] = Variable<int>(latestRead.value);
     }
     if (userReads.present) {
-      final converter = $ReceiptsTable.$converteruserReads;
-      map['user_reads'] = Variable<String>(converter.toSql(userReads.value));
+      map['user_reads'] = Variable<String>(
+          $ReceiptsTable.$converteruserReads.toSql(userReads.value));
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -3507,7 +3413,6 @@ class $AuthsTable extends Auths with TableInfo<$AuthsTable, Auth> {
       type: DriftSqlType.string,
       requiredDuringInsert: true,
       defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
-  static const VerificationMeta _storeMeta = const VerificationMeta('store');
   @override
   late final GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String>
       store = GeneratedColumn<String>('store', aliasedName, true,
@@ -3516,9 +3421,10 @@ class $AuthsTable extends Auths with TableInfo<$AuthsTable, Auth> {
   @override
   List<GeneratedColumn> get $columns => [id, store];
   @override
-  String get aliasedName => _alias ?? 'auths';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'auths';
+  String get actualTableName => $name;
+  static const String $name = 'auths';
   @override
   VerificationContext validateIntegrity(Insertable<Auth> instance,
       {bool isInserting = false}) {
@@ -3529,7 +3435,6 @@ class $AuthsTable extends Auths with TableInfo<$AuthsTable, Auth> {
     } else if (isInserting) {
       context.missing(_idMeta);
     }
-    context.handle(_storeMeta, const VerificationResult.success());
     return context;
   }
 
@@ -3564,8 +3469,7 @@ class Auth extends DataClass implements Insertable<Auth> {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     if (!nullToAbsent || store != null) {
-      final converter = $AuthsTable.$converterstore;
-      map['store'] = Variable<String>(converter.toSql(store));
+      map['store'] = Variable<String>($AuthsTable.$converterstore.toSql(store));
     }
     return map;
   }
@@ -3602,6 +3506,13 @@ class Auth extends DataClass implements Insertable<Auth> {
         id: id ?? this.id,
         store: store.present ? store.value : this.store,
       );
+  Auth copyWithCompanion(AuthsCompanion data) {
+    return Auth(
+      id: data.id.present ? data.id.value : this.id,
+      store: data.store.present ? data.store.value : this.store,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('Auth(')
@@ -3663,8 +3574,8 @@ class AuthsCompanion extends UpdateCompanion<Auth> {
       map['id'] = Variable<String>(id.value);
     }
     if (store.present) {
-      final converter = $AuthsTable.$converterstore;
-      map['store'] = Variable<String>(converter.toSql(store.value));
+      map['store'] =
+          Variable<String>($AuthsTable.$converterstore.toSql(store.value));
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -3695,7 +3606,6 @@ class $SyncsTable extends Syncs with TableInfo<$SyncsTable, Sync> {
       type: DriftSqlType.string,
       requiredDuringInsert: true,
       defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
-  static const VerificationMeta _storeMeta = const VerificationMeta('store');
   @override
   late final GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String>
       store = GeneratedColumn<String>('store', aliasedName, true,
@@ -3704,9 +3614,10 @@ class $SyncsTable extends Syncs with TableInfo<$SyncsTable, Sync> {
   @override
   List<GeneratedColumn> get $columns => [id, store];
   @override
-  String get aliasedName => _alias ?? 'syncs';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'syncs';
+  String get actualTableName => $name;
+  static const String $name = 'syncs';
   @override
   VerificationContext validateIntegrity(Insertable<Sync> instance,
       {bool isInserting = false}) {
@@ -3717,7 +3628,6 @@ class $SyncsTable extends Syncs with TableInfo<$SyncsTable, Sync> {
     } else if (isInserting) {
       context.missing(_idMeta);
     }
-    context.handle(_storeMeta, const VerificationResult.success());
     return context;
   }
 
@@ -3752,8 +3662,7 @@ class Sync extends DataClass implements Insertable<Sync> {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     if (!nullToAbsent || store != null) {
-      final converter = $SyncsTable.$converterstore;
-      map['store'] = Variable<String>(converter.toSql(store));
+      map['store'] = Variable<String>($SyncsTable.$converterstore.toSql(store));
     }
     return map;
   }
@@ -3790,6 +3699,13 @@ class Sync extends DataClass implements Insertable<Sync> {
         id: id ?? this.id,
         store: store.present ? store.value : this.store,
       );
+  Sync copyWithCompanion(SyncsCompanion data) {
+    return Sync(
+      id: data.id.present ? data.id.value : this.id,
+      store: data.store.present ? data.store.value : this.store,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('Sync(')
@@ -3851,8 +3767,8 @@ class SyncsCompanion extends UpdateCompanion<Sync> {
       map['id'] = Variable<String>(id.value);
     }
     if (store.present) {
-      final converter = $SyncsTable.$converterstore;
-      map['store'] = Variable<String>(converter.toSql(store.value));
+      map['store'] =
+          Variable<String>($SyncsTable.$converterstore.toSql(store.value));
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -3883,7 +3799,6 @@ class $CryptosTable extends Cryptos with TableInfo<$CryptosTable, Crypto> {
       type: DriftSqlType.string,
       requiredDuringInsert: true,
       defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
-  static const VerificationMeta _storeMeta = const VerificationMeta('store');
   @override
   late final GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String>
       store = GeneratedColumn<String>('store', aliasedName, true,
@@ -3892,9 +3807,10 @@ class $CryptosTable extends Cryptos with TableInfo<$CryptosTable, Crypto> {
   @override
   List<GeneratedColumn> get $columns => [id, store];
   @override
-  String get aliasedName => _alias ?? 'cryptos';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'cryptos';
+  String get actualTableName => $name;
+  static const String $name = 'cryptos';
   @override
   VerificationContext validateIntegrity(Insertable<Crypto> instance,
       {bool isInserting = false}) {
@@ -3905,7 +3821,6 @@ class $CryptosTable extends Cryptos with TableInfo<$CryptosTable, Crypto> {
     } else if (isInserting) {
       context.missing(_idMeta);
     }
-    context.handle(_storeMeta, const VerificationResult.success());
     return context;
   }
 
@@ -3940,8 +3855,8 @@ class Crypto extends DataClass implements Insertable<Crypto> {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     if (!nullToAbsent || store != null) {
-      final converter = $CryptosTable.$converterstore;
-      map['store'] = Variable<String>(converter.toSql(store));
+      map['store'] =
+          Variable<String>($CryptosTable.$converterstore.toSql(store));
     }
     return map;
   }
@@ -3978,6 +3893,13 @@ class Crypto extends DataClass implements Insertable<Crypto> {
         id: id ?? this.id,
         store: store.present ? store.value : this.store,
       );
+  Crypto copyWithCompanion(CryptosCompanion data) {
+    return Crypto(
+      id: data.id.present ? data.id.value : this.id,
+      store: data.store.present ? data.store.value : this.store,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('Crypto(')
@@ -4039,8 +3961,8 @@ class CryptosCompanion extends UpdateCompanion<Crypto> {
       map['id'] = Variable<String>(id.value);
     }
     if (store.present) {
-      final converter = $CryptosTable.$converterstore;
-      map['store'] = Variable<String>(converter.toSql(store.value));
+      map['store'] =
+          Variable<String>($CryptosTable.$converterstore.toSql(store.value));
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -4097,15 +4019,12 @@ class $MessageSessionsTable extends MessageSessions
   static const VerificationMeta _inboundMeta =
       const VerificationMeta('inbound');
   @override
-  late final GeneratedColumn<bool> inbound =
-      GeneratedColumn<bool>('inbound', aliasedName, false,
-          type: DriftSqlType.bool,
-          requiredDuringInsert: true,
-          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
-            SqlDialect.sqlite: 'CHECK ("inbound" IN (0, 1))',
-            SqlDialect.mysql: '',
-            SqlDialect.postgres: '',
-          }));
+  late final GeneratedColumn<bool> inbound = GeneratedColumn<bool>(
+      'inbound', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("inbound" IN (0, 1))'));
   static const VerificationMeta _createdAtMeta =
       const VerificationMeta('createdAt');
   @override
@@ -4116,9 +4035,10 @@ class $MessageSessionsTable extends MessageSessions
   List<GeneratedColumn> get $columns =>
       [id, roomId, index, identityKey, session, inbound, createdAt];
   @override
-  String get aliasedName => _alias ?? 'message_sessions';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'message_sessions';
+  String get actualTableName => $name;
+  static const String $name = 'message_sessions';
   @override
   VerificationContext validateIntegrity(Insertable<MessageSession> instance,
       {bool isInserting = false}) {
@@ -4286,6 +4206,19 @@ class MessageSession extends DataClass implements Insertable<MessageSession> {
         inbound: inbound ?? this.inbound,
         createdAt: createdAt ?? this.createdAt,
       );
+  MessageSession copyWithCompanion(MessageSessionsCompanion data) {
+    return MessageSession(
+      id: data.id.present ? data.id.value : this.id,
+      roomId: data.roomId.present ? data.roomId.value : this.roomId,
+      index: data.index.present ? data.index.value : this.index,
+      identityKey:
+          data.identityKey.present ? data.identityKey.value : this.identityKey,
+      session: data.session.present ? data.session.value : this.session,
+      inbound: data.inbound.present ? data.inbound.value : this.inbound,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('MessageSession(')
@@ -4473,9 +4406,10 @@ class $KeySessionsTable extends KeySessions
   @override
   List<GeneratedColumn> get $columns => [id, sessionId, identityKey, session];
   @override
-  String get aliasedName => _alias ?? 'key_sessions';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'key_sessions';
+  String get actualTableName => $name;
+  static const String $name = 'key_sessions';
   @override
   VerificationContext validateIntegrity(Insertable<KeySession> instance,
       {bool isInserting = false}) {
@@ -4595,6 +4529,16 @@ class KeySession extends DataClass implements Insertable<KeySession> {
         identityKey: identityKey ?? this.identityKey,
         session: session.present ? session.value : this.session,
       );
+  KeySession copyWithCompanion(KeySessionsCompanion data) {
+    return KeySession(
+      id: data.id.present ? data.id.value : this.id,
+      sessionId: data.sessionId.present ? data.sessionId.value : this.sessionId,
+      identityKey:
+          data.identityKey.present ? data.identityKey.value : this.identityKey,
+      session: data.session.present ? data.session.value : this.session,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('KeySession(')
@@ -4717,7 +4661,6 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
       type: DriftSqlType.string,
       requiredDuringInsert: true,
       defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
-  static const VerificationMeta _storeMeta = const VerificationMeta('store');
   @override
   late final GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String>
       store = GeneratedColumn<String>('store', aliasedName, true,
@@ -4726,9 +4669,10 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
   @override
   List<GeneratedColumn> get $columns => [id, store];
   @override
-  String get aliasedName => _alias ?? 'settings';
+  String get aliasedName => _alias ?? actualTableName;
   @override
-  String get actualTableName => 'settings';
+  String get actualTableName => $name;
+  static const String $name = 'settings';
   @override
   VerificationContext validateIntegrity(Insertable<Setting> instance,
       {bool isInserting = false}) {
@@ -4739,7 +4683,6 @@ class $SettingsTable extends Settings with TableInfo<$SettingsTable, Setting> {
     } else if (isInserting) {
       context.missing(_idMeta);
     }
-    context.handle(_storeMeta, const VerificationResult.success());
     return context;
   }
 
@@ -4774,8 +4717,8 @@ class Setting extends DataClass implements Insertable<Setting> {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     if (!nullToAbsent || store != null) {
-      final converter = $SettingsTable.$converterstore;
-      map['store'] = Variable<String>(converter.toSql(store));
+      map['store'] =
+          Variable<String>($SettingsTable.$converterstore.toSql(store));
     }
     return map;
   }
@@ -4812,6 +4755,13 @@ class Setting extends DataClass implements Insertable<Setting> {
         id: id ?? this.id,
         store: store.present ? store.value : this.store,
       );
+  Setting copyWithCompanion(SettingsCompanion data) {
+    return Setting(
+      id: data.id.present ? data.id.value : this.id,
+      store: data.store.present ? data.store.value : this.store,
+    );
+  }
+
   @override
   String toString() {
     return (StringBuffer('Setting(')
@@ -4873,8 +4823,8 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
       map['id'] = Variable<String>(id.value);
     }
     if (store.present) {
-      final converter = $SettingsTable.$converterstore;
-      map['store'] = Variable<String>(converter.toSql(store.value));
+      map['store'] =
+          Variable<String>($SettingsTable.$converterstore.toSql(store.value));
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -4896,6 +4846,7 @@ class SettingsCompanion extends UpdateCompanion<Setting> {
 abstract class _$StorageDatabase extends GeneratedDatabase {
   _$StorageDatabase(QueryExecutor e) : super(e);
   _$StorageDatabase.connect(DatabaseConnection c) : super.connect(c);
+  $StorageDatabaseManager get managers => $StorageDatabaseManager(this);
   late final $MessagesTable messages = $MessagesTable(this);
   late final $DecryptedTable decrypted = $DecryptedTable(this);
   late final $RoomsTable rooms = $RoomsTable(this);
@@ -4929,4 +4880,3254 @@ abstract class _$StorageDatabase extends GeneratedDatabase {
         keySessions,
         settings
       ];
+}
+
+typedef $$MessagesTableCreateCompanionBuilder = MessagesCompanion Function({
+  required String id,
+  Value<String?> roomId,
+  Value<String?> userId,
+  Value<String?> type,
+  Value<String?> sender,
+  Value<String?> stateKey,
+  Value<String?> prevBatch,
+  Value<String?> batch,
+  required bool pending,
+  required bool syncing,
+  required bool failed,
+  required bool edited,
+  required bool replacement,
+  required int timestamp,
+  required int received,
+  Value<bool> hasLink,
+  Value<String?> body,
+  Value<String?> msgtype,
+  Value<String?> format,
+  Value<String?> formattedBody,
+  Value<String?> url,
+  Value<Map<String, dynamic>?> file,
+  Value<String?> typeDecrypted,
+  Value<String?> ciphertext,
+  Value<String?> algorithm,
+  Value<String?> sessionId,
+  Value<String?> senderKey,
+  Value<String?> deviceId,
+  Value<String?> relatedEventId,
+  Value<List<String>> editIds,
+  Value<int> rowid,
+});
+typedef $$MessagesTableUpdateCompanionBuilder = MessagesCompanion Function({
+  Value<String> id,
+  Value<String?> roomId,
+  Value<String?> userId,
+  Value<String?> type,
+  Value<String?> sender,
+  Value<String?> stateKey,
+  Value<String?> prevBatch,
+  Value<String?> batch,
+  Value<bool> pending,
+  Value<bool> syncing,
+  Value<bool> failed,
+  Value<bool> edited,
+  Value<bool> replacement,
+  Value<int> timestamp,
+  Value<int> received,
+  Value<bool> hasLink,
+  Value<String?> body,
+  Value<String?> msgtype,
+  Value<String?> format,
+  Value<String?> formattedBody,
+  Value<String?> url,
+  Value<Map<String, dynamic>?> file,
+  Value<String?> typeDecrypted,
+  Value<String?> ciphertext,
+  Value<String?> algorithm,
+  Value<String?> sessionId,
+  Value<String?> senderKey,
+  Value<String?> deviceId,
+  Value<String?> relatedEventId,
+  Value<List<String>> editIds,
+  Value<int> rowid,
+});
+
+class $$MessagesTableFilterComposer
+    extends Composer<_$StorageDatabase, $MessagesTable> {
+  $$MessagesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get roomId => $composableBuilder(
+      column: $table.roomId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get type => $composableBuilder(
+      column: $table.type, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get sender => $composableBuilder(
+      column: $table.sender, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get stateKey => $composableBuilder(
+      column: $table.stateKey, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get prevBatch => $composableBuilder(
+      column: $table.prevBatch, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get batch => $composableBuilder(
+      column: $table.batch, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get pending => $composableBuilder(
+      column: $table.pending, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get syncing => $composableBuilder(
+      column: $table.syncing, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get failed => $composableBuilder(
+      column: $table.failed, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get edited => $composableBuilder(
+      column: $table.edited, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get replacement => $composableBuilder(
+      column: $table.replacement, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get timestamp => $composableBuilder(
+      column: $table.timestamp, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get received => $composableBuilder(
+      column: $table.received, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get hasLink => $composableBuilder(
+      column: $table.hasLink, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get body => $composableBuilder(
+      column: $table.body, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get msgtype => $composableBuilder(
+      column: $table.msgtype, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get format => $composableBuilder(
+      column: $table.format, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get formattedBody => $composableBuilder(
+      column: $table.formattedBody, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get url => $composableBuilder(
+      column: $table.url, builder: (column) => ColumnFilters(column));
+
+  ColumnWithTypeConverterFilters<Map<String, dynamic>?, Map<String, dynamic>,
+          String>
+      get file => $composableBuilder(
+          column: $table.file,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
+
+  ColumnFilters<String> get typeDecrypted => $composableBuilder(
+      column: $table.typeDecrypted, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get ciphertext => $composableBuilder(
+      column: $table.ciphertext, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get algorithm => $composableBuilder(
+      column: $table.algorithm, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get sessionId => $composableBuilder(
+      column: $table.sessionId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get senderKey => $composableBuilder(
+      column: $table.senderKey, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get deviceId => $composableBuilder(
+      column: $table.deviceId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get relatedEventId => $composableBuilder(
+      column: $table.relatedEventId,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnWithTypeConverterFilters<List<String>, List<String>, String>
+      get editIds => $composableBuilder(
+          column: $table.editIds,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
+}
+
+class $$MessagesTableOrderingComposer
+    extends Composer<_$StorageDatabase, $MessagesTable> {
+  $$MessagesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get roomId => $composableBuilder(
+      column: $table.roomId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get type => $composableBuilder(
+      column: $table.type, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get sender => $composableBuilder(
+      column: $table.sender, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get stateKey => $composableBuilder(
+      column: $table.stateKey, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get prevBatch => $composableBuilder(
+      column: $table.prevBatch, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get batch => $composableBuilder(
+      column: $table.batch, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get pending => $composableBuilder(
+      column: $table.pending, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get syncing => $composableBuilder(
+      column: $table.syncing, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get failed => $composableBuilder(
+      column: $table.failed, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get edited => $composableBuilder(
+      column: $table.edited, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get replacement => $composableBuilder(
+      column: $table.replacement, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get timestamp => $composableBuilder(
+      column: $table.timestamp, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get received => $composableBuilder(
+      column: $table.received, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get hasLink => $composableBuilder(
+      column: $table.hasLink, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get body => $composableBuilder(
+      column: $table.body, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get msgtype => $composableBuilder(
+      column: $table.msgtype, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get format => $composableBuilder(
+      column: $table.format, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get formattedBody => $composableBuilder(
+      column: $table.formattedBody,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get url => $composableBuilder(
+      column: $table.url, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get file => $composableBuilder(
+      column: $table.file, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get typeDecrypted => $composableBuilder(
+      column: $table.typeDecrypted,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get ciphertext => $composableBuilder(
+      column: $table.ciphertext, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get algorithm => $composableBuilder(
+      column: $table.algorithm, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get sessionId => $composableBuilder(
+      column: $table.sessionId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get senderKey => $composableBuilder(
+      column: $table.senderKey, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get deviceId => $composableBuilder(
+      column: $table.deviceId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get relatedEventId => $composableBuilder(
+      column: $table.relatedEventId,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get editIds => $composableBuilder(
+      column: $table.editIds, builder: (column) => ColumnOrderings(column));
+}
+
+class $$MessagesTableAnnotationComposer
+    extends Composer<_$StorageDatabase, $MessagesTable> {
+  $$MessagesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get roomId =>
+      $composableBuilder(column: $table.roomId, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<String> get sender =>
+      $composableBuilder(column: $table.sender, builder: (column) => column);
+
+  GeneratedColumn<String> get stateKey =>
+      $composableBuilder(column: $table.stateKey, builder: (column) => column);
+
+  GeneratedColumn<String> get prevBatch =>
+      $composableBuilder(column: $table.prevBatch, builder: (column) => column);
+
+  GeneratedColumn<String> get batch =>
+      $composableBuilder(column: $table.batch, builder: (column) => column);
+
+  GeneratedColumn<bool> get pending =>
+      $composableBuilder(column: $table.pending, builder: (column) => column);
+
+  GeneratedColumn<bool> get syncing =>
+      $composableBuilder(column: $table.syncing, builder: (column) => column);
+
+  GeneratedColumn<bool> get failed =>
+      $composableBuilder(column: $table.failed, builder: (column) => column);
+
+  GeneratedColumn<bool> get edited =>
+      $composableBuilder(column: $table.edited, builder: (column) => column);
+
+  GeneratedColumn<bool> get replacement => $composableBuilder(
+      column: $table.replacement, builder: (column) => column);
+
+  GeneratedColumn<int> get timestamp =>
+      $composableBuilder(column: $table.timestamp, builder: (column) => column);
+
+  GeneratedColumn<int> get received =>
+      $composableBuilder(column: $table.received, builder: (column) => column);
+
+  GeneratedColumn<bool> get hasLink =>
+      $composableBuilder(column: $table.hasLink, builder: (column) => column);
+
+  GeneratedColumn<String> get body =>
+      $composableBuilder(column: $table.body, builder: (column) => column);
+
+  GeneratedColumn<String> get msgtype =>
+      $composableBuilder(column: $table.msgtype, builder: (column) => column);
+
+  GeneratedColumn<String> get format =>
+      $composableBuilder(column: $table.format, builder: (column) => column);
+
+  GeneratedColumn<String> get formattedBody => $composableBuilder(
+      column: $table.formattedBody, builder: (column) => column);
+
+  GeneratedColumn<String> get url =>
+      $composableBuilder(column: $table.url, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String> get file =>
+      $composableBuilder(column: $table.file, builder: (column) => column);
+
+  GeneratedColumn<String> get typeDecrypted => $composableBuilder(
+      column: $table.typeDecrypted, builder: (column) => column);
+
+  GeneratedColumn<String> get ciphertext => $composableBuilder(
+      column: $table.ciphertext, builder: (column) => column);
+
+  GeneratedColumn<String> get algorithm =>
+      $composableBuilder(column: $table.algorithm, builder: (column) => column);
+
+  GeneratedColumn<String> get sessionId =>
+      $composableBuilder(column: $table.sessionId, builder: (column) => column);
+
+  GeneratedColumn<String> get senderKey =>
+      $composableBuilder(column: $table.senderKey, builder: (column) => column);
+
+  GeneratedColumn<String> get deviceId =>
+      $composableBuilder(column: $table.deviceId, builder: (column) => column);
+
+  GeneratedColumn<String> get relatedEventId => $composableBuilder(
+      column: $table.relatedEventId, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<List<String>, String> get editIds =>
+      $composableBuilder(column: $table.editIds, builder: (column) => column);
+}
+
+class $$MessagesTableTableManager extends RootTableManager<
+    _$StorageDatabase,
+    $MessagesTable,
+    Message,
+    $$MessagesTableFilterComposer,
+    $$MessagesTableOrderingComposer,
+    $$MessagesTableAnnotationComposer,
+    $$MessagesTableCreateCompanionBuilder,
+    $$MessagesTableUpdateCompanionBuilder,
+    (Message, BaseReferences<_$StorageDatabase, $MessagesTable, Message>),
+    Message,
+    PrefetchHooks Function()> {
+  $$MessagesTableTableManager(_$StorageDatabase db, $MessagesTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MessagesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MessagesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MessagesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String?> roomId = const Value.absent(),
+            Value<String?> userId = const Value.absent(),
+            Value<String?> type = const Value.absent(),
+            Value<String?> sender = const Value.absent(),
+            Value<String?> stateKey = const Value.absent(),
+            Value<String?> prevBatch = const Value.absent(),
+            Value<String?> batch = const Value.absent(),
+            Value<bool> pending = const Value.absent(),
+            Value<bool> syncing = const Value.absent(),
+            Value<bool> failed = const Value.absent(),
+            Value<bool> edited = const Value.absent(),
+            Value<bool> replacement = const Value.absent(),
+            Value<int> timestamp = const Value.absent(),
+            Value<int> received = const Value.absent(),
+            Value<bool> hasLink = const Value.absent(),
+            Value<String?> body = const Value.absent(),
+            Value<String?> msgtype = const Value.absent(),
+            Value<String?> format = const Value.absent(),
+            Value<String?> formattedBody = const Value.absent(),
+            Value<String?> url = const Value.absent(),
+            Value<Map<String, dynamic>?> file = const Value.absent(),
+            Value<String?> typeDecrypted = const Value.absent(),
+            Value<String?> ciphertext = const Value.absent(),
+            Value<String?> algorithm = const Value.absent(),
+            Value<String?> sessionId = const Value.absent(),
+            Value<String?> senderKey = const Value.absent(),
+            Value<String?> deviceId = const Value.absent(),
+            Value<String?> relatedEventId = const Value.absent(),
+            Value<List<String>> editIds = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              MessagesCompanion(
+            id: id,
+            roomId: roomId,
+            userId: userId,
+            type: type,
+            sender: sender,
+            stateKey: stateKey,
+            prevBatch: prevBatch,
+            batch: batch,
+            pending: pending,
+            syncing: syncing,
+            failed: failed,
+            edited: edited,
+            replacement: replacement,
+            timestamp: timestamp,
+            received: received,
+            hasLink: hasLink,
+            body: body,
+            msgtype: msgtype,
+            format: format,
+            formattedBody: formattedBody,
+            url: url,
+            file: file,
+            typeDecrypted: typeDecrypted,
+            ciphertext: ciphertext,
+            algorithm: algorithm,
+            sessionId: sessionId,
+            senderKey: senderKey,
+            deviceId: deviceId,
+            relatedEventId: relatedEventId,
+            editIds: editIds,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            Value<String?> roomId = const Value.absent(),
+            Value<String?> userId = const Value.absent(),
+            Value<String?> type = const Value.absent(),
+            Value<String?> sender = const Value.absent(),
+            Value<String?> stateKey = const Value.absent(),
+            Value<String?> prevBatch = const Value.absent(),
+            Value<String?> batch = const Value.absent(),
+            required bool pending,
+            required bool syncing,
+            required bool failed,
+            required bool edited,
+            required bool replacement,
+            required int timestamp,
+            required int received,
+            Value<bool> hasLink = const Value.absent(),
+            Value<String?> body = const Value.absent(),
+            Value<String?> msgtype = const Value.absent(),
+            Value<String?> format = const Value.absent(),
+            Value<String?> formattedBody = const Value.absent(),
+            Value<String?> url = const Value.absent(),
+            Value<Map<String, dynamic>?> file = const Value.absent(),
+            Value<String?> typeDecrypted = const Value.absent(),
+            Value<String?> ciphertext = const Value.absent(),
+            Value<String?> algorithm = const Value.absent(),
+            Value<String?> sessionId = const Value.absent(),
+            Value<String?> senderKey = const Value.absent(),
+            Value<String?> deviceId = const Value.absent(),
+            Value<String?> relatedEventId = const Value.absent(),
+            Value<List<String>> editIds = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              MessagesCompanion.insert(
+            id: id,
+            roomId: roomId,
+            userId: userId,
+            type: type,
+            sender: sender,
+            stateKey: stateKey,
+            prevBatch: prevBatch,
+            batch: batch,
+            pending: pending,
+            syncing: syncing,
+            failed: failed,
+            edited: edited,
+            replacement: replacement,
+            timestamp: timestamp,
+            received: received,
+            hasLink: hasLink,
+            body: body,
+            msgtype: msgtype,
+            format: format,
+            formattedBody: formattedBody,
+            url: url,
+            file: file,
+            typeDecrypted: typeDecrypted,
+            ciphertext: ciphertext,
+            algorithm: algorithm,
+            sessionId: sessionId,
+            senderKey: senderKey,
+            deviceId: deviceId,
+            relatedEventId: relatedEventId,
+            editIds: editIds,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$MessagesTableProcessedTableManager = ProcessedTableManager<
+    _$StorageDatabase,
+    $MessagesTable,
+    Message,
+    $$MessagesTableFilterComposer,
+    $$MessagesTableOrderingComposer,
+    $$MessagesTableAnnotationComposer,
+    $$MessagesTableCreateCompanionBuilder,
+    $$MessagesTableUpdateCompanionBuilder,
+    (Message, BaseReferences<_$StorageDatabase, $MessagesTable, Message>),
+    Message,
+    PrefetchHooks Function()>;
+typedef $$DecryptedTableCreateCompanionBuilder = DecryptedCompanion Function({
+  required String id,
+  Value<String?> roomId,
+  Value<String?> userId,
+  Value<String?> type,
+  Value<String?> sender,
+  Value<String?> stateKey,
+  Value<String?> prevBatch,
+  Value<String?> batch,
+  required bool pending,
+  required bool syncing,
+  required bool failed,
+  required bool edited,
+  required bool replacement,
+  required int timestamp,
+  required int received,
+  Value<bool> hasLink,
+  Value<String?> body,
+  Value<String?> msgtype,
+  Value<String?> format,
+  Value<String?> formattedBody,
+  Value<String?> url,
+  Value<Map<String, dynamic>?> file,
+  Value<String?> typeDecrypted,
+  Value<String?> ciphertext,
+  Value<String?> algorithm,
+  Value<String?> sessionId,
+  Value<String?> senderKey,
+  Value<String?> deviceId,
+  Value<String?> relatedEventId,
+  Value<List<String>> editIds,
+  Value<int> rowid,
+});
+typedef $$DecryptedTableUpdateCompanionBuilder = DecryptedCompanion Function({
+  Value<String> id,
+  Value<String?> roomId,
+  Value<String?> userId,
+  Value<String?> type,
+  Value<String?> sender,
+  Value<String?> stateKey,
+  Value<String?> prevBatch,
+  Value<String?> batch,
+  Value<bool> pending,
+  Value<bool> syncing,
+  Value<bool> failed,
+  Value<bool> edited,
+  Value<bool> replacement,
+  Value<int> timestamp,
+  Value<int> received,
+  Value<bool> hasLink,
+  Value<String?> body,
+  Value<String?> msgtype,
+  Value<String?> format,
+  Value<String?> formattedBody,
+  Value<String?> url,
+  Value<Map<String, dynamic>?> file,
+  Value<String?> typeDecrypted,
+  Value<String?> ciphertext,
+  Value<String?> algorithm,
+  Value<String?> sessionId,
+  Value<String?> senderKey,
+  Value<String?> deviceId,
+  Value<String?> relatedEventId,
+  Value<List<String>> editIds,
+  Value<int> rowid,
+});
+
+class $$DecryptedTableFilterComposer
+    extends Composer<_$StorageDatabase, $DecryptedTable> {
+  $$DecryptedTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get roomId => $composableBuilder(
+      column: $table.roomId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get type => $composableBuilder(
+      column: $table.type, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get sender => $composableBuilder(
+      column: $table.sender, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get stateKey => $composableBuilder(
+      column: $table.stateKey, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get prevBatch => $composableBuilder(
+      column: $table.prevBatch, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get batch => $composableBuilder(
+      column: $table.batch, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get pending => $composableBuilder(
+      column: $table.pending, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get syncing => $composableBuilder(
+      column: $table.syncing, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get failed => $composableBuilder(
+      column: $table.failed, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get edited => $composableBuilder(
+      column: $table.edited, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get replacement => $composableBuilder(
+      column: $table.replacement, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get timestamp => $composableBuilder(
+      column: $table.timestamp, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get received => $composableBuilder(
+      column: $table.received, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get hasLink => $composableBuilder(
+      column: $table.hasLink, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get body => $composableBuilder(
+      column: $table.body, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get msgtype => $composableBuilder(
+      column: $table.msgtype, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get format => $composableBuilder(
+      column: $table.format, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get formattedBody => $composableBuilder(
+      column: $table.formattedBody, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get url => $composableBuilder(
+      column: $table.url, builder: (column) => ColumnFilters(column));
+
+  ColumnWithTypeConverterFilters<Map<String, dynamic>?, Map<String, dynamic>,
+          String>
+      get file => $composableBuilder(
+          column: $table.file,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
+
+  ColumnFilters<String> get typeDecrypted => $composableBuilder(
+      column: $table.typeDecrypted, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get ciphertext => $composableBuilder(
+      column: $table.ciphertext, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get algorithm => $composableBuilder(
+      column: $table.algorithm, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get sessionId => $composableBuilder(
+      column: $table.sessionId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get senderKey => $composableBuilder(
+      column: $table.senderKey, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get deviceId => $composableBuilder(
+      column: $table.deviceId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get relatedEventId => $composableBuilder(
+      column: $table.relatedEventId,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnWithTypeConverterFilters<List<String>, List<String>, String>
+      get editIds => $composableBuilder(
+          column: $table.editIds,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
+}
+
+class $$DecryptedTableOrderingComposer
+    extends Composer<_$StorageDatabase, $DecryptedTable> {
+  $$DecryptedTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get roomId => $composableBuilder(
+      column: $table.roomId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get type => $composableBuilder(
+      column: $table.type, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get sender => $composableBuilder(
+      column: $table.sender, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get stateKey => $composableBuilder(
+      column: $table.stateKey, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get prevBatch => $composableBuilder(
+      column: $table.prevBatch, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get batch => $composableBuilder(
+      column: $table.batch, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get pending => $composableBuilder(
+      column: $table.pending, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get syncing => $composableBuilder(
+      column: $table.syncing, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get failed => $composableBuilder(
+      column: $table.failed, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get edited => $composableBuilder(
+      column: $table.edited, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get replacement => $composableBuilder(
+      column: $table.replacement, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get timestamp => $composableBuilder(
+      column: $table.timestamp, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get received => $composableBuilder(
+      column: $table.received, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get hasLink => $composableBuilder(
+      column: $table.hasLink, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get body => $composableBuilder(
+      column: $table.body, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get msgtype => $composableBuilder(
+      column: $table.msgtype, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get format => $composableBuilder(
+      column: $table.format, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get formattedBody => $composableBuilder(
+      column: $table.formattedBody,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get url => $composableBuilder(
+      column: $table.url, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get file => $composableBuilder(
+      column: $table.file, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get typeDecrypted => $composableBuilder(
+      column: $table.typeDecrypted,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get ciphertext => $composableBuilder(
+      column: $table.ciphertext, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get algorithm => $composableBuilder(
+      column: $table.algorithm, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get sessionId => $composableBuilder(
+      column: $table.sessionId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get senderKey => $composableBuilder(
+      column: $table.senderKey, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get deviceId => $composableBuilder(
+      column: $table.deviceId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get relatedEventId => $composableBuilder(
+      column: $table.relatedEventId,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get editIds => $composableBuilder(
+      column: $table.editIds, builder: (column) => ColumnOrderings(column));
+}
+
+class $$DecryptedTableAnnotationComposer
+    extends Composer<_$StorageDatabase, $DecryptedTable> {
+  $$DecryptedTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get roomId =>
+      $composableBuilder(column: $table.roomId, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<String> get sender =>
+      $composableBuilder(column: $table.sender, builder: (column) => column);
+
+  GeneratedColumn<String> get stateKey =>
+      $composableBuilder(column: $table.stateKey, builder: (column) => column);
+
+  GeneratedColumn<String> get prevBatch =>
+      $composableBuilder(column: $table.prevBatch, builder: (column) => column);
+
+  GeneratedColumn<String> get batch =>
+      $composableBuilder(column: $table.batch, builder: (column) => column);
+
+  GeneratedColumn<bool> get pending =>
+      $composableBuilder(column: $table.pending, builder: (column) => column);
+
+  GeneratedColumn<bool> get syncing =>
+      $composableBuilder(column: $table.syncing, builder: (column) => column);
+
+  GeneratedColumn<bool> get failed =>
+      $composableBuilder(column: $table.failed, builder: (column) => column);
+
+  GeneratedColumn<bool> get edited =>
+      $composableBuilder(column: $table.edited, builder: (column) => column);
+
+  GeneratedColumn<bool> get replacement => $composableBuilder(
+      column: $table.replacement, builder: (column) => column);
+
+  GeneratedColumn<int> get timestamp =>
+      $composableBuilder(column: $table.timestamp, builder: (column) => column);
+
+  GeneratedColumn<int> get received =>
+      $composableBuilder(column: $table.received, builder: (column) => column);
+
+  GeneratedColumn<bool> get hasLink =>
+      $composableBuilder(column: $table.hasLink, builder: (column) => column);
+
+  GeneratedColumn<String> get body =>
+      $composableBuilder(column: $table.body, builder: (column) => column);
+
+  GeneratedColumn<String> get msgtype =>
+      $composableBuilder(column: $table.msgtype, builder: (column) => column);
+
+  GeneratedColumn<String> get format =>
+      $composableBuilder(column: $table.format, builder: (column) => column);
+
+  GeneratedColumn<String> get formattedBody => $composableBuilder(
+      column: $table.formattedBody, builder: (column) => column);
+
+  GeneratedColumn<String> get url =>
+      $composableBuilder(column: $table.url, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String> get file =>
+      $composableBuilder(column: $table.file, builder: (column) => column);
+
+  GeneratedColumn<String> get typeDecrypted => $composableBuilder(
+      column: $table.typeDecrypted, builder: (column) => column);
+
+  GeneratedColumn<String> get ciphertext => $composableBuilder(
+      column: $table.ciphertext, builder: (column) => column);
+
+  GeneratedColumn<String> get algorithm =>
+      $composableBuilder(column: $table.algorithm, builder: (column) => column);
+
+  GeneratedColumn<String> get sessionId =>
+      $composableBuilder(column: $table.sessionId, builder: (column) => column);
+
+  GeneratedColumn<String> get senderKey =>
+      $composableBuilder(column: $table.senderKey, builder: (column) => column);
+
+  GeneratedColumn<String> get deviceId =>
+      $composableBuilder(column: $table.deviceId, builder: (column) => column);
+
+  GeneratedColumn<String> get relatedEventId => $composableBuilder(
+      column: $table.relatedEventId, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<List<String>, String> get editIds =>
+      $composableBuilder(column: $table.editIds, builder: (column) => column);
+}
+
+class $$DecryptedTableTableManager extends RootTableManager<
+    _$StorageDatabase,
+    $DecryptedTable,
+    Message,
+    $$DecryptedTableFilterComposer,
+    $$DecryptedTableOrderingComposer,
+    $$DecryptedTableAnnotationComposer,
+    $$DecryptedTableCreateCompanionBuilder,
+    $$DecryptedTableUpdateCompanionBuilder,
+    (Message, BaseReferences<_$StorageDatabase, $DecryptedTable, Message>),
+    Message,
+    PrefetchHooks Function()> {
+  $$DecryptedTableTableManager(_$StorageDatabase db, $DecryptedTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DecryptedTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DecryptedTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DecryptedTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String?> roomId = const Value.absent(),
+            Value<String?> userId = const Value.absent(),
+            Value<String?> type = const Value.absent(),
+            Value<String?> sender = const Value.absent(),
+            Value<String?> stateKey = const Value.absent(),
+            Value<String?> prevBatch = const Value.absent(),
+            Value<String?> batch = const Value.absent(),
+            Value<bool> pending = const Value.absent(),
+            Value<bool> syncing = const Value.absent(),
+            Value<bool> failed = const Value.absent(),
+            Value<bool> edited = const Value.absent(),
+            Value<bool> replacement = const Value.absent(),
+            Value<int> timestamp = const Value.absent(),
+            Value<int> received = const Value.absent(),
+            Value<bool> hasLink = const Value.absent(),
+            Value<String?> body = const Value.absent(),
+            Value<String?> msgtype = const Value.absent(),
+            Value<String?> format = const Value.absent(),
+            Value<String?> formattedBody = const Value.absent(),
+            Value<String?> url = const Value.absent(),
+            Value<Map<String, dynamic>?> file = const Value.absent(),
+            Value<String?> typeDecrypted = const Value.absent(),
+            Value<String?> ciphertext = const Value.absent(),
+            Value<String?> algorithm = const Value.absent(),
+            Value<String?> sessionId = const Value.absent(),
+            Value<String?> senderKey = const Value.absent(),
+            Value<String?> deviceId = const Value.absent(),
+            Value<String?> relatedEventId = const Value.absent(),
+            Value<List<String>> editIds = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              DecryptedCompanion(
+            id: id,
+            roomId: roomId,
+            userId: userId,
+            type: type,
+            sender: sender,
+            stateKey: stateKey,
+            prevBatch: prevBatch,
+            batch: batch,
+            pending: pending,
+            syncing: syncing,
+            failed: failed,
+            edited: edited,
+            replacement: replacement,
+            timestamp: timestamp,
+            received: received,
+            hasLink: hasLink,
+            body: body,
+            msgtype: msgtype,
+            format: format,
+            formattedBody: formattedBody,
+            url: url,
+            file: file,
+            typeDecrypted: typeDecrypted,
+            ciphertext: ciphertext,
+            algorithm: algorithm,
+            sessionId: sessionId,
+            senderKey: senderKey,
+            deviceId: deviceId,
+            relatedEventId: relatedEventId,
+            editIds: editIds,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            Value<String?> roomId = const Value.absent(),
+            Value<String?> userId = const Value.absent(),
+            Value<String?> type = const Value.absent(),
+            Value<String?> sender = const Value.absent(),
+            Value<String?> stateKey = const Value.absent(),
+            Value<String?> prevBatch = const Value.absent(),
+            Value<String?> batch = const Value.absent(),
+            required bool pending,
+            required bool syncing,
+            required bool failed,
+            required bool edited,
+            required bool replacement,
+            required int timestamp,
+            required int received,
+            Value<bool> hasLink = const Value.absent(),
+            Value<String?> body = const Value.absent(),
+            Value<String?> msgtype = const Value.absent(),
+            Value<String?> format = const Value.absent(),
+            Value<String?> formattedBody = const Value.absent(),
+            Value<String?> url = const Value.absent(),
+            Value<Map<String, dynamic>?> file = const Value.absent(),
+            Value<String?> typeDecrypted = const Value.absent(),
+            Value<String?> ciphertext = const Value.absent(),
+            Value<String?> algorithm = const Value.absent(),
+            Value<String?> sessionId = const Value.absent(),
+            Value<String?> senderKey = const Value.absent(),
+            Value<String?> deviceId = const Value.absent(),
+            Value<String?> relatedEventId = const Value.absent(),
+            Value<List<String>> editIds = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              DecryptedCompanion.insert(
+            id: id,
+            roomId: roomId,
+            userId: userId,
+            type: type,
+            sender: sender,
+            stateKey: stateKey,
+            prevBatch: prevBatch,
+            batch: batch,
+            pending: pending,
+            syncing: syncing,
+            failed: failed,
+            edited: edited,
+            replacement: replacement,
+            timestamp: timestamp,
+            received: received,
+            hasLink: hasLink,
+            body: body,
+            msgtype: msgtype,
+            format: format,
+            formattedBody: formattedBody,
+            url: url,
+            file: file,
+            typeDecrypted: typeDecrypted,
+            ciphertext: ciphertext,
+            algorithm: algorithm,
+            sessionId: sessionId,
+            senderKey: senderKey,
+            deviceId: deviceId,
+            relatedEventId: relatedEventId,
+            editIds: editIds,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$DecryptedTableProcessedTableManager = ProcessedTableManager<
+    _$StorageDatabase,
+    $DecryptedTable,
+    Message,
+    $$DecryptedTableFilterComposer,
+    $$DecryptedTableOrderingComposer,
+    $$DecryptedTableAnnotationComposer,
+    $$DecryptedTableCreateCompanionBuilder,
+    $$DecryptedTableUpdateCompanionBuilder,
+    (Message, BaseReferences<_$StorageDatabase, $DecryptedTable, Message>),
+    Message,
+    PrefetchHooks Function()>;
+typedef $$RoomsTableCreateCompanionBuilder = RoomsCompanion Function({
+  required String id,
+  Value<String?> name,
+  Value<String?> alias,
+  Value<String?> homeserver,
+  Value<String?> avatarUri,
+  Value<String?> topic,
+  Value<String?> joinRule,
+  required bool drafting,
+  required bool direct,
+  required bool sending,
+  required bool invite,
+  required bool guestEnabled,
+  required bool encryptionEnabled,
+  required bool worldReadable,
+  required bool hidden,
+  required bool archived,
+  Value<String?> lastBatch,
+  Value<String?> prevBatch,
+  Value<String?> nextBatch,
+  Value<int> lastRead,
+  Value<int> lastUpdate,
+  Value<int> totalJoinedUsers,
+  Value<int> namePriority,
+  Value<Message?> draft,
+  Value<Message?> reply,
+  Value<List<String>> userIds,
+  Value<int> rowid,
+});
+typedef $$RoomsTableUpdateCompanionBuilder = RoomsCompanion Function({
+  Value<String> id,
+  Value<String?> name,
+  Value<String?> alias,
+  Value<String?> homeserver,
+  Value<String?> avatarUri,
+  Value<String?> topic,
+  Value<String?> joinRule,
+  Value<bool> drafting,
+  Value<bool> direct,
+  Value<bool> sending,
+  Value<bool> invite,
+  Value<bool> guestEnabled,
+  Value<bool> encryptionEnabled,
+  Value<bool> worldReadable,
+  Value<bool> hidden,
+  Value<bool> archived,
+  Value<String?> lastBatch,
+  Value<String?> prevBatch,
+  Value<String?> nextBatch,
+  Value<int> lastRead,
+  Value<int> lastUpdate,
+  Value<int> totalJoinedUsers,
+  Value<int> namePriority,
+  Value<Message?> draft,
+  Value<Message?> reply,
+  Value<List<String>> userIds,
+  Value<int> rowid,
+});
+
+class $$RoomsTableFilterComposer
+    extends Composer<_$StorageDatabase, $RoomsTable> {
+  $$RoomsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get alias => $composableBuilder(
+      column: $table.alias, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get homeserver => $composableBuilder(
+      column: $table.homeserver, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get avatarUri => $composableBuilder(
+      column: $table.avatarUri, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get topic => $composableBuilder(
+      column: $table.topic, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get joinRule => $composableBuilder(
+      column: $table.joinRule, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get drafting => $composableBuilder(
+      column: $table.drafting, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get direct => $composableBuilder(
+      column: $table.direct, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get sending => $composableBuilder(
+      column: $table.sending, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get invite => $composableBuilder(
+      column: $table.invite, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get guestEnabled => $composableBuilder(
+      column: $table.guestEnabled, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get encryptionEnabled => $composableBuilder(
+      column: $table.encryptionEnabled,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get worldReadable => $composableBuilder(
+      column: $table.worldReadable, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get hidden => $composableBuilder(
+      column: $table.hidden, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get archived => $composableBuilder(
+      column: $table.archived, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get lastBatch => $composableBuilder(
+      column: $table.lastBatch, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get prevBatch => $composableBuilder(
+      column: $table.prevBatch, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get nextBatch => $composableBuilder(
+      column: $table.nextBatch, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get lastRead => $composableBuilder(
+      column: $table.lastRead, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get lastUpdate => $composableBuilder(
+      column: $table.lastUpdate, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get totalJoinedUsers => $composableBuilder(
+      column: $table.totalJoinedUsers,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get namePriority => $composableBuilder(
+      column: $table.namePriority, builder: (column) => ColumnFilters(column));
+
+  ColumnWithTypeConverterFilters<Message?, Message, String> get draft =>
+      $composableBuilder(
+          column: $table.draft,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
+
+  ColumnWithTypeConverterFilters<Message?, Message, String> get reply =>
+      $composableBuilder(
+          column: $table.reply,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
+
+  ColumnWithTypeConverterFilters<List<String>, List<String>, String>
+      get userIds => $composableBuilder(
+          column: $table.userIds,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
+}
+
+class $$RoomsTableOrderingComposer
+    extends Composer<_$StorageDatabase, $RoomsTable> {
+  $$RoomsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get alias => $composableBuilder(
+      column: $table.alias, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get homeserver => $composableBuilder(
+      column: $table.homeserver, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get avatarUri => $composableBuilder(
+      column: $table.avatarUri, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get topic => $composableBuilder(
+      column: $table.topic, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get joinRule => $composableBuilder(
+      column: $table.joinRule, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get drafting => $composableBuilder(
+      column: $table.drafting, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get direct => $composableBuilder(
+      column: $table.direct, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get sending => $composableBuilder(
+      column: $table.sending, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get invite => $composableBuilder(
+      column: $table.invite, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get guestEnabled => $composableBuilder(
+      column: $table.guestEnabled,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get encryptionEnabled => $composableBuilder(
+      column: $table.encryptionEnabled,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get worldReadable => $composableBuilder(
+      column: $table.worldReadable,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get hidden => $composableBuilder(
+      column: $table.hidden, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get archived => $composableBuilder(
+      column: $table.archived, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get lastBatch => $composableBuilder(
+      column: $table.lastBatch, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get prevBatch => $composableBuilder(
+      column: $table.prevBatch, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get nextBatch => $composableBuilder(
+      column: $table.nextBatch, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get lastRead => $composableBuilder(
+      column: $table.lastRead, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get lastUpdate => $composableBuilder(
+      column: $table.lastUpdate, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get totalJoinedUsers => $composableBuilder(
+      column: $table.totalJoinedUsers,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get namePriority => $composableBuilder(
+      column: $table.namePriority,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get draft => $composableBuilder(
+      column: $table.draft, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get reply => $composableBuilder(
+      column: $table.reply, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get userIds => $composableBuilder(
+      column: $table.userIds, builder: (column) => ColumnOrderings(column));
+}
+
+class $$RoomsTableAnnotationComposer
+    extends Composer<_$StorageDatabase, $RoomsTable> {
+  $$RoomsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get alias =>
+      $composableBuilder(column: $table.alias, builder: (column) => column);
+
+  GeneratedColumn<String> get homeserver => $composableBuilder(
+      column: $table.homeserver, builder: (column) => column);
+
+  GeneratedColumn<String> get avatarUri =>
+      $composableBuilder(column: $table.avatarUri, builder: (column) => column);
+
+  GeneratedColumn<String> get topic =>
+      $composableBuilder(column: $table.topic, builder: (column) => column);
+
+  GeneratedColumn<String> get joinRule =>
+      $composableBuilder(column: $table.joinRule, builder: (column) => column);
+
+  GeneratedColumn<bool> get drafting =>
+      $composableBuilder(column: $table.drafting, builder: (column) => column);
+
+  GeneratedColumn<bool> get direct =>
+      $composableBuilder(column: $table.direct, builder: (column) => column);
+
+  GeneratedColumn<bool> get sending =>
+      $composableBuilder(column: $table.sending, builder: (column) => column);
+
+  GeneratedColumn<bool> get invite =>
+      $composableBuilder(column: $table.invite, builder: (column) => column);
+
+  GeneratedColumn<bool> get guestEnabled => $composableBuilder(
+      column: $table.guestEnabled, builder: (column) => column);
+
+  GeneratedColumn<bool> get encryptionEnabled => $composableBuilder(
+      column: $table.encryptionEnabled, builder: (column) => column);
+
+  GeneratedColumn<bool> get worldReadable => $composableBuilder(
+      column: $table.worldReadable, builder: (column) => column);
+
+  GeneratedColumn<bool> get hidden =>
+      $composableBuilder(column: $table.hidden, builder: (column) => column);
+
+  GeneratedColumn<bool> get archived =>
+      $composableBuilder(column: $table.archived, builder: (column) => column);
+
+  GeneratedColumn<String> get lastBatch =>
+      $composableBuilder(column: $table.lastBatch, builder: (column) => column);
+
+  GeneratedColumn<String> get prevBatch =>
+      $composableBuilder(column: $table.prevBatch, builder: (column) => column);
+
+  GeneratedColumn<String> get nextBatch =>
+      $composableBuilder(column: $table.nextBatch, builder: (column) => column);
+
+  GeneratedColumn<int> get lastRead =>
+      $composableBuilder(column: $table.lastRead, builder: (column) => column);
+
+  GeneratedColumn<int> get lastUpdate => $composableBuilder(
+      column: $table.lastUpdate, builder: (column) => column);
+
+  GeneratedColumn<int> get totalJoinedUsers => $composableBuilder(
+      column: $table.totalJoinedUsers, builder: (column) => column);
+
+  GeneratedColumn<int> get namePriority => $composableBuilder(
+      column: $table.namePriority, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<Message?, String> get draft =>
+      $composableBuilder(column: $table.draft, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<Message?, String> get reply =>
+      $composableBuilder(column: $table.reply, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<List<String>, String> get userIds =>
+      $composableBuilder(column: $table.userIds, builder: (column) => column);
+}
+
+class $$RoomsTableTableManager extends RootTableManager<
+    _$StorageDatabase,
+    $RoomsTable,
+    Room,
+    $$RoomsTableFilterComposer,
+    $$RoomsTableOrderingComposer,
+    $$RoomsTableAnnotationComposer,
+    $$RoomsTableCreateCompanionBuilder,
+    $$RoomsTableUpdateCompanionBuilder,
+    (Room, BaseReferences<_$StorageDatabase, $RoomsTable, Room>),
+    Room,
+    PrefetchHooks Function()> {
+  $$RoomsTableTableManager(_$StorageDatabase db, $RoomsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RoomsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RoomsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$RoomsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String?> name = const Value.absent(),
+            Value<String?> alias = const Value.absent(),
+            Value<String?> homeserver = const Value.absent(),
+            Value<String?> avatarUri = const Value.absent(),
+            Value<String?> topic = const Value.absent(),
+            Value<String?> joinRule = const Value.absent(),
+            Value<bool> drafting = const Value.absent(),
+            Value<bool> direct = const Value.absent(),
+            Value<bool> sending = const Value.absent(),
+            Value<bool> invite = const Value.absent(),
+            Value<bool> guestEnabled = const Value.absent(),
+            Value<bool> encryptionEnabled = const Value.absent(),
+            Value<bool> worldReadable = const Value.absent(),
+            Value<bool> hidden = const Value.absent(),
+            Value<bool> archived = const Value.absent(),
+            Value<String?> lastBatch = const Value.absent(),
+            Value<String?> prevBatch = const Value.absent(),
+            Value<String?> nextBatch = const Value.absent(),
+            Value<int> lastRead = const Value.absent(),
+            Value<int> lastUpdate = const Value.absent(),
+            Value<int> totalJoinedUsers = const Value.absent(),
+            Value<int> namePriority = const Value.absent(),
+            Value<Message?> draft = const Value.absent(),
+            Value<Message?> reply = const Value.absent(),
+            Value<List<String>> userIds = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              RoomsCompanion(
+            id: id,
+            name: name,
+            alias: alias,
+            homeserver: homeserver,
+            avatarUri: avatarUri,
+            topic: topic,
+            joinRule: joinRule,
+            drafting: drafting,
+            direct: direct,
+            sending: sending,
+            invite: invite,
+            guestEnabled: guestEnabled,
+            encryptionEnabled: encryptionEnabled,
+            worldReadable: worldReadable,
+            hidden: hidden,
+            archived: archived,
+            lastBatch: lastBatch,
+            prevBatch: prevBatch,
+            nextBatch: nextBatch,
+            lastRead: lastRead,
+            lastUpdate: lastUpdate,
+            totalJoinedUsers: totalJoinedUsers,
+            namePriority: namePriority,
+            draft: draft,
+            reply: reply,
+            userIds: userIds,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            Value<String?> name = const Value.absent(),
+            Value<String?> alias = const Value.absent(),
+            Value<String?> homeserver = const Value.absent(),
+            Value<String?> avatarUri = const Value.absent(),
+            Value<String?> topic = const Value.absent(),
+            Value<String?> joinRule = const Value.absent(),
+            required bool drafting,
+            required bool direct,
+            required bool sending,
+            required bool invite,
+            required bool guestEnabled,
+            required bool encryptionEnabled,
+            required bool worldReadable,
+            required bool hidden,
+            required bool archived,
+            Value<String?> lastBatch = const Value.absent(),
+            Value<String?> prevBatch = const Value.absent(),
+            Value<String?> nextBatch = const Value.absent(),
+            Value<int> lastRead = const Value.absent(),
+            Value<int> lastUpdate = const Value.absent(),
+            Value<int> totalJoinedUsers = const Value.absent(),
+            Value<int> namePriority = const Value.absent(),
+            Value<Message?> draft = const Value.absent(),
+            Value<Message?> reply = const Value.absent(),
+            Value<List<String>> userIds = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              RoomsCompanion.insert(
+            id: id,
+            name: name,
+            alias: alias,
+            homeserver: homeserver,
+            avatarUri: avatarUri,
+            topic: topic,
+            joinRule: joinRule,
+            drafting: drafting,
+            direct: direct,
+            sending: sending,
+            invite: invite,
+            guestEnabled: guestEnabled,
+            encryptionEnabled: encryptionEnabled,
+            worldReadable: worldReadable,
+            hidden: hidden,
+            archived: archived,
+            lastBatch: lastBatch,
+            prevBatch: prevBatch,
+            nextBatch: nextBatch,
+            lastRead: lastRead,
+            lastUpdate: lastUpdate,
+            totalJoinedUsers: totalJoinedUsers,
+            namePriority: namePriority,
+            draft: draft,
+            reply: reply,
+            userIds: userIds,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$RoomsTableProcessedTableManager = ProcessedTableManager<
+    _$StorageDatabase,
+    $RoomsTable,
+    Room,
+    $$RoomsTableFilterComposer,
+    $$RoomsTableOrderingComposer,
+    $$RoomsTableAnnotationComposer,
+    $$RoomsTableCreateCompanionBuilder,
+    $$RoomsTableUpdateCompanionBuilder,
+    (Room, BaseReferences<_$StorageDatabase, $RoomsTable, Room>),
+    Room,
+    PrefetchHooks Function()>;
+typedef $$UsersTableCreateCompanionBuilder = UsersCompanion Function({
+  required String userId,
+  Value<String?> deviceId,
+  Value<String?> idserver,
+  Value<String?> homeserver,
+  Value<String?> homeserverName,
+  Value<String?> accessToken,
+  Value<String?> displayName,
+  Value<String?> avatarUri,
+  Value<int> rowid,
+});
+typedef $$UsersTableUpdateCompanionBuilder = UsersCompanion Function({
+  Value<String> userId,
+  Value<String?> deviceId,
+  Value<String?> idserver,
+  Value<String?> homeserver,
+  Value<String?> homeserverName,
+  Value<String?> accessToken,
+  Value<String?> displayName,
+  Value<String?> avatarUri,
+  Value<int> rowid,
+});
+
+class $$UsersTableFilterComposer
+    extends Composer<_$StorageDatabase, $UsersTable> {
+  $$UsersTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get deviceId => $composableBuilder(
+      column: $table.deviceId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get idserver => $composableBuilder(
+      column: $table.idserver, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get homeserver => $composableBuilder(
+      column: $table.homeserver, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get homeserverName => $composableBuilder(
+      column: $table.homeserverName,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get accessToken => $composableBuilder(
+      column: $table.accessToken, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get displayName => $composableBuilder(
+      column: $table.displayName, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get avatarUri => $composableBuilder(
+      column: $table.avatarUri, builder: (column) => ColumnFilters(column));
+}
+
+class $$UsersTableOrderingComposer
+    extends Composer<_$StorageDatabase, $UsersTable> {
+  $$UsersTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get deviceId => $composableBuilder(
+      column: $table.deviceId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get idserver => $composableBuilder(
+      column: $table.idserver, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get homeserver => $composableBuilder(
+      column: $table.homeserver, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get homeserverName => $composableBuilder(
+      column: $table.homeserverName,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get accessToken => $composableBuilder(
+      column: $table.accessToken, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get displayName => $composableBuilder(
+      column: $table.displayName, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get avatarUri => $composableBuilder(
+      column: $table.avatarUri, builder: (column) => ColumnOrderings(column));
+}
+
+class $$UsersTableAnnotationComposer
+    extends Composer<_$StorageDatabase, $UsersTable> {
+  $$UsersTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get deviceId =>
+      $composableBuilder(column: $table.deviceId, builder: (column) => column);
+
+  GeneratedColumn<String> get idserver =>
+      $composableBuilder(column: $table.idserver, builder: (column) => column);
+
+  GeneratedColumn<String> get homeserver => $composableBuilder(
+      column: $table.homeserver, builder: (column) => column);
+
+  GeneratedColumn<String> get homeserverName => $composableBuilder(
+      column: $table.homeserverName, builder: (column) => column);
+
+  GeneratedColumn<String> get accessToken => $composableBuilder(
+      column: $table.accessToken, builder: (column) => column);
+
+  GeneratedColumn<String> get displayName => $composableBuilder(
+      column: $table.displayName, builder: (column) => column);
+
+  GeneratedColumn<String> get avatarUri =>
+      $composableBuilder(column: $table.avatarUri, builder: (column) => column);
+}
+
+class $$UsersTableTableManager extends RootTableManager<
+    _$StorageDatabase,
+    $UsersTable,
+    User,
+    $$UsersTableFilterComposer,
+    $$UsersTableOrderingComposer,
+    $$UsersTableAnnotationComposer,
+    $$UsersTableCreateCompanionBuilder,
+    $$UsersTableUpdateCompanionBuilder,
+    (User, BaseReferences<_$StorageDatabase, $UsersTable, User>),
+    User,
+    PrefetchHooks Function()> {
+  $$UsersTableTableManager(_$StorageDatabase db, $UsersTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$UsersTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$UsersTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$UsersTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> userId = const Value.absent(),
+            Value<String?> deviceId = const Value.absent(),
+            Value<String?> idserver = const Value.absent(),
+            Value<String?> homeserver = const Value.absent(),
+            Value<String?> homeserverName = const Value.absent(),
+            Value<String?> accessToken = const Value.absent(),
+            Value<String?> displayName = const Value.absent(),
+            Value<String?> avatarUri = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              UsersCompanion(
+            userId: userId,
+            deviceId: deviceId,
+            idserver: idserver,
+            homeserver: homeserver,
+            homeserverName: homeserverName,
+            accessToken: accessToken,
+            displayName: displayName,
+            avatarUri: avatarUri,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String userId,
+            Value<String?> deviceId = const Value.absent(),
+            Value<String?> idserver = const Value.absent(),
+            Value<String?> homeserver = const Value.absent(),
+            Value<String?> homeserverName = const Value.absent(),
+            Value<String?> accessToken = const Value.absent(),
+            Value<String?> displayName = const Value.absent(),
+            Value<String?> avatarUri = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              UsersCompanion.insert(
+            userId: userId,
+            deviceId: deviceId,
+            idserver: idserver,
+            homeserver: homeserver,
+            homeserverName: homeserverName,
+            accessToken: accessToken,
+            displayName: displayName,
+            avatarUri: avatarUri,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$UsersTableProcessedTableManager = ProcessedTableManager<
+    _$StorageDatabase,
+    $UsersTable,
+    User,
+    $$UsersTableFilterComposer,
+    $$UsersTableOrderingComposer,
+    $$UsersTableAnnotationComposer,
+    $$UsersTableCreateCompanionBuilder,
+    $$UsersTableUpdateCompanionBuilder,
+    (User, BaseReferences<_$StorageDatabase, $UsersTable, User>),
+    User,
+    PrefetchHooks Function()>;
+typedef $$MediasTableCreateCompanionBuilder = MediasCompanion Function({
+  required String mxcUri,
+  Value<Uint8List?> data,
+  Value<String?> type,
+  Value<EncryptInfo?> info,
+  Value<int> rowid,
+});
+typedef $$MediasTableUpdateCompanionBuilder = MediasCompanion Function({
+  Value<String> mxcUri,
+  Value<Uint8List?> data,
+  Value<String?> type,
+  Value<EncryptInfo?> info,
+  Value<int> rowid,
+});
+
+class $$MediasTableFilterComposer
+    extends Composer<_$StorageDatabase, $MediasTable> {
+  $$MediasTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get mxcUri => $composableBuilder(
+      column: $table.mxcUri, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<Uint8List> get data => $composableBuilder(
+      column: $table.data, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get type => $composableBuilder(
+      column: $table.type, builder: (column) => ColumnFilters(column));
+
+  ColumnWithTypeConverterFilters<EncryptInfo?, EncryptInfo, String> get info =>
+      $composableBuilder(
+          column: $table.info,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
+}
+
+class $$MediasTableOrderingComposer
+    extends Composer<_$StorageDatabase, $MediasTable> {
+  $$MediasTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get mxcUri => $composableBuilder(
+      column: $table.mxcUri, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<Uint8List> get data => $composableBuilder(
+      column: $table.data, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get type => $composableBuilder(
+      column: $table.type, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get info => $composableBuilder(
+      column: $table.info, builder: (column) => ColumnOrderings(column));
+}
+
+class $$MediasTableAnnotationComposer
+    extends Composer<_$StorageDatabase, $MediasTable> {
+  $$MediasTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get mxcUri =>
+      $composableBuilder(column: $table.mxcUri, builder: (column) => column);
+
+  GeneratedColumn<Uint8List> get data =>
+      $composableBuilder(column: $table.data, builder: (column) => column);
+
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<EncryptInfo?, String> get info =>
+      $composableBuilder(column: $table.info, builder: (column) => column);
+}
+
+class $$MediasTableTableManager extends RootTableManager<
+    _$StorageDatabase,
+    $MediasTable,
+    Media,
+    $$MediasTableFilterComposer,
+    $$MediasTableOrderingComposer,
+    $$MediasTableAnnotationComposer,
+    $$MediasTableCreateCompanionBuilder,
+    $$MediasTableUpdateCompanionBuilder,
+    (Media, BaseReferences<_$StorageDatabase, $MediasTable, Media>),
+    Media,
+    PrefetchHooks Function()> {
+  $$MediasTableTableManager(_$StorageDatabase db, $MediasTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MediasTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MediasTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MediasTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> mxcUri = const Value.absent(),
+            Value<Uint8List?> data = const Value.absent(),
+            Value<String?> type = const Value.absent(),
+            Value<EncryptInfo?> info = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              MediasCompanion(
+            mxcUri: mxcUri,
+            data: data,
+            type: type,
+            info: info,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String mxcUri,
+            Value<Uint8List?> data = const Value.absent(),
+            Value<String?> type = const Value.absent(),
+            Value<EncryptInfo?> info = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              MediasCompanion.insert(
+            mxcUri: mxcUri,
+            data: data,
+            type: type,
+            info: info,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$MediasTableProcessedTableManager = ProcessedTableManager<
+    _$StorageDatabase,
+    $MediasTable,
+    Media,
+    $$MediasTableFilterComposer,
+    $$MediasTableOrderingComposer,
+    $$MediasTableAnnotationComposer,
+    $$MediasTableCreateCompanionBuilder,
+    $$MediasTableUpdateCompanionBuilder,
+    (Media, BaseReferences<_$StorageDatabase, $MediasTable, Media>),
+    Media,
+    PrefetchHooks Function()>;
+typedef $$ReactionsTableCreateCompanionBuilder = ReactionsCompanion Function({
+  required String id,
+  Value<String?> roomId,
+  Value<String?> userId,
+  Value<String?> type,
+  Value<String?> sender,
+  Value<String?> stateKey,
+  Value<String?> batch,
+  Value<String?> prevBatch,
+  required int timestamp,
+  Value<String?> body,
+  Value<String?> relType,
+  Value<String?> relEventId,
+  Value<int> rowid,
+});
+typedef $$ReactionsTableUpdateCompanionBuilder = ReactionsCompanion Function({
+  Value<String> id,
+  Value<String?> roomId,
+  Value<String?> userId,
+  Value<String?> type,
+  Value<String?> sender,
+  Value<String?> stateKey,
+  Value<String?> batch,
+  Value<String?> prevBatch,
+  Value<int> timestamp,
+  Value<String?> body,
+  Value<String?> relType,
+  Value<String?> relEventId,
+  Value<int> rowid,
+});
+
+class $$ReactionsTableFilterComposer
+    extends Composer<_$StorageDatabase, $ReactionsTable> {
+  $$ReactionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get roomId => $composableBuilder(
+      column: $table.roomId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get type => $composableBuilder(
+      column: $table.type, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get sender => $composableBuilder(
+      column: $table.sender, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get stateKey => $composableBuilder(
+      column: $table.stateKey, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get batch => $composableBuilder(
+      column: $table.batch, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get prevBatch => $composableBuilder(
+      column: $table.prevBatch, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get timestamp => $composableBuilder(
+      column: $table.timestamp, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get body => $composableBuilder(
+      column: $table.body, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get relType => $composableBuilder(
+      column: $table.relType, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get relEventId => $composableBuilder(
+      column: $table.relEventId, builder: (column) => ColumnFilters(column));
+}
+
+class $$ReactionsTableOrderingComposer
+    extends Composer<_$StorageDatabase, $ReactionsTable> {
+  $$ReactionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get roomId => $composableBuilder(
+      column: $table.roomId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get userId => $composableBuilder(
+      column: $table.userId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get type => $composableBuilder(
+      column: $table.type, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get sender => $composableBuilder(
+      column: $table.sender, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get stateKey => $composableBuilder(
+      column: $table.stateKey, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get batch => $composableBuilder(
+      column: $table.batch, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get prevBatch => $composableBuilder(
+      column: $table.prevBatch, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get timestamp => $composableBuilder(
+      column: $table.timestamp, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get body => $composableBuilder(
+      column: $table.body, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get relType => $composableBuilder(
+      column: $table.relType, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get relEventId => $composableBuilder(
+      column: $table.relEventId, builder: (column) => ColumnOrderings(column));
+}
+
+class $$ReactionsTableAnnotationComposer
+    extends Composer<_$StorageDatabase, $ReactionsTable> {
+  $$ReactionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get roomId =>
+      $composableBuilder(column: $table.roomId, builder: (column) => column);
+
+  GeneratedColumn<String> get userId =>
+      $composableBuilder(column: $table.userId, builder: (column) => column);
+
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<String> get sender =>
+      $composableBuilder(column: $table.sender, builder: (column) => column);
+
+  GeneratedColumn<String> get stateKey =>
+      $composableBuilder(column: $table.stateKey, builder: (column) => column);
+
+  GeneratedColumn<String> get batch =>
+      $composableBuilder(column: $table.batch, builder: (column) => column);
+
+  GeneratedColumn<String> get prevBatch =>
+      $composableBuilder(column: $table.prevBatch, builder: (column) => column);
+
+  GeneratedColumn<int> get timestamp =>
+      $composableBuilder(column: $table.timestamp, builder: (column) => column);
+
+  GeneratedColumn<String> get body =>
+      $composableBuilder(column: $table.body, builder: (column) => column);
+
+  GeneratedColumn<String> get relType =>
+      $composableBuilder(column: $table.relType, builder: (column) => column);
+
+  GeneratedColumn<String> get relEventId => $composableBuilder(
+      column: $table.relEventId, builder: (column) => column);
+}
+
+class $$ReactionsTableTableManager extends RootTableManager<
+    _$StorageDatabase,
+    $ReactionsTable,
+    Reaction,
+    $$ReactionsTableFilterComposer,
+    $$ReactionsTableOrderingComposer,
+    $$ReactionsTableAnnotationComposer,
+    $$ReactionsTableCreateCompanionBuilder,
+    $$ReactionsTableUpdateCompanionBuilder,
+    (Reaction, BaseReferences<_$StorageDatabase, $ReactionsTable, Reaction>),
+    Reaction,
+    PrefetchHooks Function()> {
+  $$ReactionsTableTableManager(_$StorageDatabase db, $ReactionsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ReactionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ReactionsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ReactionsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String?> roomId = const Value.absent(),
+            Value<String?> userId = const Value.absent(),
+            Value<String?> type = const Value.absent(),
+            Value<String?> sender = const Value.absent(),
+            Value<String?> stateKey = const Value.absent(),
+            Value<String?> batch = const Value.absent(),
+            Value<String?> prevBatch = const Value.absent(),
+            Value<int> timestamp = const Value.absent(),
+            Value<String?> body = const Value.absent(),
+            Value<String?> relType = const Value.absent(),
+            Value<String?> relEventId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              ReactionsCompanion(
+            id: id,
+            roomId: roomId,
+            userId: userId,
+            type: type,
+            sender: sender,
+            stateKey: stateKey,
+            batch: batch,
+            prevBatch: prevBatch,
+            timestamp: timestamp,
+            body: body,
+            relType: relType,
+            relEventId: relEventId,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            Value<String?> roomId = const Value.absent(),
+            Value<String?> userId = const Value.absent(),
+            Value<String?> type = const Value.absent(),
+            Value<String?> sender = const Value.absent(),
+            Value<String?> stateKey = const Value.absent(),
+            Value<String?> batch = const Value.absent(),
+            Value<String?> prevBatch = const Value.absent(),
+            required int timestamp,
+            Value<String?> body = const Value.absent(),
+            Value<String?> relType = const Value.absent(),
+            Value<String?> relEventId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              ReactionsCompanion.insert(
+            id: id,
+            roomId: roomId,
+            userId: userId,
+            type: type,
+            sender: sender,
+            stateKey: stateKey,
+            batch: batch,
+            prevBatch: prevBatch,
+            timestamp: timestamp,
+            body: body,
+            relType: relType,
+            relEventId: relEventId,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$ReactionsTableProcessedTableManager = ProcessedTableManager<
+    _$StorageDatabase,
+    $ReactionsTable,
+    Reaction,
+    $$ReactionsTableFilterComposer,
+    $$ReactionsTableOrderingComposer,
+    $$ReactionsTableAnnotationComposer,
+    $$ReactionsTableCreateCompanionBuilder,
+    $$ReactionsTableUpdateCompanionBuilder,
+    (Reaction, BaseReferences<_$StorageDatabase, $ReactionsTable, Reaction>),
+    Reaction,
+    PrefetchHooks Function()>;
+typedef $$ReceiptsTableCreateCompanionBuilder = ReceiptsCompanion Function({
+  required String eventId,
+  Value<int?> latestRead,
+  Value<Map<String, dynamic>?> userReads,
+  Value<int> rowid,
+});
+typedef $$ReceiptsTableUpdateCompanionBuilder = ReceiptsCompanion Function({
+  Value<String> eventId,
+  Value<int?> latestRead,
+  Value<Map<String, dynamic>?> userReads,
+  Value<int> rowid,
+});
+
+class $$ReceiptsTableFilterComposer
+    extends Composer<_$StorageDatabase, $ReceiptsTable> {
+  $$ReceiptsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get eventId => $composableBuilder(
+      column: $table.eventId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get latestRead => $composableBuilder(
+      column: $table.latestRead, builder: (column) => ColumnFilters(column));
+
+  ColumnWithTypeConverterFilters<Map<String, dynamic>?, Map<String, dynamic>,
+          String>
+      get userReads => $composableBuilder(
+          column: $table.userReads,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
+}
+
+class $$ReceiptsTableOrderingComposer
+    extends Composer<_$StorageDatabase, $ReceiptsTable> {
+  $$ReceiptsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get eventId => $composableBuilder(
+      column: $table.eventId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get latestRead => $composableBuilder(
+      column: $table.latestRead, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get userReads => $composableBuilder(
+      column: $table.userReads, builder: (column) => ColumnOrderings(column));
+}
+
+class $$ReceiptsTableAnnotationComposer
+    extends Composer<_$StorageDatabase, $ReceiptsTable> {
+  $$ReceiptsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get eventId =>
+      $composableBuilder(column: $table.eventId, builder: (column) => column);
+
+  GeneratedColumn<int> get latestRead => $composableBuilder(
+      column: $table.latestRead, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String>
+      get userReads => $composableBuilder(
+          column: $table.userReads, builder: (column) => column);
+}
+
+class $$ReceiptsTableTableManager extends RootTableManager<
+    _$StorageDatabase,
+    $ReceiptsTable,
+    Receipt,
+    $$ReceiptsTableFilterComposer,
+    $$ReceiptsTableOrderingComposer,
+    $$ReceiptsTableAnnotationComposer,
+    $$ReceiptsTableCreateCompanionBuilder,
+    $$ReceiptsTableUpdateCompanionBuilder,
+    (Receipt, BaseReferences<_$StorageDatabase, $ReceiptsTable, Receipt>),
+    Receipt,
+    PrefetchHooks Function()> {
+  $$ReceiptsTableTableManager(_$StorageDatabase db, $ReceiptsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ReceiptsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ReceiptsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ReceiptsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> eventId = const Value.absent(),
+            Value<int?> latestRead = const Value.absent(),
+            Value<Map<String, dynamic>?> userReads = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              ReceiptsCompanion(
+            eventId: eventId,
+            latestRead: latestRead,
+            userReads: userReads,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String eventId,
+            Value<int?> latestRead = const Value.absent(),
+            Value<Map<String, dynamic>?> userReads = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              ReceiptsCompanion.insert(
+            eventId: eventId,
+            latestRead: latestRead,
+            userReads: userReads,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$ReceiptsTableProcessedTableManager = ProcessedTableManager<
+    _$StorageDatabase,
+    $ReceiptsTable,
+    Receipt,
+    $$ReceiptsTableFilterComposer,
+    $$ReceiptsTableOrderingComposer,
+    $$ReceiptsTableAnnotationComposer,
+    $$ReceiptsTableCreateCompanionBuilder,
+    $$ReceiptsTableUpdateCompanionBuilder,
+    (Receipt, BaseReferences<_$StorageDatabase, $ReceiptsTable, Receipt>),
+    Receipt,
+    PrefetchHooks Function()>;
+typedef $$AuthsTableCreateCompanionBuilder = AuthsCompanion Function({
+  required String id,
+  Value<Map<String, dynamic>?> store,
+  Value<int> rowid,
+});
+typedef $$AuthsTableUpdateCompanionBuilder = AuthsCompanion Function({
+  Value<String> id,
+  Value<Map<String, dynamic>?> store,
+  Value<int> rowid,
+});
+
+class $$AuthsTableFilterComposer
+    extends Composer<_$StorageDatabase, $AuthsTable> {
+  $$AuthsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnWithTypeConverterFilters<Map<String, dynamic>?, Map<String, dynamic>,
+          String>
+      get store => $composableBuilder(
+          column: $table.store,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
+}
+
+class $$AuthsTableOrderingComposer
+    extends Composer<_$StorageDatabase, $AuthsTable> {
+  $$AuthsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get store => $composableBuilder(
+      column: $table.store, builder: (column) => ColumnOrderings(column));
+}
+
+class $$AuthsTableAnnotationComposer
+    extends Composer<_$StorageDatabase, $AuthsTable> {
+  $$AuthsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String> get store =>
+      $composableBuilder(column: $table.store, builder: (column) => column);
+}
+
+class $$AuthsTableTableManager extends RootTableManager<
+    _$StorageDatabase,
+    $AuthsTable,
+    Auth,
+    $$AuthsTableFilterComposer,
+    $$AuthsTableOrderingComposer,
+    $$AuthsTableAnnotationComposer,
+    $$AuthsTableCreateCompanionBuilder,
+    $$AuthsTableUpdateCompanionBuilder,
+    (Auth, BaseReferences<_$StorageDatabase, $AuthsTable, Auth>),
+    Auth,
+    PrefetchHooks Function()> {
+  $$AuthsTableTableManager(_$StorageDatabase db, $AuthsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$AuthsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$AuthsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$AuthsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<Map<String, dynamic>?> store = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              AuthsCompanion(
+            id: id,
+            store: store,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            Value<Map<String, dynamic>?> store = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              AuthsCompanion.insert(
+            id: id,
+            store: store,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$AuthsTableProcessedTableManager = ProcessedTableManager<
+    _$StorageDatabase,
+    $AuthsTable,
+    Auth,
+    $$AuthsTableFilterComposer,
+    $$AuthsTableOrderingComposer,
+    $$AuthsTableAnnotationComposer,
+    $$AuthsTableCreateCompanionBuilder,
+    $$AuthsTableUpdateCompanionBuilder,
+    (Auth, BaseReferences<_$StorageDatabase, $AuthsTable, Auth>),
+    Auth,
+    PrefetchHooks Function()>;
+typedef $$SyncsTableCreateCompanionBuilder = SyncsCompanion Function({
+  required String id,
+  Value<Map<String, dynamic>?> store,
+  Value<int> rowid,
+});
+typedef $$SyncsTableUpdateCompanionBuilder = SyncsCompanion Function({
+  Value<String> id,
+  Value<Map<String, dynamic>?> store,
+  Value<int> rowid,
+});
+
+class $$SyncsTableFilterComposer
+    extends Composer<_$StorageDatabase, $SyncsTable> {
+  $$SyncsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnWithTypeConverterFilters<Map<String, dynamic>?, Map<String, dynamic>,
+          String>
+      get store => $composableBuilder(
+          column: $table.store,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
+}
+
+class $$SyncsTableOrderingComposer
+    extends Composer<_$StorageDatabase, $SyncsTable> {
+  $$SyncsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get store => $composableBuilder(
+      column: $table.store, builder: (column) => ColumnOrderings(column));
+}
+
+class $$SyncsTableAnnotationComposer
+    extends Composer<_$StorageDatabase, $SyncsTable> {
+  $$SyncsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String> get store =>
+      $composableBuilder(column: $table.store, builder: (column) => column);
+}
+
+class $$SyncsTableTableManager extends RootTableManager<
+    _$StorageDatabase,
+    $SyncsTable,
+    Sync,
+    $$SyncsTableFilterComposer,
+    $$SyncsTableOrderingComposer,
+    $$SyncsTableAnnotationComposer,
+    $$SyncsTableCreateCompanionBuilder,
+    $$SyncsTableUpdateCompanionBuilder,
+    (Sync, BaseReferences<_$StorageDatabase, $SyncsTable, Sync>),
+    Sync,
+    PrefetchHooks Function()> {
+  $$SyncsTableTableManager(_$StorageDatabase db, $SyncsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SyncsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SyncsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SyncsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<Map<String, dynamic>?> store = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              SyncsCompanion(
+            id: id,
+            store: store,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            Value<Map<String, dynamic>?> store = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              SyncsCompanion.insert(
+            id: id,
+            store: store,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$SyncsTableProcessedTableManager = ProcessedTableManager<
+    _$StorageDatabase,
+    $SyncsTable,
+    Sync,
+    $$SyncsTableFilterComposer,
+    $$SyncsTableOrderingComposer,
+    $$SyncsTableAnnotationComposer,
+    $$SyncsTableCreateCompanionBuilder,
+    $$SyncsTableUpdateCompanionBuilder,
+    (Sync, BaseReferences<_$StorageDatabase, $SyncsTable, Sync>),
+    Sync,
+    PrefetchHooks Function()>;
+typedef $$CryptosTableCreateCompanionBuilder = CryptosCompanion Function({
+  required String id,
+  Value<Map<String, dynamic>?> store,
+  Value<int> rowid,
+});
+typedef $$CryptosTableUpdateCompanionBuilder = CryptosCompanion Function({
+  Value<String> id,
+  Value<Map<String, dynamic>?> store,
+  Value<int> rowid,
+});
+
+class $$CryptosTableFilterComposer
+    extends Composer<_$StorageDatabase, $CryptosTable> {
+  $$CryptosTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnWithTypeConverterFilters<Map<String, dynamic>?, Map<String, dynamic>,
+          String>
+      get store => $composableBuilder(
+          column: $table.store,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
+}
+
+class $$CryptosTableOrderingComposer
+    extends Composer<_$StorageDatabase, $CryptosTable> {
+  $$CryptosTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get store => $composableBuilder(
+      column: $table.store, builder: (column) => ColumnOrderings(column));
+}
+
+class $$CryptosTableAnnotationComposer
+    extends Composer<_$StorageDatabase, $CryptosTable> {
+  $$CryptosTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String> get store =>
+      $composableBuilder(column: $table.store, builder: (column) => column);
+}
+
+class $$CryptosTableTableManager extends RootTableManager<
+    _$StorageDatabase,
+    $CryptosTable,
+    Crypto,
+    $$CryptosTableFilterComposer,
+    $$CryptosTableOrderingComposer,
+    $$CryptosTableAnnotationComposer,
+    $$CryptosTableCreateCompanionBuilder,
+    $$CryptosTableUpdateCompanionBuilder,
+    (Crypto, BaseReferences<_$StorageDatabase, $CryptosTable, Crypto>),
+    Crypto,
+    PrefetchHooks Function()> {
+  $$CryptosTableTableManager(_$StorageDatabase db, $CryptosTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$CryptosTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$CryptosTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$CryptosTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<Map<String, dynamic>?> store = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              CryptosCompanion(
+            id: id,
+            store: store,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            Value<Map<String, dynamic>?> store = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              CryptosCompanion.insert(
+            id: id,
+            store: store,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$CryptosTableProcessedTableManager = ProcessedTableManager<
+    _$StorageDatabase,
+    $CryptosTable,
+    Crypto,
+    $$CryptosTableFilterComposer,
+    $$CryptosTableOrderingComposer,
+    $$CryptosTableAnnotationComposer,
+    $$CryptosTableCreateCompanionBuilder,
+    $$CryptosTableUpdateCompanionBuilder,
+    (Crypto, BaseReferences<_$StorageDatabase, $CryptosTable, Crypto>),
+    Crypto,
+    PrefetchHooks Function()>;
+typedef $$MessageSessionsTableCreateCompanionBuilder = MessageSessionsCompanion
+    Function({
+  required String id,
+  required String roomId,
+  required int index,
+  Value<String?> identityKey,
+  required String session,
+  required bool inbound,
+  required int createdAt,
+  Value<int> rowid,
+});
+typedef $$MessageSessionsTableUpdateCompanionBuilder = MessageSessionsCompanion
+    Function({
+  Value<String> id,
+  Value<String> roomId,
+  Value<int> index,
+  Value<String?> identityKey,
+  Value<String> session,
+  Value<bool> inbound,
+  Value<int> createdAt,
+  Value<int> rowid,
+});
+
+class $$MessageSessionsTableFilterComposer
+    extends Composer<_$StorageDatabase, $MessageSessionsTable> {
+  $$MessageSessionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get roomId => $composableBuilder(
+      column: $table.roomId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get index => $composableBuilder(
+      column: $table.index, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get identityKey => $composableBuilder(
+      column: $table.identityKey, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get session => $composableBuilder(
+      column: $table.session, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get inbound => $composableBuilder(
+      column: $table.inbound, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+}
+
+class $$MessageSessionsTableOrderingComposer
+    extends Composer<_$StorageDatabase, $MessageSessionsTable> {
+  $$MessageSessionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get roomId => $composableBuilder(
+      column: $table.roomId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get index => $composableBuilder(
+      column: $table.index, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get identityKey => $composableBuilder(
+      column: $table.identityKey, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get session => $composableBuilder(
+      column: $table.session, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get inbound => $composableBuilder(
+      column: $table.inbound, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+}
+
+class $$MessageSessionsTableAnnotationComposer
+    extends Composer<_$StorageDatabase, $MessageSessionsTable> {
+  $$MessageSessionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get roomId =>
+      $composableBuilder(column: $table.roomId, builder: (column) => column);
+
+  GeneratedColumn<int> get index =>
+      $composableBuilder(column: $table.index, builder: (column) => column);
+
+  GeneratedColumn<String> get identityKey => $composableBuilder(
+      column: $table.identityKey, builder: (column) => column);
+
+  GeneratedColumn<String> get session =>
+      $composableBuilder(column: $table.session, builder: (column) => column);
+
+  GeneratedColumn<bool> get inbound =>
+      $composableBuilder(column: $table.inbound, builder: (column) => column);
+
+  GeneratedColumn<int> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+}
+
+class $$MessageSessionsTableTableManager extends RootTableManager<
+    _$StorageDatabase,
+    $MessageSessionsTable,
+    MessageSession,
+    $$MessageSessionsTableFilterComposer,
+    $$MessageSessionsTableOrderingComposer,
+    $$MessageSessionsTableAnnotationComposer,
+    $$MessageSessionsTableCreateCompanionBuilder,
+    $$MessageSessionsTableUpdateCompanionBuilder,
+    (
+      MessageSession,
+      BaseReferences<_$StorageDatabase, $MessageSessionsTable, MessageSession>
+    ),
+    MessageSession,
+    PrefetchHooks Function()> {
+  $$MessageSessionsTableTableManager(
+      _$StorageDatabase db, $MessageSessionsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MessageSessionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MessageSessionsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MessageSessionsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String> roomId = const Value.absent(),
+            Value<int> index = const Value.absent(),
+            Value<String?> identityKey = const Value.absent(),
+            Value<String> session = const Value.absent(),
+            Value<bool> inbound = const Value.absent(),
+            Value<int> createdAt = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              MessageSessionsCompanion(
+            id: id,
+            roomId: roomId,
+            index: index,
+            identityKey: identityKey,
+            session: session,
+            inbound: inbound,
+            createdAt: createdAt,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            required String roomId,
+            required int index,
+            Value<String?> identityKey = const Value.absent(),
+            required String session,
+            required bool inbound,
+            required int createdAt,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              MessageSessionsCompanion.insert(
+            id: id,
+            roomId: roomId,
+            index: index,
+            identityKey: identityKey,
+            session: session,
+            inbound: inbound,
+            createdAt: createdAt,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$MessageSessionsTableProcessedTableManager = ProcessedTableManager<
+    _$StorageDatabase,
+    $MessageSessionsTable,
+    MessageSession,
+    $$MessageSessionsTableFilterComposer,
+    $$MessageSessionsTableOrderingComposer,
+    $$MessageSessionsTableAnnotationComposer,
+    $$MessageSessionsTableCreateCompanionBuilder,
+    $$MessageSessionsTableUpdateCompanionBuilder,
+    (
+      MessageSession,
+      BaseReferences<_$StorageDatabase, $MessageSessionsTable, MessageSession>
+    ),
+    MessageSession,
+    PrefetchHooks Function()>;
+typedef $$KeySessionsTableCreateCompanionBuilder = KeySessionsCompanion
+    Function({
+  required String id,
+  required String sessionId,
+  required String identityKey,
+  Value<String?> session,
+  Value<int> rowid,
+});
+typedef $$KeySessionsTableUpdateCompanionBuilder = KeySessionsCompanion
+    Function({
+  Value<String> id,
+  Value<String> sessionId,
+  Value<String> identityKey,
+  Value<String?> session,
+  Value<int> rowid,
+});
+
+class $$KeySessionsTableFilterComposer
+    extends Composer<_$StorageDatabase, $KeySessionsTable> {
+  $$KeySessionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get sessionId => $composableBuilder(
+      column: $table.sessionId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get identityKey => $composableBuilder(
+      column: $table.identityKey, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get session => $composableBuilder(
+      column: $table.session, builder: (column) => ColumnFilters(column));
+}
+
+class $$KeySessionsTableOrderingComposer
+    extends Composer<_$StorageDatabase, $KeySessionsTable> {
+  $$KeySessionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get sessionId => $composableBuilder(
+      column: $table.sessionId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get identityKey => $composableBuilder(
+      column: $table.identityKey, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get session => $composableBuilder(
+      column: $table.session, builder: (column) => ColumnOrderings(column));
+}
+
+class $$KeySessionsTableAnnotationComposer
+    extends Composer<_$StorageDatabase, $KeySessionsTable> {
+  $$KeySessionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get sessionId =>
+      $composableBuilder(column: $table.sessionId, builder: (column) => column);
+
+  GeneratedColumn<String> get identityKey => $composableBuilder(
+      column: $table.identityKey, builder: (column) => column);
+
+  GeneratedColumn<String> get session =>
+      $composableBuilder(column: $table.session, builder: (column) => column);
+}
+
+class $$KeySessionsTableTableManager extends RootTableManager<
+    _$StorageDatabase,
+    $KeySessionsTable,
+    KeySession,
+    $$KeySessionsTableFilterComposer,
+    $$KeySessionsTableOrderingComposer,
+    $$KeySessionsTableAnnotationComposer,
+    $$KeySessionsTableCreateCompanionBuilder,
+    $$KeySessionsTableUpdateCompanionBuilder,
+    (
+      KeySession,
+      BaseReferences<_$StorageDatabase, $KeySessionsTable, KeySession>
+    ),
+    KeySession,
+    PrefetchHooks Function()> {
+  $$KeySessionsTableTableManager(_$StorageDatabase db, $KeySessionsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$KeySessionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$KeySessionsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$KeySessionsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<String> sessionId = const Value.absent(),
+            Value<String> identityKey = const Value.absent(),
+            Value<String?> session = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              KeySessionsCompanion(
+            id: id,
+            sessionId: sessionId,
+            identityKey: identityKey,
+            session: session,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            required String sessionId,
+            required String identityKey,
+            Value<String?> session = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              KeySessionsCompanion.insert(
+            id: id,
+            sessionId: sessionId,
+            identityKey: identityKey,
+            session: session,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$KeySessionsTableProcessedTableManager = ProcessedTableManager<
+    _$StorageDatabase,
+    $KeySessionsTable,
+    KeySession,
+    $$KeySessionsTableFilterComposer,
+    $$KeySessionsTableOrderingComposer,
+    $$KeySessionsTableAnnotationComposer,
+    $$KeySessionsTableCreateCompanionBuilder,
+    $$KeySessionsTableUpdateCompanionBuilder,
+    (
+      KeySession,
+      BaseReferences<_$StorageDatabase, $KeySessionsTable, KeySession>
+    ),
+    KeySession,
+    PrefetchHooks Function()>;
+typedef $$SettingsTableCreateCompanionBuilder = SettingsCompanion Function({
+  required String id,
+  Value<Map<String, dynamic>?> store,
+  Value<int> rowid,
+});
+typedef $$SettingsTableUpdateCompanionBuilder = SettingsCompanion Function({
+  Value<String> id,
+  Value<Map<String, dynamic>?> store,
+  Value<int> rowid,
+});
+
+class $$SettingsTableFilterComposer
+    extends Composer<_$StorageDatabase, $SettingsTable> {
+  $$SettingsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnWithTypeConverterFilters<Map<String, dynamic>?, Map<String, dynamic>,
+          String>
+      get store => $composableBuilder(
+          column: $table.store,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
+}
+
+class $$SettingsTableOrderingComposer
+    extends Composer<_$StorageDatabase, $SettingsTable> {
+  $$SettingsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get store => $composableBuilder(
+      column: $table.store, builder: (column) => ColumnOrderings(column));
+}
+
+class $$SettingsTableAnnotationComposer
+    extends Composer<_$StorageDatabase, $SettingsTable> {
+  $$SettingsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<Map<String, dynamic>?, String> get store =>
+      $composableBuilder(column: $table.store, builder: (column) => column);
+}
+
+class $$SettingsTableTableManager extends RootTableManager<
+    _$StorageDatabase,
+    $SettingsTable,
+    Setting,
+    $$SettingsTableFilterComposer,
+    $$SettingsTableOrderingComposer,
+    $$SettingsTableAnnotationComposer,
+    $$SettingsTableCreateCompanionBuilder,
+    $$SettingsTableUpdateCompanionBuilder,
+    (Setting, BaseReferences<_$StorageDatabase, $SettingsTable, Setting>),
+    Setting,
+    PrefetchHooks Function()> {
+  $$SettingsTableTableManager(_$StorageDatabase db, $SettingsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SettingsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SettingsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SettingsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<String> id = const Value.absent(),
+            Value<Map<String, dynamic>?> store = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              SettingsCompanion(
+            id: id,
+            store: store,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required String id,
+            Value<Map<String, dynamic>?> store = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              SettingsCompanion.insert(
+            id: id,
+            store: store,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$SettingsTableProcessedTableManager = ProcessedTableManager<
+    _$StorageDatabase,
+    $SettingsTable,
+    Setting,
+    $$SettingsTableFilterComposer,
+    $$SettingsTableOrderingComposer,
+    $$SettingsTableAnnotationComposer,
+    $$SettingsTableCreateCompanionBuilder,
+    $$SettingsTableUpdateCompanionBuilder,
+    (Setting, BaseReferences<_$StorageDatabase, $SettingsTable, Setting>),
+    Setting,
+    PrefetchHooks Function()>;
+
+class $StorageDatabaseManager {
+  final _$StorageDatabase _db;
+  $StorageDatabaseManager(this._db);
+  $$MessagesTableTableManager get messages =>
+      $$MessagesTableTableManager(_db, _db.messages);
+  $$DecryptedTableTableManager get decrypted =>
+      $$DecryptedTableTableManager(_db, _db.decrypted);
+  $$RoomsTableTableManager get rooms =>
+      $$RoomsTableTableManager(_db, _db.rooms);
+  $$UsersTableTableManager get users =>
+      $$UsersTableTableManager(_db, _db.users);
+  $$MediasTableTableManager get medias =>
+      $$MediasTableTableManager(_db, _db.medias);
+  $$ReactionsTableTableManager get reactions =>
+      $$ReactionsTableTableManager(_db, _db.reactions);
+  $$ReceiptsTableTableManager get receipts =>
+      $$ReceiptsTableTableManager(_db, _db.receipts);
+  $$AuthsTableTableManager get auths =>
+      $$AuthsTableTableManager(_db, _db.auths);
+  $$SyncsTableTableManager get syncs =>
+      $$SyncsTableTableManager(_db, _db.syncs);
+  $$CryptosTableTableManager get cryptos =>
+      $$CryptosTableTableManager(_db, _db.cryptos);
+  $$MessageSessionsTableTableManager get messageSessions =>
+      $$MessageSessionsTableTableManager(_db, _db.messageSessions);
+  $$KeySessionsTableTableManager get keySessions =>
+      $$KeySessionsTableTableManager(_db, _db.keySessions);
+  $$SettingsTableTableManager get settings =>
+      $$SettingsTableTableManager(_db, _db.settings);
 }

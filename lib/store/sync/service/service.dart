@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:katya/global/https.dart';
@@ -64,29 +63,23 @@ class SyncService {
 
     log.info('[SyncService] starting');
 
-    final secureStorage = FlutterSecureStorage();
+    const secureStorage = FlutterSecureStorage();
 
     // only write here if one does not exist
     if (!await secureStorage.containsKey(key: SyncService.lastSinceKey)) {
-      await secureStorage.write(
-          key: SyncService.lastSinceKey, value: lastSince);
+      await secureStorage.write(key: SyncService.lastSinceKey, value: lastSince);
     }
 
     await Future.wait([
       secureStorage.write(key: SyncService.protocolKey, value: protocol),
-      secureStorage.write(
-          key: SyncService.roomNamesKey, value: jsonEncode(roomNames)),
-      secureStorage.write(
-          key: SyncService.currentUserKey, value: jsonEncode(currentUser)),
-      secureStorage.write(
-          key: SyncService.proxySettingsKey, value: jsonEncode(proxySettings)),
-      secureStorage.write(
-          key: SyncService.notificationSettingsKey,
-          value: jsonEncode(settings)),
+      secureStorage.write(key: SyncService.roomNamesKey, value: jsonEncode(roomNames)),
+      secureStorage.write(key: SyncService.currentUserKey, value: jsonEncode(currentUser)),
+      secureStorage.write(key: SyncService.proxySettingsKey, value: jsonEncode(proxySettings)),
+      secureStorage.write(key: SyncService.notificationSettingsKey, value: jsonEncode(settings)),
     ]);
 
     await AndroidAlarmManager.periodic(
-      Duration(seconds: serviceTimeout),
+      const Duration(seconds: serviceTimeout),
       service_id,
       notificationJob,
       exact: true,
@@ -116,16 +109,13 @@ Future notificationJob() async {
     ProxySettings proxySettings;
 
     try {
-      final secureStorage = FlutterSecureStorage();
+      const secureStorage = FlutterSecureStorage();
       protocol = await secureStorage.read(key: SyncService.protocolKey);
       lastSince = await secureStorage.read(key: SyncService.lastSinceKey);
-      final _proxySettingsString =
-          await secureStorage.read(key: SyncService.proxySettingsKey);
-      final _userString =
-          await secureStorage.read(key: SyncService.currentUserKey);
-      currentUser = User.fromJson(jsonDecode(_userString ?? '{}'));
-      proxySettings =
-          ProxySettings.fromJson(jsonDecode(_proxySettingsString ?? '{}'));
+      final proxySettingsString = await secureStorage.read(key: SyncService.proxySettingsKey);
+      final userString = await secureStorage.read(key: SyncService.currentUserKey);
+      currentUser = User.fromJson(jsonDecode(userString ?? '{}'));
+      proxySettings = ProxySettings.fromJson(jsonDecode(proxySettingsString ?? '{}'));
     } catch (error) {
       return log.threaded('[notificationJob] decode error $error');
     }
@@ -146,8 +136,7 @@ Future notificationJob() async {
     // Init notifiations for background service and new messages/events
     final pluginInstance = await initNotifications(
       onSelectNotification: (NotificationResponse? payload) {
-        log.threaded(
-            '[onSelectNotification] TESTING PAYLOAD INSIDE BACKGROUND THREAD $payload');
+        log.threaded('[onSelectNotification] TESTING PAYLOAD INSIDE BACKGROUND THREAD $payload');
         return Future.value(true);
       },
     );
@@ -162,11 +151,11 @@ Future notificationJob() async {
     );
 
     final cutoff = DateTime.now().add(
-      Duration(seconds: SyncService.serviceTimeout),
+      const Duration(seconds: SyncService.serviceTimeout),
     );
 
     while (DateTime.now().isBefore(cutoff)) {
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 2));
 
       // TODO: check for on the fly disabled notification services
       await backgroundSync(
@@ -298,8 +287,7 @@ Future backgroundSync({
       }
 
       // Make sure the room name exists in the cache
-      if (!roomNames.containsKey(roomId) ||
-          roomNames[roomId] == Values.EMPTY_CHAT) {
+      if (!roomNames.containsKey(roomId) || roomNames[roomId] == Values.EMPTY_CHAT) {
         roomNames = await updateRoomNames(
           protocol: protocol,
           homeserver: homeserver,
@@ -371,8 +359,7 @@ Future backgroundSync({
       ///
       /// All other Notifications styles
       ///
-      await Future.forEach(notifications,
-          (NotificationContent notification) async {
+      await Future.forEach(notifications, (NotificationContent notification) async {
         await showMessageNotification(
           id: uncheckedMessages.isEmpty ? 0 : null,
           body: notification.body,
@@ -401,12 +388,11 @@ Future notificationSyncTEST() async {
     String? lastSince;
 
     try {
-      final secureStorage = FlutterSecureStorage();
+      const secureStorage = FlutterSecureStorage();
       protocol = await secureStorage.read(key: SyncService.protocolKey);
       lastSince = await secureStorage.read(key: SyncService.lastSinceKey);
       currentUser = User.fromJson(
-        jsonDecode(
-            await secureStorage.read(key: SyncService.currentUserKey) ?? '{}'),
+        jsonDecode(await secureStorage.read(key: SyncService.currentUserKey) ?? '{}'),
       );
     } catch (error) {
       return log.threaded('[notificationSyncTEST] $error');

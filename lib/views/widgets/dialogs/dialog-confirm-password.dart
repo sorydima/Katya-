@@ -5,12 +5,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
-import 'package:katya/views/widgets/loader/loading-indicator.dart';
 import 'package:katya/utils/theme_compatibility.dart';
+import 'package:katya/views/widgets/loader/loading-indicator.dart';
 
 class DialogConfirmPassword extends HookWidget {
   const DialogConfirmPassword({
-    Key? key,
+    super.key,
     required this.title,
     required this.content,
     this.checkValid,
@@ -18,7 +18,7 @@ class DialogConfirmPassword extends HookWidget {
     this.onCancel,
     this.onConfirm,
     this.onChangePassword,
-  }) : super(key: key);
+  });
 
   final Function? checkValid;
   final Function? checkLoading;
@@ -45,13 +45,13 @@ class DialogConfirmPassword extends HookWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
-      titlePadding: EdgeInsets.only(
+      titlePadding: const EdgeInsets.only(
         left: 24,
         right: 16,
         top: 16,
         bottom: 16,
       ),
-      contentPadding: EdgeInsets.only(
+      contentPadding: const EdgeInsets.only(
         left: 16,
         right: 16,
         bottom: 16,
@@ -79,7 +79,7 @@ class DialogConfirmPassword extends HookWidget {
               margin: const EdgeInsets.only(
                 bottom: 32,
               ),
-              constraints: BoxConstraints(
+              constraints: const BoxConstraints(
                 minWidth: Dimensions.inputWidthMin,
                 maxWidth: Dimensions.inputWidthMax,
               ),
@@ -91,7 +91,7 @@ class DialogConfirmPassword extends HookWidget {
                 },
                 obscureText: true,
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(
+                  contentPadding: const EdgeInsets.only(
                     left: 20,
                     top: 32,
                     bottom: 32,
@@ -124,11 +124,9 @@ class DialogConfirmPassword extends HookWidget {
               child: !loading
                   ? Text(Strings.buttonConfirmFormal,
                       style: TextStyle(
-                        color: valid
-                            ? Theme.of(context).primaryColor
-                            : Color(AppColors.greyDisabled),
+                        color: valid ? Theme.of(context).primaryColor : const Color(AppColors.greyDisabled),
                       ))
-                  : LoadingIndicator(),
+                  : const LoadingIndicator(),
             ),
           ],
         )

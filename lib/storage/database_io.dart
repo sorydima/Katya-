@@ -5,10 +5,6 @@ import 'dart:isolate';
 import 'package:drift/drift.dart';
 import 'package:drift/isolate.dart';
 import 'package:drift/native.dart';
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
-import 'package:sqlcipher_library_windows/sqlcipher_library_windows.dart';
-import 'package:sqlite3/open.dart';
 import 'package:katya/context/auth.dart';
 import 'package:katya/context/types.dart';
 import 'package:katya/global/libs/storage/key-storage.dart';
@@ -35,6 +31,10 @@ import 'package:katya/store/settings/schema.dart';
 import 'package:katya/store/sync/schema.dart';
 import 'package:katya/store/user/model.dart';
 import 'package:katya/store/user/schema.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
+import 'package:sqlcipher_library_windows/sqlcipher_library_windows.dart';
+import 'package:sqlite3/open.dart';
 
 part 'database.g.dart';
 
@@ -88,8 +88,7 @@ void initDatabase() {
   }
 }
 
-Future<DatabaseInfo> findDatabase(AppContext context,
-    {String pin = Values.empty, SendPort? port}) async {
+Future<DatabaseInfo> findDatabase(AppContext context, {String pin = Values.empty, SendPort? port}) async {
   var storageKeyId = Storage.keyLocation;
   var storageLocation = Storage.sqliteLocation;
 
@@ -104,8 +103,7 @@ Future<DatabaseInfo> findDatabase(AppContext context,
   final filePath = File(path.join(dbFolder.path, storageLocation));
 
   var storageKey = await loadKey(storageKeyId);
-  final isLockedContext =
-      context.id.isNotEmpty && context.secretKeyEncrypted.isNotEmpty && pin.isNotEmpty;
+  final isLockedContext = context.id.isNotEmpty && context.secretKeyEncrypted.isNotEmpty && pin.isNotEmpty;
   if (isLockedContext) {
     storageKey = await unlockSecretKey(context, pin);
   }
@@ -228,5 +226,3 @@ class StorageDatabase extends _$StorageDatabase {
         },
       );
 }
-
-

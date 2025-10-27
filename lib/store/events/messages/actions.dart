@@ -2,11 +2,10 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
-import 'package:redux/redux.dart';
-import 'package:redux_thunk/redux_thunk.dart';
 import 'package:katya/global/libs/matrix/constants.dart';
-import 'package:katya/global/libs/matrix/index.dart';
+import 'package:katya/global/libs/matrix/index.dart' as MatrixLib;
 import 'package:katya/global/print.dart';
+import 'package:katya/services/token_gate_service.dart';
 import 'package:katya/store/alerts/actions.dart';
 import 'package:katya/store/crypto/actions.dart';
 import 'package:katya/store/crypto/events/actions.dart';
@@ -20,6 +19,29 @@ import 'package:katya/store/media/encryption.dart';
 import 'package:katya/store/rooms/actions.dart';
 import 'package:katya/store/rooms/room/model.dart';
 import 'package:katya/store/user/model.dart';
+import 'package:katya/utils/token_gate_utils.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
+
+class UpdateMessage {
+  final Message message;
+
+  const UpdateMessage({required this.message});
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is UpdateMessage && runtimeType == other.runtimeType && message == other.message;
+
+  @override
+  int get hashCode => message.hashCode;
+}
+
+ThunkAction<AppState> syncRoom({required String roomId}) {
+  return (Store<AppState> store) async {
+    // Simple implementation - in a real app, this would sync room state
+    print('Syncing room: $roomId');
+  };
+}
 
 Future<List<Message>> reviseMessages({
   List<Message>? messages,
@@ -121,12 +143,67 @@ ThunkAction<AppState> mutateMessagesAll() {
         messagesUpdated.addAll({room.id: allUpdated[0]});
         decryptedUpdated.addAll({room.id: allUpdated[1]});
       } catch (error) {
-        log.error('[mutateMessagesAll] ${room.id} ${error.toString()}');
+        log.error('[mutateMessagesAll] ${room.id} $error');
       }
     });
 
     store.dispatch(SetMessages(all: messagesUpdated));
     store.dispatch(SetMessagesDecrypted(all: decryptedUpdated));
+  };
+}
+
+/// Edit an existing message
+ThunkAction<AppState> editMessage(
+  Store<AppState> store, {
+  required Room room,
+  required Message message,
+  required String newBody,
+}) {
+  return (Store<AppState> store) async {
+    try {
+      final user = store.state.authStore.user;
+
+      // Create a new message with updated content
+      final editedMessage = message.copyMessageWith(
+        body: newBody,
+        edited: true,
+        replacement: true,
+        timestamp: DateTime.now().millisecondsSinceEpoch,
+      );
+
+      // Update local state immediately for better UX
+      store.dispatch(UpdateMessage(message: editedMessage));
+
+      // Send the edit to the server
+      await MatrixLib.MatrixApi.sendEvent(
+        protocol: store.state.authStore.protocol,
+        homeserver: user.homeserver,
+        accessToken: user.accessToken,
+        roomId: room.id,
+        eventType: 'm.room.message',
+        content: {
+          'msgtype': message.msgtype,
+          'body': newBody,
+          'm.new_content': {
+            'msgtype': message.msgtype,
+            'body': newBody,
+          },
+          'm.relates_to': {
+            'rel_type': 'm.replace',
+            'event_id': message.eventId,
+          },
+        },
+      );
+
+      // Refresh the room to get the latest state
+      store.dispatch(syncRoom(roomId: room.id));
+
+      return true;
+    } catch (error) {
+      // Revert the local change if the server update fails
+      store.dispatch(UpdateMessage(message: message));
+      rethrow;
+    }
   };
 }
 
@@ -176,6 +253,25 @@ ThunkAction<AppState> sendMessage({
 }) {
   return (Store<AppState> store) async {
     final room = store.state.roomStore.rooms[roomId]!;
+    final tokenGateService = TokenGateService();
+
+    // Check token gate access before sending message
+    if (room.tokenGateConfig?.isEnabled == true) {
+      final hasAccess = await checkTokenGateAccess(
+        room: room,
+        userId: store.state.authStore.user.userId,
+        tokenGateService: tokenGateService,
+      );
+
+      if (!hasAccess) {
+        store.dispatch(addAlert(
+          message: 'You do not have permission to send messages in this room',
+          error: 'Token gate access denied',
+          origin: 'sendMessage',
+        ));
+        return false;
+      }
+    }
 
     // if you're incredibly unlucky, and fast, you could have a problem here
     final tempId = Random.secure().nextInt(1 << 32).toString();
@@ -212,7 +308,7 @@ ThunkAction<AppState> sendMessage({
         ));
       }
 
-      final data = await MatrixApi.sendMessage(
+      final data = await MatrixLib.MatrixApi.sendMessage(
         protocol: store.state.authStore.protocol,
         homeserver: store.state.authStore.user.homeserver,
         accessToken: store.state.authStore.user.accessToken,
@@ -226,9 +322,8 @@ ThunkAction<AppState> sendMessage({
         if (!edit) {
           store.dispatch(SaveOutboxMessage(
             tempId: tempId,
-            pendingMessage: pending.copyWith(
+            pendingMessage: pending.copyMessageWith(
               timestamp: DateTime.now().millisecondsSinceEpoch,
-              pending: false,
               syncing: false,
               failed: true,
             ),
@@ -246,7 +341,7 @@ ThunkAction<AppState> sendMessage({
       if (!edit) {
         store.dispatch(SaveOutboxMessage(
           tempId: tempId,
-          pendingMessage: pending.copyWith(
+          pendingMessage: pending.copyMessageWith(
             id: data['event_id'],
             timestamp: DateTime.now().millisecondsSinceEpoch,
             syncing: true,
@@ -269,7 +364,7 @@ ThunkAction<AppState> sendMessage({
       if (pending != null && sent == null) {
         store.dispatch(SaveOutboxMessage(
           tempId: tempId,
-          pendingMessage: pending.copyWith(
+          pendingMessage: pending.copyMessageWith(
             timestamp: DateTime.now().millisecondsSinceEpoch,
             pending: false,
             syncing: false,
@@ -282,7 +377,13 @@ ThunkAction<AppState> sendMessage({
       store.dispatch(UpdateRoom(
         id: room.id,
         sending: false,
-        reply: Message(),
+        reply: Message(
+          id: 'empty',
+          sender: store.state.authStore.user.userId ?? '',
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          type: 'm.room.message',
+          roomId: room.id,
+        ),
       ));
     }
   };
@@ -300,8 +401,28 @@ ThunkAction<AppState> sendMessageEncrypted({
   bool edit = false,
 }) {
   return (Store<AppState> store) async {
+    final room = store.state.roomStore.rooms[roomId]!;
+    final tokenGateService = TokenGateService();
+
+    // Check token gate access before sending encrypted message
+    if (room.tokenGateConfig?.isEnabled == true) {
+      final hasAccess = await checkTokenGateAccess(
+        room: room,
+        userId: store.state.authStore.user.userId,
+        tokenGateService: tokenGateService,
+      );
+
+      if (!hasAccess) {
+        store.dispatch(addAlert(
+          message: 'You do not have permission to send messages in this room',
+          error: 'Token gate access denied',
+          origin: 'sendMessageEncrypted',
+        ));
+        return false;
+      }
+    }
+
     try {
-      final room = store.state.roomStore.rooms[roomId]!;
       final userId = store.state.authStore.user.userId!;
 
       store.dispatch(UpdateRoom(id: room.id, sending: true));
@@ -317,7 +438,7 @@ ThunkAction<AppState> sendMessageEncrypted({
       final hasReplacement = related != null && related.id != null;
 
       // pending outbox message
-      Message pending = await formatMessageContent(
+      final Message pending = await formatMessageContent(
         tempId: tempId,
         userId: userId,
         message: message,
@@ -362,7 +483,7 @@ ThunkAction<AppState> sendMessageEncrypted({
         ),
       );
 
-      final data = await MatrixApi.sendMessageEncrypted(
+      final data = await MatrixLib.MatrixApi.sendMessageEncrypted(
         protocol: store.state.authStore.protocol,
         homeserver: store.state.authStore.user.homeserver,
         unencryptedData: unencryptedData,
@@ -378,7 +499,7 @@ ThunkAction<AppState> sendMessageEncrypted({
       if (data['errcode'] != null) {
         store.dispatch(SaveOutboxMessage(
           tempId: tempId,
-          pendingMessage: pending.copyWith(
+          pendingMessage: pending.copyMessageWith(
             timestamp: DateTime.now().millisecondsSinceEpoch,
             pending: false,
             syncing: false,
@@ -392,7 +513,7 @@ ThunkAction<AppState> sendMessageEncrypted({
       if (!edit) {
         store.dispatch(SaveOutboxMessage(
           tempId: tempId,
-          pendingMessage: pending.copyWith(
+          pendingMessage: pending.copyMessageWith(
             id: data['event_id'],
             timestamp: DateTime.now().millisecondsSinceEpoch,
             syncing: true,
@@ -411,15 +532,14 @@ ThunkAction<AppState> sendMessageEncrypted({
       );
       return false;
     } finally {
-      store.dispatch(UpdateRoom(id: roomId, sending: false, reply: Message()));
+      store.dispatch(UpdateRoom(id: roomId, sending: false, reply: const Message(id: '', sender: '', timestamp: 0, type: '', roomId: '')));
     }
   };
 }
 
-Future<bool> isMessageDeletable(
-    {required Message message, User? user, Room? room}) async {
+Future<bool> isMessageDeletable({required Message message, User? user, Room? room}) async {
   try {
-    final powerLevels = await MatrixApi.fetchPowerLevels(
+    final powerLevels = await MatrixLib.MatrixApi.fetchPowerLevels(
       room: room,
       homeserver: user!.homeserver,
       accessToken: user.accessToken,

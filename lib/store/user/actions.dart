@@ -1,11 +1,11 @@
-import 'package:redux/redux.dart';
-import 'package:redux_thunk/redux_thunk.dart';
 import 'package:katya/global/libs/matrix/constants.dart';
 import 'package:katya/global/libs/matrix/errors.dart';
 import 'package:katya/global/libs/matrix/index.dart';
 import 'package:katya/store/alerts/actions.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/user/model.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
 class SetLoading {
   final bool? loading;

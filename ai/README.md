@@ -247,22 +247,51 @@ def test_model_prediction():
 - **Model Caching**: Reduce redundant computations
 - **Batch Processing**: Optimize for throughput
 
-## Future Roadmap
+## MCP (Model Context Protocol) Integration
 
-### Short Term (3-6 months)
-- [ ] Implement chat suggestion feature
-- [ ] Add content moderation
-- [ ] Setup ML pipeline infrastructure
+### Overview
+MCP allows seamless integration of various AI models into Katya's ecosystem.
 
-### Medium Term (6-12 months)
-- [ ] Multi-language translation
-- [ ] User personalization engine
-- [ ] Advanced analytics dashboard
+### Implementation
+```dart
+class MCPService {
+  Future<String> processWithMCP(String input);
+  Future<void> switchModel(String modelId);
+}
+```
 
-### Long Term (1-2 years)
-- [ ] Federated learning implementation
-- [ ] Custom model training for enterprises
-- [ ] AI-powered security features
+## GPT Integration
+
+### GPT Features
+- **Text Generation**: Enhanced message suggestions
+- **Code Generation**: Assist in code-related chats
+- **Vibe Detection**: Analyze conversation tone
+
+### API Usage
+```dart
+class GPTService {
+  Future<String> generateText(String prompt);
+  Future<String> analyzeVibe(String message);
+}
+```
+
+## Code + Vibe API
+
+### Description
+Custom API for generating code snippets and detecting conversation vibes.
+
+### Features
+- **Code Generation**: Generate Dart/Flutter code based on descriptions
+- **Vibe Analysis**: Detect emotional context in messages
+- **Integration**: Bridge between AI and messaging
+
+### Example
+```dart
+class CodeVibeAPI {
+  Future<String> generateCode(String description);
+  Future<VibeScore> analyzeMessage(String message);
+}
+```
 
 ## Contributing
 

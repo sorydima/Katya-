@@ -19,7 +19,6 @@ import 'package:katya/views/widgets/appbars/appbar-search.dart';
 import 'package:katya/views/widgets/containers/fabs/fab-bar-expanding.dart';
 import 'package:katya/views/widgets/containers/fabs/fab-ring.dart';
 import 'package:katya/views/widgets/loader/index.dart';
-import 'package:katya/utils/theme_compatibility.dart';
 
 class HomeScreen extends HookWidget {
   @override
@@ -40,17 +39,15 @@ class HomeScreen extends HookWidget {
         ) ??
         [];
 
-    final fabType = useSelector<AppState, MainFabType>(
-            (state) => state.settingsStore.themeSettings.mainFabType) ??
+    final fabType = useSelector<AppState, MainFabType>((state) => state.settingsStore.themeSettings.mainFabType) ??
         MainFabType.Ring;
 
-    final fabLabels = useSelector<AppState, MainFabLabel>(
-            (state) => state.settingsStore.themeSettings.mainFabLabel) ??
+    final fabLabels = useSelector<AppState, MainFabLabel>((state) => state.settingsStore.themeSettings.mainFabLabel) ??
         MainFabLabel.Off;
 
-    final fabLocation = useSelector<AppState, MainFabLocation>(
-            (state) => state.settingsStore.themeSettings.mainFabLocation) ??
-        MainFabLocation.Right;
+    final fabLocation =
+        useSelector<AppState, MainFabLocation>((state) => state.settingsStore.themeSettings.mainFabLocation) ??
+            MainFabLocation.Right;
 
     final fabKeyRing = useState(GlobalKey<State<StatefulWidget>>());
 
@@ -126,7 +123,7 @@ class HomeScreen extends HookWidget {
         arguments: ChatScreenArguments(roomId: room.id, title: chatName),
       );
 
-      Timer(Duration(milliseconds: 500), () {
+      Timer(const Duration(milliseconds: 500), () {
         searchModeState.value = false;
         onDismissChatOptions();
         dispatch(clearSearchResults());

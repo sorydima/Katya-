@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
@@ -11,13 +10,14 @@ import 'package:katya/global/print.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/store/auth/actions.dart';
 import 'package:katya/store/index.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/widgets/buttons/button-text.dart';
 import 'package:katya/views/widgets/dialogs/dialog-captcha.dart';
 import 'package:katya/views/widgets/dialogs/dialog-confirm.dart';
-import 'package:katya/utils/theme_compatibility.dart';
+import 'package:redux/redux.dart';
 
 class CaptchaStep extends StatefulWidget {
-  const CaptchaStep({Key? key}) : super(key: key);
+  const CaptchaStep({super.key});
 
   @override
   CaptchaStepState createState() => CaptchaStepState();
@@ -26,7 +26,7 @@ class CaptchaStep extends StatefulWidget {
 class CaptchaStepState extends State<CaptchaStep> {
   final focusNode = FocusNode();
 
-  onShowDialog(BuildContext context, _Props props) async {
+  Future<void> onShowDialog(BuildContext context, _Props props) async {
     final store = StoreProvider.of<AppState>(context);
     final authSession = store.state.authStore.authSession;
 
@@ -62,7 +62,7 @@ class CaptchaStepState extends State<CaptchaStep> {
               flex: 6,
               child: Container(
                 width: width * 0.75,
-                constraints: BoxConstraints(
+                constraints: const BoxConstraints(
                   maxHeight: Dimensions.mediaSizeMax,
                   maxWidth: Dimensions.mediaSizeMax,
                 ),
@@ -79,7 +79,7 @@ class CaptchaStepState extends State<CaptchaStep> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.only(bottom: 8, top: 8),
+                    padding: const EdgeInsets.only(bottom: 8, top: 8),
                     child: Text(
                       Strings.contentCaptchaRequirement,
                       textAlign: TextAlign.center,
@@ -90,7 +90,7 @@ class CaptchaStepState extends State<CaptchaStep> {
                     clipBehavior: Clip.none,
                     children: <Widget>[
                       Container(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           vertical: 8,
                           horizontal: 24,
                         ),
@@ -118,7 +118,7 @@ class CaptchaStepState extends State<CaptchaStep> {
                           child: Container(
                             height: 20,
                             width: 20,
-                            child: Icon(
+                            child: const Icon(
                               Icons.info_outline,
                               color: Colors.red,
                               size: 20,
@@ -138,12 +138,8 @@ class CaptchaStepState extends State<CaptchaStep> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   ButtonText(
-                    text: !props.completed
-                        ? Strings.buttonTextLoadCaptcha
-                        : Strings.buttonTextConfirmed,
-                    color: !props.completed
-                        ? Color(AppColors.cyankatya)
-                        : Color(AppColors.cyankatyaAlpha),
+                    text: !props.completed ? Strings.buttonTextLoadCaptcha : Strings.buttonTextConfirmed,
+                    color: !props.completed ? const Color(AppColors.cyankatya) : const Color(AppColors.cyankatyaAlpha),
                     loading: props.loading,
                     disabled: props.completed,
                     onPressed: () => onShowDialog(context, props),
@@ -184,9 +180,7 @@ class _Props extends Equatable {
         completed: store.state.authStore.captcha,
         hostname: store.state.authStore.hostname,
         publicKey: () {
-          return store.state.authStore.interactiveAuths['params'][MatrixAuthTypes.RECAPTCHA]
-                  ['public_key'] ??
-              '';
+          return store.state.authStore.interactiveAuths['params'][MatrixAuthTypes.RECAPTCHA]['public_key'] ?? '';
         }(),
         onCompleteCaptcha: (String token) async {
           await store.dispatch(updateCredential(

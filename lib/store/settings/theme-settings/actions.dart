@@ -1,8 +1,8 @@
-import 'package:redux/redux.dart';
-import 'package:redux_thunk/redux_thunk.dart';
 import 'package:katya/global/themes.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/settings/theme-settings/model.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
 class SetThemeType {
   final ThemeType themeType;
@@ -116,12 +116,10 @@ ThunkAction<AppState> incrementFontSize() {
 ThunkAction<AppState> incrementMessageSize() {
   return (Store<AppState> store) async {
     final currentTheme = store.state.settingsStore.themeSettings;
-    final messageSizeIndex =
-        MessageSize.values.indexOf(currentTheme.messageSize);
+    final messageSizeIndex = MessageSize.values.indexOf(currentTheme.messageSize);
 
     store.dispatch(SetMessageSize(
-      messageSize: MessageSize
-          .values[(messageSizeIndex + 1) % MessageSize.values.length],
+      messageSize: MessageSize.values[(messageSizeIndex + 1) % MessageSize.values.length],
     ));
   };
 }
@@ -131,8 +129,7 @@ ThunkAction<AppState> incrementThemeType() {
   return (Store<AppState> store) async {
     final currentTheme = store.state.settingsStore.themeSettings;
     final themeTypeIndex = ThemeType.values.indexOf(currentTheme.themeType);
-    final nextThemeType =
-        ThemeType.values[(themeTypeIndex + 1) % ThemeType.values.length];
+    final nextThemeType = ThemeType.values[(themeTypeIndex + 1) % ThemeType.values.length];
 
     // update system navbar theme to match
     setSystemTheme(nextThemeType);
@@ -145,12 +142,10 @@ ThunkAction<AppState> incrementThemeType() {
 ThunkAction<AppState> incrementAvatarShape() {
   return (Store<AppState> store) async {
     final currentTheme = store.state.settingsStore.themeSettings;
-    final avatarShapeIndex =
-        AvatarShape.values.indexOf(currentTheme.avatarShape);
+    final avatarShapeIndex = AvatarShape.values.indexOf(currentTheme.avatarShape);
 
     store.dispatch(SetAvatarShape(
-      avatarShape: AvatarShape
-          .values[(avatarShapeIndex + 1) % AvatarShape.values.length],
+      avatarShape: AvatarShape.values[(avatarShapeIndex + 1) % AvatarShape.values.length],
     ));
   };
 }
@@ -162,8 +157,7 @@ ThunkAction<AppState> incrementFabType() {
     final fabTypeIndex = MainFabType.values.indexOf(currentTheme.mainFabType);
 
     store.dispatch(SetMainFabType(
-      fabType:
-          MainFabType.values[(fabTypeIndex + 1) % MainFabType.values.length],
+      fabType: MainFabType.values[(fabTypeIndex + 1) % MainFabType.values.length],
     ));
   };
 }
@@ -172,12 +166,10 @@ ThunkAction<AppState> incrementFabType() {
 ThunkAction<AppState> incrementFabLocation() {
   return (Store<AppState> store) async {
     final currentTheme = store.state.settingsStore.themeSettings;
-    final fabTypeIndex =
-        MainFabLocation.values.indexOf(currentTheme.mainFabLocation);
+    final fabTypeIndex = MainFabLocation.values.indexOf(currentTheme.mainFabLocation);
 
     store.dispatch(SetMainFabLocation(
-      fabLocation: MainFabLocation
-          .values[(fabTypeIndex + 1) % MainFabLocation.values.length],
+      fabLocation: MainFabLocation.values[(fabTypeIndex + 1) % MainFabLocation.values.length],
     ));
   };
 }
@@ -189,8 +181,7 @@ ThunkAction<AppState> incrementFabLabels() {
     final fabTypeIndex = MainFabLabel.values.indexOf(currentTheme.mainFabLabel);
 
     store.dispatch(SetMainFabLabels(
-      fabLabels:
-          MainFabLabel.values[(fabTypeIndex + 1) % MainFabLabel.values.length],
+      fabLabels: MainFabLabel.values[(fabTypeIndex + 1) % MainFabLabel.values.length],
     ));
   };
 }

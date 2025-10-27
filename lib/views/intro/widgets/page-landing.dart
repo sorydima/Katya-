@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:katya/utils/theme_compatibility.dart';
-
 import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class LandingPage extends StatelessWidget {
-  const LandingPage({Key? key, this.title}) : super(key: key);
+  const LandingPage({super.key, this.title});
 
   final String? title;
 
@@ -42,14 +40,11 @@ class LandingPage extends StatelessWidget {
               direction: Axis.vertical,
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.only(bottom: 14),
+                  padding: const EdgeInsets.only(bottom: 14),
                   child: Text(
                     Strings.titleIntro,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline4!
-                        .copyWith(fontSize: height < 569 ? 28 : null),
+                    style: Theme.of(context).textTheme.headline4!.copyWith(fontSize: height < 569 ? 28 : null),
                   ),
                 ),
               ],
@@ -62,10 +57,7 @@ class LandingPage extends StatelessWidget {
               Text(
                 Strings.headerIntro,
                 textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6!
-                    .copyWith(fontSize: height < 569 ? 18 : null),
+                style: Theme.of(context).textTheme.headline6!.copyWith(fontSize: height < 569 ? 18 : null),
               ),
             ],
           ),

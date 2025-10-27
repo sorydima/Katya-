@@ -8,10 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart' as hooks;
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/context/types.dart';
-import 'package:katya/global/dimensions.dart';
-import 'package:katya/global/formatters.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/global/values.dart';
 import 'package:katya/store/alerts/actions.dart';
@@ -29,16 +26,14 @@ import 'package:katya/store/settings/privacy-settings/storage.dart';
 import 'package:katya/store/settings/selectors.dart';
 import 'package:katya/store/settings/storage-settings/actions.dart';
 import 'package:katya/store/settings/theme-settings/selectors.dart';
-import 'package:katya/views/navigation.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/katya.dart';
-import 'package:katya/views/widgets/appbars/appbar-normal.dart';
-import 'package:katya/views/widgets/containers/card-section.dart';
 import 'package:katya/views/widgets/dialogs/dialog-confirm-password.dart';
 import 'package:katya/views/widgets/dialogs/dialog-confirm.dart';
 import 'package:katya/views/widgets/dialogs/dialog-rounded.dart';
 import 'package:katya/views/widgets/dialogs/dialog-text-input.dart';
 import 'package:katya/views/widgets/modals/modal-lock-overlay/show-lock-overlay.dart';
-import 'package:katya/utils/theme_compatibility.dart';
+import 'package:redux/redux.dart';
 
 class _Props extends Equatable {
   final bool loading;
@@ -100,31 +95,25 @@ class _Props extends Equatable {
         screenLockEnabled,
       ];
 
-  static _Props mapStateToProps(Store<AppState> store, AppContext context) =>
-      _Props(
+  static _Props mapStateToProps(Store<AppState> store, AppContext context) => _Props(
         valid: store.state.authStore.credential != null &&
             store.state.authStore.credential!.value != null &&
             store.state.authStore.credential!.value!.isNotEmpty,
         loading: store.state.authStore.loading,
         screenLockEnabled: selectScreenLockEnabled(context),
         typingIndicators: store.state.settingsStore.typingIndicatorsEnabled,
-        keyBackupLatest:
-            store.state.settingsStore.privacySettings.lastBackupMillis,
+        keyBackupLatest: store.state.settingsStore.privacySettings.lastBackupMillis,
         keyBackupSchedule: selectKeyBackupSchedule(store.state),
         keyBackupLocation: selectKeyBackupLocation(store.state),
-        readReceipts:
-            selectReadReceiptsString(store.state.settingsStore.readReceipts),
+        readReceipts: selectReadReceiptsString(store.state.settingsStore.readReceipts),
         sessionId: store.state.authStore.user.deviceId ?? Values.empty,
         sessionName: selectCurrentDeviceName(store),
         sessionKey: selectCurrentUserSessionKey(store),
-        onSetScreenLock: (String matchedPin) async =>
-            store.dispatch(setScreenLock(pin: matchedPin)),
-        onRemoveScreenLock: (String matchedPin) async =>
-            store.dispatch(removeScreenLock(pin: matchedPin)),
+        onSetScreenLock: (String matchedPin) async => store.dispatch(setScreenLock(pin: matchedPin)),
+        onRemoveScreenLock: (String matchedPin) async => store.dispatch(removeScreenLock(pin: matchedPin)),
         onDisabled: () => store.dispatch(addInProgress()),
         onResetConfirmAuth: () => store.dispatch(resetInteractiveAuth()),
-        onToggleTypingIndicators: () =>
-            store.dispatch(toggleTypingIndicators()),
+        onToggleTypingIndicators: () => store.dispatch(toggleTypingIndicators()),
         onIncrementReadReceipts: () => store.dispatch(incrementReadReceipts()),
         onRenameDevice: (BuildContext context) async {
           showDialog(
@@ -159,17 +148,29 @@ class _Props extends Equatable {
 
 class PrivacySettingsScreen extends hooks.HookWidget {
   const PrivacySettingsScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
-  onConfirmDeactivateAccount(BuildContext context, _Props props) async {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Privacy Settings'),
+      ),
+      body: const Center(
+        child: Text('Privacy Settings - Coming Soon'),
+      ),
+    );
+  }
+
+  Future<void> onConfirmDeactivateAccount(BuildContext context, _Props props) async {
     await showDialog(
       context: context,
       builder: (dialogContext) => DialogConfirm(
         title: Strings.titleDialogConfirmDeactivateAccount,
         content: Strings.warningDeactivateAccount,
         confirmText: Strings.buttonDeactivate.capitalize(),
-        confirmStyle: TextStyle(color: Colors.red),
+        confirmStyle: const TextStyle(color: Colors.red),
         onDismiss: () => Navigator.pop(dialogContext),
         onConfirm: () async {
           Navigator.of(dialogContext).pop();
@@ -180,7 +181,7 @@ class PrivacySettingsScreen extends hooks.HookWidget {
     );
   }
 
-  onConfirmDeactivateAccountFinal(BuildContext context, _Props props) async {
+  Future<void> onConfirmDeactivateAccountFinal(BuildContext context, _Props props) async {
     await showDialog(
       context: context,
       builder: (dialogContext) => DialogConfirm(
@@ -188,7 +189,7 @@ class PrivacySettingsScreen extends hooks.HookWidget {
         content: Strings.warrningDeactivateAccountFinal,
         loading: props.loading,
         confirmText: Strings.buttonDeactivate.capitalize(),
-        confirmStyle: TextStyle(color: Colors.red),
+        confirmStyle: const TextStyle(color: Colors.red),
         onDismiss: () => Navigator.pop(dialogContext),
         onConfirm: () async {
           Navigator.of(dialogContext).pop();
@@ -198,7 +199,7 @@ class PrivacySettingsScreen extends hooks.HookWidget {
     );
   }
 
-  onDeactivateAccount(BuildContext context, _Props props) async {
+  Future<void> onDeactivateAccount(BuildContext context, _Props props) async {
     final store = StoreProvider.of<AppState>(context);
 
     // Attempt to deactivate account
@@ -229,7 +230,7 @@ class PrivacySettingsScreen extends hooks.HookWidget {
     }
   }
 
-  onImportSessionKeys(BuildContext context) async {
+  Future<void> onImportSessionKeys(BuildContext context) async {
     final store = StoreProvider.of<AppState>(context);
 
     final file = await FilePicker.platform.pickFiles(
@@ -263,15 +264,14 @@ class PrivacySettingsScreen extends hooks.HookWidget {
     );
   }
 
-  onUpdateBackupLocation({
+  Future<void> onUpdateBackupLocation({
     required BuildContext context,
   }) async {
     final store = StoreProvider.of<AppState>(context);
 
     final selectedDirectory = await FilePicker.platform.getDirectoryPath(
       dialogTitle: 'Select Backup Directory',
-      initialDirectory:
-          store.state.settingsStore.storageSettings.keyBackupLocation,
+      initialDirectory: store.state.settingsStore.storageSettings.keyBackupLocation,
     );
 
     if (selectedDirectory == null) {
@@ -283,7 +283,7 @@ class PrivacySettingsScreen extends hooks.HookWidget {
     }
   }
 
-  onUpdateBackupSchedulePassword({
+  Future onUpdateBackupSchedulePassword({
     required BuildContext context,
     required Function onComplete,
   }) async {
@@ -322,7 +322,7 @@ class PrivacySettingsScreen extends hooks.HookWidget {
     );
   }
 
-  onUpdateBackupScheduleNotice({
+  Future<void> onUpdateBackupScheduleNotice({
     required BuildContext context,
     bool isDefault = false,
   }) async {
@@ -350,14 +350,12 @@ class PrivacySettingsScreen extends hooks.HookWidget {
     }
   }
 
-  onUpdateBackupSchedule({
+  Future<void> onUpdateBackupSchedule({
     required BuildContext context,
   }) async {
     final store = StoreProvider.of<AppState>(context);
-    final defaultPadding = EdgeInsets.symmetric(horizontal: 10);
-    final isDefault =
-        store.state.settingsStore.privacySettings.keyBackupInterval ==
-            Duration.zero;
+    const defaultPadding = EdgeInsets.symmetric(horizontal: 10);
+    final isDefault = store.state.settingsStore.privacySettings.keyBackupInterval == Duration.zero;
 
     final onSelect = (BuildContext dialogContext, Duration duration) {
       store.dispatch(
@@ -400,7 +398,7 @@ class PrivacySettingsScreen extends hooks.HookWidget {
                     style: Theme.of(context).textTheme.subtitle1,
                   )),
               onTap: () {
-                onSelect(dialogContext, Duration(minutes: 15));
+                onSelect(dialogContext, const Duration(minutes: 15));
               },
             ),
             ListTile(
@@ -411,7 +409,7 @@ class PrivacySettingsScreen extends hooks.HookWidget {
                     style: Theme.of(context).textTheme.subtitle1,
                   )),
               onTap: () {
-                onSelect(dialogContext, Duration(hours: 1));
+                onSelect(dialogContext, const Duration(hours: 1));
               },
             ),
             ListTile(
@@ -422,7 +420,7 @@ class PrivacySettingsScreen extends hooks.HookWidget {
                     style: Theme.of(context).textTheme.subtitle1,
                   )),
               onTap: () {
-                onSelect(dialogContext, Duration(hours: 6));
+                onSelect(dialogContext, const Duration(hours: 6));
               },
             ),
             ListTile(
@@ -434,7 +432,7 @@ class PrivacySettingsScreen extends hooks.HookWidget {
                 ),
               ),
               onTap: () {
-                onSelect(dialogContext, Duration(hours: 12));
+                onSelect(dialogContext, const Duration(hours: 12));
               },
             ),
             ListTile(
@@ -446,7 +444,7 @@ class PrivacySettingsScreen extends hooks.HookWidget {
                 ),
               ),
               onTap: () {
-                onSelect(dialogContext, Duration(hours: 24));
+                onSelect(dialogContext, const Duration(hours: 24));
               },
             ),
             ListTile(
@@ -458,7 +456,7 @@ class PrivacySettingsScreen extends hooks.HookWidget {
                 ),
               ),
               onTap: () {
-                onSelect(dialogContext, Duration(days: 7));
+                onSelect(dialogContext, const Duration(days: 7));
               },
             ),
             ListTile(
@@ -470,7 +468,7 @@ class PrivacySettingsScreen extends hooks.HookWidget {
                 ),
               ),
               onTap: () {
-                onSelect(dialogContext, Duration(days: 29));
+                onSelect(dialogContext, const Duration(days: 29));
               },
             )
           ],
@@ -479,7 +477,7 @@ class PrivacySettingsScreen extends hooks.HookWidget {
     );
   }
 
-  onExportSessionKeys({
+  Future<void> onExportSessionKeys({
     required _Props props,
     required BuildContext context,
   }) async {
@@ -501,14 +499,13 @@ class PrivacySettingsScreen extends hooks.HookWidget {
         },
         onConfirm: (String password) async {
           await store.dispatch(exportSessionKeys(password));
-
           Navigator.of(dialogContext).pop();
         },
       ),
     );
   }
 
-  onDeleteSessionKeys({
+  Future<void> onDeleteSessionKeys({
     required _Props props,
     required BuildContext context,
   }) async {
@@ -520,30 +517,29 @@ class PrivacySettingsScreen extends hooks.HookWidget {
         content: Strings.confirmDeleteKeys,
         loading: props.loading,
         confirmText: Strings.buttonTextConfirmDeleteKeys,
-        confirmStyle: TextStyle(color: Colors.red),
+        confirmStyle: const TextStyle(color: Colors.red),
         onDismiss: () => Navigator.pop(dialogContext),
         onConfirm: () async {
           await store.dispatch(resetSessionKeys());
-
           Navigator.of(dialogContext).pop();
         },
       ),
     );
   }
 
-  onSetScreenLockPin({
+  Future<void> onSetScreenLockPin({
     required _Props props,
     required BuildContext context,
-  }) {
+  }) async {
     if (props.screenLockEnabled) {
-      return showDialog(
+      await showDialog(
         context: context,
         builder: (dialogContext) => DialogConfirm(
           title: Strings.titleDialogRemoveScreenLock,
           content: Strings.contentRemoveScreenLock,
           loading: props.loading,
           confirmText: Strings.buttonTextRemove,
-          confirmStyle: TextStyle(color: Colors.red),
+          confirmStyle: const TextStyle(color: Colors.red),
           onDismiss: () => Navigator.pop(dialogContext),
           onConfirm: () async {
             Navigator.of(dialogContext).pop();
@@ -571,349 +567,24 @@ class PrivacySettingsScreen extends hooks.HookWidget {
           },
         ),
       );
-    }
-
-    return showLockOverlay(
-      context: context,
-      canCancel: true,
-      confirmMode: true,
-      onLeftButtonTap: () {
-        Navigator.of(context).pop();
-        return Future.value();
-      },
-      title: Text(Strings.titleDialogEnterNewScreenLockPin),
-      confirmTitle: Text(Strings.titleDialogVerifyNewScreenLockPin),
-      onVerify: (String answer) async {
-        return Future.value(true);
-      },
-      onConfirmed: (String matchedText) async {
-        await props.onSetScreenLock(matchedText);
-        katya.reloadCurrentContext(context);
-        Navigator.of(context).pop();
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) => StoreConnector<AppState, _Props>(
-        distinct: true,
-        converter: (Store<AppState> store) => _Props.mapStateToProps(
-          store,
-          katya.getAppContext(context),
-        ),
-        builder: (context, props) {
-          final double width = MediaQuery.of(context).size.width;
-
-          return Scaffold(
-            appBar: AppBarNormal(title: Strings.titlePrivacy),
-            body: SingleChildScrollView(
-                padding: Dimensions.scrollviewPadding,
-                child: Column(
-                  children: <Widget>[
-                    CardSection(
-                      child: Column(
-                        children: [
-                          Container(
-                            width: width,
-                            padding: Dimensions.listPadding,
-                            child: Text(
-                              Strings.titleVerification,
-                              textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.subtitle2,
-                            ),
-                          ),
-                          ListTile(
-                            contentPadding: Dimensions.listPadding,
-                            title: Text(
-                              'Public Device Name',
-                            ),
-                            subtitle: Text(
-                              props.sessionName,
-                              style: Theme.of(context).textTheme.caption,
-                            ),
-                            onTap: () => props.onRenameDevice(context),
-                            trailing: IconButton(
-                              onPressed: () => props.onRenameDevice(context),
-                              icon: Icon(Icons.edit),
-                            ),
-                          ),
-                          ListTile(
-                            contentPadding: Dimensions.listPadding,
-                            title: Text(
-                              'Session ID',
-                            ),
-                            subtitle: Text(
-                              props.sessionId,
-                              style: Theme.of(context).textTheme.caption,
-                            ),
-                            onTap: () async {
-                              await props.copyToClipboard(props.sessionId);
-                            },
-                            trailing: IconButton(
-                              onPressed: () =>
-                                  props.copyToClipboard(props.sessionId),
-                              icon: Icon(Icons.copy),
-                            ),
-                          ),
-                          ListTile(
-                            contentPadding: Dimensions.listPadding,
-                            title: Text(
-                              'Session Key',
-                            ),
-                            subtitle: Text(
-                              props.sessionKey,
-                              style: Theme.of(context).textTheme.caption,
-                            ),
-                            onTap: () async {
-                              await props.copyToClipboard(props.sessionKey);
-                            },
-                            trailing: IconButton(
-                              onPressed: () =>
-                                  props.copyToClipboard(props.sessionKey),
-                              icon: Icon(Icons.copy),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    CardSection(
-                      child: Column(
-                        children: [
-                          Container(
-                            width: width,
-                            padding: Dimensions.listPadding,
-                            child: Text(
-                              'User Access',
-                              textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.subtitle2,
-                            ),
-                          ),
-                          ListTile(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, Routes.settingsPassword);
-                            },
-                            contentPadding: Dimensions.listPadding,
-                            title: Text(
-                              'Change Password',
-                            ),
-                            subtitle: Text(
-                              'Changing your password will refresh your\ncurrent session',
-                              style: Theme.of(context).textTheme.caption,
-                            ),
-                          ),
-                          ListTile(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, Routes.settingsBlocked);
-                            },
-                            contentPadding: Dimensions.listPadding,
-                            title: Text(
-                              'Blocked Users',
-                            ),
-                            subtitle: Text(
-                              'View and manage blocked users',
-                              style: Theme.of(context).textTheme.caption,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    CardSection(
-                      child: Column(
-                        children: [
-                          Container(
-                            width: width,
-                            padding: Dimensions.listPadding,
-                            child: Text(
-                              'Communication',
-                              textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.subtitle2,
-                            ),
-                          ),
-                          ListTile(
-                            onTap: () => props.onIncrementReadReceipts(),
-                            contentPadding: Dimensions.listPadding,
-                            title: Text(
-                              Strings.listItemSettingsReadReceipts,
-                            ),
-                            subtitle: Text(
-                              Strings.subtitleSettingsReadReceipts,
-                              style: Theme.of(context).textTheme.caption,
-                            ),
-                            trailing: Text(props.readReceipts),
-                          ),
-                          ListTile(
-                            onTap: () => props.onToggleTypingIndicators(),
-                            contentPadding: Dimensions.listPadding,
-                            title: Text(
-                              'Typing Indicators',
-                            ),
-                            subtitle: Text(
-                              'If typing indicators are disabled, you won\'t be able to see typing indicators from others',
-                              style: Theme.of(context).textTheme.caption,
-                            ),
-                            trailing: Switch(
-                              value: props.typingIndicators!,
-                              onChanged: (enterSend) =>
-                                  props.onToggleTypingIndicators(),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    CardSection(
-                      child: Column(
-                        children: [
-                          Container(
-                            width: width,
-                            padding: Dimensions.listPadding,
-                            child: Text(
-                              'App access',
-                              textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.subtitle2,
-                            ),
-                          ),
-                          ListTile(
-                            contentPadding: Dimensions.listPadding,
-                            title: Text(
-                              'Screen lock',
-                            ),
-                            subtitle: Text(
-                              'Lock ${Values.appName} access with native device screen lock or fingerprint',
-                              style: Theme.of(context).textTheme.caption,
-                            ),
-                            trailing: Switch(
-                              value: props.screenLockEnabled,
-                              onChanged: (enabled) => onSetScreenLockPin(
-                                  props: props, context: context),
-                            ),
-                          ),
-                          ListTile(
-                            enabled: false,
-                            contentPadding: Dimensions.listPadding,
-                            title: Text(
-                              'Screen lock inactivity timeout',
-                            ),
-                            subtitle: Text(
-                              'None',
-                              style: Theme.of(context).textTheme.caption,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    CardSection(
-                      child: Column(
-                        children: [
-                          Container(
-                            width: width,
-                            padding: Dimensions.listPadding,
-                            child: Text(
-                              'Encryption Keys',
-                              textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.subtitle2,
-                            ),
-                          ),
-                          ListTile(
-                            onTap: () => onImportSessionKeys(context),
-                            contentPadding: Dimensions.listPadding,
-                            title: Text(
-                              'Import Keys',
-                            ),
-                          ),
-                          ListTile(
-                            onTap: () => onExportSessionKeys(
-                                context: context, props: props),
-                            contentPadding: Dimensions.listPadding,
-                            title: Text(
-                              'Backup Keys',
-                            ),
-                          ),
-                          Visibility(
-                            visible: true,
-                            child: ListTile(
-                              onTap: () =>
-                                  onUpdateBackupLocation(context: context),
-                              contentPadding: Dimensions.listPadding,
-                              title: Text(
-                                'Backup Folder',
-                              ),
-                              subtitle: Text(
-                                props.keyBackupLocation,
-                                style: Theme.of(context).textTheme.caption,
-                              ),
-                            ),
-                          ),
-                          Visibility(
-                            visible: true,
-                            child: ListTile(
-                              onTap: () =>
-                                  onUpdateBackupSchedule(context: context),
-                              contentPadding: Dimensions.listPadding,
-                              title: Text(
-                                'Backup Schedule',
-                              ),
-                              subtitle: Text(
-                                props.keyBackupSchedule,
-                                style: Theme.of(context).textTheme.caption,
-                              ),
-                              trailing: Text(
-                                formatTimestampFull(
-                                  showTime: true,
-                                  lastUpdateMillis: int.parse(
-                                    props.keyBackupLatest,
-                                  ),
-                                ),
-                                style: Theme.of(context).textTheme.caption,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    CardSection(
-                      child: Column(
-                        children: [
-                          Container(
-                            width: width,
-                            padding: Dimensions.listPadding,
-                            child: Text(
-                              'Account Management',
-                              textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.subtitle2,
-                            ),
-                          ),
-                          ListTile(
-                            onTap: () => onDeleteSessionKeys(
-                                context: context, props: props),
-                            contentPadding: Dimensions.listPadding,
-                            title: Text(
-                              'Delete Keys',
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                color: Colors.redAccent,
-                              ),
-                            ),
-                          ),
-                          ListTile(
-                            onTap: () =>
-                                onConfirmDeactivateAccount(context, props),
-                            contentPadding: Dimensions.listPadding,
-                            title: Text(
-                              'Deactivate Account',
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                color: Colors.redAccent,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                )),
-          );
+    } else {
+      showLockOverlay(
+        context: context,
+        canCancel: true,
+        confirmMode: true,
+        onLeftButtonTap: () {
+          Navigator.of(context).pop();
+          return Future.value();
+        },
+        title: Text(Strings.titleDialogEnterScreenLockPin),
+        onVerify: (String answer) async {
+          return Future.value(true);
+        },
+        onConfirmed: (String matchedText) async {
+          await props.onSetScreenLock(matchedText);
+          katya.reloadCurrentContext(context);
         },
       );
+    }
+  }
 }

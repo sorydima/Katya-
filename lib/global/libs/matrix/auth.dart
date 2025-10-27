@@ -46,6 +46,15 @@ abstract class Auth {
 
     final response = await httpClient.get(Uri.parse(url));
 
+    if (Values.authHttpStatusChecks && response.statusCode >= 400) {
+      try {
+        final error = json.decode(response.body);
+        return error;
+      } catch (_) {
+        return {'errcode': 'M_UNKNOWN', 'error': 'HTTP ${response.statusCode}'};
+      }
+    }
+
     return await json.decode(response.body);
   }
 
@@ -88,6 +97,19 @@ abstract class Auth {
       headers: {...Values.defaultHeaders},
       body: json.encode(body),
     );
+
+    log.debug('[AUTH] POST /login password status=${response.statusCode}');
+
+    if (Values.authHttpStatusChecks && response.statusCode >= 400) {
+      try {
+        final error = json.decode(response.body);
+        log.warn('[AUTH] /login error errcode=${error['errcode']} message=${error['error']}');
+        return error;
+      } catch (_) {
+        log.error('[AUTH] /login invalid error body status=${response.statusCode}');
+        return {'errcode': 'M_UNKNOWN', 'error': 'HTTP ${response.statusCode}'};
+      }
+    }
 
     return await json.decode(response.body);
   }
@@ -133,6 +155,19 @@ abstract class Auth {
       body: json.encode(body),
     );
 
+    log.debug('[AUTH] POST /login 3pid status=${response.statusCode}');
+
+    if (Values.authHttpStatusChecks && response.statusCode >= 400) {
+      try {
+        final error = json.decode(response.body);
+        log.warn('[AUTH] /login 3pid error errcode=${error['errcode']} message=${error['error']}');
+        return error;
+      } catch (_) {
+        log.error('[AUTH] /login 3pid invalid error body status=${response.statusCode}');
+        return {'errcode': 'M_UNKNOWN', 'error': 'HTTP ${response.statusCode}'};
+      }
+    }
+
     return await json.decode(response.body);
   }
 
@@ -177,6 +212,19 @@ abstract class Auth {
       body: json.encode(body),
     );
 
+    log.debug('[AUTH] POST /login token status=${response.statusCode}');
+
+    if (Values.authHttpStatusChecks && response.statusCode >= 400) {
+      try {
+        final error = json.decode(response.body);
+        log.warn('[AUTH] /login token error errcode=${error['errcode']} message=${error['error']}');
+        return error;
+      } catch (_) {
+        log.error('[AUTH] /login token invalid error body status=${response.statusCode}');
+        return {'errcode': 'M_UNKNOWN', 'error': 'HTTP ${response.statusCode}'};
+      }
+    }
+
     return await json.decode(response.body);
   }
 
@@ -203,6 +251,19 @@ abstract class Auth {
       headers: {...Values.defaultHeaders},
       body: json.encode(body),
     );
+
+    log.debug('[AUTH] POST /register email/requestToken status=${response.statusCode}');
+
+    if (Values.authHttpStatusChecks && response.statusCode >= 400) {
+      try {
+        final error = json.decode(response.body);
+        log.warn('[AUTH] /register email/requestToken error errcode=${error['errcode']} message=${error['error']}');
+        return error;
+      } catch (_) {
+        log.error('[AUTH] /register email/requestToken invalid error body status=${response.statusCode}');
+        return {'errcode': 'M_UNKNOWN', 'error': 'HTTP ${response.statusCode}'};
+      }
+    }
 
     return await json.decode(response.body);
   }
@@ -237,14 +298,12 @@ abstract class Auth {
             'response': authValue,
           }
         };
-        break;
       case MatrixAuthTypes.TERMS:
         body = {
           'auth': {
             'type': MatrixAuthTypes.TERMS,
           }
         };
-        break;
       case MatrixAuthTypes.EMAIL:
         body = {
           'auth': {
@@ -259,7 +318,6 @@ abstract class Auth {
             }
           }
         };
-        break;
       case MatrixAuthTypes.DUMMY: // actually password auth, poor spec design
         body = {
           'username': username,
@@ -269,7 +327,6 @@ abstract class Auth {
             'type': MatrixAuthTypes.DUMMY,
           }
         };
-        break;
       default:
         break;
     }
@@ -288,6 +345,19 @@ abstract class Auth {
       headers: {...Values.defaultHeaders},
       body: json.encode(body),
     );
+
+    log.debug('[AUTH] POST /register status=${response.statusCode}');
+
+    if (Values.authHttpStatusChecks && response.statusCode >= 400) {
+      try {
+        final error = json.decode(response.body);
+        log.warn('[AUTH] /register error errcode=${error['errcode']} message=${error['error']}');
+        return error;
+      } catch (_) {
+        log.error('[AUTH] /register invalid error body status=${response.statusCode}');
+        return {'errcode': 'M_UNKNOWN', 'error': 'HTTP ${response.statusCode}'};
+      }
+    }
 
     return await json.decode(response.body);
   }
@@ -308,6 +378,15 @@ abstract class Auth {
       Uri.parse(url),
       headers: headers,
     );
+
+    if (Values.authHttpStatusChecks && response.statusCode >= 400) {
+      try {
+        final error = json.decode(response.body);
+        return error;
+      } catch (_) {
+        return {'errcode': 'M_UNKNOWN', 'error': 'HTTP ${response.statusCode}'};
+      }
+    }
 
     return await json.decode(response.body);
   }
@@ -330,6 +409,15 @@ abstract class Auth {
       headers: headers,
     );
 
+    if (Values.authHttpStatusChecks && response.statusCode >= 400) {
+      try {
+        final error = json.decode(response.body);
+        return error;
+      } catch (_) {
+        return {'errcode': 'M_UNKNOWN', 'error': 'HTTP ${response.statusCode}'};
+      }
+    }
+
     return await json.decode(response.body);
   }
 
@@ -349,12 +437,21 @@ abstract class Auth {
 
     // Specified timeout because servers can hang
     final response = await httpClient.get(Uri.parse(url)).timeout(
-      Duration(seconds: 5),
+      const Duration(seconds: 5),
       onTimeout: () {
         // Time has run out, do what you wanted to do.
-        return http.Response('Error', 500); // Replace 500 with your http code.
+        return http.Response('{"errcode":"M_TIMEOUT","error":"Request timeout"}', 500);
       },
     );
+
+    if (Values.authHttpStatusChecks && response.statusCode >= 400) {
+      try {
+        final error = json.decode(response.body);
+        return error;
+      } catch (_) {
+        return {'errcode': 'M_UNKNOWN', 'error': 'HTTP ${response.statusCode}'};
+      }
+    }
 
     return await json.decode(response.body);
   }
@@ -372,6 +469,15 @@ abstract class Auth {
 
     try {
       final response = await httpClient.get(Uri.parse(url));
+
+      if (Values.authHttpStatusChecks && response.statusCode >= 400) {
+        try {
+          final error = json.decode(response.body);
+          return error;
+        } catch (_) {
+          return {'errcode': 'M_UNKNOWN', 'error': 'HTTP ${response.statusCode}'};
+        }
+      }
 
       return await json.decode(response.body);
     } catch (error) {
@@ -393,6 +499,15 @@ abstract class Auth {
 
     final response = await httpClient.get(Uri.parse(url));
 
+    if (Values.authHttpStatusChecks && response.statusCode >= 400) {
+      try {
+        final error = json.decode(response.body);
+        return error;
+      } catch (_) {
+        return {'errcode': 'M_UNKNOWN', 'error': 'HTTP ${response.statusCode}'};
+      }
+    }
+
     return await json.decode(response.body);
   }
 
@@ -403,6 +518,15 @@ abstract class Auth {
     final String url = '$protocol$homeserver/_matrix/client/versions';
 
     final response = await httpClient.get(Uri.parse(url));
+
+    if (Values.authHttpStatusChecks && response.statusCode >= 400) {
+      try {
+        final error = json.decode(response.body);
+        return error;
+      } catch (_) {
+        return {'errcode': 'M_UNKNOWN', 'error': 'HTTP ${response.statusCode}'};
+      }
+    }
 
     return await json.decode(response.body);
   }
@@ -449,6 +573,19 @@ abstract class Auth {
       body: json.encode(body),
     );
 
+    log.debug('[AUTH] POST /account/password status=${response.statusCode}');
+
+    if (Values.authHttpStatusChecks && response.statusCode >= 400) {
+      try {
+        final error = json.decode(response.body);
+        log.warn('[AUTH] /account/password error errcode=${error['errcode']} message=${error['error']}');
+        return error;
+      } catch (_) {
+        log.error('[AUTH] /account/password invalid error body status=${response.statusCode}');
+        return {'errcode': 'M_UNKNOWN', 'error': 'HTTP ${response.statusCode}'};
+      }
+    }
+
     return await json.decode(response.body);
   }
 
@@ -488,6 +625,15 @@ abstract class Auth {
       body: json.encode(body),
     );
 
+    if (Values.authHttpStatusChecks && response.statusCode >= 400) {
+      try {
+        final error = json.decode(response.body);
+        return error;
+      } catch (_) {
+        return {'errcode': 'M_UNKNOWN', 'error': 'HTTP ${response.statusCode}'};
+      }
+    }
+
     return await json.decode(response.body);
   }
 
@@ -516,6 +662,15 @@ abstract class Auth {
       headers: {...Values.defaultHeaders},
       body: json.encode(body),
     );
+
+    if (Values.authHttpStatusChecks && response.statusCode >= 400) {
+      try {
+        final error = json.decode(response.body);
+        return error;
+      } catch (_) {
+        return {'errcode': 'M_UNKNOWN', 'error': 'HTTP ${response.statusCode}'};
+      }
+    }
 
     return await json.decode(response.body);
   }

@@ -1,5 +1,5 @@
-import 'package:redux/redux.dart';
 import 'package:katya/store/index.dart';
+import 'package:redux/redux.dart';
 
 bool selectHasDecryptableMessages(Store<AppState> store, String roomId) {
   final messages = store.state.eventStore.messages;

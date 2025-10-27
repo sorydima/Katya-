@@ -19,15 +19,13 @@ class Values {
 
   // Notifications and Background service
   static const channel_id = '${appLabel}_notifications_v2';
-  static const channel_id_background_service =
-      '${appName}_background_notification_v2';
+  static const channel_id_background_service = '${appName}_background_notification_v2';
   static const default_channel_title = appName;
 
   static const channel_group_key = 'com.katya.wtf.MESSAGES';
   static const channel_name_messages = 'Katya ® 👽 AI 🧠 Platform Messages';
   static const channel_name_background_service = 'Katya ® 👽 AI 🧠 Platform Background Sync';
-  static const channel_description =
-      '$appName messaging client message and status notifications';
+  static const channel_description = '$appName messaging client message and status notifications';
 
   // Katya ® 👽 AI 🧠 Platform related
   static const supportChatId = '!ehXvUhWNASUkSLvAGP:matrix.org';
@@ -39,13 +37,12 @@ class Values {
   static const homeserverDefault = 'node.marinchik.ink';
   static const clientSecretMatrix = 'MDWVwN79p5xIz7bgazVXvO8aabbVD0LN';
   static const captchaMatrixSiteKey = '6LcgI54UAAAAABGdGmruw6DdOocFpYVdjYBRe4zb';
-  static const matrixSSOUrl = '/_matrix/client/r0/login/sso/redirect?redirectUrl=katya://node.marinchik.ink/login/token';
+  static const matrixSSOUrl =
+      '/_matrix/client/r0/login/sso/redirect?redirectUrl=katya://node.marinchik.ink/login/token';
 
   // regexs - hello darkness, my old friend
-  static const emailRegex =
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-  static const urlRegex =
-      r'[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)';
+  static const emailRegex = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+  static const urlRegex = r'[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)';
   static const msisdnRegex = '[0-9]{1-3}[0-9]{1-12}';
 
   // Animations
@@ -54,8 +51,13 @@ class Values {
   static const serviceNotificationTimeoutDuration = 75000; // millis
 
   static const defaultHeaders = {'Content-Type': 'application/json'};
-  static const defaultUserId =
-      'onasind'; // only for hashing default on colored avatars
+  static const defaultUserId = 'onasind'; // only for hashing default on colored avatars
+
+  // Feature flags (can be overridden via --dart-define at build/run time)
+  static const bool authHttpStatusChecks = bool.fromEnvironment(
+    'AUTH_HTTP_STATUS_CHECKS',
+    defaultValue: true,
+  );
 
   static const SESSION_EXPORT_HEADER = '-----BEGIN MEGOLM SESSION DATA-----';
   static const SESSION_EXPORT_FOOTER = '-----END MEGOLM SESSION DATA-----';
@@ -111,8 +113,7 @@ class SupportedLanguages {
   ];
 
   static final list = all.map((locale) => Locale(locale)).toList();
-  static final displayNames =
-      all.map((locale) => toDisplayName(locale).capitalize()).toList();
+  static final displayNames = all.map((locale) => toDisplayName(locale).capitalize()).toList();
 }
 
 // extension DisplayName on Locale {
@@ -145,10 +146,7 @@ const isoLangs = {
   'ca': {'name': 'Catalan; Valencian', 'nativeName': 'Català'},
   'ch': {'name': 'Chamorro', 'nativeName': 'Chamoru'},
   'ce': {'name': 'Chechen', 'nativeName': 'нохчийн мотт'},
-  'ny': {
-    'name': 'Chichewa; Chewa; Nyanja',
-    'nativeName': 'chiCheŵa, chinyanja'
-  },
+  'ny': {'name': 'Chichewa; Chewa; Nyanja', 'nativeName': 'chiCheŵa, chinyanja'},
   'zh': {'name': 'Chinese', 'nativeName': '中文 (Zhōngwén), 汉语, 漢語'},
   'cv': {'name': 'Chuvash', 'nativeName': 'чӑваш чӗлхи'},
   'kw': {'name': 'Cornish', 'nativeName': 'Kernewek'},
@@ -169,10 +167,7 @@ const isoLangs = {
   'fj': {'name': 'Fijian', 'nativeName': 'vosa Vakaviti'},
   'fi': {'name': 'Finnish', 'nativeName': 'suomi, suomen kieli'},
   'fr': {'name': 'French', 'nativeName': 'français, langue française'},
-  'ff': {
-    'name': 'Fula; Fulah; Pulaar; Pular',
-    'nativeName': 'Fulfulde, Pulaar, Pular'
-  },
+  'ff': {'name': 'Fula; Fulah; Pulaar; Pular', 'nativeName': 'Fulfulde, Pulaar, Pular'},
   'gl': {'name': 'Galician', 'nativeName': 'Galego'},
   'ka': {'name': 'Georgian', 'nativeName': 'ქართული'},
   'de': {'name': 'German', 'nativeName': 'Deutsch'},
@@ -188,10 +183,7 @@ const isoLangs = {
   'hu': {'name': 'Hungarian', 'nativeName': 'Magyar'},
   'ia': {'name': 'Interlingua', 'nativeName': 'Interlingua'},
   'id': {'name': 'Indonesian', 'nativeName': 'Bahasa Indonesia'},
-  'ie': {
-    'name': 'Interlingue',
-    'nativeName': 'Originally called Occidental; then Interlingue after WWII'
-  },
+  'ie': {'name': 'Interlingue', 'nativeName': 'Originally called Occidental; then Interlingue after WWII'},
   'ga': {'name': 'Irish', 'nativeName': 'Gaeilge'},
   'ig': {'name': 'Igbo', 'nativeName': 'Asụsụ Igbo'},
   'ik': {'name': 'Inupiaq', 'nativeName': 'Iñupiaq, Iñupiatun'},
@@ -201,10 +193,7 @@ const isoLangs = {
   'iu': {'name': 'Inuktitut', 'nativeName': 'ᐃᓄᒃᑎᑐᑦ'},
   'ja': {'name': 'Japanese', 'nativeName': '日本語 (にほんご／にっぽんご)'},
   'jv': {'name': 'Javanese', 'nativeName': 'basa Jawa'},
-  'kl': {
-    'name': 'Kalaallisut, Greenlandic',
-    'nativeName': 'kalaallisut, kalaallit oqaasii'
-  },
+  'kl': {'name': 'Kalaallisut, Greenlandic', 'nativeName': 'kalaallisut, kalaallit oqaasii'},
   'kn': {'name': 'Kannada', 'nativeName': 'ಕನ್ನಡ'},
   'kr': {'name': 'Kanuri', 'nativeName': 'Kanuri'},
   'ks': {'name': 'Kashmiri', 'nativeName': 'कश्मीरी, كشميري‎'},
@@ -219,10 +208,7 @@ const isoLangs = {
   'ku': {'name': 'Kurdish', 'nativeName': 'Kurdî, كوردی‎'},
   'kj': {'name': 'Kwanyama, Kuanyama', 'nativeName': 'Kuanyama'},
   'la': {'name': 'Latin', 'nativeName': 'latine, lingua latina'},
-  'lb': {
-    'name': 'Luxembourgish, Letzeburgesch',
-    'nativeName': 'Lëtzebuergesch'
-  },
+  'lb': {'name': 'Luxembourgish, Letzeburgesch', 'nativeName': 'Lëtzebuergesch'},
   'lg': {'name': 'Luganda', 'nativeName': 'Luganda'},
   'li': {'name': 'Limburgish, Limburgan, Limburger', 'nativeName': 'Limburgs'},
   'ln': {'name': 'Lingala', 'nativeName': 'Lingála'},
@@ -253,8 +239,7 @@ const isoLangs = {
   'oc': {'name': 'Occitan', 'nativeName': 'Occitan'},
   'oj': {'name': 'Ojibwe, Ojibwa', 'nativeName': 'ᐊᓂᔑᓈᐯᒧᐎᓐ'},
   'cu': {
-    'name':
-        'Old Church Slavonic, Church Slavic, Church Slavonic, Old Bulgarian, Old Slavonic',
+    'name': 'Old Church Slavonic, Church Slavic, Church Slavonic, Old Bulgarian, Old Slavonic',
     'nativeName': 'ѩзыкъ словѣньскъ'
   },
   'om': {'name': 'Oromo', 'nativeName': 'Afaan Oromoo'},

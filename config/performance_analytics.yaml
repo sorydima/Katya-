@@ -1,0 +1,221 @@
+# Конфигурация системы аналитики производительности
+performance_analytics:
+  # Общие настройки
+  general:
+    enabled: true
+    auto_start: true
+    data_retention_days: 30
+    cleanup_interval_hours: 24
+
+  # Настройки метрик
+  metrics:
+    collection_interval_seconds: 5
+    retention_period_hours: 24
+    enabled_metrics:
+      - cpu_usage
+      - memory_usage
+      - disk_usage
+      - network_throughput
+      - api_response_time
+      - database_query_time
+      - cache_hit_rate
+    
+    # Конфигурация отдельных метрик
+    cpu_usage:
+      enabled: true
+      collection_interval_seconds: 5
+      retention_period_hours: 24
+      threshold_warning: 80.0
+      threshold_critical: 95.0
+    
+    memory_usage:
+      enabled: true
+      collection_interval_seconds: 5
+      retention_period_hours: 24
+      threshold_warning: 0.8
+      threshold_critical: 0.95
+    
+    disk_usage:
+      enabled: true
+      collection_interval_seconds: 60
+      retention_period_hours: 168  # 7 дней
+      threshold_warning: 0.7
+      threshold_critical: 0.9
+    
+    network_throughput:
+      enabled: true
+      collection_interval_seconds: 10
+      retention_period_hours: 12
+      threshold_warning: 50.0  # MB/s
+      threshold_critical: 100.0
+    
+    api_response_time:
+      enabled: true
+      collection_interval_seconds: 1
+      retention_period_hours: 6
+      threshold_warning: 200.0  # ms
+      threshold_critical: 500.0
+    
+    database_query_time:
+      enabled: true
+      collection_interval_seconds: 1
+      retention_period_hours: 6
+      threshold_warning: 100.0  # ms
+      threshold_critical: 300.0
+    
+    cache_hit_rate:
+      enabled: true
+      collection_interval_seconds: 30
+      retention_period_hours: 12
+      threshold_warning: 80.0  # %
+      threshold_critical: 70.0
+
+  # Настройки профилирования
+  profiler:
+    enabled: true
+    level: "basic"  # basic, detailed, comprehensive
+    enable_memory_profiling: true
+    enable_cpu_profiling: true
+    enable_network_profiling: true
+    max_duration_minutes: 5
+    max_depth: 10
+    auto_start: false
+    auto_stop: true
+    report_retention_days: 7
+
+  # Настройки оптимизации
+  optimization:
+    enabled: true
+    auto_optimization: false
+    analysis_interval_hours: 1
+    performance_threshold: 0.8
+    max_recommendations: 50
+    
+    # Включенные типы оптимизации
+    enabled_types:
+      cpu: true
+      memory: true
+      disk: true
+      network: true
+      database: true
+      api: true
+      cache: true
+      algorithm: true
+      architecture: false
+      configuration: true
+    
+    # Включенные приоритеты
+    enabled_priorities:
+      low: true
+      medium: true
+      high: true
+      critical: true
+
+  # Настройки анализа трендов
+  trend_analysis:
+    enabled: true
+    analysis_window_hours: 24
+    forecast_horizon_hours: 1
+    anomaly_threshold: 2.0
+    trend_confidence_threshold: 0.7
+    min_data_points: 10
+    enable_anomaly_detection: true
+    enable_forecasting: true
+    
+    # Включенные метрики для анализа трендов
+    enabled_metrics:
+      - cpu_usage
+      - memory_usage
+      - disk_usage
+      - network_throughput
+      - api_response_time
+      - database_query_time
+      - cache_hit_rate
+
+  # Настройки уведомлений
+  notifications:
+    enabled: true
+    email_notifications: false
+    webhook_notifications: false
+    slack_notifications: false
+    
+    # Пороги для уведомлений
+    thresholds:
+      cpu_usage_critical: 95.0
+      memory_usage_critical: 0.95
+      disk_usage_critical: 0.9
+      network_latency_critical: 100.0  # ms
+      api_response_time_critical: 1000.0  # ms
+      database_query_time_critical: 500.0  # ms
+      cache_hit_rate_critical: 60.0  # %
+
+  # Настройки экспорта данных
+  export:
+    enabled: true
+    formats:
+      - json
+      - csv
+      - xml
+    
+    # Настройки автоматического экспорта
+    auto_export:
+      enabled: false
+      interval_hours: 24
+      format: "json"
+      include_metrics: true
+      include_profiling: true
+      include_optimization: true
+      include_trends: true
+
+  # Настройки интеграции с внешними системами
+  integrations:
+    prometheus:
+      enabled: false
+      endpoint: "http://localhost:9090"
+      scrape_interval_seconds: 15
+    
+    grafana:
+      enabled: false
+      endpoint: "http://localhost:3000"
+      api_key: ""
+    
+    elasticsearch:
+      enabled: false
+      endpoint: "http://localhost:9200"
+      index_prefix: "katya-performance"
+    
+    influxdb:
+      enabled: false
+      endpoint: "http://localhost:8086"
+      database: "katya_performance"
+      retention_policy: "default"
+
+  # Настройки безопасности
+  security:
+    enable_encryption: true
+    encryption_key: ""  # Должен быть установлен в переменных окружения
+    enable_authentication: true
+    allowed_ips: []  # Пустой список означает разрешение для всех IP
+    rate_limiting:
+      enabled: true
+      requests_per_minute: 100
+      burst_size: 20
+
+  # Настройки логирования
+  logging:
+    level: "info"  # debug, info, warn, error
+    enable_file_logging: true
+    log_file_path: "logs/performance_analytics.log"
+    max_file_size_mb: 100
+    max_files: 10
+    enable_console_logging: true
+    enable_structured_logging: true
+
+  # Настройки производительности
+  performance:
+    max_concurrent_analyses: 5
+    analysis_timeout_seconds: 300
+    cache_size_mb: 100
+    enable_compression: true
+    batch_size: 1000
+    flush_interval_seconds: 30

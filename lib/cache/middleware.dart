@@ -1,4 +1,3 @@
-import 'package:redux/redux.dart';
 import 'package:katya/global/print.dart';
 import 'package:katya/store/auth/actions.dart';
 import 'package:katya/store/auth/context/actions.dart';
@@ -9,6 +8,7 @@ import 'package:katya/store/events/actions.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/rooms/actions.dart';
 import 'package:katya/store/sync/actions.dart';
+import 'package:redux/redux.dart';
 
 ///
 /// Cache Middleware
@@ -36,8 +36,7 @@ bool cacheMiddleware(Store<AppState> store, dynamic action) {
       log.info('[initStore] persistor saving from ${action.runtimeType}');
       return true;
     case SetSynced:
-      return ((action as SetSynced).synced ?? false) &&
-          !store.state.syncStore.synced;
+      return ((action as SetSynced).synced ?? false) && !store.state.syncStore.synced;
     default:
       return false;
   }

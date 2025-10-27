@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:redux/redux.dart';
-import 'package:redux_thunk/redux_thunk.dart';
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/https.dart';
 import 'package:katya/global/libs/matrix/index.dart';
@@ -12,6 +10,8 @@ import 'package:katya/store/auth/actions.dart';
 import 'package:katya/store/auth/homeserver/model.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/search/actions.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
 ThunkAction<AppState> fetchKnownServers() {
   return (Store<AppState> store) async {
@@ -24,9 +24,8 @@ ThunkAction<AppState> fetchKnownServers() {
       // parse homeserver data
       final homserversList = List<Homeserver>.from(homeserversJson.map((data) {
         final hostname = data['hostname'].toString().split('.');
-        final hostnameBase = hostname.length > 1
-            ? '${hostname[hostname.length - 2]}.${hostname[hostname.length - 1]}'
-            : hostname[0];
+        final hostnameBase =
+            hostname.length > 1 ? '${hostname[hostname.length - 2]}.${hostname[hostname.length - 1]}' : hostname[0];
 
         return Homeserver(
           hostname: hostnameBase,
@@ -87,8 +86,7 @@ ThunkAction<AppState> fetchBaseUrl({required Homeserver homeserver}) {
       }
 
       if (identityUrl != null) {
-        identityUrl =
-            (response['m.identity_server']['base_url'] as String).replaceAll('https://', '');
+        identityUrl = (response['m.identity_server']['base_url'] as String).replaceAll('https://', '');
       }
 
       return homeserver.copyWith(

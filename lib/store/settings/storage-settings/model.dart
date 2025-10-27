@@ -1,8 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'package:katya/global/values.dart';
-
 part 'model.g.dart';
 
 @JsonSerializable()
@@ -27,6 +25,5 @@ class StorageSettings extends Equatable {
 
   Map<String, dynamic> toJson() => _$StorageSettingsToJson(this);
 
-  factory StorageSettings.fromJson(Map<String, dynamic> json) =>
-      _$StorageSettingsFromJson(json);
+  factory StorageSettings.fromJson(Map<String, dynamic> json) => _$StorageSettingsFromJson(json);
 }

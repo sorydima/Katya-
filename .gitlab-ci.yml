@@ -1,0 +1,93 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build_android:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build apk --release
+  only:
+    - main
+
+build_tvos:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build tvos --release
+  only:
+    - main
+
+build_wearos:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build wearos --release
+  only:
+    - main
+
+build_freebsd:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build freebsd --release
+  only:
+    - main
+
+build_fuchsia:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build fuchsia --release
+  only:
+    - main
+
+build_harmonyos:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build harmonyos --release
+  only:
+    - main
+
+build_tizen:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build tizen --release
+  only:
+    - main
+
+build_gdpr_compliant:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build apk --release --obfuscate --split-debug-info=build/debug-info
+  variables:
+    REGION: EU
+    COMPLIANCE: GDPR
+  only:
+    - main
+
+build_pipeda_compliant:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build apk --release
+  variables:
+    REGION: CA
+    COMPLIANCE: PIPEDA
+  only:
+    - main
+
+build_privacy_act_compliant:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build apk --release
+  variables:
+    REGION: AU
+    COMPLIANCE: Privacy Act
+  only:
+    - main

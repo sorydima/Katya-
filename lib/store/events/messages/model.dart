@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart' as drift;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:katya/global/print.dart';
+import 'package:katya/models/token_gate_config.dart';
 import 'package:katya/storage/database.dart';
 import 'package:katya/store/events/model.dart';
 import 'package:katya/store/events/reactions/model.dart';
@@ -47,7 +48,24 @@ class Message extends Event implements drift.Insertable<Message> {
   // Encrypted Messages only
   final String? typeDecrypted; // inner type of decrypted event
   final String? ciphertext;
+
+  // Additional properties
+  final Map<String, dynamic>? unsigned;
+  final Map<String, dynamic>? prevContent;
+  final Map<String, dynamic>? redactedBecause;
+  final Map<String, dynamic>? relatesTo;
+  final Map<String, dynamic>? relations;
+  final List<Message>? edits;
+  final Map<String, dynamic>? thread;
+  final List<dynamic>? inviteRoomState;
+  final int? originServerTsLocalCreate;
+  final int? originServerTsLocalEdit;
+  final int? originServerTsLocalReceipt;
+  final String? status;
   final String? algorithm;
+
+  // Token gating
+  final TokenGateConfig? tokenGateConfig;
   final String? sessionId;
   final String? senderKey; // Curve25519 device key which initiated the session
   final String? deviceId;
@@ -59,123 +77,130 @@ class Message extends Event implements drift.Insertable<Message> {
   final List<Reaction> reactions;
 
   const Message({
-    String? id,
-    String? userId,
-    String? roomId,
-    String? type,
-    String? sender,
-    String? stateKey,
-    String? batch,
-    String? prevBatch,
-    dynamic content,
-    int timestamp = 0,
-    this.body,
-    this.typeDecrypted,
-    this.msgtype,
-    this.format,
-    this.file,
-    this.url,
-    this.info,
-    this.formattedBody,
-    this.received = 0,
-    this.ciphertext,
-    this.senderKey,
-    this.deviceId,
-    this.algorithm,
-    this.sessionId,
-    this.relatedEventId,
-    this.edited = false,
-    this.syncing = false,
+    required super.id,
+    required super.sender,
+    required super.timestamp,
+    required super.type,
+    required super.roomId,
+    super.content,
     this.pending = false,
+    this.syncing = false,
     this.failed = false,
+    this.edited = false,
     this.replacement = false,
     this.hasLink = false,
+    this.received = 0,
+    this.body,
+    this.msgtype,
+    this.format,
+    this.formattedBody,
+    this.url,
+    this.file,
+    this.info,
+    this.typeDecrypted,
+    this.ciphertext,
+    this.algorithm,
+    this.tokenGateConfig,
+    this.sessionId,
+    this.senderKey,
+    this.deviceId,
+    this.relatedEventId,
     this.editIds = const [],
     this.reactions = const [],
-  }) : super(
-          id: id,
-          userId: userId,
-          roomId: roomId,
-          type: type,
-          sender: sender,
-          stateKey: stateKey,
-          batch: batch,
-          prevBatch: prevBatch,
-          timestamp: timestamp,
-          content: content,
-          data: null,
-        );
+    this.unsigned,
+    this.prevContent,
+    this.redactedBecause,
+    this.relatesTo,
+    this.relations,
+    this.edits,
+    this.thread,
+    this.inviteRoomState,
+    this.originServerTsLocalCreate,
+    this.originServerTsLocalEdit,
+    this.originServerTsLocalReceipt,
+    this.status,
+  }) : super();
 
-  @override
-  Message copyWith({
+  Message copyMessageWith({
     String? id,
-    String? type,
     String? sender,
-    String? roomId,
-    String? stateKey,
-    String? prevBatch,
-    String? batch,
-    dynamic content,
-    dynamic data,
-    bool? syncing,
-    bool? pending,
-    bool? failed,
-    bool? replacement,
-    bool? edited,
-    bool? hasLink,
     int? timestamp,
+    String? type,
+    String? roomId,
+    Map<String, dynamic>? content,
+    bool? pending,
+    bool? syncing,
+    bool? failed,
+    bool? edited,
+    bool? replacement,
+    bool? hasLink,
     int? received,
     String? body,
-    String? typeDecrypted, // inner type of decrypted event
     String? msgtype,
     String? format,
+    String? formattedBody,
     String? url,
     Map<String, dynamic>? file,
     Map<String, dynamic>? info,
-    String? formattedBody,
+    String? typeDecrypted,
     String? ciphertext,
-    String? senderKey,
-    String? deviceId,
     String? algorithm,
-    String? sessionId,
-    String? relatedEventId,
-    List<String>? editIds,
-    List<Reaction>? reactions,
-  }) =>
-      Message(
-        id: id ?? this.id,
-        type: type ?? this.type,
-        typeDecrypted: typeDecrypted ?? this.typeDecrypted,
-        sender: sender ?? this.sender,
-        roomId: roomId ?? this.roomId,
-        stateKey: stateKey ?? this.stateKey,
-        batch: batch ?? this.batch,
-        prevBatch: prevBatch ?? this.prevBatch,
-        timestamp: timestamp ?? this.timestamp,
-        content: content ?? this.content,
-        body: body ?? this.body,
-        formattedBody: formattedBody ?? this.formattedBody,
-        msgtype: msgtype ?? this.msgtype,
-        format: format ?? this.format,
-        file: file ?? this.file,
-        url: url ?? this.url,
-        info: info ?? this.info,
-        received: received ?? this.received,
-        ciphertext: ciphertext ?? this.ciphertext,
-        senderKey: senderKey ?? this.senderKey,
-        deviceId: deviceId ?? this.deviceId,
-        algorithm: algorithm ?? this.algorithm,
-        sessionId: sessionId ?? this.sessionId,
-        syncing: syncing ?? this.syncing,
-        pending: pending ?? this.pending,
-        failed: failed ?? this.failed,
-        replacement: replacement ?? this.replacement,
-        edited: edited ?? this.edited,
-        hasLink: hasLink ?? this.hasLink,
-        relatedEventId: relatedEventId ?? this.relatedEventId,
-        editIds: editIds ?? this.editIds,
-        reactions: reactions ?? this.reactions,
-      );
+    TokenGateConfig? tokenGateConfig,
+    Map<String, dynamic>? unsigned,
+    Map<String, dynamic>? prevContent,
+    Map<String, dynamic>? redactedBecause,
+    Map<String, dynamic>? relatesTo,
+    Map<String, dynamic>? relations,
+    Map<String, Reaction>? reactions,
+    List<Message>? edits,
+    Map<String, dynamic>? thread,
+    String? stateKey,
+    List<dynamic>? inviteRoomState,
+    int? originServerTsLocalCreate,
+    int? originServerTsLocalEdit,
+    int? originServerTsLocalReceipt,
+    String? status,
+  }) {
+    return Message(
+      id: id ?? this.id,
+      sender: sender ?? this.sender,
+      timestamp: timestamp ?? this.timestamp,
+      type: type ?? this.type,
+      roomId: roomId ?? this.roomId,
+      content: content ?? this.content,
+      pending: pending ?? this.pending,
+      syncing: syncing ?? this.syncing,
+      failed: failed ?? this.failed,
+      edited: edited ?? this.edited,
+      replacement: replacement ?? this.replacement,
+      hasLink: hasLink ?? this.hasLink,
+      received: received ?? this.received,
+      body: body ?? this.body,
+      msgtype: msgtype ?? this.msgtype,
+      format: format ?? this.format,
+      formattedBody: formattedBody ?? this.formattedBody,
+      url: url ?? this.url,
+      file: file ?? this.file,
+      info: info ?? this.info,
+      typeDecrypted: typeDecrypted ?? this.typeDecrypted,
+      ciphertext: ciphertext ?? this.ciphertext,
+      algorithm: algorithm ?? this.algorithm,
+      tokenGateConfig: tokenGateConfig ?? this.tokenGateConfig,
+      unsigned: unsigned ?? this.unsigned,
+      prevContent: prevContent ?? this.prevContent,
+      redactedBecause: redactedBecause ?? this.redactedBecause,
+      relatesTo: relatesTo ?? this.relatesTo,
+      relations: relations ?? this.relations,
+      edits: edits ?? this.edits,
+      thread: thread ?? this.thread,
+    );
+  }
+
+  // Getter methods for commonly used properties
+  String get senderId => sender ?? '';
+  int get originServerTs => timestamp;
+  bool get encrypted => ciphertext != null;
+  String? get eventId => id;
 
   // allows converting to message companion type for saving through drift
   @override
@@ -217,8 +242,7 @@ class Message extends Event implements drift.Insertable<Message> {
   @override
   Map<String, dynamic> toJson() => _$MessageToJson(this);
 
-  factory Message.fromJson(Map<String, dynamic> json) =>
-      _$MessageFromJson(json);
+  factory Message.fromJson(Map<String, dynamic> json) => _$MessageFromJson(json);
 
   factory Message.fromEvent(Event event) {
     try {
@@ -256,14 +280,10 @@ class Message extends Event implements drift.Insertable<Message> {
 
       return Message(
         id: event.id,
-        userId: event.userId,
         roomId: event.roomId,
         type: event.type,
         typeDecrypted: null,
         sender: event.sender,
-        stateKey: event.stateKey,
-        batch: event.batch,
-        prevBatch: event.prevBatch,
         timestamp: event.timestamp,
         content: content,
         body: body,
@@ -288,17 +308,13 @@ class Message extends Event implements drift.Insertable<Message> {
         edited: false,
       );
     } catch (error) {
-      log.error('[Message.fromEvent] ${error.toString()}');
+      log.error('[Message.fromEvent] $error');
       return Message(
         id: event.id,
-        userId: event.userId,
         roomId: event.roomId,
         body: '',
         type: event.type,
         sender: event.sender,
-        stateKey: event.stateKey,
-        batch: event.batch,
-        prevBatch: event.prevBatch,
         timestamp: event.timestamp,
         pending: false,
         syncing: false,

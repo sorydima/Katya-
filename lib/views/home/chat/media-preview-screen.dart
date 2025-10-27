@@ -1,11 +1,9 @@
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
@@ -14,10 +12,11 @@ import 'package:katya/global/strings.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/rooms/room/model.dart';
 import 'package:katya/store/rooms/selectors.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/appbars/appbar-normal.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
-import 'package:katya/utils/theme_compatibility.dart';
+import 'package:redux/redux.dart';
 
 class MediaPreviewArguments {
   final String? roomId;
@@ -33,8 +32,8 @@ class MediaPreviewArguments {
 
 class MediaPreviewScreen extends StatefulWidget {
   const MediaPreviewScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   MediaPreviewState createState() => MediaPreviewState();
@@ -60,7 +59,7 @@ class MediaPreviewState extends State<MediaPreviewScreen> with Lifecycle<MediaPr
     }
   }
 
-  onConfirm(_Props props) async {
+  Future<void> onConfirm(_Props props) async {
     final params = useScreenArguments<MediaPreviewArguments>(context);
     await params?.onConfirmSend();
     Navigator.pop(context);
@@ -84,7 +83,7 @@ class MediaPreviewState extends State<MediaPreviewScreen> with Lifecycle<MediaPr
               title: Strings.titleDialogDraftPreview,
               actions: [
                 IconButton(
-                  icon: Icon(Icons.close, color: Colors.white),
+                  icon: const Icon(Icons.close, color: Colors.white),
                   onPressed: () => Navigator.pop(context, false),
                   tooltip: Strings.buttonCancel.capitalize(),
                 ),
@@ -95,7 +94,7 @@ class MediaPreviewState extends State<MediaPreviewScreen> with Lifecycle<MediaPr
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    padding: EdgeInsets.only(top: 24),
+                    padding: const EdgeInsets.only(top: 24),
                     child: currentImage == null
                         ? Container()
                         : Image.file(
@@ -105,13 +104,13 @@ class MediaPreviewState extends State<MediaPreviewScreen> with Lifecycle<MediaPr
                           ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 24, right: 12, bottom: 32),
+                    padding: const EdgeInsets.only(top: 24, right: 12, bottom: 32),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(right: 8),
+                          padding: const EdgeInsets.only(right: 8),
                           child: Text(
                             encryptionEnabled
                                 ? Strings.titleSendMediaMessage
@@ -125,7 +124,7 @@ class MediaPreviewState extends State<MediaPreviewScreen> with Lifecycle<MediaPr
                         Container(
                           width: Dimensions.buttonSendSize * 1.15,
                           height: Dimensions.buttonSendSize * 1.15,
-                          padding: EdgeInsets.symmetric(vertical: 4),
+                          padding: const EdgeInsets.symmetric(vertical: 4),
                           child: Semantics(
                             button: true,
                             enabled: true,
@@ -135,19 +134,15 @@ class MediaPreviewState extends State<MediaPreviewScreen> with Lifecycle<MediaPr
                               onTap: sending ? null : () => onConfirm(props),
                               child: CircleAvatar(
                                 backgroundColor: sending
-                                    ? Color(AppColors.greyDisabled)
+                                    ? const Color(AppColors.greyDisabled)
                                     : Theme.of(context).colorScheme.primary,
                                 child: sending
                                     ? Padding(
-                                        padding: EdgeInsets.all(4),
+                                        padding: const EdgeInsets.all(4),
                                         child: CircularProgressIndicator(
                                           strokeWidth: Dimensions.strokeWidthThin * 1.5,
                                           valueColor: AlwaysStoppedAnimation<Color>(
-                                            Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary
-                                                        .computeLuminance() >
-                                                    0.6
+                                            Theme.of(context).colorScheme.secondary.computeLuminance() > 0.6
                                                 ? Colors.black
                                                 : Colors.white,
                                           ),
@@ -155,7 +150,7 @@ class MediaPreviewState extends State<MediaPreviewScreen> with Lifecycle<MediaPr
                                         ),
                                       )
                                     : Container(
-                                        margin: EdgeInsets.only(left: 2, top: 3),
+                                        margin: const EdgeInsets.only(left: 2, top: 3),
                                         child: SvgPicture.asset(
                                           encryptionEnabled
                                               ? Assets.iconSendLockSolidBeing

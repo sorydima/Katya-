@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:katya/global/print.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:katya/global/print.dart';
 
 class SecureStorage {
   static FlutterSecureStorage? instance;
@@ -72,8 +72,7 @@ class SecureStorage {
       // desktop
       if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
         final directory = await getApplicationSupportDirectory();
-        return await File(join(directory.path, key))
-            .writeAsString(value, flush: true);
+        return await File(join(directory.path, key)).writeAsString(value, flush: true);
       }
 
       throw '[SecureStorage.write] Unsupported device error';

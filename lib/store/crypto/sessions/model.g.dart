@@ -8,9 +8,9 @@ part of 'model.dart';
 
 MessageSession _$MessageSessionFromJson(Map<String, dynamic> json) =>
     MessageSession(
-      index: json['index'] as int? ?? 0,
+      index: (json['index'] as num?)?.toInt() ?? 0,
       serialized: json['serialized'] as String,
-      createdAt: json['createdAt'] as int,
+      createdAt: (json['createdAt'] as num).toInt(),
     );
 
 Map<String, dynamic> _$MessageSessionToJson(MessageSession instance) =>

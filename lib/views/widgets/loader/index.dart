@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-
 import 'package:katya/global/dimensions.dart';
 
 class Loader extends StatelessWidget {
   const Loader({
-    Key? key,
+    super.key,
     this.loading = false,
-  }) : super(key: key);
+  });
 
   final bool loading;
 
@@ -14,7 +13,7 @@ class Loader extends StatelessWidget {
   Widget build(BuildContext context) => Visibility(
         visible: loading,
         child: Container(
-          margin: EdgeInsets.only(top: 8),
+          margin: const EdgeInsets.only(top: 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[

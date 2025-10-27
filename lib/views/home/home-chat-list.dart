@@ -16,18 +16,18 @@ import 'package:katya/store/rooms/selectors.dart';
 import 'package:katya/store/settings/chat-settings/selectors.dart';
 import 'package:katya/store/sync/selectors.dart';
 import 'package:katya/store/user/model.dart';
-import 'package:katya/views/widgets/avatars/avatar.dart';
 import 'package:katya/utils/theme_compatibility.dart';
+import 'package:katya/views/widgets/avatars/avatar.dart';
 
 class HomeChatList extends HookWidget {
   const HomeChatList({
-    Key? key,
+    super.key,
     this.searching = false,
     this.searchText = '',
     this.selectedChats = const [],
     this.onSelectChat,
     this.onToggleChatOptions,
-  }) : super(key: key);
+  });
 
   final bool searching;
   final String searchText;
@@ -83,7 +83,7 @@ class HomeChatList extends HookWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Container(
-              constraints: BoxConstraints(
+              constraints: const BoxConstraints(
                 minWidth: Dimensions.mediaSizeMin,
                 maxWidth: Dimensions.mediaSizeMax,
                 maxHeight: Dimensions.mediaSizeMin,
@@ -95,8 +95,8 @@ class HomeChatList extends HookWidget {
             ),
             GestureDetector(
               child: Container(
-                margin: EdgeInsets.only(bottom: 48),
-                padding: EdgeInsets.only(top: 16),
+                margin: const EdgeInsets.only(bottom: 48),
+                padding: const EdgeInsets.only(top: 16),
                 child: Text(
                   noChatsLabel,
                   style: Theme.of(context).textTheme.headline6,
@@ -123,7 +123,7 @@ class HomeChatList extends HookWidget {
             messageLatest.sender != currentUser?.userId;
 
         var backgroundColor;
-        var textStyle = TextStyle();
+        var textStyle = const TextStyle();
         final chatColor = selectChatColor(store, room.id);
 
         // highlight selected rooms if necessary
@@ -137,17 +137,17 @@ class HomeChatList extends HookWidget {
 
         // show draft inidicator if it's an empty room
         if (room.drafting || messages.isEmpty) {
-          textStyle = TextStyle(fontStyle: FontStyle.italic);
+          textStyle = const TextStyle(fontStyle: FontStyle.italic);
         }
 
         if (messages.isNotEmpty && messageLatest != null) {
           // it has undecrypted message contained within
           if (messageLatest.type == EventTypes.encrypted && messageLatest.body!.isEmpty) {
-            textStyle = TextStyle(fontStyle: FontStyle.italic);
+            textStyle = const TextStyle(fontStyle: FontStyle.italic);
           }
 
           if (messageLatest.body == null || messageLatest.body!.isEmpty) {
-            textStyle = TextStyle(fontStyle: FontStyle.italic);
+            textStyle = const TextStyle(fontStyle: FontStyle.italic);
           }
 
           // display message as being 'unread'
@@ -165,7 +165,7 @@ class HomeChatList extends HookWidget {
           onLongPress: () => onToggleChatOptions?.call(room: room),
           child: Container(
             decoration: BoxDecoration(
-              color: backgroundColor, // if selected, color seperately
+              color: Theme.of(context).colorScheme.surface, // if selected, color seperately
             ),
             padding: EdgeInsets.symmetric(
               vertical: Theme.of(context).textTheme.subtitle1!.fontSize!,
@@ -306,7 +306,7 @@ class HomeChatList extends HookWidget {
                           ),
                           Text(
                             formatTimestamp(lastUpdateMillis: room.lastUpdate),
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w100),
+                            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w100),
                           ),
                         ],
                       ),

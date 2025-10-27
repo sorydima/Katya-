@@ -1,8 +1,6 @@
 import 'package:equatable/equatable.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
@@ -12,6 +10,7 @@ import 'package:katya/store/rooms/room/model.dart';
 import 'package:katya/store/search/actions.dart';
 import 'package:katya/store/user/model.dart';
 import 'package:katya/store/user/selectors.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/appbars/appbar-search.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
@@ -19,7 +18,7 @@ import 'package:katya/views/widgets/containers/card-section.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
 import 'package:katya/views/widgets/loader/index.dart';
 import 'package:katya/views/widgets/modals/modal-user-details.dart';
-import 'package:katya/utils/theme_compatibility.dart';
+import 'package:redux/redux.dart';
 
 class ChatUsersDetailArguments {
   final String? roomId;
@@ -28,14 +27,13 @@ class ChatUsersDetailArguments {
 }
 
 class ChatUsersDetailScreen extends StatefulWidget {
-  const ChatUsersDetailScreen({Key? key}) : super(key: key);
+  const ChatUsersDetailScreen({super.key});
 
   @override
   ChatUsersDetailState createState() => ChatUsersDetailState();
 }
 
-class ChatUsersDetailState extends State<ChatUsersDetailScreen>
-    with Lifecycle<ChatUsersDetailScreen> {
+class ChatUsersDetailState extends State<ChatUsersDetailScreen> with Lifecycle<ChatUsersDetailScreen> {
   final searchInputFocusNode = FocusNode();
 
   bool loading = false;
@@ -63,7 +61,7 @@ class ChatUsersDetailState extends State<ChatUsersDetailScreen>
     super.dispose();
   }
 
-  onShowUserDetails({required BuildContext context, String? roomId, String? userId}) async {
+  Future<void> onShowUserDetails({required BuildContext context, String? roomId, String? userId}) async {
     await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -74,7 +72,7 @@ class ChatUsersDetailState extends State<ChatUsersDetailScreen>
     );
   }
 
-  buildUserList(BuildContext context, _Props props) => ListView.builder(
+  ListView buildUserList(BuildContext context, _Props props) => ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
         itemCount: props.usersFiltered.length,
@@ -108,7 +106,7 @@ class ChatUsersDetailState extends State<ChatUsersDetailScreen>
                   user.userId!,
                   style: Theme.of(context).textTheme.caption!.merge(
                         TextStyle(
-                          color: props.loading ? Color(AppColors.greyDisabled) : null,
+                          color: props.loading ? const Color(AppColors.greyDisabled) : null,
                         ),
                       ),
                 ),
@@ -120,8 +118,7 @@ class ChatUsersDetailState extends State<ChatUsersDetailScreen>
 
   @override
   Widget build(BuildContext context) {
-    final ChatUsersDetailArguments? arguments =
-        ModalRoute.of(context)!.settings.arguments as ChatUsersDetailArguments?;
+    final ChatUsersDetailArguments? arguments = ModalRoute.of(context)!.settings.arguments as ChatUsersDetailArguments?;
 
     return StoreConnector<AppState, _Props>(
       distinct: true,

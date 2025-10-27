@@ -30,16 +30,20 @@ Room _$RoomFromJson(Map<String, dynamic> json) => Room(
               ?.map((e) => e as String)
               .toList() ??
           const [],
-      lastRead: json['lastRead'] as int? ?? 0,
-      lastUpdate: json['lastUpdate'] as int? ?? 0,
-      namePriority: json['namePriority'] as int? ?? 4,
-      totalJoinedUsers: json['totalJoinedUsers'] as int? ?? 0,
+      lastRead: (json['lastRead'] as num?)?.toInt() ?? 0,
+      lastUpdate: (json['lastUpdate'] as num?)?.toInt() ?? 0,
+      namePriority: (json['namePriority'] as num?)?.toInt() ?? 4,
+      totalJoinedUsers: (json['totalJoinedUsers'] as num?)?.toInt() ?? 0,
       guestEnabled: json['guestEnabled'] as bool? ?? false,
       encryptionEnabled: json['encryptionEnabled'] as bool? ?? false,
       worldReadable: json['worldReadable'] as bool? ?? false,
       lastBatch: json['lastBatch'] as String?,
       nextBatch: json['nextBatch'] as String?,
       prevBatch: json['prevBatch'] as String?,
+      tokenGateConfig: json['tokenGateConfig'] == null
+          ? null
+          : TokenGateConfig.fromJson(
+              json['tokenGateConfig'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$RoomToJson(Room instance) => <String, dynamic>{
@@ -69,4 +73,5 @@ Map<String, dynamic> _$RoomToJson(Room instance) => <String, dynamic>{
       'draft': instance.draft,
       'reply': instance.reply,
       'userIds': instance.userIds,
+      'tokenGateConfig': instance.tokenGateConfig,
     };

@@ -1,0 +1,66 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: katya-base
+  namespace: katya
+
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - secret.yaml
+  - deployment-api.yaml
+  - deployment-web.yaml
+  - deployment-analytics.yaml
+  - deployment-websocket.yaml
+  - deployment-celery-worker.yaml
+  - deployment-celery-beat.yaml
+  - deployment-backup.yaml
+  - service-api.yaml
+  - service-web.yaml
+  - service-analytics.yaml
+  - service-websocket.yaml
+  - service-postgres.yaml
+  - service-redis.yaml
+  - service-elasticsearch.yaml
+  - service-rabbitmq.yaml
+  - service-prometheus.yaml
+  - service-grafana.yaml
+  - service-nginx.yaml
+  - ingress.yaml
+  - pvc-postgres.yaml
+  - pvc-redis.yaml
+  - pvc-elasticsearch.yaml
+  - pvc-prometheus.yaml
+  - pvc-grafana.yaml
+  - pvc-rabbitmq.yaml
+  - networkpolicy.yaml
+  - hpa-api.yaml
+  - hpa-web.yaml
+  - hpa-analytics.yaml
+  - hpa-websocket.yaml
+  - pdb-api.yaml
+  - pdb-web.yaml
+
+images:
+  - name: katya/api
+    newTag: latest
+  - name: katya/web
+    newTag: latest
+  - name: katya/analytics
+    newTag: latest
+  - name: katya/websocket
+    newTag: latest
+  - name: katya/celery
+    newTag: latest
+  - name: katya/backup
+    newTag: latest
+
+commonLabels:
+  app.kubernetes.io/name: katya
+  app.kubernetes.io/version: "1.0.0"
+  app.kubernetes.io/managed-by: kustomize
+
+commonAnnotations:
+  deployment.kubernetes.io/revision: "1"
+  kubernetes.io/change-cause: "Initial deployment"

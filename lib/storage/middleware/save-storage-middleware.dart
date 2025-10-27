@@ -1,4 +1,3 @@
-import 'package:redux/redux.dart';
 import 'package:katya/global/print.dart';
 import 'package:katya/storage/database.dart';
 import 'package:katya/store/auth/actions.dart';
@@ -34,6 +33,7 @@ import 'package:katya/store/settings/theme-settings/actions.dart';
 import 'package:katya/store/sync/service/storage.dart';
 import 'package:katya/store/user/actions.dart';
 import 'package:katya/store/user/storage.dart';
+import 'package:redux/redux.dart';
 
 ///
 /// Storage Middleware
@@ -41,7 +41,8 @@ import 'package:katya/store/user/storage.dart';
 /// Saves state data to cold storage based
 /// on which redux actions are fired.
 ///
-saveStorageMiddleware(StorageDatabase? storage) {
+Null Function(Store<AppState> store, dynamic action, NextDispatcher next) saveStorageMiddleware(
+    StorageDatabase? storage) {
   return (
     Store<AppState> store,
     dynamic action,
@@ -50,8 +51,7 @@ saveStorageMiddleware(StorageDatabase? storage) {
     next(action);
 
     if (storage == null) {
-      log.warn('storage is null, skipping saving cold storage data!!!',
-          title: 'storageMiddleware');
+      log.warn('storage is null, skipping saving cold storage data!!!', title: 'storageMiddleware');
       return;
     }
 
@@ -60,76 +60,63 @@ saveStorageMiddleware(StorageDatabase? storage) {
       case RemoveAvailableUser:
       case SetUser:
         saveAuth(store.state.authStore, storage: storage);
-        break;
       case SetUsers:
-        final _action = action as SetUsers;
-        saveUsers(_action.users ?? {}, storage: storage);
-        break;
+        final setUsersAction = action as SetUsers;
+        saveUsers(setUsersAction.users ?? {}, storage: storage);
       case UpdateMediaCache:
-        final _action = action as UpdateMediaCache;
+        final updateMediaAction = action as UpdateMediaCache;
 
         // dont save decrypted images
-        final decrypting = store.state.mediaStore.mediaStatus[_action.mxcUri] ==
-            MediaStatus.DECRYPTING.value;
+        final decrypting = store.state.mediaStore.mediaStatus[updateMediaAction.mxcUri] == MediaStatus.DECRYPTING.value;
         if (decrypting) return;
 
-        saveMedia(_action.mxcUri, _action.data,
-            info: _action.info, type: _action.type, storage: storage);
-        break;
+        saveMedia(updateMediaAction.mxcUri, updateMediaAction.data,
+            info: updateMediaAction.info, type: updateMediaAction.type, storage: storage);
       case UpdateRoom:
-        final _action = action as UpdateRoom;
+        final updateRoomAction = action as UpdateRoom;
         final rooms = store.state.roomStore.rooms;
-        final isSending = _action.sending != null;
-        final isDrafting = _action.draft != null;
-        final isLastRead = _action.lastRead != null;
+        final isSending = updateRoomAction.sending != null;
+        final isDrafting = updateRoomAction.draft != null;
+        final isLastRead = updateRoomAction.lastRead != null;
 
-        if ((isSending || isDrafting || isLastRead) &&
-            rooms.containsKey(_action.id)) {
-          final room = rooms[_action.id];
+        if ((isSending || isDrafting || isLastRead) && rooms.containsKey(updateRoomAction.id)) {
+          final room = rooms[updateRoomAction.id];
           saveRoom(room!, storage: storage);
         }
-        break;
       case RemoveRoom:
-        final _action = action as RemoveRoom;
-        final room = store.state.roomStore.rooms[_action.roomId];
+        final removeRoomAction = action as RemoveRoom;
+        final room = store.state.roomStore.rooms[removeRoomAction.roomId];
         if (room != null) {
           deleteRooms({room.id: room}, storage: storage);
         }
-        break;
       case AddReactions:
-        final _action = action as AddReactions;
-        saveReactions(_action.reactions ?? [], storage: storage);
-        break;
+        final addReactionsAction = action as AddReactions;
+        saveReactions(addReactionsAction.reactions ?? [], storage: storage);
       case SaveRedactions:
-        final _action = action as SaveRedactions;
-        saveMessagesRedacted(_action.redactions ?? [], storage: storage);
-        saveReactionsRedacted(_action.redactions ?? [], storage: storage);
-        break;
+        final saveRedactionsAction = action as SaveRedactions;
+        saveMessagesRedacted(saveRedactionsAction.redactions ?? [], storage: storage);
+        saveReactionsRedacted(saveRedactionsAction.redactions ?? [], storage: storage);
       case SetReceipts:
-        final _action = action as SetReceipts;
+        final setReceiptsAction = action as SetReceipts;
         final isSynced = store.state.syncStore.synced;
         // NOTE: prevents saving read receipts until a Full Sync is completed
-        saveReceipts(_action.receipts ?? {}, storage: storage, ready: isSynced);
-        break;
+        saveReceipts(setReceiptsAction.receipts ?? {}, storage: storage, ready: isSynced);
       case SetRoom:
-        final _action = action as SetRoom;
-        final room = _action.room;
+        final setRoomAction = action as SetRoom;
+        final room = setRoomAction.room;
         saveRooms({room.id: room}, storage: storage);
-        break;
       case DeleteMessage:
-        saveMessages([action.message], storage: storage);
-        break;
+        final deleteMessageAction = action as DeleteMessage;
+        saveMessages([deleteMessageAction.message], storage: storage);
       case DeleteOutboxMessage:
-        deleteMessages([action.message], storage: storage);
-        break;
+        final deleteOutboxAction = action as DeleteOutboxMessage;
+        deleteMessages([deleteOutboxAction.message], storage: storage);
       case AddMessages:
-        final _action = action as AddMessages;
-        saveMessages(_action.messages, storage: storage);
-        break;
+        final addMessagesAction = action as AddMessages;
+        saveMessages(addMessagesAction.messages, storage: storage);
       case AddMessagesDecrypted:
-        final _action = action as AddMessagesDecrypted;
-        saveDecrypted(_action.messages, storage: storage);
-        break;
+        final addMessagesDecryptedAction = action as AddMessagesDecrypted;
+        saveDecrypted(addMessagesDecryptedAction.messages, storage: storage);
       case SetThemeType:
       case SetPrimaryColor:
       case SetAvatarShape:
@@ -164,16 +151,11 @@ saveStorageMiddleware(StorageDatabase? storage) {
       case SetProxyPassword:
       case SetLastBackupMillis:
         saveSettings(store.state.settingsStore, storage: storage);
-        break;
       case SetKeyBackupPassword:
-        final _action = action as SetKeyBackupPassword;
-        saveBackupPassword(password: _action.password);
-        break;
+        final setKeyBackupPasswordAction = action as SetKeyBackupPassword;
+        saveBackupPassword(password: setKeyBackupPasswordAction.password);
       case LogAppAgreement:
-        saveTermsAgreement(
-            timestamp:
-                int.parse(store.state.settingsStore.alphaAgreement ?? '0'));
-        break;
+        saveTermsAgreement(timestamp: int.parse(store.state.settingsStore.alphaAgreement ?? '0'));
       case SetOlmAccountBackup:
       case SetDeviceKeysOwned:
       case ToggleDeviceKeysExist:
@@ -185,30 +167,26 @@ saveStorageMiddleware(StorageDatabase? storage) {
       case AddKeySession:
       case ResetCrypto:
         saveCrypto(store.state.cryptoStore, storage: storage);
-        break;
       case AddMessageSessionInbound:
-        final _action = action as AddMessageSessionInbound;
+        final addMessageSessionInboundAction = action as AddMessageSessionInbound;
         saveMessageSessionInbound(
-          roomId: _action.roomId,
-          identityKey: _action.senderKey,
-          session: _action.session,
-          messageIndex: _action.messageIndex,
+          roomId: addMessageSessionInboundAction.roomId,
+          identityKey: addMessageSessionInboundAction.senderKey,
+          session: addMessageSessionInboundAction.session,
+          messageIndex: addMessageSessionInboundAction.messageIndex,
           storage: storage,
         );
-        break;
       case SaveMessageSessionsInbound:
         saveMessageSessionsInbound(
           store.state.cryptoStore.messageSessionsInbound,
           storage: storage,
         );
-        break;
       case SetNotificationSettings:
         // handles updating the background sync thread with new chat settings
         saveNotificationSettings(
           settings: store.state.settingsStore.notificationSettings,
         );
         saveSettings(store.state.settingsStore, storage: storage);
-        break;
 
       default:
         break;

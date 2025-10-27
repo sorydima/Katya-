@@ -1,17 +1,17 @@
 import 'package:equatable/equatable.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/global/formatters.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/rooms/actions.dart';
+import 'package:katya/store/rooms/room/model.dart';
 import 'package:katya/store/rooms/selectors.dart';
 import 'package:katya/store/search/actions.dart';
 import 'package:katya/store/settings/theme-settings/model.dart';
 import 'package:katya/store/user/model.dart';
 import 'package:katya/store/user/selectors.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/home/chat/chat-screen.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/appbars/appbar-search.dart';
@@ -19,10 +19,10 @@ import 'package:katya/views/widgets/dialogs/dialog-start-chat.dart';
 import 'package:katya/views/widgets/lists/list-item-user.dart';
 import 'package:katya/views/widgets/loader/index.dart';
 import 'package:katya/views/widgets/modals/modal-user-details.dart';
-import 'package:katya/utils/theme_compatibility.dart';
+import 'package:redux/redux.dart';
 
 class SearchUserScreen extends StatefulWidget {
-  const SearchUserScreen({Key? key}) : super(key: key);
+  const SearchUserScreen({super.key});
 
   @override
   SearchUserState createState() => SearchUserState();
@@ -60,7 +60,7 @@ class SearchUserState extends State<SearchUserScreen> {
     super.dispose();
   }
 
-  onShowUserDetails({required BuildContext context, User? user}) async {
+  Future<void> onShowUserDetails({required BuildContext context, User? user}) async {
     await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -72,7 +72,7 @@ class SearchUserState extends State<SearchUserScreen> {
     );
   }
 
-  onCreateChat({required BuildContext context, required User user, _Props? props}) async {
+  Future<Future> onCreateChat({required BuildContext context, required User user, _Props? props}) async {
     final store = StoreProvider.of<AppState>(context);
 
     final existingChatId = selectDirectChatIdExisting(
@@ -126,7 +126,7 @@ class SearchUserState extends State<SearchUserScreen> {
   /// attempt chating with a user by the name searched
   ///
 
-  onAttemptChat({required BuildContext context, required User user, _Props? props}) async {
+  Future<Future> onAttemptChat({required BuildContext context, required User user, _Props? props}) async {
     final store = StoreProvider.of<AppState>(context);
 
     final existingChatId = selectDirectChatIdExisting(
@@ -185,14 +185,13 @@ class SearchUserState extends State<SearchUserScreen> {
 
     final attemptableUser = User(
       displayName: searchable,
-      userId:
-          searchable.isNotEmpty && searchable.contains(':') ? searchable : formatUserId(searchable),
+      userId: searchable.isNotEmpty && searchable.contains(':') ? searchable : formatUserId(searchable),
     );
 
     return ListView(
       children: [
         Container(
-          padding: EdgeInsets.only(left: 20, right: 20, top: 24),
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 24),
           child: Row(
             children: [
               Text(
@@ -251,7 +250,7 @@ class SearchUserState extends State<SearchUserScreen> {
         Visibility(
           visible: usersList.isNotEmpty,
           child: Container(
-            padding: EdgeInsets.only(left: 20, right: 20, top: 24),
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 24),
             child: Row(
               children: [
                 Text(
@@ -287,7 +286,7 @@ class SearchUserState extends State<SearchUserScreen> {
           },
         ),
         Container(
-          padding: EdgeInsets.only(left: 20, right: 20, top: 24),
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 24),
           child: Row(
             children: [
               Text(
@@ -420,8 +419,17 @@ class _Props extends Equatable {
         onCreateChatDirect: ({required User user}) async {
           return store.dispatch(
             createRoom(
-              isDirect: true,
-              invites: <User>[user],
+              null, // name
+              null, // alias
+              null, // topic
+              null, // avatarFile
+              null, // avatarUri
+              <User>[user], // invites
+              true, // isDirect
+              false, // encryption
+              RoomPresets.private, // preset
+              null, // initialState
+              null, // initialStates
             ),
           );
         },

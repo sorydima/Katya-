@@ -1,0 +1,98 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: katya-production
+  namespace: katya-production
+
+namespace: katya-production
+
+resources:
+  - ../../base
+  - namespace.yaml
+  - configmap-production.yaml
+  - secret-production.yaml
+  - ingress-production.yaml
+  - networkpolicy-production.yaml
+  - monitoring-production.yaml
+
+patchesStrategicMerge:
+  - deployment-api-production.yaml
+  - deployment-web-production.yaml
+  - deployment-analytics-production.yaml
+  - deployment-websocket-production.yaml
+  - deployment-celery-production.yaml
+  - service-production.yaml
+
+patchesJson6902:
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: api
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 5
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: "1"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: "2Gi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: "4"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: "4Gi"
+
+images:
+  - name: katya/api
+    newTag: production-latest
+  - name: katya/web
+    newTag: production-latest
+  - name: katya/analytics
+    newTag: production-latest
+  - name: katya/websocket
+    newTag: production-latest
+  - name: katya/celery
+    newTag: production-latest
+
+commonLabels:
+  app.kubernetes.io/name: katya
+  app.kubernetes.io/version: "1.0.0"
+  app.kubernetes.io/environment: "production"
+  app.kubernetes.io/managed-by: kustomize
+
+commonAnnotations:
+  deployment.kubernetes.io/revision: "production-1"
+  kubernetes.io/change-cause: "Production deployment"
+
+configMapGenerator:
+  - name: katya-config
+    literals:
+      - NODE_ENV=production
+      - LOG_LEVEL=warn
+      - MAX_CONNECTIONS=2000
+      - REQUEST_TIMEOUT=60000
+      - CACHE_TTL=3600
+      - RATE_LIMIT_ENABLED=true
+      - SECURITY_SCAN_INTERVAL=3600
+      - BACKUP_SCHEDULE="0 2 * * *"
+      - MONITORING_ENABLED=true
+      - ALERTING_ENABLED=true
+
+secretGenerator:
+  - name: katya-secrets
+    literals:
+      - database-url=postgresql://katya:${POSTGRES_PASSWORD}@postgres:5432/katya
+      - redis-url=redis://redis:6379
+      - elasticsearch-url=http://elasticsearch:9200
+      - jwt-secret=${JWT_SECRET}
+      - api-key-secret=${API_KEY_SECRET}
+      - elastic-password=${ELASTIC_PASSWORD}
+      - rabbitmq-password=${RABBITMQ_PASSWORD}
+      - grafana-admin-password=${GRAFANA_ADMIN_PASSWORD}
+      - s3-access-key=${S3_ACCESS_KEY}
+      - s3-secret-key=${S3_SECRET_KEY}

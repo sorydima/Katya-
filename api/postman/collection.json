@@ -1,0 +1,1077 @@
+{
+  "info": {
+    "name": "Katya API",
+    "description": "Полная коллекция API эндпоинтов для системы Katya",
+    "version": "1.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://api.katya.wtf/v1",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refresh_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "user_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "room_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "identity_id",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "description": "Эндпоинты для аутентификации и управления пользователями",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"john_doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"SecurePassword123!\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"organization\": \"Acme Corp\",\n  \"timezone\": \"UTC\",\n  \"language\": \"en\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register"]
+            },
+            "description": "Регистрация нового пользователя в системе"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"john_doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"SecurePassword123!\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/auth/register",
+                  "host": ["{{base_url}}"],
+                  "path": ["auth", "register"]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"user\": {\n      \"id\": \"user_123\",\n      \"username\": \"john_doe\",\n      \"email\": \"john@example.com\",\n      \"firstName\": \"John\",\n      \"lastName\": \"Doe\",\n      \"roles\": [\"user\"],\n      \"permissions\": [\"read:profile\", \"write:messages\"],\n      \"createdAt\": \"2024-01-01T00:00:00Z\",\n      \"lastLoginAt\": null\n    },\n    \"tokens\": {\n      \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n      \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n      \"expiresIn\": 3600\n    }\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.success && response.data.tokens) {",
+                  "        pm.collectionVariables.set('access_token', response.data.tokens.accessToken);",
+                  "        pm.collectionVariables.set('refresh_token', response.data.tokens.refreshToken);",
+                  "        pm.collectionVariables.set('user_id', response.data.user.id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"SecurePassword123!\",\n  \"rememberMe\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Вход пользователя в систему"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"SecurePassword123!\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/auth/login",
+                  "host": ["{{base_url}}"],
+                  "path": ["auth", "login"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"user\": {\n      \"id\": \"user_123\",\n      \"username\": \"john_doe\",\n      \"email\": \"john@example.com\",\n      \"firstName\": \"John\",\n      \"lastName\": \"Doe\",\n      \"roles\": [\"user\"],\n      \"permissions\": [\"read:profile\", \"write:messages\"],\n      \"lastLoginAt\": \"2024-01-01T12:00:00Z\"\n    },\n    \"tokens\": {\n      \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n      \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n      \"expiresIn\": 3600\n    }\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.success && response.data) {",
+                  "        pm.collectionVariables.set('access_token', response.data.accessToken);",
+                  "        pm.collectionVariables.set('refresh_token', response.data.refreshToken);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/refresh",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "refresh"]
+            },
+            "description": "Обновление access токена"
+          }
+        },
+        {
+          "name": "Logout User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/logout",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "logout"]
+            },
+            "description": "Выход пользователя из системы"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Trust Network",
+      "description": "Управление сетью доверия и верификацией идентичностей",
+      "item": [
+        {
+          "name": "Get Identities",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/trust/identities?limit=50&offset=0&sortBy=createdAt&sortOrder=desc",
+              "host": ["{{base_url}}"],
+              "path": ["trust", "identities"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt"
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "desc"
+                }
+              ]
+            },
+            "description": "Получение списка идентичностей"
+          }
+        },
+        {
+          "name": "Create Identity",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.success && response.data) {",
+                  "        pm.collectionVariables.set('identity_id', response.data.id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"alice\",\n  \"email\": \"alice@example.com\",\n  \"displayName\": \"Alice Smith\",\n  \"bio\": \"Trustworthy user\",\n  \"avatar\": \"https://example.com/avatar.jpg\",\n  \"socialLinks\": {\n    \"twitter\": \"@alice\",\n    \"github\": \"alice\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/trust/identities",
+              "host": ["{{base_url}}"],
+              "path": ["trust", "identities"]
+            },
+            "description": "Создание новой идентичности"
+          }
+        },
+        {
+          "name": "Get Identity",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/trust/identities/{{identity_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["trust", "identities", "{{identity_id}}"]
+            },
+            "description": "Получение детальной информации об идентичности"
+          }
+        },
+        {
+          "name": "Update Identity",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"displayName\": \"Alice Smith Updated\",\n  \"bio\": \"Updated bio\",\n  \"avatar\": \"https://example.com/new-avatar.jpg\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/trust/identities/{{identity_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["trust", "identities", "{{identity_id}}"]
+            },
+            "description": "Обновление информации об идентичности"
+          }
+        },
+        {
+          "name": "Get Reputation",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/trust/reputation/{{identity_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["trust", "reputation", "{{identity_id}}"]
+            },
+            "description": "Получение репутации пользователя"
+          }
+        },
+        {
+          "name": "Create Verification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identityId\": \"{{identity_id}}\",\n  \"verifierId\": \"system_verifier\",\n  \"protocol\": \"matrix\",\n  \"verificationMethod\": \"cryptographic_signature\",\n  \"metadata\": {\n    \"signature\": \"mock_signature\",\n    \"publicKey\": \"PUBKEY_TEST\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/trust/verifications",
+              "host": ["{{base_url}}"],
+              "path": ["trust", "verifications"]
+            },
+            "description": "Создание новой верификации"
+          }
+        },
+        {
+          "name": "Get Trust Recommendations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/trust/recommendations?userId={{user_id}}&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["trust", "recommendations"],
+              "query": [
+                {
+                  "key": "userId",
+                  "value": "{{user_id}}"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Получение рекомендаций доверия"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Messages",
+      "description": "Обмен сообщениями и управление комнатами",
+      "item": [
+        {
+          "name": "Get Messages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/messages?roomId={{room_id}}&limit=50&offset=0",
+              "host": ["{{base_url}}"],
+              "path": ["messages"],
+              "query": [
+                {
+                  "key": "roomId",
+                  "value": "{{room_id}}"
+                },
+                {
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            },
+            "description": "Получение списка сообщений"
+          }
+        },
+        {
+          "name": "Send Message",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.success && response.data) {",
+                  "        pm.collectionVariables.set('message_id', response.data.id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomId\": \"{{room_id}}\",\n  \"content\": \"Hello, world!\",\n  \"messageType\": \"text\",\n  \"metadata\": {\n    \"priority\": \"normal\",\n    \"encrypted\": true\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/messages",
+              "host": ["{{base_url}}"],
+              "path": ["messages"]
+            },
+            "description": "Отправка нового сообщения"
+          }
+        },
+        {
+          "name": "Get Message",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/messages/{{message_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["messages", "{{message_id}}"]
+            },
+            "description": "Получение детальной информации о сообщении"
+          }
+        },
+        {
+          "name": "Update Message",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Updated message content\",\n  \"metadata\": {\n    \"edited\": true,\n    \"editedAt\": \"2024-01-01T12:00:00Z\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/messages/{{message_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["messages", "{{message_id}}"]
+            },
+            "description": "Обновление сообщения"
+          }
+        },
+        {
+          "name": "Delete Message",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/messages/{{message_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["messages", "{{message_id}}"]
+            },
+            "description": "Удаление сообщения"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Rooms",
+      "description": "Управление комнатами для обмена сообщениями",
+      "item": [
+        {
+          "name": "Get Rooms",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/rooms?limit=50&offset=0&type=all",
+              "host": ["{{base_url}}"],
+              "path": ["rooms"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                },
+                {
+                  "key": "type",
+                  "value": "all"
+                }
+              ]
+            },
+            "description": "Получение списка комнат пользователя"
+          }
+        },
+        {
+          "name": "Create Room",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.success && response.data) {",
+                  "        pm.collectionVariables.set('room_id', response.data.id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Room\",\n  \"description\": \"A test room for API testing\",\n  \"type\": \"group\",\n  \"isPublic\": false,\n  \"encryption\": {\n    \"enabled\": true,\n    \"algorithm\": \"megolm\"\n  },\n  \"members\": [\"user_123\", \"user_456\"]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/rooms",
+              "host": ["{{base_url}}"],
+              "path": ["rooms"]
+            },
+            "description": "Создание новой комнаты"
+          }
+        },
+        {
+          "name": "Get Room",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/rooms/{{room_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["rooms", "{{room_id}}"]
+            },
+            "description": "Получение информации о комнате"
+          }
+        },
+        {
+          "name": "Update Room",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Room Name\",\n  \"description\": \"Updated room description\",\n  \"settings\": {\n    \"allowGuests\": false,\n    \"requireInvite\": true\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/rooms/{{room_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["rooms", "{{room_id}}"]
+            },
+            "description": "Обновление настроек комнаты"
+          }
+        },
+        {
+          "name": "Join Room",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomId\": \"{{room_id}}\",\n  \"inviteToken\": \"optional_invite_token\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/rooms/join",
+              "host": ["{{base_url}}"],
+              "path": ["rooms", "join"]
+            },
+            "description": "Присоединение к комнате"
+          }
+        },
+        {
+          "name": "Leave Room",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomId\": \"{{room_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/rooms/leave",
+              "host": ["{{base_url}}"],
+              "path": ["rooms", "leave"]
+            },
+            "description": "Покидание комнаты"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "description": "Управление дашбордом и виджетами",
+      "item": [
+        {
+          "name": "Get Widgets",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/dashboard/widgets?category=all",
+              "host": ["{{base_url}}"],
+              "path": ["dashboard", "widgets"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "all"
+                }
+              ]
+            },
+            "description": "Получение списка доступных виджетов"
+          }
+        },
+        {
+          "name": "Get Widget Data",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/dashboard/widgets/cpu_metric/data?startDate=2024-01-01T00:00:00Z&endDate=2024-01-02T00:00:00Z&granularity=1h",
+              "host": ["{{base_url}}"],
+              "path": ["dashboard", "widgets", "cpu_metric", "data"],
+              "query": [
+                {
+                  "key": "startDate",
+                  "value": "2024-01-01T00:00:00Z"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2024-01-02T00:00:00Z"
+                },
+                {
+                  "key": "granularity",
+                  "value": "1h"
+                }
+              ]
+            },
+            "description": "Получение данных для виджета"
+          }
+        },
+        {
+          "name": "Get User Layouts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/dashboard/layouts",
+              "host": ["{{base_url}}"],
+              "path": ["dashboard", "layouts"]
+            },
+            "description": "Получение макетов дашборда пользователя"
+          }
+        },
+        {
+          "name": "Create Layout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"My Dashboard\",\n  \"description\": \"Personal dashboard layout\",\n  \"type\": \"grid\",\n  \"isDefault\": true,\n  \"widgets\": [\n    {\n      \"widgetId\": \"cpu_metric\",\n      \"position\": {\n        \"x\": 0,\n        \"y\": 0,\n        \"width\": 6,\n        \"height\": 4\n      },\n      \"settings\": {\n        \"title\": \"CPU Usage\",\n        \"refreshInterval\": 30\n      }\n    },\n    {\n      \"widgetId\": \"memory_metric\",\n      \"position\": {\n        \"x\": 6,\n        \"y\": 0,\n        \"width\": 6,\n        \"height\": 4\n      },\n      \"settings\": {\n        \"title\": \"Memory Usage\",\n        \"refreshInterval\": 30\n      }\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/dashboard/layouts",
+              "host": ["{{base_url}}"],
+              "path": ["dashboard", "layouts"]
+            },
+            "description": "Создание нового макета дашборда"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "description": "Аналитика и метрики системы",
+      "item": [
+        {
+          "name": "Get System Metrics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/analytics/metrics?startDate=2024-01-01T00:00:00Z&endDate=2024-01-02T00:00:00Z&granularity=1h",
+              "host": ["{{base_url}}"],
+              "path": ["analytics", "metrics"],
+              "query": [
+                {
+                  "key": "startDate",
+                  "value": "2024-01-01T00:00:00Z"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2024-01-02T00:00:00Z"
+                },
+                {
+                  "key": "granularity",
+                  "value": "1h"
+                }
+              ]
+            },
+            "description": "Получение системных метрик"
+          }
+        },
+        {
+          "name": "Get Reports",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/analytics/reports?type=all&limit=20&offset=0",
+              "host": ["{{base_url}}"],
+              "path": ["analytics", "reports"],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "all"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            },
+            "description": "Получение списка аналитических отчетов"
+          }
+        },
+        {
+          "name": "Create Report",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"System Performance Report\",\n  \"description\": \"Weekly system performance analysis\",\n  \"type\": \"performance\",\n  \"parameters\": {\n    \"startDate\": \"2024-01-01T00:00:00Z\",\n    \"endDate\": \"2024-01-07T23:59:59Z\",\n    \"metrics\": [\"cpu_usage\", \"memory_usage\", \"disk_io\", \"network_latency\"],\n    \"granularity\": \"1h\"\n  },\n  \"schedule\": {\n    \"enabled\": true,\n    \"frequency\": \"weekly\",\n    \"dayOfWeek\": 1,\n    \"time\": \"09:00\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/analytics/reports",
+              "host": ["{{base_url}}"],
+              "path": ["analytics", "reports"]
+            },
+            "description": "Создание нового аналитического отчета"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Security",
+      "description": "Мониторинг безопасности и управление алертами",
+      "item": [
+        {
+          "name": "Get Security Alerts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/security/alerts?severity=all&status=active&limit=50&offset=0",
+              "host": ["{{base_url}}"],
+              "path": ["security", "alerts"],
+              "query": [
+                {
+                  "key": "severity",
+                  "value": "all"
+                },
+                {
+                  "key": "status",
+                  "value": "active"
+                },
+                {
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            },
+            "description": "Получение списка алертов безопасности"
+          }
+        },
+        {
+          "name": "Start Security Scan",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scanType\": \"full\",\n  \"targets\": [\"all\"],\n  \"options\": {\n    \"deepScan\": true,\n    \"includeVulnerabilities\": true,\n    \"includeMalware\": true\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/security/scan",
+              "host": ["{{base_url}}"],
+              "path": ["security", "scan"]
+            },
+            "description": "Запуск сканирования безопасности"
+          }
+        },
+        {
+          "name": "Get Security Policies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/security/policies",
+              "host": ["{{base_url}}"],
+              "path": ["security", "policies"]
+            },
+            "description": "Получение политик безопасности"
+          }
+        },
+        {
+          "name": "Update Security Policy",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"policyId\": \"password_policy\",\n  \"enabled\": true,\n  \"rules\": [\n    {\n      \"type\": \"password_strength\",\n      \"enabled\": true,\n      \"parameters\": {\n        \"minLength\": 8,\n        \"requireUppercase\": true,\n        \"requireLowercase\": true,\n        \"requireNumbers\": true,\n        \"requireSpecialChars\": true\n      }\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/security/policies/password_policy",
+              "host": ["{{base_url}}"],
+              "path": ["security", "policies", "password_policy"]
+            },
+            "description": "Обновление политики безопасности"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "description": "Административные функции (требуют права администратора)",
+      "item": [
+        {
+          "name": "Get System Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/status",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "status"]
+            },
+            "description": "Получение статуса системы"
+          }
+        },
+        {
+          "name": "Get Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/users?limit=50&offset=0&role=all",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "users"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                },
+                {
+                  "key": "role",
+                  "value": "all"
+                }
+              ]
+            },
+            "description": "Получение списка пользователей"
+          }
+        },
+        {
+          "name": "Update User Role",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roles\": [\"premium\"],\n  \"permissions\": [\"read:analytics\", \"write:reports\"]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/users/{{user_id}}/role",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "users", "{{user_id}}", "role"]
+            },
+            "description": "Обновление роли пользователя"
+          }
+        },
+        {
+          "name": "Get System Logs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/logs?level=all&startDate=2024-01-01T00:00:00Z&endDate=2024-01-02T00:00:00Z&limit=100",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "logs"],
+              "query": [
+                {
+                  "key": "level",
+                  "value": "all"
+                },
+                {
+                  "key": "startDate",
+                  "value": "2024-01-01T00:00:00Z"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2024-01-02T00:00:00Z"
+                },
+                {
+                  "key": "limit",
+                  "value": "100"
+                }
+              ]
+            },
+            "description": "Получение системных логов"
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Глобальные pre-request скрипты",
+          "console.log('Making request to:', pm.request.url);"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Глобальные тестовые скрипты",
+          "pm.test('Response time is less than 5000ms', function () {",
+          "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+          "});",
+          "",
+          "pm.test('Response has success property', function () {",
+          "    const responseJson = pm.response.json();",
+          "    pm.expect(responseJson).to.have.property('success');",
+          "});"
+        ]
+      }
+    }
+  ]
+}

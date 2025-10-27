@@ -16,9 +16,67 @@ ENV['SUPPLY_UPLOAD_MAX_RETRIES']='5'
 # Uncomment the line if you want fastlane to automatically update itself
 update_fastlane
 
-default_platform(:android)
+# Build for all platforms
+lane :build_all do
+  build_android
+  build_ios
+  build_macos
+  build_linux
+  build_windows
+  build_web
+  build_winuwp
+  build_aurora
+  build_tizen
+  build_fuchsia
+  build_harmony
+  build_wearos
+  build_tvos
+  build_freebsd
+  build_embedded
+end
+
+lane :test_all do
+  run_tests(project: 'android')
+  run_tests(project: 'ios')
+  run_tests(project: 'web')
+  run_tests(project: 'desktop')
+  run_tests(project: 'embedded')
+end
+
+# Cross-platform deployment
+lane :deploy_all do
+  deploy_android
+  deploy_ios
+  deploy_web
+  deploy_desktop
+  deploy_embedded
+end
 
 platform :android do
+  desc "Build Android APK"
+  lane :build_android do
+    Dir.chdir("../") do
+      sh "flutter pub get"
+      sh "flutter build apk --release"
+      sh "flutter build appbundle --release"
+    end
+  end
+
+  desc "Run Android tests"
+  lane :run_tests do
+    Dir.chdir("../") do
+      sh "flutter test"
+    end
+  end
+
+  desc "Deploy to Google Play Store"
+  lane :deploy_android do
+    upload_to_play_store(
+      track: 'internal',
+      aab: '../build/app/outputs/bundle/release/app-release.aab',
+    )
+  end
+
   lane :set_build_code_internal do
     versions = google_play_track_version_codes(
         track: "internal",
@@ -68,4 +126,326 @@ platform :android do
       skip_upload_changelogs: true,
     )
   end
+end
+
+platform :ios do
+  desc "Build iOS IPA"
+  lane :build_ios do
+    Dir.chdir("../") do
+      sh "flutter pub get"
+      sh "flutter build ios --release"
+    end
+  end
+
+  desc "Run iOS tests"
+  lane :run_tests do
+    Dir.chdir("../") do
+      sh "flutter test"
+    end
+  end
+
+  desc "Deploy to App Store"
+  lane :deploy_ios do
+    upload_to_app_store(
+      app_identifier: "com.katya.wtf",
+      ipa: "../build/ios/ipa/katya.ipa",
+    )
+  end
+end
+
+platform :mac do
+  desc "Build macOS app"
+  lane :build_macos do
+    Dir.chdir("../") do
+      sh "flutter pub get"
+      sh "flutter build macos --release"
+    end
+  end
+
+  desc "Deploy macOS app"
+  lane :deploy_macos do
+    # Notarize and distribute macOS app
+    Dir.chdir("../") do
+      sh "codesign --force --deep --sign 'Developer ID' build/macos/Build/Products/Release/katya.app"
+      sh "xcrun notarytool submit build/macos/Build/Products/Release/katya.app.zip --apple-id user@example.com --password app-specific-password --team-id TEAMID"
+    end
+  end
+end
+
+platform :linux do
+  desc "Build Linux app"
+  lane :build_linux do
+    Dir.chdir("../") do
+      sh "flutter pub get"
+      sh "flutter build linux --release"
+    end
+  end
+
+  desc "Create Linux packages"
+  lane :deploy_linux do
+    Dir.chdir("../") do
+      # Create .deb package
+      sh "dpkg-deb --build build/linux/x64/release/bundle"
+      # Create .rpm package
+      sh "rpmbuild -bb linux.spec"
+    end
+  end
+end
+
+platform :windows do
+  desc "Build Windows app"
+  lane :build_windows do
+    Dir.chdir("../") do
+      sh "flutter pub get"
+      sh "flutter build windows --release"
+    end
+  end
+
+  desc "Create Windows installer"
+  lane :deploy_windows do
+    Dir.chdir("../") do
+      # Create MSI installer
+      sh "wix build -ext WixToolset.UI.wixext build/windows/x64/runner/Release/katya.wxs"
+    end
+  end
+end
+
+platform :web do
+  desc "Build Web app"
+  lane :build_web do
+    Dir.chdir("../") do
+      sh "flutter pub get"
+      sh "flutter build web --release"
+    end
+  end
+
+  desc "Deploy to web server"
+  lane :deploy_web do
+    Dir.chdir("../") do
+      sh "rsync -avz build/web/ user@webserver:/var/www/katya/"
+    end
+  end
+end
+
+platform :winuwp do
+  desc "Build WinUWP app"
+  lane :build_winuwp do
+    Dir.chdir("../") do
+      sh "flutter pub get"
+      sh "flutter build winuwp --release"
+    end
+  end
+
+  desc "Deploy WinUWP app"
+  lane :deploy_winuwp do
+    # Package and deploy to Microsoft Store
+    Dir.chdir("../") do
+      sh "msbuild build/winuwp/katya.sln /p:Configuration=Release /p:Platform=x64"
+    end
+  end
+end
+
+platform :aurora do
+  desc "Build Aurora app"
+  lane :build_aurora do
+    Dir.chdir("../") do
+      sh "flutter pub get"
+      sh "flutter build aurora --release"
+    end
+  end
+
+  desc "Deploy Aurora app"
+  lane :deploy_aurora do
+    # Deploy to Aurora OS store
+    Dir.chdir("../") do
+      sh "aurora-cli package build/aurora/release/bundle"
+    end
+  end
+end
+
+# Additional platforms
+platform :tizen do
+  desc "Build Tizen app"
+  lane :build_tizen do
+    Dir.chdir("../") do
+      sh "flutter pub get"
+      sh "flutter build tizen --release"
+    end
+  end
+
+  desc "Deploy to Samsung Apps"
+  lane :deploy_tizen do
+    Dir.chdir("../") do
+      sh "tizen package -t wgt -s build/tizen/release/bundle"
+    end
+  end
+end
+
+platform :fuchsia do
+  desc "Build Fuchsia app"
+  lane :build_fuchsia do
+    Dir.chdir("../") do
+      sh "flutter pub get"
+      sh "flutter build fuchsia --release"
+    end
+  end
+
+  desc "Deploy to Fuchsia device"
+  lane :deploy_fuchsia do
+    Dir.chdir("../") do
+      sh "fx build-push build/fuchsia/release/bundle"
+    end
+  end
+end
+
+platform :harmony do
+  desc "Build HarmonyOS app"
+  lane :build_harmony do
+    Dir.chdir("../") do
+      sh "flutter pub get"
+      sh "flutter build harmony --release"
+    end
+  end
+
+  desc "Deploy to Huawei AppGallery"
+  lane :deploy_harmony do
+    Dir.chdir("../") do
+      sh "hms package build/harmony/release/bundle"
+    end
+  end
+end
+
+platform :wearos do
+  desc "Build Wear OS app"
+  lane :build_wearos do
+    Dir.chdir("../") do
+      sh "flutter pub get"
+      sh "flutter build wear --release"
+    end
+  end
+
+  desc "Deploy to Google Play Wear OS"
+  lane :deploy_wearos do
+    Dir.chdir("../") do
+      sh "fastlane supply --track wear-beta build/wear/release/bundle"
+    end
+  end
+end
+
+platform :tvos do
+  desc "Build tvOS app"
+  lane :build_tvos do
+    Dir.chdir("../") do
+      sh "flutter pub get"
+      sh "flutter build tvos --release"
+    end
+  end
+
+  desc "Deploy to Apple TV App Store"
+  lane :deploy_tvos do
+    Dir.chdir("../") do
+      sh "xcrun altool --upload-app -f build/tvos/ipa/katya.ipa -u user@example.com -p app-specific-password"
+    end
+  end
+end
+
+platform :freebsd do
+  desc "Build FreeBSD app"
+  lane :build_freebsd do
+    Dir.chdir("../") do
+      sh "flutter pub get"
+      sh "flutter build freebsd --release"
+    end
+  end
+
+  desc "Create FreeBSD package"
+  lane :deploy_freebsd do
+    Dir.chdir("../") do
+      sh "pkg create -m build/freebsd/release/bundle -r build/freebsd/release/bundle"
+    end
+  end
+end
+
+platform :embedded do
+  desc "Build embedded systems"
+  lane :build_embedded do
+    Dir.chdir("../") do
+      sh "flutter pub get"
+      sh "flutter build custom-embedded --release"
+    end
+  end
+
+  desc "Deploy to embedded device"
+  lane :deploy_embedded do
+    Dir.chdir("../") do
+      sh "scp build/embedded/release/bundle user@embedded-device:/opt/katya/"
+    end
+  end
+end
+
+# Multi-platform testing
+lane :test_multi_platform do
+  # Test on multiple platforms
+  run_tests(project: 'mobile')
+  run_tests(project: 'desktop')
+  run_tests(project: 'web')
+  run_tests(project: 'embedded')
+end
+
+# Global deployment
+lane :deploy_global do
+  # Deploy to all major platforms
+  deploy_android
+  deploy_ios
+  deploy_web
+  deploy_macos
+  deploy_windows
+  deploy_linux
+  deploy_winuwp
+  deploy_aurora
+  deploy_tizen
+  deploy_harmony
+  deploy_wearos
+  deploy_tvos
+  deploy_freebsd
+  deploy_embedded
+end
+
+# Compliance and security
+lane :security_scan do
+  # Run security scans
+  Dir.chdir("../") do
+    sh "flutter pub run security_scan"
+    sh "analyze_code_quality"
+  end
+end
+
+# International deployment
+lane :deploy_international do
+  # Deploy to international markets
+  deploy_google_play_international
+  deploy_app_store_international
+  deploy_huawei_appgallery_international
+  deploy_samsung_apps_international
+end
+
+# Beta testing
+lane :beta_test do
+  # Deploy to beta channels
+  upload_to_play_store(track: 'beta')
+  upload_to_testflight
+  deploy_to_github_releases
+  deploy_to_gitlab_releases
+end
+
+# Release management
+lane :release do
+  # Full release process
+  security_scan
+  build_all
+  test_multi_platform
+  deploy_global
+  deploy_international
+  create_release_notes
+  notify_stakeholders
 end

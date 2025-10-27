@@ -93,4 +93,7 @@ class AppColors {
     Color(AppColors.chatGreen),
     Color(AppColors.chatBlue),
   ];
+
+  // Primary color alias for compatibility
+  static const Color primary = Color(AppColors.cyankatya);
 }

@@ -1,9 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:expandable/expandable.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/libs/matrix/auth.dart';
@@ -15,11 +13,12 @@ import 'package:katya/store/auth/homeserver/actions.dart';
 import 'package:katya/store/auth/homeserver/model.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/search/actions.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/widgets/appbars/appbar-search.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
 import 'package:katya/views/widgets/loader/index.dart';
-import 'package:katya/utils/theme_compatibility.dart';
+import 'package:redux/redux.dart';
 
 class SearchHomeserverArguments {
   final bool signup;
@@ -28,14 +27,13 @@ class SearchHomeserverArguments {
 }
 
 class SearchHomeserverScreen extends StatefulWidget {
-  const SearchHomeserverScreen({Key? key}) : super(key: key);
+  const SearchHomeserverScreen({super.key});
 
   @override
   SearchHomeserverScreenState createState() => SearchHomeserverScreenState();
 }
 
-class SearchHomeserverScreenState extends State<SearchHomeserverScreen>
-    with Lifecycle<SearchHomeserverScreen> {
+class SearchHomeserverScreenState extends State<SearchHomeserverScreen> with Lifecycle<SearchHomeserverScreen> {
   final searchInputFocusNode = FocusNode();
 
   bool searching = false;
@@ -63,7 +61,7 @@ class SearchHomeserverScreenState extends State<SearchHomeserverScreen>
     super.dispose();
   }
 
-  onToggleSearch(_Props props) {
+  void onToggleSearch(_Props props) {
     props.onSearch('');
     setState(() {
       searching = !searching;
@@ -76,9 +74,7 @@ class SearchHomeserverScreenState extends State<SearchHomeserverScreen>
         converter: (Store<AppState> store) => _Props.mapStateToProps(
           store,
           // ignore: cast_nullable_to_non_nullable
-          signup:
-              (ModalRoute.of(context)!.settings.arguments as SearchHomeserverArguments?)?.signup ??
-                  false,
+          signup: (ModalRoute.of(context)!.settings.arguments as SearchHomeserverArguments?)?.signup ?? false,
         ),
         builder: (context, props) => Scaffold(
           appBar: AppBarSearch(
@@ -86,7 +82,7 @@ class SearchHomeserverScreenState extends State<SearchHomeserverScreen>
             label: Strings.labelSearchHomeservers,
             tooltip: 'Search Homeservers',
             focusNode: searchInputFocusNode,
-            throttle: Duration(milliseconds: 500),
+            throttle: const Duration(milliseconds: 500),
             forceFocus: true,
             onChange: (text) {
               props.onSearch(text);
@@ -109,9 +105,9 @@ class SearchHomeserverScreenState extends State<SearchHomeserverScreen>
                     final homeserver = props.homeservers[index] ?? {} as Homeserver;
 
                     return Container(
-                      padding: EdgeInsets.only(top: 8, bottom: 8),
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
                       child: ExpandablePanel(
-                        theme: ExpandableThemeData(
+                        theme: const ExpandableThemeData(
                           hasIcon: false,
                         ),
                         header: ListTile(
@@ -135,19 +131,19 @@ class SearchHomeserverScreenState extends State<SearchHomeserverScreen>
                             child: Container(
                               width: 32,
                               height: 32,
-                              margin: EdgeInsets.all(6),
+                              margin: const EdgeInsets.all(6),
                               decoration: BoxDecoration(
                                 color: Theme.of(context).primaryColor,
                                 borderRadius: BorderRadius.circular(24),
                               ),
-                              child: Icon(
+                              child: const Icon(
                                 Icons.check,
                                 color: Colors.white,
                               ),
                             ),
                           ),
                         ),
-                        collapsed: Row(),
+                        collapsed: const Row(),
                         expanded: Row(
                           children: <Widget>[
                             Expanded(
@@ -222,11 +218,9 @@ class SearchHomeserverScreenState extends State<SearchHomeserverScreen>
                   ),
                 ),
                 Visibility(
-                  visible: props.searchText.isNotEmpty &&
-                      props.searchText.isNotEmpty &&
-                      props.homeservers.isEmpty,
+                  visible: props.searchText.isNotEmpty && props.searchText.isNotEmpty && props.homeservers.isEmpty,
                   child: Container(
-                    padding: EdgeInsets.only(top: 8, bottom: 8),
+                    padding: const EdgeInsets.only(top: 8, bottom: 8),
                     child: GestureDetector(
                       onTap: () {
                         props.onSelect(props.searchText);
@@ -237,9 +231,8 @@ class SearchHomeserverScreenState extends State<SearchHomeserverScreen>
                           alt: props.searchText,
                           size: Dimensions.avatarSizeMin,
                           url: props.homeserver.photoUrl,
-                          background: props.searchText.isNotEmpty
-                              ? AppColors.hashedColor(props.searchText)
-                              : Colors.grey,
+                          background:
+                              props.searchText.isNotEmpty ? AppColors.hashedColor(props.searchText) : Colors.grey,
                         ),
                         title: Text(
                           props.searchText,
@@ -249,7 +242,7 @@ class SearchHomeserverScreenState extends State<SearchHomeserverScreen>
                         subtitle: Text(
                           'Try logging in with this server',
                           style: Theme.of(context).textTheme.caption!.merge(
-                                TextStyle(fontStyle: FontStyle.italic),
+                                const TextStyle(fontStyle: FontStyle.italic),
                               ),
                         ),
                       ),
@@ -299,11 +292,9 @@ class _Props extends Equatable {
         homeserver: store.state.authStore.homeserver,
         onSelect: (String hostname) async {
           await store.dispatch(selectHomeserver(hostname: hostname));
-          final _homeserver = store.state.authStore.homeserver;
+          final homeserver = store.state.authStore.homeserver;
 
-          if (signup &&
-              _homeserver.signupTypes.isEmpty &&
-              (!_homeserver.loginTypes.contains(MatrixAuthTypes.SSO))) {
+          if (signup && homeserver.signupTypes.isEmpty && (!homeserver.loginTypes.contains(MatrixAuthTypes.SSO))) {
             store.dispatch(addInfo(
               origin: 'selectHomeserver',
               message: 'No new signups allowed on this server, try another if creating an account.',

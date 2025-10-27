@@ -1,0 +1,115 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build_android:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build apk --release
+  only:
+    - main
+
+build_ios:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build ipa --release
+  only:
+    - main
+
+build_linux:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build linux --release
+  only:
+    - main
+
+build_windows:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build windows --release
+  only:
+    - main
+
+build_macos:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build macos --release
+  only:
+    - main
+
+build_web:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build web --release
+  only:
+    - main
+
+build_tvos:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build tvos --release
+  only:
+    - main
+
+build_wearos:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build wearos --release
+  only:
+    - main
+
+build_freebsd:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build freebsd --release
+  only:
+    - main
+
+build_fuchsia:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build fuchsia --release
+  only:
+    - main
+
+build_harmonyos:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build harmonyos --release
+  only:
+    - main
+
+build_tizen:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build tizen --release
+  only:
+    - main
+
+build_embedded:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter build embedded --release
+  only:
+    - main
+
+test:
+  stage: test
+  script:
+    - flutter test
+  only:
+    - main

@@ -5,16 +5,16 @@ import 'dart:isolate';
 import 'package:drift/drift.dart';
 import 'package:drift/isolate.dart';
 import 'package:drift/native.dart';
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
-import 'package:sqlcipher_library_windows/sqlcipher_library_windows.dart';
-import 'package:sqlite3/open.dart';
 import 'package:katya/context/auth.dart';
 import 'package:katya/context/types.dart';
 import 'package:katya/global/libs/storage/key-storage.dart';
 import 'package:katya/global/print.dart';
 import 'package:katya/global/values.dart';
 import 'package:katya/storage/index.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
+import 'package:sqlcipher_library_windows/sqlcipher_library_windows.dart';
+import 'package:sqlite3/open.dart';
 
 void _openOnIOS() {
   try {
@@ -73,8 +73,7 @@ class DatabaseInfo {
   final SendPort? port;
 }
 
-Future<DatabaseInfo> findDatabase(AppContext context,
-    {String pin = Values.empty, SendPort? port}) async {
+Future<DatabaseInfo> findDatabase(AppContext context, {String pin = Values.empty, SendPort? port}) async {
   var storageKeyId = Storage.keyLocation;
   var storageLocation = Storage.sqliteLocation;
   final contextId = context.id;
@@ -86,8 +85,7 @@ Future<DatabaseInfo> findDatabase(AppContext context,
   final dbFolder = await getApplicationSupportDirectory();
   final filePath = File(path.join(dbFolder.path, storageLocation));
   var storageKey = await loadKey(storageKeyId);
-  final isLockedContext =
-      context.id.isNotEmpty && context.secretKeyEncrypted.isNotEmpty && pin.isNotEmpty;
+  final isLockedContext = context.id.isNotEmpty && context.secretKeyEncrypted.isNotEmpty && pin.isNotEmpty;
   if (isLockedContext) {
     storageKey = await unlockSecretKey(context, pin);
   }
@@ -145,5 +143,3 @@ LazyDatabase createLazyDatabase(AppContext context, {String pin = Values.empty})
     );
   });
 }
-
-

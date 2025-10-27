@@ -1,1 +1,1 @@
-noop() {}
+void noop() {}

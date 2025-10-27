@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:katya/global/colors.dart';
-import 'package:katya/utils/theme_compatibility.dart';
-
 import 'package:katya/global/dimensions.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class ButtonText extends StatelessWidget {
   const ButtonText({
-    Key? key,
+    super.key,
     this.text,
     this.color,
     this.size,
@@ -14,7 +13,7 @@ class ButtonText extends StatelessWidget {
     this.loading = false,
     this.disabled = false,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   final bool loading;
   final bool disabled;
@@ -27,19 +26,19 @@ class ButtonText extends StatelessWidget {
   @override
   Widget build(BuildContext context) => TextButton(
         style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) =>
-                states.contains(MaterialState.disabled) ? Color(AppColors.greyDisabled) : null,
+          foregroundColor: WidgetStateProperty.resolveWith<Color?>(
+            (Set<WidgetState> states) =>
+                states.contains(WidgetState.disabled) ? const Color(AppColors.greyDisabled) : null,
           ),
         ),
         onPressed: disabled ? null : onPressed as void Function()?,
         child: loading
             ? Container(
-                constraints: BoxConstraints(
+                constraints: const BoxConstraints(
                   maxHeight: 24,
                   maxWidth: 24,
                 ),
-                child: CircularProgressIndicator(
+                child: const CircularProgressIndicator(
                   strokeWidth: Dimensions.strokeWidthDefault,
                   backgroundColor: Colors.white,
                   valueColor: AlwaysStoppedAnimation<Color>(
@@ -57,7 +56,7 @@ class ButtonText extends StatelessWidget {
                       letterSpacing: 0.8,
                       color: () {
                         if (disabled) {
-                          return Color(AppColors.greyDisabled);
+                          return const Color(AppColors.greyDisabled);
                         }
                         if (color != null) {
                           return color;

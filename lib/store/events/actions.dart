@@ -1,12 +1,10 @@
 import 'package:flutter/foundation.dart';
-import 'package:redux/redux.dart';
-import 'package:redux_thunk/redux_thunk.dart';
-import 'package:katya/global/libs/matrix/index.dart';
+import 'package:katya/global/libs/matrix/index.dart' as MatrixLib;
 import 'package:katya/global/print.dart';
 import 'package:katya/storage/constants.dart';
 import 'package:katya/storage/index.dart';
 import 'package:katya/store/alerts/actions.dart';
-import 'package:katya/store/events/messages/actions.dart';
+import 'package:katya/store/events/messages/actions.dart' hide syncRoom;
 import 'package:katya/store/events/messages/model.dart';
 import 'package:katya/store/events/messages/storage.dart';
 import 'package:katya/store/events/model.dart';
@@ -14,6 +12,8 @@ import 'package:katya/store/index.dart';
 import 'package:katya/store/rooms/actions.dart';
 import 'package:katya/store/rooms/room/model.dart';
 import 'package:katya/store/sync/actions.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
 class ResetEvents {}
 
@@ -188,8 +188,7 @@ ThunkAction<AppState> fetchMessageEvents({
   return (Store<AppState> store) async {
     try {
       final cached = await store.dispatch(
-        loadMessagesCached(
-            room: room, batch: from, limit: loadLimit, timestamp: timestamp),
+        loadMessagesCached(room: room, batch: from, limit: loadLimit, timestamp: timestamp),
       ) as List<Message>;
 
       // known cached messages for this batch will be loaded
@@ -200,7 +199,7 @@ ThunkAction<AppState> fetchMessageEvents({
       // mark syncing (to show loading indicators) since it needs to pull remotely
       store.dispatch(UpdateRoom(id: room!.id, syncing: true));
 
-      final messagesJson = await compute(MatrixApi.fetchMessageEventsThreaded, {
+      final messagesJson = await compute(MatrixLib.MatrixApi.fetchMessageEventsThreaded, {
         'protocol': store.state.authStore.protocol,
         'homeserver': store.state.authStore.user.homeserver,
         'accessToken': store.state.authStore.user.accessToken,
@@ -253,7 +252,7 @@ ThunkAction<AppState> fetchMessageEvents({
 ThunkAction<AppState> fetchStateEvents({Room? room}) {
   return (Store<AppState> store) async {
     try {
-      final stateEvents = await MatrixApi.fetchStateEvents(
+      final stateEvents = await MatrixLib.MatrixApi.fetchStateEvents(
         protocol: store.state.authStore.protocol,
         homeserver: store.state.authStore.user.homeserver,
         accessToken: store.state.authStore.user.accessToken,
@@ -282,6 +281,10 @@ ThunkAction<AppState> clearDraft({Room? room}) {
     store.dispatch(UpdateRoom(
       id: room!.id,
       draft: Message(
+        id: 'draft-${room.id}',
+        sender: store.state.authStore.user.userId ?? '',
+        timestamp: DateTime.now().millisecondsSinceEpoch,
+        type: 'm.room.message',
         roomId: room.id,
         body: null,
       ),
@@ -298,10 +301,12 @@ ThunkAction<AppState> saveDraft({
     store.dispatch(UpdateRoom(
       id: room!.id,
       draft: Message(
-        roomId: room.id,
-        type: type,
-        body: body,
+        id: 'draft-${room.id}',
+        sender: store.state.authStore.user.userId ?? '',
         timestamp: DateTime.now().millisecondsSinceEpoch,
+        type: type ?? 'm.room.message',
+        roomId: room.id,
+        body: body,
       ),
     ));
   };
@@ -318,8 +323,7 @@ ThunkAction<AppState> selectReply({
 }
 
 /// Delete Room Event (For Outbox, Local, and Remote)
-ThunkAction<AppState> deleteMessage(
-    {required Message message, required Room room}) {
+ThunkAction<AppState> deleteMessage({required Message message, required Room room}) {
   return (Store<AppState> store) async {
     try {
       if (message.pending || message.failed) {
@@ -342,7 +346,7 @@ ThunkAction<AppState> deleteMessage(
         return;
       }
 
-      final result = await MatrixApi.deleteMessage(
+      final result = await MatrixLib.MatrixApi.deleteMessage(
         roomId: room.id,
         eventId: message.id,
         accessToken: store.state.authStore.user.accessToken,
@@ -356,14 +360,12 @@ ThunkAction<AppState> deleteMessage(
       }
 
       // deleted messages returned remotely will have empty 'body' fields
-      final messageDeleted = message.copyWith(body: '', url: null);
+      final messageDeleted = message.copyMessageWith(body: '', url: null);
 
       if (room.encryptionEnabled) {
-        return store.dispatch(
-            AddMessagesDecrypted(roomId: room.id, messages: [messageDeleted]));
+        return store.dispatch(AddMessagesDecrypted(roomId: room.id, messages: [messageDeleted]));
       } else {
-        return store
-            .dispatch(AddMessages(roomId: room.id, messages: [messageDeleted]));
+        return store.dispatch(AddMessages(roomId: room.id, messages: [messageDeleted]));
       }
     } catch (error) {
       log.error('[deleteMessage] $error');

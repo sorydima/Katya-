@@ -1,5 +1,3 @@
-import 'package:redux/redux.dart';
-import 'package:redux_thunk/redux_thunk.dart';
 import 'package:katya/global/libs/matrix/index.dart';
 import 'package:katya/global/print.dart';
 import 'package:katya/store/events/actions.dart';
@@ -10,6 +8,8 @@ import 'package:katya/store/events/reactions/model.dart';
 import 'package:katya/store/events/redaction/model.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/rooms/room/model.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
 class SaveRedactions {
   final List<Redaction>? redactions;
@@ -54,8 +54,7 @@ ThunkAction<AppState> redactEvents({required Room room, List<Redaction> redactio
 
       final messageIds = messagesCached.map((m) => m.id).toList();
 
-      final reactionsCached =
-          messageIds.map((id) => reactionsCachedAll[id]).expand((x) => x ?? []).toList();
+      final reactionsCached = messageIds.map((id) => reactionsCachedAll[id]).expand((x) => x ?? []).toList();
 
       // create a map of messages for O(1) when replacing O(N)
       final messagesMap = Map<String, Message>.fromIterable(
@@ -76,7 +75,7 @@ ThunkAction<AppState> redactEvents({required Room room, List<Redaction> redactio
 
       for (final redaction in redactions) {
         if (messagesMap.containsKey(redaction.redactId)) {
-          messages.add(messagesMap[redaction.redactId]!.copyWith(body: ''));
+          messages.add(messagesMap[redaction.redactId]!.copyMessageWith(body: ''));
         }
         if (reactionsMap.containsKey(redaction.redactId)) {
           reactions.add(reactionsMap[redaction.redactId]!.copyWith(redact: true));

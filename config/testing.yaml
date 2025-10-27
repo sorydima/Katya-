@@ -1,0 +1,379 @@
+# Конфигурация системы тестирования Katya
+
+# Основные настройки
+testing:
+  # Режим тестирования
+  mode: development  # development, staging, production
+  
+  # Включение различных типов тестов
+  enabled_test_types:
+    - unit
+    - integration
+    - functional
+    - performance
+    - security
+    - e2e
+    
+  # Параллельное выполнение
+  parallel_execution:
+    enabled: true
+    max_parallel_tests: 4
+    max_parallel_suites: 2
+    
+  # Таймауты
+  timeouts:
+    default: 300  # секунды
+    unit_tests: 30
+    integration_tests: 120
+    functional_tests: 300
+    performance_tests: 600
+    e2e_tests: 900
+    security_tests: 180
+
+# Настройки тестовых данных
+test_data:
+  # Генерация тестовых данных
+  generation:
+    enabled: true
+    auto_cleanup: true
+    cleanup_after_suite: true
+    cleanup_after_test: false
+    
+  # База данных для тестов
+  database:
+    type: sqlite  # sqlite, postgresql, mysql
+    name: test_katya
+    host: localhost
+    port: 5432
+    username: test_user
+    password: test_password
+    
+    # Настройки соединения
+    connection_pool:
+      min_connections: 1
+      max_connections: 10
+      timeout: 30000  # миллисекунды
+      
+    # Миграции
+    migrations:
+      auto_run: true
+      rollback_after_test: true
+      
+  # Файловая система
+  filesystem:
+    temp_directory: ./test_temp
+    cleanup_on_exit: true
+    max_file_size: 10485760  # 10MB
+
+# Настройки мок-сервисов
+mocking:
+  # Внешние API
+  external_apis:
+    enabled: true
+    response_delay: 10  # миллисекунды
+    default_responses:
+      github:
+        base_url: https://api.github.com
+        responses:
+          "GET /user": {"status": 200, "body": {"login": "testuser"}}
+          "GET /repos": {"status": 200, "body": []}
+      blockchain:
+        base_url: https://api.etherscan.io
+        responses:
+          "GET /api": {"status": 200, "body": {"result": "0x123"}}
+          
+  # База данных
+  database_mocking:
+    enabled: false  # Используем реальную тестовую БД
+    
+  # Файловая система
+  filesystem_mocking:
+    enabled: true
+    in_memory: true
+
+# Настройки покрытия кода
+coverage:
+  # Сбор покрытия
+  collection:
+    enabled: true
+    include_patterns:
+      - "lib/**/*.dart"
+    exclude_patterns:
+      - "lib/**/*.g.dart"
+      - "lib/**/*.freezed.dart"
+      - "lib/main.dart"
+      
+  # Отчеты
+  reports:
+    formats: [html, json, lcov, xml]
+    output_directory: ./coverage
+    threshold: 80.0  # Минимальное покрытие в процентах
+    
+  # Генерация отчетов
+  generate_on_completion: true
+  open_html_report: false
+
+# Настройки производительности
+performance:
+  # Бенчмарки
+  benchmarks:
+    enabled: true
+    iterations: 10
+    warmup_iterations: 3
+    
+  # Профилирование
+  profiling:
+    enabled: false  # Включать только при необходимости
+    sample_rate: 0.01  # 1% запросов
+    duration: 60  # секунды
+    
+  # Метрики
+  metrics:
+    memory_usage: true
+    cpu_usage: true
+    execution_time: true
+    throughput: true
+
+# Настройки безопасности
+security:
+  # Сканирование уязвимостей
+  vulnerability_scanning:
+    enabled: true
+    check_dependencies: true
+    check_code: true
+    
+  # Тестирование аутентификации
+  authentication_tests:
+    enabled: true
+    test_scenarios:
+      - valid_credentials
+      - invalid_credentials
+      - expired_tokens
+      - brute_force_protection
+      
+  # Тестирование авторизации
+  authorization_tests:
+    enabled: true
+    test_scenarios:
+      - role_based_access
+      - permission_checks
+      - resource_isolation
+      - privilege_escalation
+
+# Настройки E2E тестирования
+e2e:
+  # Браузеры
+  browsers:
+    - chrome
+    - firefox
+    - safari
+    - edge
+    
+  # Устройства
+  devices:
+    - desktop
+    - tablet
+    - mobile
+    
+  # Настройки браузеров
+  browser_settings:
+    headless: true
+    window_size: "1920x1080"
+    user_agent: "Katya-Test-Agent/1.0"
+    
+  # Скриншоты
+  screenshots:
+    enabled: true
+    on_failure: true
+    on_success: false
+    output_directory: ./test_screenshots
+    
+  # Видео
+  video:
+    enabled: false
+    on_failure: true
+    output_directory: ./test_videos
+
+# Настройки отчетности
+reporting:
+  # Форматы отчетов
+  formats:
+    - html
+    - json
+    - xml
+    - junit
+    
+  # Настройки HTML отчета
+  html_report:
+    output_directory: ./test_reports
+    template: default
+    include_screenshots: true
+    include_logs: true
+    
+  # Настройки JSON отчета
+  json_report:
+    output_directory: ./test_reports
+    pretty_print: true
+    include_metadata: true
+    
+  # Уведомления
+  notifications:
+    email:
+      enabled: false
+      recipients: []
+      on_failure: true
+      on_success: false
+      
+    webhook:
+      enabled: false
+      url: ""
+      on_failure: true
+      on_success: false
+
+# Настройки логирования
+logging:
+  # Уровни логирования
+  levels:
+    debug: true
+    info: true
+    warning: true
+    error: true
+    
+  # Формат логов
+  format: json
+  
+  # Вывод
+  output:
+    console: true
+    file: true
+    file_path: ./test_logs/test.log
+    
+  # Ротация логов
+  rotation:
+    enabled: true
+    max_size: 10485760  # 10MB
+    max_files: 5
+    compress: true
+
+# Настройки CI/CD интеграции
+ci_cd:
+  # GitHub Actions
+  github_actions:
+    enabled: true
+    workflow_file: .github/workflows/tests.yml
+    matrix_strategy:
+      dart_version: ["stable", "beta"]
+      os: [ubuntu-latest, windows-latest, macos-latest]
+      
+  # GitLab CI
+  gitlab_ci:
+    enabled: false
+    pipeline_file: .gitlab-ci.yml
+    
+  # Jenkins
+  jenkins:
+    enabled: false
+    job_name: "katya-tests"
+    
+  # Общие настройки
+  general:
+    run_on_pull_request: true
+    run_on_push: true
+    run_on_schedule: false
+    schedule: "0 2 * * *"  # Ежедневно в 2:00
+
+# Настройки тестовых окружений
+environments:
+  # Локальное окружение
+  local:
+    database_url: "sqlite:./test.db"
+    redis_url: "redis://localhost:6379/1"
+    api_base_url: "http://localhost:8080"
+    
+  # Окружение разработки
+  development:
+    database_url: "postgresql://test:test@localhost:5432/test_katya"
+    redis_url: "redis://localhost:6379/2"
+    api_base_url: "https://dev-api.katya.wtf"
+    
+  # Тестовое окружение
+  staging:
+    database_url: "postgresql://test:test@staging-db:5432/test_katya"
+    redis_url: "redis://staging-redis:6379/3"
+    api_base_url: "https://staging-api.katya.wtf"
+
+# Настройки тестовых пользователей
+test_users:
+  # Администратор
+  admin:
+    username: "test_admin"
+    email: "admin@test.katya.wtf"
+    password: "test_admin_password"
+    roles: ["admin", "moderator"]
+    
+  # Обычный пользователь
+  user:
+    username: "test_user"
+    email: "user@test.katya.wtf"
+    password: "test_user_password"
+    roles: ["user"]
+    
+  # Модератор
+  moderator:
+    username: "test_moderator"
+    email: "moderator@test.katya.wtf"
+    password: "test_moderator_password"
+    roles: ["moderator", "user"]
+
+# Настройки тестовых данных
+test_data_sets:
+  # Маленький набор данных
+  small:
+    users: 10
+    rooms: 5
+    messages: 100
+    files: 20
+    
+  # Средний набор данных
+  medium:
+    users: 100
+    rooms: 50
+    messages: 1000
+    files: 200
+    
+  # Большой набор данных
+  large:
+    users: 1000
+    rooms: 500
+    messages: 10000
+    files: 2000
+
+# Настройки тестовых сценариев
+test_scenarios:
+  # Базовые сценарии
+  basic:
+    - user_registration
+    - user_login
+    - room_creation
+    - message_sending
+    
+  # Продвинутые сценарии
+  advanced:
+    - reputation_calculation
+    - trust_verification
+    - blockchain_integration
+    - anonymous_messaging
+    
+  # Сценарии производительности
+  performance:
+    - high_load_messaging
+    - concurrent_users
+    - large_file_upload
+    - real_time_sync
+    
+  # Сценарии безопасности
+  security:
+    - authentication_bypass
+    - authorization_violation
+    - data_leakage
+    - injection_attacks

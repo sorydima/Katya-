@@ -21,7 +21,7 @@ extension CryptoQueries on StorageDatabase {
     if (Platform.isLinux) {
       return into(cryptos).insert(
         CryptosCompanion(
-          id: Value(StorageKeys.CRYPTO),
+          id: const Value(StorageKeys.CRYPTO),
           store: Value(storeJson),
         ),
         mode: InsertMode.insertOrReplace,
@@ -29,14 +29,13 @@ extension CryptoQueries on StorageDatabase {
     }
 
     return into(cryptos).insertOnConflictUpdate(CryptosCompanion(
-      id: Value(StorageKeys.CRYPTO),
+      id: const Value(StorageKeys.CRYPTO),
       store: Value(storeJson),
     ));
   }
 
   Future<CryptoStore?> selectCryptoStore() async {
-    final row = await (select(cryptos)..where((tbl) => tbl.id.isNotNull()))
-        .getSingleOrNull();
+    final row = await (select(cryptos)..where((tbl) => tbl.id.isNotNull())).getSingleOrNull();
 
     if (row == null) {
       return null;

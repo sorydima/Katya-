@@ -1,5 +1,3 @@
-import 'package:redux/redux.dart';
-import 'package:redux_thunk/redux_thunk.dart';
 import 'package:katya/global/libs/matrix/auth.dart';
 import 'package:katya/global/libs/matrix/index.dart';
 import 'package:katya/global/notifications.dart';
@@ -12,6 +10,8 @@ import 'package:katya/store/index.dart';
 import 'package:katya/store/settings/devices-settings/model.dart';
 import 'package:katya/store/settings/models.dart';
 import 'package:katya/store/sync/service/actions.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
 class SetPusherToken {
   final String? token;
@@ -60,6 +60,14 @@ class ToggleSuggestions {}
 
 class ToggleAutoDownload {}
 
+class ToggleAutoDownloadImages {}
+
+class ToggleAutoDownloadAudio {}
+
+class ToggleAutoDownloadVideo {}
+
+class ToggleAutoDownloadFiles {}
+
 class ToggleDismissKeyboard {}
 
 class ToggleMembershipEvents {}
@@ -89,9 +97,7 @@ ThunkAction<AppState> fetchDevices() {
       }
 
       final List<dynamic> jsonDevices = data['devices'];
-      final List<Device> devices = jsonDevices
-          .map((jsonDevice) => Device.fromMatrix(jsonDevice))
-          .toList();
+      final List<Device> devices = jsonDevices.map((jsonDevice) => Device.fromMatrix(jsonDevice)).toList();
 
       store.dispatch(SetDevices(devices: devices));
     } catch (error) {
@@ -136,8 +142,7 @@ ThunkAction<AppState> deleteDevices({List<String?>? deviceIds}) {
     try {
       store.dispatch(SetLoadingSettings(loading: true));
 
-      final currentCredential =
-          store.state.authStore.credential ?? Credential();
+      final currentCredential = store.state.authStore.credential ?? const Credential();
 
       final data = await MatrixApi.deleteDevices(
         protocol: store.state.authStore.protocol,
@@ -179,8 +184,7 @@ ThunkAction<AppState> deleteDevices({List<String?>? deviceIds}) {
 }
 
 /// Rename a single device
-ThunkAction<AppState> renameDevice(
-    {String? deviceId, String? displayName, bool? disableLoading}) {
+ThunkAction<AppState> renameDevice({String? deviceId, String? displayName, bool? disableLoading}) {
   return (Store<AppState> store) async {
     try {
       store.dispatch(SetLoadingSettings(loading: true));
@@ -242,8 +246,7 @@ ThunkAction<AppState> incrementLanguage() {
   };
 }
 
-Future<bool> homeserverSupportsPrivateReadReceipts(
-    Store<AppState> store) async {
+Future<bool> homeserverSupportsPrivateReadReceipts(Store<AppState> store) async {
   final version = await MatrixApi.checkVersion(
     protocol: store.state.authStore.protocol,
     homeserver: store.state.authStore.user.homeserver,
@@ -260,8 +263,7 @@ Future<bool> homeserverSupportsPrivateReadReceipts(
 }
 
 @Deprecated('Due to be unsupported as of Synapse v1.67.0')
-Future<bool> homeserverSupportsUnstablePrivateReadReceipts(
-    Store<AppState> store) async {
+Future<bool> homeserverSupportsUnstablePrivateReadReceipts(Store<AppState> store) async {
   final version = await MatrixApi.checkVersion(
     protocol: store.state.authStore.protocol,
     homeserver: store.state.authStore.user.homeserver,
@@ -276,11 +278,9 @@ Future<bool> homeserverSupportsUnstablePrivateReadReceipts(
 
 ThunkAction<AppState> incrementReadReceipts() {
   return (Store<AppState> store) async {
-    final readReceiptsIndex =
-        ReadReceiptTypes.values.indexOf(store.state.settingsStore.readReceipts);
+    final readReceiptsIndex = ReadReceiptTypes.values.indexOf(store.state.settingsStore.readReceipts);
 
-    final nextReceipt = ReadReceiptTypes
-        .values[(readReceiptsIndex + 1) % ReadReceiptTypes.values.length];
+    final nextReceipt = ReadReceiptTypes.values[(readReceiptsIndex + 1) % ReadReceiptTypes.values.length];
 
     if (nextReceipt != ReadReceiptTypes.Private) {
       //short-out
@@ -297,8 +297,7 @@ ThunkAction<AppState> incrementReadReceipts() {
     }
 
     return store.dispatch(SetReadReceipts(
-      readReceipts: ReadReceiptTypes
-          .values[(readReceiptsIndex + 2) % ReadReceiptTypes.values.length],
+      readReceipts: ReadReceiptTypes.values[(readReceiptsIndex + 2) % ReadReceiptTypes.values.length],
     ));
   };
 }

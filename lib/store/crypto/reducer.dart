@@ -28,27 +28,27 @@ CryptoStore cryptoReducer([CryptoStore state = const CryptoStore(), dynamic acti
         oneTimeKeysCounts: action.oneTimeKeysCounts,
       );
     case SetOneTimeKeysStable:
-      final _action = action as SetOneTimeKeysStable;
+      final action0 = action as SetOneTimeKeysStable;
       return state.copyWith(
-        oneTimeKeysStable: _action.stable,
+        oneTimeKeysStable: action0.stable,
       );
     case SetOneTimeKeysClaimed:
       return state.copyWith(
         oneTimeKeysClaimed: action.oneTimeKeys,
       );
     case AddKeySession:
-      final _action = action as AddKeySession;
+      final action0 = action as AddKeySession;
 
       final keySessions = Map<String, Map<String, String>>.from(
         state.keySessions,
       );
 
-      final sessionId = _action.sessionId;
-      final sessionNew = _action.session;
+      final sessionId = action0.sessionId;
+      final sessionNew = action0.session;
 
       // Update sessions by their ID for a certain identityKey (sender_key)
       keySessions.update(
-        _action.identityKey,
+        action0.identityKey,
         (session) => session
           ..update(
             sessionId,
@@ -62,27 +62,27 @@ CryptoStore cryptoReducer([CryptoStore state = const CryptoStore(), dynamic acti
         keySessions: keySessions,
       );
     case AddMessageSessionOutbound:
-      final _action = action as AddMessageSessionOutbound;
+      final action0 = action as AddMessageSessionOutbound;
       final outboundMessageSessions = Map<String, String>.from(
         state.outboundMessageSessions,
       );
 
       outboundMessageSessions.update(
-        _action.roomId,
-        (sessionCurrent) => _action.session,
-        ifAbsent: () => _action.session,
+        action0.roomId,
+        (sessionCurrent) => action0.session,
+        ifAbsent: () => action0.session,
       );
 
       return state.copyWith(
         outboundMessageSessions: outboundMessageSessions,
       );
     case AddMessageSessionInbound:
-      final _action = action as AddMessageSessionInbound;
+      final action0 = action as AddMessageSessionInbound;
 
-      final roomId = _action.roomId;
-      final senderKey = _action.senderKey;
-      final sessionNew = _action.session;
-      final messageIndex = _action.messageIndex;
+      final roomId = action0.roomId;
+      final senderKey = action0.senderKey;
+      final sessionNew = action0.session;
+      final messageIndex = action0.messageIndex;
 
       final messageSessions = Map<String, Map<String, List<MessageSession>>>.from(
         state.messageSessionsInbound,
@@ -114,9 +114,9 @@ CryptoStore cryptoReducer([CryptoStore state = const CryptoStore(), dynamic acti
 
     // TODO: make this work synchronously?? [combineMessageSesssions](./converters.dart)
     case AddMessageSessionsInbound:
-      final _action = action as AddMessageSessionsInbound;
+      final action0 = action as AddMessageSessionsInbound;
 
-      final messageSessionsNew = _action.sessions;
+      final messageSessionsNew = action0.sessions;
 
       final messageSessionsExisting = Map<String, Map<String, List<MessageSession>>>.from(
         state.messageSessionsInbound,
@@ -152,17 +152,17 @@ CryptoStore cryptoReducer([CryptoStore state = const CryptoStore(), dynamic acti
         messageSessionsInbound: messageSessionsExisting,
       );
     case SetMessageSessionsInbound:
-      final _action = action as SetMessageSessionsInbound;
+      final action0 = action as SetMessageSessionsInbound;
 
       return state.copyWith(
-        messageSessionsInbound: _action.sessions,
+        messageSessionsInbound: action0.sessions,
       );
     case ToggleDeviceKeysExist:
       return state.copyWith(
         deviceKeysExist: action.existence,
       );
     case ResetCrypto:
-      return CryptoStore();
+      return const CryptoStore();
     default:
       return state;
   }

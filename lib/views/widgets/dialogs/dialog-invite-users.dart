@@ -1,24 +1,24 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/global/libs/matrix/auth.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/store/auth/actions.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/user/model.dart';
-import 'package:katya/views/widgets/buttons/button-text.dart';
 import 'package:katya/utils/theme_compatibility.dart';
+import 'package:katya/views/widgets/buttons/button-text.dart';
+import 'package:redux/redux.dart';
 
 class DialogInviteUsers extends StatelessWidget {
   const DialogInviteUsers({
-    Key? key,
+    super.key,
     this.users,
     this.title,
     this.content,
     this.action,
     this.onCancel,
     this.onInviteUsers,
-  }) : super(key: key);
+  });
 
   final String? title;
   final String? content;
@@ -47,7 +47,7 @@ class DialogInviteUsers extends StatelessWidget {
           children: <Widget>[
             Text(content ?? Strings.confirmAttemptChat),
             Container(
-              padding: EdgeInsets.only(top: 8),
+              padding: const EdgeInsets.only(top: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -108,8 +108,7 @@ class Props extends Equatable {
   static Props mapStateToProps(Store<AppState> store) => Props(
         completed: store.state.authStore.captcha,
         publicKey: () {
-          return store.state.authStore.interactiveAuths['params'][MatrixAuthTypes.RECAPTCHA]
-              ['public_key'];
+          return store.state.authStore.interactiveAuths['params'][MatrixAuthTypes.RECAPTCHA]['public_key'];
         }(),
         onCompleteCaptcha: (String token, {required BuildContext context}) async {
           await store.dispatch(updateCredential(

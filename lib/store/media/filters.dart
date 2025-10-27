@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:katya/global/print.dart';
+import 'package:katya/store/media/converters.dart';
 import 'package:mime/mime.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
-import 'package:katya/global/print.dart';
-import 'package:katya/store/media/converters.dart';
 
 Future<File?> scrubMedia({
   required File localFile,
@@ -31,16 +31,12 @@ Future<File?> scrubMedia({
     switch (fileExtension.toLowerCase()) {
       case 'png':
         format = CompressFormat.png;
-        break;
       case 'jpeg':
         format = CompressFormat.jpeg;
-        break;
       case 'heic':
         format = CompressFormat.heic;
-        break;
       case 'webp':
         format = CompressFormat.webp;
-        break;
       default:
         // Can't remove exif info for this media type
         return localFile;

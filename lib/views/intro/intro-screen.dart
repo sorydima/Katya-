@@ -1,12 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:katya/utils/theme_compatibility.dart';
-
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
@@ -14,9 +9,12 @@ import 'package:katya/global/values.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/settings/actions.dart';
 import 'package:katya/store/settings/storage.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/buttons/button-solid.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
+import 'package:redux/redux.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 
 import 'widgets/page-action.dart';
@@ -26,7 +24,7 @@ import 'widgets/page-description-third.dart';
 import 'widgets/page-landing.dart';
 
 class IntroScreen extends StatefulWidget {
-  const IntroScreen({Key? key}) : super(key: key);
+  const IntroScreen({super.key});
 
   @override
   IntroScreenState createState() => IntroScreenState();
@@ -43,11 +41,11 @@ class IntroScreenState extends State<IntroScreen> with Lifecycle<IntroScreen> {
   BuildContext? dialogContext;
 
   final List<Widget> sections = [
-    LandingPage(),
-    FirstDescriptionPage(),
-    SecondDescriptionPage(),
-    ThirdDescriptionPage(),
-    ActionPage(),
+    const LandingPage(),
+    const FirstDescriptionPage(),
+    const SecondDescriptionPage(),
+    const ThirdDescriptionPage(),
+    const ActionPage(),
   ];
 
   IntroScreenState();
@@ -90,15 +88,15 @@ class IntroScreenState extends State<IntroScreen> with Lifecycle<IntroScreen> {
                 termsTitle,
                 textAlign: TextAlign.center,
               ),
-              titlePadding: EdgeInsets.only(left: 24, right: 24, top: 24),
-              contentPadding: EdgeInsets.symmetric(
+              titlePadding: const EdgeInsets.only(left: 24, right: 24, top: 24),
+              contentPadding: const EdgeInsets.symmetric(
                 horizontal: 24,
                 vertical: 12,
               ),
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.all(24),
-                  child: Image(
+                  padding: const EdgeInsets.all(24),
+                  child: const Image(
                     width: 98,
                     height: 98,
                     image: AssetImage(Assets.appIconPng),
@@ -120,13 +118,13 @@ class IntroScreenState extends State<IntroScreen> with Lifecycle<IntroScreen> {
                   child: Text(
                     Strings.confirmAlphaWarning,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontWeight: FontWeight.w100),
+                    style: const TextStyle(fontWeight: FontWeight.w100),
                   ),
                 ),
                 Text(
                   Strings.confirmAlphaWarningAlt,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.w300),
+                  style: const TextStyle(fontWeight: FontWeight.w300),
                 ),
                 Text(
                   Strings.confirmTermsOfServiceConclusion,
@@ -134,13 +132,13 @@ class IntroScreenState extends State<IntroScreen> with Lifecycle<IntroScreen> {
                 ),
                 Text(
                   Strings.confirmAppTermsOfService,
-                  style: TextStyle(fontSize: 12),
+                  style: const TextStyle(fontSize: 12),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(vertical: 16),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                       child: TextButton(
                         onPressed: () async {
                           await store.dispatch(acceptAgreement());
@@ -170,7 +168,7 @@ class IntroScreenState extends State<IntroScreen> with Lifecycle<IntroScreen> {
     super.dispose();
   }
 
-  buildButtonString() {
+  String buildButtonString() {
     switch (currentStep) {
       case 0:
         return 'let\'s go';
@@ -197,7 +195,7 @@ class IntroScreenState extends State<IntroScreen> with Lifecycle<IntroScreen> {
                 flex: 6,
                 fit: FlexFit.tight,
                 child: Container(
-                  constraints: BoxConstraints(
+                  constraints: const BoxConstraints(
                     minWidth: Dimensions.mediaSizeMin,
                   ),
                   child: PageView(
@@ -241,7 +239,7 @@ class IntroScreenState extends State<IntroScreen> with Lifecycle<IntroScreen> {
                         }
 
                         pageController!.nextPage(
-                          duration: Duration(
+                          duration: const Duration(
                             milliseconds: Values.animationDurationDefault,
                           ),
                           curve: Curves.ease,
@@ -259,7 +257,7 @@ class IntroScreenState extends State<IntroScreen> with Lifecycle<IntroScreen> {
                   children: <Widget>[
                     Container(
                       height: Dimensions.inputHeight,
-                      constraints: BoxConstraints(
+                      constraints: const BoxConstraints(
                         minHeight: Dimensions.inputHeight,
                       ),
                       child: onboarding
@@ -290,7 +288,7 @@ class IntroScreenState extends State<IntroScreen> with Lifecycle<IntroScreen> {
                                   Text(
                                     loginText,
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w100,
                                     ),

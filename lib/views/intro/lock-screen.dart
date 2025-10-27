@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:katya/context/auth.dart';
 import 'package:katya/context/types.dart';
-
 import 'package:katya/views/intro/signup/loading-screen.dart';
 import 'package:katya/views/prelock.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
@@ -20,9 +19,9 @@ class LockScreen extends StatefulWidget {
   final AppContext appContext;
 
   const LockScreen({
-    Key? key,
+    super.key,
     required this.appContext,
-  }) : super(key: key);
+  });
 
   @override
   _LockScreenState createState() => _LockScreenState();
@@ -52,7 +51,7 @@ class _LockScreenState extends State<LockScreen> with Lifecycle<LockScreen> {
         });
   }
 
-  onMaxRetries(int retries) {
+  void onMaxRetries(int retries) {
     if (retries > maxRetries) {
       // preferred over exit(0) to not mistaken as a crash
       SystemChannels.platform.invokeMethod('SystemNavigator.pop');

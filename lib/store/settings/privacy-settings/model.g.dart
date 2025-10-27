@@ -11,7 +11,7 @@ PrivacySettings _$PrivacySettingsFromJson(Map<String, dynamic> json) =>
       lastBackupMillis: json['lastBackupMillis'] as String? ?? '0',
       keyBackupInterval: json['keyBackupInterval'] == null
           ? Duration.zero
-          : Duration(microseconds: json['keyBackupInterval'] as int),
+          : Duration(microseconds: (json['keyBackupInterval'] as num).toInt()),
     );
 
 Map<String, dynamic> _$PrivacySettingsToJson(PrivacySettings instance) =>

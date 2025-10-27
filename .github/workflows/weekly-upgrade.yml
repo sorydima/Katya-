@@ -1,0 +1,63 @@
+name: Weekly Dependency Upgrade
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Every Monday at 06:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  upgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+
+      - name: Cache pub
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+            ~/.dartServer
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
+
+      - name: Flutter Pub Get
+        run: flutter pub get
+
+      - name: Upgrade Dependencies (tighten)
+        run: flutter pub upgrade --major-versions --tighten
+
+      - name: Generate Code (build_runner)
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Analyze
+        run: |
+          flutter analyze
+          dart format --output=none --set-exit-if-changed .
+
+      - name: Test
+        run: flutter test --machine --coverage
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore(deps): weekly dependency upgrade"
+          title: "chore(deps): weekly dependency upgrade"
+          body: |
+            Automated weekly dependency upgrade.
+
+            Includes:
+            - flutter pub upgrade --major-versions --tighten
+            - build_runner codegen
+            - analyzer + format checks
+            - test run
+
+            See `PACKAGE_UPGRADE_SUMMARY.md` for testing checklist and rollout.
+          branch: chore/weekly-dep-upgrade
+          delete-branch: true

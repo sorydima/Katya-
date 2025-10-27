@@ -1,5 +1,3 @@
-import 'package:redux/redux.dart';
-import 'package:redux_thunk/redux_thunk.dart';
 import 'package:katya/global/notifications.dart';
 import 'package:katya/global/print.dart';
 import 'package:katya/global/values.dart';
@@ -8,11 +6,12 @@ import 'package:katya/store/crypto/sessions/service/service.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/settings/privacy-settings/actions.dart';
 import 'package:katya/store/settings/privacy-settings/storage.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
 ThunkAction<AppState> startKeyBackupService() {
   return (Store<AppState> store) async {
-    final frequency =
-        store.state.settingsStore.privacySettings.keyBackupInterval;
+    final frequency = store.state.settingsStore.privacySettings.keyBackupInterval;
 
     if (frequency == Duration.zero) {
       log.info('[KeyBackupService] disabled - no schedule frequency');
@@ -27,13 +26,11 @@ ThunkAction<AppState> startKeyBackupService() {
     if (password.isEmpty) {
       return store.dispatch(addAlert(
         origin: 'startKeyBackupService',
-        message:
-            'Password was not found for scheduled key backup, check your backup in settings',
+        message: 'Password was not found for scheduled key backup, check your backup in settings',
       ));
     }
 
-    final lastBackupMillis =
-        store.state.settingsStore.privacySettings.lastBackupMillis;
+    final lastBackupMillis = store.state.settingsStore.privacySettings.lastBackupMillis;
 
     final lastBackup = DateTime.fromMillisecondsSinceEpoch(
       int.parse(lastBackupMillis),
@@ -56,8 +53,7 @@ ThunkAction<AppState> startKeyBackupService() {
 
     // if enough time has passed, start the job immediately
     if (nextBackupDelta.isNegative) {
-      final location =
-          store.state.settingsStore.storageSettings.keyBackupLocation;
+      final location = store.state.settingsStore.storageSettings.keyBackupLocation;
       final deviceKeys = store.state.cryptoStore.deviceKeys;
       final messageSessions = store.state.cryptoStore.messageSessionsInbound;
 

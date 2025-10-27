@@ -1,9 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:olm/olm.dart';
-
 import 'package:katya/store/crypto/keys/models.dart';
 import 'package:katya/store/crypto/sessions/model.dart';
+import 'package:olm/olm.dart';
 
 part 'state.g.dart';
 

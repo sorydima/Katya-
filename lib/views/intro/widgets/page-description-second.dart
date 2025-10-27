@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:katya/utils/theme_compatibility.dart';
-
 import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/strings.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 // Assets
 
 class SecondDescriptionPage extends StatelessWidget {
-  const SecondDescriptionPage({Key? key, this.title}) : super(key: key);
+  const SecondDescriptionPage({super.key, this.title});
 
   final String? title;
 
@@ -50,7 +48,7 @@ class SecondDescriptionPage extends StatelessWidget {
                   children: <TextSpan>[
                     TextSpan(
                       text: Strings.contentIntroSecondPartBold,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w600,
                       ),
                     ),

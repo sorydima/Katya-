@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:html/parser.dart';
-import 'package:redux/redux.dart';
-import 'package:redux_thunk/redux_thunk.dart';
 import 'package:katya/global/https.dart';
 import 'package:katya/global/libs/matrix/index.dart';
 import 'package:katya/global/print.dart';
@@ -13,6 +11,8 @@ import 'package:katya/store/events/messages/model.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/rooms/room/model.dart';
 import 'package:katya/store/user/model.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
 class SetLoading {
   final bool? loading;
@@ -73,9 +73,7 @@ Future<String?> fetchFavicon({String? url}) async {
   try {
     // get the root store
     final origins = url.toString().split('.');
-    final baseUrl = origins.length > 1
-        ? '${origins[origins.length - 2]}.${origins[origins.length - 1]}'
-        : origins[0];
+    final baseUrl = origins.length > 1 ? '${origins[origins.length - 2]}.${origins[origins.length - 1]}' : origins[0];
     final fullUrl = 'https://$baseUrl';
 
     final uri = Uri.parse(fullUrl);
@@ -122,9 +120,8 @@ ThunkAction<AppState> searchMessages(String searchText) {
 ThunkAction<AppState> searchHomeservers({String? searchText}) {
   return (Store<AppState> store) async {
     final List<Homeserver> searchResults = (store.state.searchStore.homeservers as List<Homeserver>)
-        .where((homeserver) =>
-            homeserver.hostname!.contains(searchText!) ||
-            homeserver.description!.contains(searchText))
+        .where(
+            (homeserver) => homeserver.hostname!.contains(searchText!) || homeserver.description!.contains(searchText))
         .toList();
 
     store.dispatch(SetSearchResults(
@@ -197,8 +194,7 @@ ThunkAction<AppState> searchRoomsPublic({String? searchable}) {
       }
 
       final List<dynamic> rawPublicRooms = data['chunk'];
-      final List<Room> convertedRooms =
-          rawPublicRooms.map((room) => Room.fromMatrix(room)).toList();
+      final List<Room> convertedRooms = rawPublicRooms.map((room) => Room.fromMatrix(room)).toList();
 
       store.dispatch(SetSearchResults(
         since: data['next_batch'],

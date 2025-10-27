@@ -2,13 +2,9 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:equatable/equatable.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
@@ -24,16 +20,17 @@ import 'package:katya/store/index.dart';
 import 'package:katya/store/settings/theme-settings/actions.dart';
 import 'package:katya/store/settings/theme-settings/selectors.dart';
 import 'package:katya/store/user/model.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/behaviors.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
 import 'package:katya/views/widgets/buttons/button-solid.dart';
 import 'package:katya/views/widgets/buttons/button-text.dart';
-import 'package:katya/views/widgets/input/text-field-secure.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
+// import 'package:katya/views/widgets/input/text-field-secure.dart';
+import 'package:katya/views/widgets/modern/modern_input.dart';
+import 'package:redux/redux.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
-import 'package:flutter/material.dart';
-import 'package:katya/utils/theme_compatibility.dart';
 
 class LoginScreenArguments {
   final bool multiaccount;
@@ -42,7 +39,7 @@ class LoginScreenArguments {
 
 class LoginScreen extends StatefulWidget {
   final Store<AppState>? store;
-  const LoginScreen({Key? key, this.store}) : super(key: key);
+  const LoginScreen({super.key, this.store});
 
   @override
   LoginScreenState createState() => LoginScreenState();
@@ -63,7 +60,7 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
     super.dispose();
   }
 
-  onLoginPassword(_Props props) async {
+  Future<void> onLoginPassword(_Props props) async {
     setState(() {
       currentAuthType = AuthTypes.Password;
     });
@@ -87,7 +84,7 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
     });
   }
 
-  onLoginSSO(_Props props) async {
+  Future<void> onLoginSSO(_Props props) async {
     setState(() {
       currentAuthType = AuthTypes.SSO;
     });
@@ -99,7 +96,7 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
     });
   }
 
-  onToggleShowPassword() {
+  void onToggleShowPassword() {
     if (!passwordFocus.hasFocus) {
       // Unfocus all focus nodes
       passwordFocus.unfocus();
@@ -115,13 +112,13 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
 
     if (!passwordFocus.hasFocus) {
       //Enable the text field's focus node request after some delay
-      Future.delayed(Duration(milliseconds: 100), () {
+      Future.delayed(const Duration(milliseconds: 100), () {
         passwordFocus.canRequestFocus = true;
       });
     }
   }
 
-  buildSSOLogin(_Props props) => Container(
+  Container buildSSOLogin(_Props props) => Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: ListTile(
         leading: Avatar(
@@ -142,14 +139,14 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
           onTap: () {
             Navigator.pushNamed(context, Routes.searchHomeservers);
           },
-          child: Icon(
+          child: const Icon(
             Icons.search_rounded,
             size: Dimensions.iconSizeLarge,
           ),
         ),
       ));
 
-  buildPasswordLogin(_Props props) => Column(children: [
+  Column buildPasswordLogin(_Props props) => Column(children: [
         Container(
           height: Dimensions.inputHeight,
           margin: const EdgeInsets.only(
@@ -161,27 +158,20 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
                 props.onChangeHomeserver();
               }
             },
-            child: TextFieldSecure(
-              maxLines: 1,
+            child: ModernInput(
               label: props.userIdHint,
-              disableSpacing: true,
-              disabled: props.loading,
+              isDisabled: props.loading,
               controller: usernameController,
-              autofillHints: const [AutofillHints.username],
-              formatters: [FilteringTextInputFormatter.deny(RegExp('@@'))],
-              onSubmitted: (text) {
-                FocusScope.of(context).requestFocus(passwordFocus);
-              },
+              textInputAction: TextInputAction.next,
               onChanged: (username) {
                 props.onChangeUsername(username);
               },
-              suffix: TouchableOpacity(
+              leading: const Icon(Icons.person_outline),
+              trailing: TouchableOpacity(
                 onTap: () {
                   Navigator.pushNamed(context, Routes.searchHomeservers);
                 },
-                child: Icon(
-                  Icons.search_rounded,
-                ),
+                child: const Icon(Icons.search_rounded),
               ),
             ),
           ),
@@ -192,25 +182,21 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
             top: 8,
             bottom: 10,
           ),
-          constraints: BoxConstraints(
+          constraints: const BoxConstraints(
             minWidth: Dimensions.inputWidthMin,
             maxWidth: Dimensions.inputWidthMax,
           ),
-          child: TextFieldSecure(
+          child: ModernInput(
             label: 'password',
-            disabled: props.loading,
+            isDisabled: props.loading,
             focusNode: passwordFocus,
-            obscureText: !visibility,
-            textAlign: TextAlign.left,
-            autofillHints: const [AutofillHints.password],
+            isPassword: true,
             onChanged: (password) {
               props.onChangePassword(password);
             },
-            suffix: GestureDetector(
+            trailing: GestureDetector(
               onTap: () => onToggleShowPassword(),
-              child: Icon(
-                visibility ? Icons.visibility : Icons.visibility_off,
-              ),
+              child: Icon(visibility ? Icons.visibility : Icons.visibility_off),
             ),
           ),
         ),
@@ -220,16 +206,16 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             Container(
-              padding: EdgeInsets.only(right: 4),
+              padding: const EdgeInsets.only(right: 4),
               child: TouchableOpacity(
                 activeOpacity: 0.4,
                 onTap: () async {
                   await props.onResetSession();
                   Navigator.pushNamed(context, Routes.forgot);
                 },
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const <Widget>[
+                  children: <Widget>[
                     Text(
                       'Forgot Password?',
                       textAlign: TextAlign.center,
@@ -251,8 +237,7 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
 
-    final args =
-        ModalRoute.of(context)!.settings.arguments as LoginScreenArguments?;
+    final args = ModalRoute.of(context)!.settings.arguments as LoginScreenArguments?;
 
     final multiaccount = args?.multiaccount ?? false;
 
@@ -275,7 +260,7 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
             Visibility(
               visible: DEBUG_MODE,
               child: IconButton(
-                icon: Icon(Icons.settings),
+                icon: const Icon(Icons.settings),
                 iconSize: Dimensions.iconSizeLarge,
                 tooltip: 'General Settings',
                 color: Theme.of(context).scaffoldBackgroundColor,
@@ -286,7 +271,7 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
               ),
             ),
             IconButton(
-              icon: Icon(Icons.more_vert),
+              icon: const Icon(Icons.more_vert),
               iconSize: Dimensions.iconSizeLarge,
               tooltip: Strings.listItemSettingsProxy,
               color: Theme.of(context).primaryColor,
@@ -313,7 +298,7 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
             child: Container(
               height: height,
               width: width,
-              constraints: BoxConstraints(
+              constraints: const BoxConstraints(
                 maxHeight: Dimensions.heightMax,
               ),
               child: Flex(
@@ -334,14 +319,14 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
                               props.onIncrementThemeType();
                             },
                             child: Container(
-                              constraints: BoxConstraints(
+                              constraints: const BoxConstraints(
                                 maxWidth: 180,
                                 maxHeight: 180,
                               ),
                               child: Image(
                                 width: width * 0.35,
                                 height: width * 0.35,
-                                image: AssetImage(Assets.appIconPng),
+                                image: const AssetImage(Assets.appIconPng),
                               ),
                             ),
                           ),
@@ -359,14 +344,12 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
                                     props.onIncrementThemeType();
                                   },
                                   child: Container(
-                                    constraints: BoxConstraints(
+                                    constraints: const BoxConstraints(
                                       maxWidth: 180,
                                       maxHeight: 180,
                                     ),
                                     child: SvgPicture.asset(
-                                      avatarHash.isEven
-                                          ? Assets.heroAvatarFemale
-                                          : Assets.heroAvatarMale,
+                                      avatarHash.isEven ? Assets.heroAvatarFemale : Assets.heroAvatarMale,
                                       width: width * 0.35,
                                       height: width * 0.35,
                                     ),
@@ -382,7 +365,7 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
                   Flexible(
                     flex: 4,
                     child: Container(
-                      constraints: BoxConstraints(
+                      constraints: const BoxConstraints(
                         minWidth: Dimensions.inputWidthMin,
                         maxWidth: Dimensions.inputWidthMax,
                       ),
@@ -399,20 +382,17 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Container(
-                                    padding: EdgeInsets.only(
-                                        bottom: Dimensions.paddingSmall),
+                                    padding: const EdgeInsets.only(bottom: Dimensions.paddingSmall),
                                     child: Text(
                                       'Add another account',
                                       textAlign: TextAlign.center,
-                                      style:
-                                          Theme.of(context).textTheme.headline5,
+                                      style: Theme.of(context).textTheme.headline5,
                                     ),
                                   ),
                                   Text(
                                     'Login to switch between\ndifferent accounts you own',
                                     textAlign: TextAlign.center,
-                                    style:
-                                        Theme.of(context).textTheme.bodyText2,
+                                    style: Theme.of(context).textTheme.bodyText2,
                                   ),
                                 ],
                               ),
@@ -423,8 +403,7 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
                             child: buildPasswordLogin(props),
                           ),
                           Visibility(
-                            visible: props.isSSOLoginAvailable &&
-                                !props.isPasswordLoginAvailable,
+                            visible: props.isSSOLoginAvailable && !props.isPasswordLoginAvailable,
                             child: buildSSOLogin(props),
                           ),
                         ],
@@ -445,42 +424,31 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
                                   visible: props.isPasswordLoginAvailable,
                                   child: ButtonSolid(
                                     text: Strings.buttonLogin,
-                                    loading: props.loading &&
-                                        currentAuthType == AuthTypes.Password,
-                                    disabled:
-                                        !props.isPasswordLoginAttemptable ||
-                                            currentAuthType != null,
+                                    loading: props.loading && currentAuthType == AuthTypes.Password,
+                                    disabled: !props.isPasswordLoginAttemptable || currentAuthType != null,
                                     onPressed: () => onLoginPassword(props),
                                   ),
                                 ),
                                 Visibility(
-                                  visible: props.isSSOLoginAvailable &&
-                                      !props.isPasswordLoginAvailable,
+                                  visible: props.isSSOLoginAvailable && !props.isPasswordLoginAvailable,
                                   child: Container(
-                                    padding: const EdgeInsets.only(
-                                        top: 12, bottom: 12),
+                                    padding: const EdgeInsets.only(top: 12, bottom: 12),
                                     child: ButtonSolid(
                                       text: Strings.buttonLoginSSO,
-                                      loading: props.loading &&
-                                          currentAuthType == AuthTypes.SSO,
-                                      disabled: !props.isSSOLoginAttemptable ||
-                                          currentAuthType != null,
+                                      loading: props.loading && currentAuthType == AuthTypes.SSO,
+                                      disabled: !props.isSSOLoginAttemptable || currentAuthType != null,
                                       onPressed: () => onLoginSSO(props),
                                     ),
                                   ),
                                 ),
                                 Visibility(
-                                  visible: props.isSSOLoginAvailable &&
-                                      props.isPasswordLoginAvailable,
+                                  visible: props.isSSOLoginAvailable && props.isPasswordLoginAvailable,
                                   child: Container(
-                                    padding: const EdgeInsets.only(
-                                        top: 12, bottom: 12),
+                                    padding: const EdgeInsets.only(top: 12, bottom: 12),
                                     child: ButtonText(
                                       text: Strings.buttonLoginSSO,
-                                      loading: props.loading &&
-                                          currentAuthType == AuthTypes.SSO,
-                                      disabled: !props.isSSOLoginAttemptable ||
-                                          currentAuthType != null,
+                                      loading: props.loading && currentAuthType == AuthTypes.SSO,
+                                      disabled: !props.isSSOLoginAttemptable || currentAuthType != null,
                                       onPressed: () => onLoginSSO(props),
                                     ),
                                   ),
@@ -495,20 +463,19 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
                     child: Flexible(
                       child: Container(
                         height: Dimensions.inputHeight,
-                        constraints: BoxConstraints(
+                        constraints: const BoxConstraints(
                           minHeight: Dimensions.inputHeight,
                         ),
                         child: TouchableOpacity(
                           activeOpacity: 0.4,
-                          onTap: () =>
-                              Navigator.pushNamed(context, Routes.signup),
+                          onTap: () => Navigator.pushNamed(context, Routes.signup),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text(
                                 Strings.buttonTextSignupQuestion,
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w100,
                                 ),
@@ -518,10 +485,7 @@ class LoginScreenState extends State<LoginScreen> with Lifecycle<LoginScreen> {
                                 child: Text(
                                   Strings.buttonTextSignupAction,
                                   textAlign: TextAlign.center,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText2!
-                                      .copyWith(
+                                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
                                         color: Theme.of(context).primaryColor,
                                         decoration: TextDecoration.underline,
                                       ),

@@ -33,14 +33,52 @@ steps:
     commands:
       - flutter build apk
 
-  - name: build-ios
+  - name: build-linux
     image: cirrusci/flutter:stable
     commands:
-      - flutter build ios
+      - flutter build linux
 
-trigger:
-  event:
-    - push
-    - pull_request
-  branch:
-    - main
+  - name: build-windows
+    image: cirrusci/flutter:stable
+    commands:
+      - flutter build windows
+
+  - name: build-macos
+    image: cirrusci/flutter:stable
+    commands:
+      - flutter build macos
+
+  - name: build-tvos
+    image: cirrusci/flutter:stable
+    commands:
+      - flutter build tvos
+
+  - name: build-wearos
+    image: cirrusci/flutter:stable
+    commands:
+      - flutter build wearos
+
+  - name: build-freebsd
+    image: cirrusci/flutter:stable
+    commands:
+      - flutter build freebsd
+
+  - name: build-fuchsia
+    image: cirrusci/flutter:stable
+    commands:
+      - flutter build fuchsia
+
+  - name: build-harmonyos
+    image: cirrusci/flutter:stable
+    commands:
+      - flutter build harmonyos
+
+  - name: build-tizen
+    image: cirrusci/flutter:stable
+    commands:
+      - flutter build tizen
+
+  - name: build-embedded
+    image: cirrusci/flutter:stable
+    commands:
+      - flutter build embedded

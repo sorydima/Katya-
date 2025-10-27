@@ -20,7 +20,6 @@ import 'package:katya/views/widgets/buttons/button-solid.dart';
 import 'package:katya/views/widgets/input/text-field-secure.dart';
 import 'package:katya/views/widgets/modals/modal-image-options.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
-import 'package:katya/utils/theme_compatibility.dart';
 
 const imageSize = Dimensions.avatarSizeDetails;
 
@@ -109,12 +108,12 @@ class ProfileScreen extends HookWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context, false),
         ),
         title: Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w100,
           ),
@@ -200,7 +199,7 @@ class ProfileScreen extends HookWidget {
                         children: <Widget>[
                           Container(
                             margin: const EdgeInsets.all(8.0),
-                            constraints: BoxConstraints(
+                            constraints: const BoxConstraints(
                               maxHeight: Dimensions.inputHeight,
                               maxWidth: Dimensions.inputWidthMax,
                             ),
@@ -214,7 +213,7 @@ class ProfileScreen extends HookWidget {
                           ),
                           Container(
                               margin: const EdgeInsets.all(8.0),
-                              constraints: BoxConstraints(
+                              constraints: const BoxConstraints(
                                 maxHeight: Dimensions.inputHeight,
                                 maxWidth: Dimensions.inputWidthMax,
                               ),
@@ -226,18 +225,18 @@ class ProfileScreen extends HookWidget {
                                   enableInteractiveSelection: false,
                                   label: 'User ID',
                                   controller: userIdController,
-                                  mouseCursor: MaterialStateMouseCursor.clickable,
+                                  mouseCursor: WidgetStateMouseCursor.clickable,
                                   onTap: () async => onCopyToClipboard(),
                                   suffix: IconButton(
                                     onPressed: () async => onCopyToClipboard(),
-                                    icon: Icon(Icons.copy),
+                                    icon: const Icon(Icons.copy),
                                   ),
                                 ),
                               ])),
                         ],
                       ),
                       Container(
-                        padding: EdgeInsets.only(bottom: 24),
+                        padding: const EdgeInsets.only(bottom: 24),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -263,7 +262,7 @@ class ProfileScreen extends HookWidget {
                             Container(
                               height: Dimensions.inputHeight,
                               margin: const EdgeInsets.all(10.0),
-                              constraints: BoxConstraints(
+                              constraints: const BoxConstraints(
                                 minWidth: Dimensions.buttonWidthMin,
                                 minHeight: Dimensions.buttonHeightMin,
                               ),
@@ -274,7 +273,7 @@ class ProfileScreen extends HookWidget {
                                   child: Text(
                                     Strings.buttonCancel,
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w100,
                                     ),

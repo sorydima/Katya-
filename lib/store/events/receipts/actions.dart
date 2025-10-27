@@ -1,5 +1,3 @@
-import 'package:redux/redux.dart';
-import 'package:redux_thunk/redux_thunk.dart';
 import 'package:katya/global/libs/matrix/index.dart';
 import 'package:katya/global/print.dart';
 import 'package:katya/store/events/messages/model.dart';
@@ -8,6 +6,8 @@ import 'package:katya/store/index.dart';
 import 'package:katya/store/rooms/room/model.dart';
 import 'package:katya/store/settings/actions.dart';
 import 'package:katya/store/settings/models.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
 class SetReceipts {
   final String? roomId;
@@ -57,8 +57,7 @@ ThunkAction<AppState> sendReadReceipts({
           homeserver: store.state.authStore.user.homeserver,
           roomId: room!.id,
           messageId: message!.id,
-          stable:
-              await homeserverSupportsPrivateReadReceipts(store), //@deprecated
+          stable: await homeserverSupportsPrivateReadReceipts(store), //@deprecated
         );
       } else {
         data = await MatrixApi.sendReadReceipts(

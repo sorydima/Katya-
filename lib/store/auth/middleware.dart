@@ -1,9 +1,9 @@
-import 'package:redux/redux.dart';
 import 'package:katya/store/events/actions.dart';
 import 'package:katya/store/events/reactions/actions.dart';
 import 'package:katya/store/events/redaction/actions.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/rooms/actions.dart';
+import 'package:redux/redux.dart';
 
 ///
 /// Auth Middleware
@@ -11,7 +11,7 @@ import 'package:katya/store/rooms/actions.dart';
 /// Prevents firing any authenticated mutations
 ///
 ///
-authMiddleware<State>(
+void authMiddleware<State>(
   Store<AppState> store,
   dynamic action,
   NextDispatcher next,
@@ -25,9 +25,7 @@ authMiddleware<State>(
         return;
       }
       next(action);
-      break;
     default:
       next(action);
-      break;
   }
 }

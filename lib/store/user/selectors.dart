@@ -45,7 +45,7 @@ Map<String, User> messageUsers({required AppState state, String? roomId}) {
   return Map.fromIterable(
     messages,
     key: (msg) => msg.sender,
-    value: (msg) => state.userStore.users[msg.sender] ?? User(),
+    value: (msg) => state.userStore.users[msg.sender] ?? const User(),
   );
 }
 
@@ -89,7 +89,6 @@ List<User?> searchUsersLocal(
   }
 
   return List.from(users.where(
-    (user) =>
-        (user!.displayName ?? '').contains(searchText) || (user.userId ?? '').contains(searchText),
+    (user) => (user!.displayName ?? '').contains(searchText) || (user.userId ?? '').contains(searchText),
   ));
 }

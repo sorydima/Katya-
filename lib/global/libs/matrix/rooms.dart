@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:katya/global/https.dart';
-import 'package:katya/global/print.dart';
 import 'package:katya/global/values.dart';
 import 'package:katya/store/rooms/room/model.dart';
 import 'package:katya/store/settings/proxy-settings/model.dart';
@@ -125,8 +124,7 @@ abstract class Rooms {
     String? accessToken,
     String? roomId,
   }) async {
-    final String url =
-        '$protocol$homeserver/_matrix/client/r0/rooms/$roomId/joined_members';
+    final String url = '$protocol$homeserver/_matrix/client/r0/rooms/$roomId/joined_members';
 
     final Map<String, String> headers = {
       'Authorization': 'Bearer $accessToken',
@@ -146,8 +144,7 @@ abstract class Rooms {
     String? accessToken,
     String? userId,
   }) async {
-    final String url =
-        '$protocol$homeserver/_matrix/client/r0/user/$userId/account_data/m.direct';
+    final String url = '$protocol$homeserver/_matrix/client/r0/user/$userId/account_data/m.direct';
 
     final Map<String, String> headers = {
       'Authorization': 'Bearer $accessToken',
@@ -177,8 +174,7 @@ abstract class Rooms {
     final serverName = parts.isNotEmpty ? parts[1] : homeserver;
     final roomIdFormatted = Uri.encodeComponent(roomId);
 
-    final String url =
-        '$protocol$homeserver/_matrix/client/r0/join/$roomIdFormatted?server_name=$serverName';
+    final String url = '$protocol$homeserver/_matrix/client/r0/join/$roomIdFormatted?server_name=$serverName';
 
     final Map<String, String> headers = {
       'Authorization': 'Bearer $accessToken',
@@ -214,6 +210,8 @@ abstract class Rooms {
     List<String?> invites = const [],
     String chatTypePreset = 'private_chat',
     bool isDirect = false,
+    List<Map<String, dynamic>>? initialState,
+    Map<String, dynamic>? initialStates,
   }) async {
     final String url = '$protocol$homeserver/_matrix/client/r0/createRoom';
 
@@ -222,12 +220,28 @@ abstract class Rooms {
       ...Values.defaultHeaders,
     };
 
-    final Map body = {
+    final Map<String, dynamic> body = {
       'visibility': visibility,
       'is_direct': isDirect,
       'preset': chatTypePreset,
-      'invite': invites
+      'invite': invites,
+      'creation_content': {
+        'm.federate': true,
+      },
     };
+
+    // Add initial state events if provided
+    if (initialState != null && initialState.isNotEmpty) {
+      body['initial_state'] = initialState;
+    }
+
+    // Add initial states to creation content
+    if (initialStates != null) {
+      body['creation_content'] = {
+        ...(body['creation_content'] as Map<String, dynamic>),
+        ...initialStates,
+      };
+    }
 
     if (name != null) {
       body['name'] = name;
@@ -267,8 +281,7 @@ abstract class Rooms {
     String? accessToken,
     String? roomId,
   }) async {
-    final String url =
-        '$protocol$homeserver/_matrix/client/r0/rooms/$roomId/leave';
+    final String url = '$protocol$homeserver/_matrix/client/r0/rooms/$roomId/leave';
 
     final Map<String, String> headers = {
       'Authorization': 'Bearer $accessToken',
@@ -304,8 +317,7 @@ abstract class Rooms {
     String? accessToken,
     String? roomId,
   }) async {
-    final String url =
-        '$protocol$homeserver/_matrix/client/r0/rooms/$roomId/forget';
+    final String url = '$protocol$homeserver/_matrix/client/r0/rooms/$roomId/forget';
 
     final Map<String, String> headers = {
       'Authorization': 'Bearer $accessToken',
@@ -338,8 +350,7 @@ abstract class Rooms {
     String? accessToken,
     String? roomAlias,
   }) async {
-    final String url =
-        '$protocol$homeserver/_matrix/client/r0/directory/room/$roomAlias';
+    final String url = '$protocol$homeserver/_matrix/client/r0/directory/room/$roomAlias';
 
     final Map<String, String> headers = {
       'Authorization': 'Bearer $accessToken',
@@ -370,8 +381,7 @@ abstract class Rooms {
     bool lazyLoading = false,
     Map? filters,
   }) async {
-    final String url =
-        '$protocol$homeserver/_matrix/client/r0/user/$userId/filter';
+    final String url = '$protocol$homeserver/_matrix/client/r0/user/$userId/filter';
 
     final Map<String, String> headers = {
       'Authorization': 'Bearer $accessToken',
@@ -410,8 +420,7 @@ abstract class Rooms {
     String? filterId,
     String? userId,
   }) async {
-    final String url =
-        '$protocol$homeserver/_matrix/client/r0/user/$userId/filter/$filterId';
+    final String url = '$protocol$homeserver/_matrix/client/r0/user/$userId/filter/$filterId';
 
     final Map<String, String> headers = {
       'Authorization': 'Bearer $accessToken',
@@ -440,8 +449,7 @@ abstract class Rooms {
     String? accessToken,
     String? roomId,
   }) async {
-    final String url =
-        '$protocol$homeserver/_matrix/client/r0/rooms/$roomId/aliases';
+    final String url = '$protocol$homeserver/_matrix/client/r0/rooms/$roomId/aliases';
 
     final Map<String, String> headers = {
       'Authorization': 'Bearer $accessToken',
@@ -465,8 +473,7 @@ abstract class Rooms {
   }) async {
     final String roomId = room!.id;
 
-    final String url =
-        '$protocol$homeserver/_matrix/client/r0/rooms/$roomId/state/m.room.power_levels/';
+    final String url = '$protocol$homeserver/_matrix/client/r0/rooms/$roomId/state/m.room.power_levels/';
 
     final Map<String, String> headers = {
       'Authorization': 'Bearer $accessToken',

@@ -2,9 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:drift/drift.dart';
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/context/types.dart';
 import 'package:katya/global/print.dart';
 import 'package:katya/global/values.dart';
@@ -29,6 +26,9 @@ import 'package:katya/store/rooms/room/model.dart';
 import 'package:katya/store/rooms/storage.dart';
 import 'package:katya/store/settings/storage.dart';
 import 'package:katya/store/user/storage.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
+import 'package:redux/redux.dart';
 
 class Storage {
   // cache key identifiers
@@ -68,7 +68,7 @@ Future deleteStorage({AppContext context = const AppContext()}) async {
     final file = File(path.join(appDir.path, storageLocation));
     await file.delete();
   } catch (error) {
-    log.error('[deleteColdStorage] ${error.toString()}');
+    log.error('[deleteColdStorage] $error');
   }
 }
 
@@ -104,8 +104,7 @@ Future<Map<String, dynamic>> loadStorage(StorageDatabase storage) async {
         storage: storage,
       );
 
-      final currentUserIds =
-          (messages[room.id] ?? []).map((message) => message.sender ?? '').toList();
+      final currentUserIds = (messages[room.id] ?? []).map((message) => message.sender ?? '').toList();
 
       userIds.addAll(currentUserIds);
     }
@@ -136,7 +135,7 @@ Future<Map<String, dynamic>> loadStorage(StorageDatabase storage) async {
       StorageKeys.MESSAGE_SESSIONS: messageSessions,
     };
   } catch (error) {
-    log.error('[loadStorage] ${error.toString()}');
+    log.error('[loadStorage] $error');
     return {};
   }
 }
@@ -147,7 +146,7 @@ Future<Map<String, dynamic>> loadStorage(StorageDatabase storage) async {
 // finishes loading cold storage objects to RAM, this can
 // be much more specific and performant
 //
-loadStorageAsync(StorageDatabase storage, Store<AppState> store) {
+void loadStorageAsync(StorageDatabase storage, Store<AppState> store) {
   try {
     final rooms = store.state.roomStore.roomList;
     final messages = store.state.eventStore.messages;
@@ -190,6 +189,6 @@ loadStorageAsync(StorageDatabase storage, Store<AppState> store) {
 
     loadAsync();
   } catch (error) {
-    log.error('[loadStorageAsync] ${error.toString()}');
+    log.error('[loadStorageAsync] $error');
   }
 }

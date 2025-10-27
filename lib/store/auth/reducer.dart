@@ -1,8 +1,8 @@
 import 'package:katya/store/auth/context/actions.dart';
 
+import '../user/model.dart';
 import './actions.dart';
 import './state.dart';
-import '../user/model.dart';
 
 AuthStore authReducer([AuthStore state = const AuthStore(), dynamic action]) {
   switch (action.runtimeType) {
@@ -15,31 +15,31 @@ AuthStore authReducer([AuthStore state = const AuthStore(), dynamic action]) {
     case SetContextObserver:
       return state.copyWith(contextObserver: action.contextObserver);
     case SetUser:
-      final _action = action as SetUser;
+      final action0 = action as SetUser;
       final availableUsers = List<User>.from(state.availableUsers);
       final hasUser = availableUsers.indexWhere(
-        (user) => user.userId == _action.user.userId,
+        (user) => user.userId == action0.user.userId,
       );
 
       if (hasUser != -1) {
         availableUsers.replaceRange(hasUser, hasUser + 1, [
-          _action.user.copyWith(accessToken: ''),
+          action0.user.copyWith(accessToken: ''),
         ]);
       }
 
       return state.copyWith(
-        user: _action.user,
+        user: action0.user,
         availableUsers: availableUsers,
       );
     case SetSession:
-      final _action = action as SetSession;
-      return state.copyWith(authSession: _action.session);
+      final action0 = action as SetSession;
+      return state.copyWith(authSession: action0.session);
     case SetClientSecret:
-      final _action = action as SetClientSecret;
-      return state.copyWith(clientSecret: _action.clientSecret);
+      final action0 = action as SetClientSecret;
+      return state.copyWith(clientSecret: action0.clientSecret);
     case SetCompleted:
-      final _action = action as SetCompleted;
-      return state.copyWith(completed: _action.completed);
+      final action0 = action as SetCompleted;
+      return state.copyWith(completed: action0.completed);
     case SetCredential:
       return state.copyWith(credential: action.credential);
     case SetInteractiveAuths:
@@ -75,12 +75,11 @@ AuthStore authReducer([AuthStore state = const AuthStore(), dynamic action]) {
     case SetAgreement:
       return state.copyWith(agreement: action.agreement);
     case AddAvailableUser:
-      final _action = action as AddAvailableUser;
-      final availableUser = _action.availableUser;
+      final action0 = action as AddAvailableUser;
+      final availableUser = action0.availableUser;
       final availableUsers = List<User>.from(state.availableUsers);
 
-      final existingIndex =
-          availableUsers.indexWhere((user) => user.userId == availableUser.userId);
+      final existingIndex = availableUsers.indexWhere((user) => user.userId == availableUser.userId);
 
       if (existingIndex == -1) {
         availableUsers.add(availableUser);
@@ -88,12 +87,11 @@ AuthStore authReducer([AuthStore state = const AuthStore(), dynamic action]) {
 
       return state.copyWith(availableUsers: availableUsers);
     case RemoveAvailableUser:
-      final _action = action as RemoveAvailableUser;
-      final availableUser = _action.availableUser;
+      final action0 = action as RemoveAvailableUser;
+      final availableUser = action0.availableUser;
       final availableUsers = List<User>.from(state.availableUsers);
 
-      final existingIndex =
-          availableUsers.indexWhere((user) => user.userId == availableUser.userId);
+      final existingIndex = availableUsers.indexWhere((user) => user.userId == availableUser.userId);
 
       if (existingIndex != -1) {
         availableUsers.remove(availableUser);
@@ -101,7 +99,7 @@ AuthStore authReducer([AuthStore state = const AuthStore(), dynamic action]) {
 
       return state.copyWith(availableUsers: availableUsers);
     case ResetUser:
-      return state.copyWith(user: User());
+      return state.copyWith(user: const User());
     case ResetOnboarding:
       return state.copyWith(
         username: '',

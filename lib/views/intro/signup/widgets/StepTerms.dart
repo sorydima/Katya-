@@ -2,8 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:redux/redux.dart';
-
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
@@ -12,9 +10,10 @@ import 'package:katya/global/weburl.dart';
 import 'package:katya/store/auth/actions.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/utils/theme_compatibility.dart';
+import 'package:redux/redux.dart';
 
 class TermsStep extends StatelessWidget {
-  TermsStep({Key? key}) : super(key: key);
+  TermsStep({super.key});
   final focusNode = FocusNode();
 
   @override
@@ -32,11 +31,11 @@ class TermsStep extends StatelessWidget {
               flex: 6,
               child: Container(
                 width: width * 0.75,
-                constraints: BoxConstraints(
+                constraints: const BoxConstraints(
                   maxHeight: Dimensions.mediaSize,
                   maxWidth: Dimensions.mediaSize,
                 ),
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   bottom: 24,
                 ),
                 child: Stack(
@@ -55,7 +54,7 @@ class TermsStep extends StatelessWidget {
                           borderRadius: BorderRadius.circular(40),
                           color: const Color(AppColors.cyankatya),
                         ),
-                        child: Icon(
+                        child: const Icon(
                           Icons.check,
                           color: Colors.white,
                           size: 32,
@@ -73,7 +72,7 @@ class TermsStep extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.only(bottom: 8, top: 8),
+                    padding: const EdgeInsets.only(bottom: 8, top: 8),
                     child: Text(
                       '${props.homeserver} requires you read\nand agree to a terms of service.',
                       textAlign: TextAlign.center,
@@ -84,7 +83,7 @@ class TermsStep extends StatelessWidget {
                     clipBehavior: Clip.none,
                     children: <Widget>[
                       Container(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           vertical: 8,
                           horizontal: 24,
                         ),
@@ -104,7 +103,7 @@ class TermsStep extends StatelessWidget {
                           child: Container(
                             height: 20,
                             width: 20,
-                            child: Icon(
+                            child: const Icon(
                               Icons.info_outline,
                               color: Colors.white,
                               size: 20,
@@ -129,7 +128,7 @@ class TermsStep extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Container(
-                          padding: EdgeInsets.only(
+                          padding: const EdgeInsets.only(
                             top: 8,
                             left: 8,
                             right: 8,
@@ -191,8 +190,8 @@ class _Props extends Equatable {
   });
 
   static _Props mapStateToProps(Store<AppState> store) => _Props(
-      homeserver: store.state.authStore.hostname.substring(0, 1).toUpperCase() +
-          store.state.authStore.hostname.substring(1),
+      homeserver:
+          store.state.authStore.hostname.substring(0, 1).toUpperCase() + store.state.authStore.hostname.substring(1),
       agreement: store.state.authStore.agreement,
       onToggleAgreement: () async {
         store.dispatch(toggleAgreement());

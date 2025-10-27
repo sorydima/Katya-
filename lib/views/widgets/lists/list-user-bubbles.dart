@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:katya/utils/theme_compatibility.dart';
-
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/store/user/model.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/home/chat/chat-detail-all-users-screen.dart';
 import 'package:katya/views/home/groups/invite-users-screen.dart';
 import 'package:katya/views/navigation.dart';
@@ -17,13 +16,13 @@ import 'package:katya/views/widgets/modals/modal-user-details.dart';
 /// are still indexed by room
 class ListUserBubbles extends StatelessWidget {
   const ListUserBubbles({
-    Key? key,
+    super.key,
     this.users = const [],
     this.roomId = '',
     this.invite = false,
     this.forceOption = false,
     this.max = 12,
-  }) : super(key: key);
+  });
 
   final int max;
   final bool invite;
@@ -31,7 +30,7 @@ class ListUserBubbles extends StatelessWidget {
   final String? roomId;
   final List<User?> users;
 
-  onShowUserDetails({
+  Future<void> onShowUserDetails({
     required BuildContext context,
     User? user,
   }) async {
@@ -56,7 +55,7 @@ class ListUserBubbles extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (BuildContext context, int index) {
-              final user = users[index] ?? User();
+              final user = users[index] ?? const User();
 
               return Align(
                 child: GestureDetector(
@@ -85,8 +84,8 @@ class ListUserBubbles extends StatelessWidget {
           Visibility(
             visible: users.length > max || forceOption,
             child: Container(
-              margin: EdgeInsets.only(left: 4, right: 12),
-              padding: EdgeInsets.symmetric(vertical: 14),
+              margin: const EdgeInsets.only(left: 4, right: 12),
+              padding: const EdgeInsets.symmetric(vertical: 14),
               child: ClipOval(
                 child: Material(
                   color: Theme.of(context).scaffoldBackgroundColor, // button color
@@ -114,7 +113,7 @@ class ListUserBubbles extends StatelessWidget {
                         width: Dimensions.avatarSize,
                         height: Dimensions.avatarSize,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(
+                          borderRadius: const BorderRadius.all(
                             Radius.circular(Dimensions.avatarSize),
                           ),
                           border: Border.all(

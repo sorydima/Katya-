@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:katya/utils/theme_compatibility.dart';
-
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
-
 import 'package:katya/store/user/model.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/widgets/buttons/button-text.dart';
 
 class DialogExplaination extends StatelessWidget {
   const DialogExplaination({
-    Key? key,
+    super.key,
     this.user,
     this.title = '',
     this.content = '',
     this.onConfirm,
-  }) : super(key: key);
+  });
 
   final User? user;
   final String title;
@@ -32,7 +30,7 @@ class DialogExplaination extends StatelessWidget {
         children: <Widget>[
           Text(content),
           Container(
-            padding: EdgeInsets.only(top: 8),
+            padding: const EdgeInsets.only(top: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

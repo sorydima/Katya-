@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/utils/theme_compatibility.dart';
 
 class ActionPage extends StatelessWidget {
-  const ActionPage({Key? key, this.title}) : super(key: key);
+  const ActionPage({super.key, this.title});
 
   final String? title;
 
@@ -24,7 +22,7 @@ class ActionPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.only(bottom: 16),
             constraints: BoxConstraints(
               maxWidth: widthScale,
               maxHeight: heightScale,

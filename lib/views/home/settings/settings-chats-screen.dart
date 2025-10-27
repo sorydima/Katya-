@@ -1,8 +1,6 @@
 import 'package:equatable/equatable.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
@@ -10,15 +8,16 @@ import 'package:katya/global/values.dart';
 import 'package:katya/store/alerts/actions.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/settings/actions.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/appbars/appbar-normal.dart';
 import 'package:katya/views/widgets/containers/card-section.dart';
-import 'package:katya/utils/theme_compatibility.dart';
+import 'package:redux/redux.dart';
 
 class SettingsChatsScreen extends StatelessWidget {
-  const SettingsChatsScreen({Key? key}) : super(key: key);
+  const SettingsChatsScreen({super.key});
 
-  displayThemeType(String themeTypeName) {
+  String displayThemeType(String themeTypeName) {
     return themeTypeName.split('.')[1].toLowerCase();
   }
 
@@ -35,7 +34,7 @@ class SettingsChatsScreen extends StatelessWidget {
             ),
             body: SingleChildScrollView(
               child: Container(
-                  padding: EdgeInsets.only(bottom: 24),
+                  padding: const EdgeInsets.only(bottom: 24),
                   child: Column(
                     children: <Widget>[
                       CardSection(
@@ -75,7 +74,7 @@ class SettingsChatsScreen extends StatelessWidget {
                                 ),
                                 trailing: Switch(
                                   value: false,
-                                  inactiveThumbColor: Color(AppColors.greyDisabled),
+                                  inactiveThumbColor: const Color(AppColors.greyDisabled),
                                   onChanged: (showMembershipEvents) {},
                                 ),
                               ),
@@ -251,6 +250,42 @@ class SettingsChatsScreen extends StatelessWidget {
                                 onChanged: (enabled) => props.onToggleAutoDownload(),
                               ),
                             ),
+                            ListTile(
+                              onTap: () => props.onToggleAutoImages(),
+                              contentPadding: Dimensions.listPadding,
+                              title: const Text('Auto-download images'),
+                              trailing: Switch(
+                                value: props.autoImages,
+                                onChanged: (enabled) => props.onToggleAutoImages(),
+                              ),
+                            ),
+                            ListTile(
+                              onTap: () => props.onToggleAutoAudio(),
+                              contentPadding: Dimensions.listPadding,
+                              title: const Text('Auto-download audio'),
+                              trailing: Switch(
+                                value: props.autoAudio,
+                                onChanged: (enabled) => props.onToggleAutoAudio(),
+                              ),
+                            ),
+                            ListTile(
+                              onTap: () => props.onToggleAutoVideo(),
+                              contentPadding: Dimensions.listPadding,
+                              title: const Text('Auto-download video'),
+                              trailing: Switch(
+                                value: props.autoVideo,
+                                onChanged: (enabled) => props.onToggleAutoVideo(),
+                              ),
+                            ),
+                            ListTile(
+                              onTap: () => props.onToggleAutoFiles(),
+                              contentPadding: Dimensions.listPadding,
+                              title: const Text('Auto-download files'),
+                              trailing: Switch(
+                                value: props.autoFiles,
+                                onChanged: (enabled) => props.onToggleAutoFiles(),
+                              ),
+                            ),
                             GestureDetector(
                               onTap: () => props.onDisabled(),
                               child: ListTile(
@@ -313,6 +348,10 @@ class Props extends Equatable {
   final bool timeFormat24;
   final bool dismissKeyboard;
   final bool autoDownload;
+  final bool autoImages;
+  final bool autoAudio;
+  final bool autoVideo;
+  final bool autoFiles;
 
   final Function onDisabled;
   final Function onIncrementLanguage;
@@ -321,6 +360,10 @@ class Props extends Equatable {
   final Function onToggleSuggestions;
   final Function onToggleTimeFormat;
   final Function onToggleAutoDownload;
+  final Function onToggleAutoImages;
+  final Function onToggleAutoAudio;
+  final Function onToggleAutoVideo;
+  final Function onToggleAutoFiles;
   final Function onToggleDismissKeyboard;
 
   const Props({
@@ -331,6 +374,10 @@ class Props extends Equatable {
     required this.timeFormat24,
     required this.dismissKeyboard,
     required this.autoDownload,
+    required this.autoImages,
+    required this.autoAudio,
+    required this.autoVideo,
+    required this.autoFiles,
     required this.onDisabled,
     required this.onIncrementLanguage,
     required this.onToggleEnterSend,
@@ -339,6 +386,10 @@ class Props extends Equatable {
     required this.onToggleTimeFormat,
     required this.onToggleDismissKeyboard,
     required this.onToggleAutoDownload,
+    required this.onToggleAutoImages,
+    required this.onToggleAutoAudio,
+    required this.onToggleAutoVideo,
+    required this.onToggleAutoFiles,
   });
 
   @override
@@ -348,6 +399,10 @@ class Props extends Equatable {
         autocorrect,
         suggestions,
         autoDownload,
+        autoImages,
+        autoAudio,
+        autoVideo,
+        autoFiles,
         timeFormat24,
         dismissKeyboard,
       ];
@@ -360,6 +415,10 @@ class Props extends Equatable {
         timeFormat24: store.state.settingsStore.timeFormat24Enabled,
         dismissKeyboard: store.state.settingsStore.dismissKeyboardEnabled,
         autoDownload: store.state.settingsStore.autoDownloadEnabled,
+        autoImages: store.state.settingsStore.autoDownloadImages,
+        autoAudio: store.state.settingsStore.autoDownloadAudio,
+        autoVideo: store.state.settingsStore.autoDownloadVideo,
+        autoFiles: store.state.settingsStore.autoDownloadFiles,
         onIncrementLanguage: () {
           store.dispatch(addInfo(
             message: Strings.alertAppRestartEffect,
@@ -373,6 +432,10 @@ class Props extends Equatable {
         onToggleSuggestions: () => store.dispatch(toggleSuggestions()),
         onToggleTimeFormat: () => store.dispatch(toggleTimeFormat()),
         onToggleAutoDownload: () => store.dispatch(toggleAutoDownload()),
+        onToggleAutoImages: () => store.dispatch(ToggleAutoDownloadImages()),
+        onToggleAutoAudio: () => store.dispatch(ToggleAutoDownloadAudio()),
+        onToggleAutoVideo: () => store.dispatch(ToggleAutoDownloadVideo()),
+        onToggleAutoFiles: () => store.dispatch(ToggleAutoDownloadFiles()),
         onToggleDismissKeyboard: () => store.dispatch(toggleDismissKeyboard()),
       );
 }

@@ -49,6 +49,7 @@ abstract class MatrixApi {
 
   // Events
   static const sendEvent = Events.sendEvent;
+  static const sendRoomEvent = Events.sendRoomEvent;
   static const sendTyping = Events.sendTyping;
   static const sendMessage = Events.sendMessage;
   static const sendReaction = Events.sendReaction;
@@ -80,6 +81,7 @@ abstract class MatrixApi {
   static const fetchMediaThreaded = MatrixMedia.fetchMediaThreaded;
   static const fetchThumbnailThreaded = MatrixMedia.fetchThumbnailThreaded;
   static const buildMessageUrl = MatrixMedia.buildMessageUrl;
+  static const checkMaxUploadSize = MatrixMedia.checkMaxUploadSize;
 
   // Device Management
   static const fetchDevices = Devices.fetchDevices;

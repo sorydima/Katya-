@@ -33,10 +33,10 @@ SearchStore searchReducer([SearchStore state = const SearchStore(), dynamic acti
         loading: true,
       );
     case SearchMessageResults:
-      final _action = action as SearchMessageResults;
+      final action0 = action as SearchMessageResults;
       return state.copyWith(
         loading: false,
-        searchMessages: _action.results,
+        searchMessages: action0.results,
       );
     case ResetSearchResults:
       return state.copyWith(

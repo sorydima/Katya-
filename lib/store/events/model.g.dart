@@ -15,7 +15,7 @@ Event _$EventFromJson(Map<String, dynamic> json) => Event(
       stateKey: json['stateKey'] as String?,
       batch: json['batch'] as String?,
       prevBatch: json['prevBatch'] as String?,
-      timestamp: json['timestamp'] as int? ?? 0,
+      timestamp: (json['timestamp'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$EventToJson(Event instance) => <String, dynamic>{

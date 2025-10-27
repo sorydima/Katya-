@@ -1,0 +1,1266 @@
+openapi: 3.0.3
+info:
+  title: Katya API
+  description: |
+    Comprehensive API for the Katya trust network and communication platform.
+    
+    ## Features
+    - **Trust Network**: Reputation, verification, and blockchain integration
+    - **Messaging**: Real-time communication with end-to-end encryption
+    - **Protocol Bridges**: Integration with external messaging platforms
+    - **Advanced Analytics**: Performance monitoring and insights
+    - **Security**: Advanced security features and threat detection
+    
+    ## Authentication
+    All API endpoints require authentication using Bearer tokens.
+    
+    ## Rate Limiting
+    API requests are rate limited to prevent abuse. Limits vary by endpoint and user role.
+    
+    ## Versioning
+    API versioning is handled through URL paths (e.g., `/v1/`, `/v2/`).
+  version: 1.0.0
+  contact:
+    name: Katya API Support
+    email: api-support@katya.wtf
+    url: https://katya.wtf/support
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: https://katya.wtf/terms
+
+servers:
+  - url: https://api.katya.wtf/v1
+    description: Production server
+  - url: https://staging-api.katya.wtf/v1
+    description: Staging server
+  - url: http://localhost:8080/v1
+    description: Development server
+
+security:
+  - BearerAuth: []
+  - ApiKeyAuth: []
+
+paths:
+  # Authentication Endpoints
+  /auth/login:
+    post:
+      tags: [Authentication]
+      summary: User login
+      description: Authenticate user and receive access token
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+                password:
+                  type: string
+                  format: password
+                  example: password123
+                twoFactorCode:
+                  type: string
+                  description: Two-factor authentication code
+                  example: "123456"
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Too many login attempts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/register:
+    post:
+      tags: [Authentication]
+      summary: User registration
+      description: Register a new user account
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: Registration successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: Invalid registration data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/refresh:
+    post:
+      tags: [Authentication]
+      summary: Refresh access token
+      description: Get a new access token using refresh token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [refreshToken]
+              properties:
+                refreshToken:
+                  type: string
+                  example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      responses:
+        '200':
+          description: Token refreshed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+
+  # Trust Network Endpoints
+  /trust/identities:
+    get:
+      tags: [Trust Network]
+      summary: List trust identities
+      description: Get list of all trust identities in the network
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+            maximum: 100
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Search by identity name or email
+        - name: verificationLevel
+          in: query
+          schema:
+            type: string
+            enum: [basic, medium, high, excellent]
+      responses:
+        '200':
+          description: List of trust identities
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  identities:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TrustIdentity'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+
+    post:
+      tags: [Trust Network]
+      summary: Create trust identity
+      description: Create a new trust identity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTrustIdentityRequest'
+      responses:
+        '201':
+          description: Trust identity created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrustIdentity'
+        '400':
+          description: Invalid identity data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /trust/identities/{identityId}:
+    get:
+      tags: [Trust Network]
+      summary: Get trust identity
+      description: Get detailed information about a specific trust identity
+      parameters:
+        - name: identityId
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "user_123"
+      responses:
+        '200':
+          description: Trust identity details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrustIdentity'
+        '404':
+          description: Identity not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      tags: [Trust Network]
+      summary: Update trust identity
+      description: Update trust identity information
+      parameters:
+        - name: identityId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTrustIdentityRequest'
+      responses:
+        '200':
+          description: Trust identity updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrustIdentity'
+
+    delete:
+      tags: [Trust Network]
+      summary: Delete trust identity
+      description: Delete a trust identity
+      parameters:
+        - name: identityId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Identity deleted successfully
+
+  /trust/verifications:
+    post:
+      tags: [Trust Network]
+      summary: Create verification
+      description: Create a new trust verification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVerificationRequest'
+      responses:
+        '201':
+          description: Verification created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrustVerification'
+
+  /trust/reputation/{identityId}:
+    get:
+      tags: [Trust Network]
+      summary: Get reputation score
+      description: Get reputation score for a specific identity
+      parameters:
+        - name: identityId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Reputation score
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReputationScore'
+
+  /trust/recommendations:
+    get:
+      tags: [Trust Network]
+      summary: Get recommendations
+      description: Get trust recommendations for an identity
+      parameters:
+        - name: identityId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+            maximum: 50
+      responses:
+        '200':
+          description: Trust recommendations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TrustRecommendation'
+
+  # Messaging Endpoints
+  /messages:
+    get:
+      tags: [Messaging]
+      summary: List messages
+      description: Get list of messages in a room
+      parameters:
+        - name: roomId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+            maximum: 200
+        - name: before
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: Get messages before this timestamp
+      responses:
+        '200':
+          description: List of messages
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messages:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Message'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+
+    post:
+      tags: [Messaging]
+      summary: Send message
+      description: Send a new message to a room
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendMessageRequest'
+      responses:
+        '201':
+          description: Message sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+
+  /messages/{messageId}:
+    get:
+      tags: [Messaging]
+      summary: Get message
+      description: Get a specific message by ID
+      parameters:
+        - name: messageId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Message details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+
+    delete:
+      tags: [Messaging]
+      summary: Delete message
+      description: Delete a message
+      parameters:
+        - name: messageId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Message deleted successfully
+
+  # Rooms Endpoints
+  /rooms:
+    get:
+      tags: [Rooms]
+      summary: List rooms
+      description: Get list of rooms user has access to
+      responses:
+        '200':
+          description: List of rooms
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Room'
+
+    post:
+      tags: [Rooms]
+      summary: Create room
+      description: Create a new room
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRoomRequest'
+      responses:
+        '201':
+          description: Room created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+
+  /rooms/{roomId}:
+    get:
+      tags: [Rooms]
+      summary: Get room
+      description: Get room details
+      parameters:
+        - name: roomId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Room details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+
+    put:
+      tags: [Rooms]
+      summary: Update room
+      description: Update room information
+      parameters:
+        - name: roomId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRoomRequest'
+      responses:
+        '200':
+          description: Room updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+
+  # Dashboard Endpoints
+  /dashboard/widgets:
+    get:
+      tags: [Dashboard]
+      summary: List dashboard widgets
+      description: Get list of available dashboard widgets
+      responses:
+        '200':
+          description: List of widgets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DashboardWidget'
+
+  /dashboard/widgets/{widgetId}/data:
+    get:
+      tags: [Dashboard]
+      summary: Get widget data
+      description: Get data for a specific dashboard widget
+      parameters:
+        - name: widgetId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: startDate
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Widget data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WidgetData'
+
+  /dashboard/layouts:
+    get:
+      tags: [Dashboard]
+      summary: Get user dashboard layouts
+      description: Get dashboard layouts for the current user
+      responses:
+        '200':
+          description: User dashboard layouts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DashboardLayout'
+
+    post:
+      tags: [Dashboard]
+      summary: Create dashboard layout
+      description: Create a new dashboard layout
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLayoutRequest'
+      responses:
+        '201':
+          description: Layout created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardLayout'
+
+  # Analytics Endpoints
+  /analytics/metrics:
+    get:
+      tags: [Analytics]
+      summary: Get system metrics
+      description: Get system performance metrics
+      parameters:
+        - name: metric
+          in: query
+          schema:
+            type: string
+            enum: [cpu, memory, disk, network, users, messages]
+        - name: timeRange
+          in: query
+          schema:
+            type: string
+            enum: [1h, 24h, 7d, 30d]
+            default: 24h
+      responses:
+        '200':
+          description: System metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsResponse'
+
+  /analytics/reports:
+    get:
+      tags: [Analytics]
+      summary: Generate analytics report
+      description: Generate a comprehensive analytics report
+      parameters:
+        - name: reportType
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [performance, usage, security, trust]
+        - name: format
+          in: query
+          schema:
+            type: string
+            enum: [json, csv, pdf]
+            default: json
+      responses:
+        '200':
+          description: Analytics report
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsReport'
+
+  # Security Endpoints
+  /security/alerts:
+    get:
+      tags: [Security]
+      summary: Get security alerts
+      description: Get active security alerts
+      parameters:
+        - name: severity
+          in: query
+          schema:
+            type: string
+            enum: [info, warning, critical]
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [active, acknowledged, resolved]
+      responses:
+        '200':
+          description: Security alerts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SecurityAlert'
+
+  /security/scan:
+    post:
+      tags: [Security]
+      summary: Run security scan
+      description: Run a comprehensive security scan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scanType:
+                  type: string
+                  enum: [full, quick, targeted]
+                  default: quick
+                target:
+                  type: string
+                  description: Target for the scan
+      responses:
+        '202':
+          description: Security scan started
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecurityScanResult'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
+  schemas:
+    # Authentication Schemas
+    AuthResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        refreshToken:
+          type: string
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        expiresIn:
+          type: integer
+          example: 3600
+        tokenType:
+          type: string
+          example: "Bearer"
+        user:
+          $ref: '#/components/schemas/User'
+
+    RegisterRequest:
+      type: object
+      required: [username, email, password]
+      properties:
+        username:
+          type: string
+          minLength: 3
+          maxLength: 50
+          example: "john_doe"
+        email:
+          type: string
+          format: email
+          example: "john@example.com"
+        password:
+          type: string
+          format: password
+          minLength: 8
+          example: "password123"
+        firstName:
+          type: string
+          example: "John"
+        lastName:
+          type: string
+          example: "Doe"
+
+    # Trust Network Schemas
+    TrustIdentity:
+      type: object
+      properties:
+        identityId:
+          type: string
+          example: "user_123"
+        username:
+          type: string
+          example: "john_doe"
+        email:
+          type: string
+          format: email
+          example: "john@example.com"
+        displayName:
+          type: string
+          example: "John Doe"
+        avatarUrl:
+          type: string
+          format: uri
+          example: "https://example.com/avatar.jpg"
+        verificationLevel:
+          type: string
+          enum: [basic, medium, high, excellent]
+          example: "high"
+        reputationScore:
+          type: number
+          minimum: 0
+          maximum: 1
+          example: 0.85
+        createdAt:
+          type: string
+          format: date-time
+        lastActive:
+          type: string
+          format: date-time
+        isActive:
+          type: boolean
+          example: true
+
+    CreateTrustIdentityRequest:
+      type: object
+      required: [username, email]
+      properties:
+        username:
+          type: string
+          minLength: 3
+          maxLength: 50
+        email:
+          type: string
+          format: email
+        displayName:
+          type: string
+        avatarUrl:
+          type: string
+          format: uri
+
+    TrustVerification:
+      type: object
+      properties:
+        verificationId:
+          type: string
+        identityId:
+          type: string
+        verifierId:
+          type: string
+        verificationType:
+          type: string
+          enum: [email, phone, document, social, blockchain]
+        status:
+          type: string
+          enum: [pending, verified, failed, expired]
+        confidence:
+          type: number
+          minimum: 0
+          maximum: 1
+        evidence:
+          type: object
+          description: Verification evidence data
+        createdAt:
+          type: string
+          format: date-time
+        verifiedAt:
+          type: string
+          format: date-time
+
+    ReputationScore:
+      type: object
+      properties:
+        identityId:
+          type: string
+        score:
+          type: number
+          minimum: 0
+          maximum: 1
+        level:
+          type: string
+          enum: [poor, low, medium, high, excellent]
+        factors:
+          type: object
+          properties:
+            interactionCount:
+              type: integer
+            responseTime:
+              type: number
+            qualityScore:
+              type: number
+            verificationLevel:
+              type: integer
+        lastUpdated:
+          type: string
+          format: date-time
+        history:
+          type: array
+          items:
+            type: object
+            properties:
+              score:
+                type: number
+              timestamp:
+                type: string
+                format: date-time
+              reason:
+                type: string
+
+    TrustRecommendation:
+      type: object
+      properties:
+        targetIdentityId:
+          type: string
+        score:
+          type: number
+          minimum: 0
+          maximum: 1
+        reason:
+          type: string
+        confidence:
+          type: number
+          minimum: 0
+          maximum: 1
+        factors:
+          type: array
+          items:
+            type: string
+
+    # Messaging Schemas
+    Message:
+      type: object
+      properties:
+        messageId:
+          type: string
+        roomId:
+          type: string
+        userId:
+          type: string
+        content:
+          type: string
+        messageType:
+          type: string
+          enum: [text, image, file, audio, video, location]
+        timestamp:
+          type: string
+          format: date-time
+        edited:
+          type: boolean
+        editedAt:
+          type: string
+          format: date-time
+        deleted:
+          type: boolean
+        deletedAt:
+          type: string
+          format: date-time
+        reactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessageReaction'
+        thread:
+          type: object
+          properties:
+            threadId:
+              type: string
+            parentMessageId:
+              type: string
+
+    SendMessageRequest:
+      type: object
+      required: [roomId, content]
+      properties:
+        roomId:
+          type: string
+        content:
+          type: string
+        messageType:
+          type: string
+          enum: [text, image, file, audio, video, location]
+          default: text
+        threadId:
+          type: string
+          description: Reply to a message in a thread
+        replyTo:
+          type: string
+          description: Reply to a specific message
+
+    MessageReaction:
+      type: object
+      properties:
+        userId:
+          type: string
+        emoji:
+          type: string
+          example: "👍"
+        timestamp:
+          type: string
+          format: date-time
+
+    # Room Schemas
+    Room:
+      type: object
+      properties:
+        roomId:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+          enum: [private, public, direct, group]
+        members:
+          type: array
+          items:
+            type: string
+        admins:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        settings:
+          type: object
+          properties:
+            encryption:
+              type: boolean
+            moderation:
+              type: boolean
+            history:
+              type: boolean
+            guestAccess:
+              type: boolean
+
+    CreateRoomRequest:
+      type: object
+      required: [name, type]
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+          enum: [private, public, group]
+        members:
+          type: array
+          items:
+            type: string
+        settings:
+          type: object
+
+    # Dashboard Schemas
+    DashboardWidget:
+      type: object
+      properties:
+        widgetId:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum: [metricCard, chart, table, alertList, systemStatus, userActivity, performanceGraph, logViewer, customHtml]
+        configuration:
+          type: object
+        position:
+          type: object
+          properties:
+            x:
+              type: number
+            y:
+              type: number
+        size:
+          type: object
+          properties:
+            width:
+              type: number
+            height:
+              type: number
+        isVisible:
+          type: boolean
+        refreshInterval:
+          type: integer
+          description: Refresh interval in seconds
+
+    WidgetData:
+      type: object
+      properties:
+        widgetId:
+          type: string
+        data:
+          type: object
+          description: Widget-specific data
+        metadata:
+          type: object
+          properties:
+            lastUpdated:
+              type: string
+              format: date-time
+            refreshInterval:
+              type: integer
+        lastUpdated:
+          type: string
+          format: date-time
+
+    DashboardLayout:
+      type: object
+      properties:
+        layoutId:
+          type: string
+        name:
+          type: string
+        widgetIds:
+          type: array
+          items:
+            type: string
+        type:
+          type: string
+          enum: [grid, flex, custom]
+        configuration:
+          type: object
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+
+    # Analytics Schemas
+    MetricsResponse:
+      type: object
+      properties:
+        metric:
+          type: string
+        timeRange:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              timestamp:
+                type: string
+                format: date-time
+              value:
+                type: number
+              label:
+                type: string
+
+    AnalyticsReport:
+      type: object
+      properties:
+        reportId:
+          type: string
+        reportType:
+          type: string
+        generatedAt:
+          type: string
+          format: date-time
+        period:
+          type: object
+          properties:
+            startDate:
+              type: string
+              format: date-time
+            endDate:
+              type: string
+              format: date-time
+        summary:
+          type: object
+        details:
+          type: object
+        recommendations:
+          type: array
+          items:
+            type: string
+
+    # Security Schemas
+    SecurityAlert:
+      type: object
+      properties:
+        alertId:
+          type: string
+        title:
+          type: string
+        message:
+          type: string
+        severity:
+          type: string
+          enum: [info, warning, critical]
+        status:
+          type: string
+          enum: [active, acknowledged, resolved]
+        source:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        acknowledgedBy:
+          type: string
+        acknowledgedAt:
+          type: string
+          format: date-time
+
+    SecurityScanResult:
+      type: object
+      properties:
+        scanId:
+          type: string
+        scanType:
+          type: string
+        status:
+          type: string
+          enum: [running, completed, failed]
+        startedAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+        findings:
+          type: array
+          items:
+            type: object
+            properties:
+              severity:
+                type: string
+              description:
+                type: string
+              recommendation:
+                type: string
+
+    # Common Schemas
+    User:
+      type: object
+      properties:
+        userId:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        avatarUrl:
+          type: string
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        lastLogin:
+          type: string
+          format: date-time
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        code:
+          type: integer
+        details:
+          type: object
+        timestamp:
+          type: string
+          format: date-time
+
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+        limit:
+          type: integer
+        total:
+          type: integer
+        pages:
+          type: integer
+        hasNext:
+          type: boolean
+        hasPrev:
+          type: boolean
+
+tags:
+  - name: Authentication
+    description: User authentication and authorization
+  - name: Trust Network
+    description: Trust network management and verification
+  - name: Messaging
+    description: Real-time messaging and communication
+  - name: Rooms
+    description: Room management and configuration
+  - name: Dashboard
+    description: Dashboard widgets and layouts
+  - name: Analytics
+    description: System analytics and reporting
+  - name: Security
+    description: Security monitoring and alerts

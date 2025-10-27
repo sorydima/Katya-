@@ -42,7 +42,7 @@ CryptoStore _$CryptoStoreFromJson(Map<String, dynamic> json) => CryptoStore(
               const {},
       oneTimeKeysCounts:
           (json['oneTimeKeysCounts'] as Map<String, dynamic>?)?.map(
-                (k, e) => MapEntry(k, e as int),
+                (k, e) => MapEntry(k, (e as num).toInt()),
               ) ??
               const {},
     );

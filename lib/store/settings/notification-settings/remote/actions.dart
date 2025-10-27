@@ -1,11 +1,10 @@
-import 'package:redux/redux.dart';
-import 'package:redux_thunk/redux_thunk.dart';
-
 import 'package:katya/global/libs/matrix/index.dart';
 import 'package:katya/global/print.dart';
 import 'package:katya/global/values.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/settings/actions.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
 /// Fetch Remote Push Notification Service Rules
 ThunkAction<AppState> fetchNotifications() {

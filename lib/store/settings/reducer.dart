@@ -40,31 +40,26 @@ SettingsStore settingsReducer([
       );
     case SetMessageSize:
       return state.copyWith(
-        themeSettings:
-            state.themeSettings.copyWith(messageSize: action.messageSize),
+        themeSettings: state.themeSettings.copyWith(messageSize: action.messageSize),
       );
     case SetAvatarShape:
       return state.copyWith(
-        themeSettings:
-            state.themeSettings.copyWith(avatarShape: action.avatarShape),
+        themeSettings: state.themeSettings.copyWith(avatarShape: action.avatarShape),
       );
     case SetMainFabType:
-      final _action = action as SetMainFabType;
+      final action0 = action as SetMainFabType;
       return state.copyWith(
-        themeSettings:
-            state.themeSettings.copyWith(mainFabType: _action.fabType),
+        themeSettings: state.themeSettings.copyWith(mainFabType: action0.fabType),
       );
     case SetMainFabLocation:
-      final _action = action as SetMainFabLocation;
+      final action0 = action as SetMainFabLocation;
       return state.copyWith(
-        themeSettings:
-            state.themeSettings.copyWith(mainFabLocation: _action.fabLocation),
+        themeSettings: state.themeSettings.copyWith(mainFabLocation: action0.fabLocation),
       );
     case SetMainFabLabels:
-      final _action = action as SetMainFabLabels;
+      final action0 = action as SetMainFabLabels;
       return state.copyWith(
-        themeSettings:
-            state.themeSettings.copyWith(mainFabLabel: _action.fabLabels),
+        themeSettings: state.themeSettings.copyWith(mainFabLabel: action0.fabLabels),
       );
     case SetDevices:
       return state.copyWith(
@@ -101,8 +96,7 @@ SettingsStore settingsReducer([
       );
     case SetThemeType:
       return state.copyWith(
-        themeSettings:
-            state.themeSettings.copyWith(themeType: action.themeType),
+        themeSettings: state.themeSettings.copyWith(themeType: action.themeType),
       );
     case ToggleEnterSend:
       return state.copyWith(
@@ -140,86 +134,101 @@ SettingsStore settingsReducer([
       return state.copyWith(
         autoDownloadEnabled: !state.autoDownloadEnabled,
       );
+    case ToggleAutoDownloadImages:
+      return state.copyWith(
+        autoDownloadImages: !state.autoDownloadImages,
+      );
+    case ToggleAutoDownloadAudio:
+      return state.copyWith(
+        autoDownloadAudio: !state.autoDownloadAudio,
+      );
+    case ToggleAutoDownloadVideo:
+      return state.copyWith(
+        autoDownloadVideo: !state.autoDownloadVideo,
+      );
+    case ToggleAutoDownloadFiles:
+      return state.copyWith(
+        autoDownloadFiles: !state.autoDownloadFiles,
+      );
     case SetLastBackupMillis:
-      final _action = action as SetLastBackupMillis;
+      final action0 = action as SetLastBackupMillis;
       return state.copyWith(
         privacySettings: state.privacySettings.copyWith(
-          lastBackupMillis: _action.timestamp,
+          lastBackupMillis: action0.timestamp,
         ),
       );
     case SetKeyBackupPassword:
       // NOTE: saved to cold storage only instead of state
       return state;
     case SetKeyBackupLocation:
-      final _action = action as SetKeyBackupLocation;
+      final action0 = action as SetKeyBackupLocation;
       return state.copyWith(
         storageSettings: state.storageSettings.copyWith(
-          keyBackupLocation: _action.location,
+          keyBackupLocation: action0.location,
         ),
       );
     case SetKeyBackupInterval:
-      final _action = action as SetKeyBackupInterval;
+      final action0 = action as SetKeyBackupInterval;
       return state.copyWith(
         privacySettings: state.privacySettings.copyWith(
-          keyBackupInterval: _action.duration,
+          keyBackupInterval: action0.duration,
           lastBackupMillis: DateTime.now().millisecondsSinceEpoch.toString(),
         ),
       );
     case ToggleProxy:
-      final _state = state.copyWith(
+      final state0 = state.copyWith(
         proxySettings: state.proxySettings.copyWith(
           enabled: !state.proxySettings.enabled,
         ),
       );
 
-      httpClient = createClient(proxySettings: _state.proxySettings);
+      httpClient = createClient(proxySettings: state0.proxySettings);
 
-      return _state;
+      return state0;
     case SetProxyHost:
-      final _state = state.copyWith(
+      final state0 = state.copyWith(
         proxySettings: state.proxySettings.copyWith(host: action.host),
       );
 
-      httpClient = createClient(proxySettings: _state.proxySettings);
+      httpClient = createClient(proxySettings: state0.proxySettings);
 
-      return _state;
+      return state0;
     case SetProxyPort:
-      final _state = state.copyWith(
+      final state0 = state.copyWith(
         proxySettings: state.proxySettings.copyWith(port: action.port),
       );
 
-      httpClient = createClient(proxySettings: _state.proxySettings);
+      httpClient = createClient(proxySettings: state0.proxySettings);
 
-      return _state;
+      return state0;
     case ToggleProxyAuthentication:
-      final _state = state.copyWith(
-        proxySettings: state.proxySettings.copyWith(
-            authenticationEnabled: !state.proxySettings.authenticationEnabled),
+      final state0 = state.copyWith(
+        proxySettings: state.proxySettings.copyWith(authenticationEnabled: !state.proxySettings.authenticationEnabled),
       );
 
-      httpClient = createClient(proxySettings: _state.proxySettings);
+      httpClient = createClient(proxySettings: state0.proxySettings);
 
-      return _state;
+      return state0;
     case SetProxyUsername:
-      final _state = state.copyWith(
+      final state0 = state.copyWith(
         proxySettings: state.proxySettings.copyWith(username: action.username),
       );
 
-      httpClient = createClient(proxySettings: _state.proxySettings);
+      httpClient = createClient(proxySettings: state0.proxySettings);
 
-      return _state;
+      return state0;
     case SetProxyPassword:
-      final _state = state.copyWith(
+      final state0 = state.copyWith(
         proxySettings: state.proxySettings.copyWith(password: action.password),
       );
 
-      httpClient = createClient(proxySettings: _state.proxySettings);
+      httpClient = createClient(proxySettings: state0.proxySettings);
 
-      return _state;
+      return state0;
     case SetReadReceipts:
-      final _action = action as SetReadReceipts;
+      final action0 = action as SetReadReceipts;
       return state.copyWith(
-        readReceipts: _action.readReceipts,
+        readReceipts: action0.readReceipts,
       );
     case ToggleMembershipEvents:
       return state.copyWith(
@@ -231,8 +240,7 @@ SettingsStore settingsReducer([
       );
     case ToggleNotifications:
       return state.copyWith(
-        notificationSettings: state.notificationSettings
-            .copyWith(enabled: !state.notificationSettings.enabled),
+        notificationSettings: state.notificationSettings.copyWith(enabled: !state.notificationSettings.enabled),
       );
     case SetNotificationSettings:
       return state.copyWith(notificationSettings: action.settings);

@@ -6,12 +6,12 @@ import 'package:katya/store/hooks.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/user/actions.dart';
 import 'package:katya/store/user/model.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
 import 'package:katya/views/widgets/containers/card-section.dart';
 import 'package:katya/views/widgets/dialogs/dialog-color-picker.dart';
 import 'package:katya/views/widgets/dialogs/dialog-confirm.dart';
-import 'package:katya/utils/theme_compatibility.dart';
 
 class UserProfileArguments {
   final User? user;
@@ -30,7 +30,7 @@ class UserProfileScreen extends HookWidget {
     final user = arguments.user!;
 
     final scaffordBackgroundColor = Theme.of(context).brightness == Brightness.light
-        ? Color(AppColors.greyLightest)
+        ? const Color(AppColors.greyLightest)
         : Theme.of(context).scaffoldBackgroundColor;
 
     final width = MediaQuery.of(context).size.width;
@@ -121,9 +121,9 @@ class UserProfileScreen extends HookWidget {
             title: Row(
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(left: 8),
+                  margin: const EdgeInsets.only(left: 8),
                   child: IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.white),
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
                     onPressed: () => Navigator.pop(context, false),
                   ),
                 ),
@@ -131,7 +131,7 @@ class UserProfileScreen extends HookWidget {
                   child: Text(
                     user.displayName ?? user.userId!,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w100,
                     ),
@@ -169,11 +169,11 @@ class UserProfileScreen extends HookWidget {
           SliverList(
               delegate: SliverChildListDelegate([
             Container(
-              padding: EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.only(bottom: 12),
               child: Column(
                 children: <Widget>[
                   CardSection(
-                    padding: EdgeInsets.symmetric(vertical: 12),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -213,7 +213,7 @@ class UserProfileScreen extends HookWidget {
                     ),
                   ),
                   CardSection(
-                    padding: EdgeInsets.symmetric(vertical: 12),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
                     child: Column(
                       children: [
                         Container(
@@ -229,9 +229,9 @@ class UserProfileScreen extends HookWidget {
                           enabled: false,
                           contentPadding: contentPadding,
                           onTap: () => onPickColor(originalColor: userColor.value),
-                          title: Text('Color'),
+                          title: const Text('Color'),
                           trailing: Container(
-                            padding: EdgeInsets.only(right: 16),
+                            padding: const EdgeInsets.only(right: 16),
                             child: CircleAvatar(
                               radius: 16,
                               backgroundColor: userColor,
@@ -256,12 +256,12 @@ class UserProfileScreen extends HookWidget {
                         ListTile(
                           enabled: false,
                           contentPadding: contentPadding,
-                          title: Text('View Sessions'),
+                          title: const Text('View Sessions'),
                         ),
                         ListTile(
                           onTap: () => onBlockUser(),
                           contentPadding: contentPadding,
-                          title: Text('Block'),
+                          title: const Text('Block'),
                         ),
                       ],
                     ),

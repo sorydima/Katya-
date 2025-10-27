@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/store/index.dart';
+import 'package:redux/redux.dart';
 
 final _chatColorCache = <String, Color>{};
 

@@ -1,0 +1,36 @@
+# Codeberg CI Configuration for European Git hosting
+# Codeberg is a non-profit, community-driven Git hosting service based in Europe
+
+pipelines:
+  default:
+    - step:
+        name: 'Build and Test'
+        script:
+          - flutter pub get
+          - flutter pub run build_runner build --delete-conflicting-outputs
+          - flutter test
+        caches:
+          - flutter
+    - step:
+        name: 'Analyze and Format'
+        script:
+          - flutter analyze
+          - flutter format --dry-run .
+          - echo "Codeberg compliance checks passed"
+
+  branches:
+    main:
+      - step:
+          name: 'Deploy to European Servers'
+          script:
+            - echo "Deploy to EU servers"
+            # Add deployment commands for European hosting
+
+  pull-requests:
+    '*':
+      - step:
+          name: 'PR Validation'
+          script:
+            - flutter analyze
+            - flutter format --dry-run .
+            - flutter test

@@ -1,0 +1,306 @@
+# Конфигурация для системы экспорта и импорта данных
+
+# Настройки экспорта
+export:
+  # Путь по умолчанию для экспорта
+  default_path: "./exports"
+  
+  # Максимальный размер файла (в байтах)
+  max_file_size: 104857600  # 100MB
+  
+  # Форматы по умолчанию
+  default_formats:
+    - json
+    - csv
+    - xml
+  
+  # Настройки JSON
+  json:
+    pretty_print: true
+    include_metadata: true
+  
+  # Настройки CSV
+  csv:
+    delimiter: ","
+    include_headers: true
+    escape_quotes: true
+  
+  # Настройки XML
+  xml:
+    pretty_print: true
+    root_element: "data"
+    include_declaration: true
+
+# Настройки импорта
+import:
+  # Путь по умолчанию для импорта
+  default_path: "./imports"
+  
+  # Максимальный размер файла (в байтах)
+  max_file_size: 104857600  # 100MB
+  
+  # Валидация по умолчанию
+  validate_by_default: true
+  
+  # Остановка при ошибке
+  stop_on_error: false
+  
+  # Настройки CSV
+  csv:
+    delimiter: ","
+    has_headers: true
+    validate_data: true
+  
+  # Настройки JSON
+  json:
+    validate_schema: true
+    preserve_metadata: true
+  
+  # Настройки XML
+  xml:
+    validate_schema: true
+    root_element: "data"
+
+# Настройки массовых операций
+bulk_operations:
+  # Размер пакета для обработки
+  batch_size: 1000
+  
+  # Максимальное количество файлов для массового импорта
+  max_files: 100
+  
+  # Таймаут для операций (в секундах)
+  timeout: 300
+  
+  # Параллельная обработка
+  parallel_processing: true
+  max_parallel_tasks: 5
+
+# Настройки валидации
+validation:
+  # Строгая валидация
+  strict_mode: false
+  
+  # Валидация схемы
+  validate_schema: true
+  
+  # Валидация бизнес-правил
+  validate_business_rules: true
+  
+  # Валидация целостности данных
+  validate_integrity: true
+  
+  # Максимальное количество ошибок для отчета
+  max_errors: 1000
+
+# Настройки синхронизации
+sync:
+  # Режим синхронизации по умолчанию
+  default_mode: "merge"  # merge, replace, append
+  
+  # Разрешение конфликтов
+  conflict_resolution:
+    strategy: "source"  # source, target, manual
+    
+  # Создание резервных копий
+  create_backup: true
+  backup_path: "./backups"
+
+# Настройки миграции
+migration:
+  # Создание резервных копий
+  create_backup: true
+  backup_path: "./migration_backups"
+  
+  # Валидация после миграции
+  validate_after_migration: true
+  
+  # Трансформация данных
+  apply_transformations: true
+
+# Схемы данных
+schemas:
+  # Схема для пользователей
+  users:
+    type: "object"
+    required: ["id", "username", "email"]
+    properties:
+      id:
+        type: "integer"
+        minimum: 1
+      username:
+        type: "string"
+        minLength: 3
+        maxLength: 50
+        pattern: "^[a-zA-Z0-9_]+$"
+      email:
+        type: "email"
+        maxLength: 255
+      created_at:
+        type: "date"
+      is_active:
+        type: "boolean"
+  
+  # Схема для сообщений
+  messages:
+    type: "object"
+    required: ["id", "content", "sender_id", "room_id"]
+    properties:
+      id:
+        type: "integer"
+        minimum: 1
+      content:
+        type: "string"
+        minLength: 1
+        maxLength: 10000
+      sender_id:
+        type: "integer"
+        minimum: 1
+      room_id:
+        type: "integer"
+        minimum: 1
+      created_at:
+        type: "date"
+      message_type:
+        type: "string"
+        enum: ["text", "image", "file", "system"]
+  
+  # Схема для комнат
+  rooms:
+    type: "object"
+    required: ["id", "name", "type"]
+    properties:
+      id:
+        type: "integer"
+        minimum: 1
+      name:
+        type: "string"
+        minLength: 1
+        maxLength: 255
+      type:
+        type: "string"
+        enum: ["direct", "group", "public"]
+      description:
+        type: "string"
+        maxLength: 1000
+      created_at:
+        type: "date"
+      is_encrypted:
+        type: "boolean"
+
+# Бизнес-правила
+business_rules:
+  # Правило для пользователей
+  user_rules:
+    - name: "username_uniqueness"
+      type: "custom"
+      message: "Username must be unique"
+      validator: "check_username_uniqueness"
+    
+    - name: "email_format"
+      type: "format"
+      field: "email"
+      pattern: "^[^@]+@[^@]+\\.[^@]+$"
+      message: "Invalid email format"
+  
+  # Правило для сообщений
+  message_rules:
+    - name: "content_length"
+      type: "range"
+      field: "content"
+      minValue: 1
+      maxValue: 10000
+      message: "Message content must be between 1 and 10000 characters"
+    
+    - name: "sender_exists"
+      type: "custom"
+      message: "Sender must exist"
+      validator: "check_sender_exists"
+
+# Ограничения целостности
+integrity_constraints:
+  # Ограничения для сообщений
+  message_constraints:
+    - name: "sender_fk"
+      type: "foreignKey"
+      field: "sender_id"
+      referenceTable: "users"
+      referenceField: "id"
+      description: "Sender must be a valid user"
+    
+    - name: "room_fk"
+      type: "foreignKey"
+      field: "room_id"
+      referenceTable: "rooms"
+      referenceField: "id"
+      description: "Room must be a valid room"
+  
+  # Ограничения для комнат
+  room_constraints:
+    - name: "room_name_unique"
+      type: "unique"
+      fields: ["name", "type"]
+      description: "Room name must be unique within the same type"
+
+# Настройки безопасности
+security:
+  # Шифрование экспортируемых файлов
+  encrypt_exports: false
+  encryption_key: ""
+  
+  # Подписание файлов
+  sign_files: false
+  signing_key: ""
+  
+  # Ограничения доступа
+  access_control:
+    require_authentication: true
+    allowed_roles: ["admin", "user"]
+    ip_whitelist: []
+  
+  # Аудит операций
+  audit_logging: true
+  log_path: "./logs/export_import.log"
+
+# Настройки производительности
+performance:
+  # Кэширование
+  enable_caching: true
+  cache_ttl: 3600  # 1 час
+  
+  # Сжатие файлов
+  compress_files: true
+  compression_level: 6
+  
+  # Потоковая обработка
+  stream_processing: true
+  buffer_size: 8192
+  
+  # Параллельная обработка
+  parallel_processing: true
+  max_workers: 4
+
+# Настройки уведомлений
+notifications:
+  # Email уведомления
+  email:
+    enabled: false
+    smtp_server: ""
+    smtp_port: 587
+    username: ""
+    password: ""
+    from_address: ""
+    to_addresses: []
+  
+  # Webhook уведомления
+  webhooks:
+    enabled: false
+    endpoints: []
+  
+  # События для уведомлений
+  events:
+    export_completed: true
+    export_failed: true
+    import_completed: true
+    import_failed: true
+    validation_failed: true

@@ -222,6 +222,34 @@ abstract class Events {
     return await json.decode(response.body);
   }
 
+  /// Send arbitrary room event (non-state)
+  /// PUT /_matrix/client/r0/rooms/{roomId}/send/{eventType}/{txnId}
+  static Future<dynamic> sendRoomEvent({
+    String? protocol = 'https://',
+    String? homeserver = Values.homeserverDefault,
+    String? accessToken,
+    String? roomId,
+    String? eventType,
+    String? trxId,
+    Map? content,
+  }) async {
+    final String url =
+        '$protocol$homeserver/_matrix/client/r0/rooms/$roomId/send/$eventType/$trxId';
+
+    final Map<String, String> headers = {
+      'Authorization': 'Bearer $accessToken',
+      ...Values.defaultHeaders,
+    };
+
+    final response = await httpClient.put(
+      Uri.parse(url),
+      headers: headers,
+      body: json.encode(content ?? {}),
+    );
+
+    return await json.decode(response.body);
+  }
+
   /// Send Reaction
   ///
   /// https://matrix.org/docs/spec/client_server/latest#put-matrix-client-r0-rooms-roomid-send-eventtype-txnid

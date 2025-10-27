@@ -1,8 +1,8 @@
-import 'package:redux/redux.dart';
-import 'package:redux_thunk/redux_thunk.dart';
 import 'package:katya/global/notifications.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/sync/service/service.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
 ThunkAction<AppState> startSyncService() {
   return (Store<AppState> store) async {

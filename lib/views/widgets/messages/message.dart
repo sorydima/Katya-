@@ -1,8 +1,13 @@
+import 'dart:io';
+
+import 'package:any_link_preview/any_link_preview.dart';
+import 'package:chewie/chewie.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:just_audio/just_audio.dart';
 // import 'package:swipeable/swipeable.dart'; // Temporarily disabled for compatibility
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
@@ -14,6 +19,7 @@ import 'package:katya/global/weburl.dart';
 import 'package:katya/store/events/messages/model.dart';
 import 'package:katya/store/events/messages/selectors.dart';
 import 'package:katya/store/index.dart';
+import 'package:katya/store/media/actions.dart';
 import 'package:katya/store/settings/models.dart';
 import 'package:katya/store/settings/theme-settings/model.dart';
 import 'package:katya/views/home/chat/media-full-screen.dart';
@@ -21,8 +27,20 @@ import 'package:katya/views/widgets/avatars/avatar.dart';
 import 'package:katya/views/widgets/dialogs/dialog-confirm.dart';
 import 'package:katya/views/widgets/image-matrix.dart';
 import 'package:katya/views/widgets/input/text-field-edit.dart';
+import 'package:katya/views/widgets/messages/message_edit_dialog.dart';
 import 'package:katya/views/widgets/messages/reaction-row.dart';
 import 'package:katya/views/widgets/messages/styles.dart';
+import 'package:open_filex/open_filex.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
+import 'package:pdfx/pdfx.dart';
+import 'package:video_player/video_player.dart';
+
+String? _firstUrl(String text) {
+  final exp = RegExp(r'(https?:\/\/[^\s]+)', caseSensitive: false);
+  final match = exp.firstMatch(text);
+  return match?.group(0);
+}
 
 const MESSAGE_MARGIN_VERTICAL_LARGE = 6.0;
 const MESSAGE_MARGIN_VERTICAL_NORMAL = 4.0;
@@ -30,7 +48,7 @@ const MESSAGE_MARGIN_VERTICAL_SMALL = 1.0;
 
 class MessageWidget extends StatelessWidget {
   const MessageWidget({
-    Key? key,
+    super.key,
     required this.message,
     this.editorController,
     this.isUserSent = false,
@@ -57,7 +75,7 @@ class MessageWidget extends StatelessWidget {
     this.onPressAvatar,
     this.onInputReaction,
     this.onToggleReaction,
-  }) : super(key: key);
+  });
 
   final bool messageOnly;
   final bool isNewContext;
@@ -80,17 +98,99 @@ class MessageWidget extends StatelessWidget {
 
   final Message message;
   final ThemeType themeType;
+
+  bool get mounted => true; // Add mounted getter for context safety
+
   final TextEditingController? editorController;
 
   final Function onSwipe;
   final Function onResend;
   final Function? onSendEdit;
+  final Function? onLongPress;
   final Function? onPressAvatar;
   final Function? onInputReaction;
   final Function? onToggleReaction;
-  final void Function(Message)? onLongPress;
+  final Function(Message)? onEditMessage;
 
-  buildReactionsInput(
+  Widget _buildContextMenu() {
+    final store = StoreProvider.of<AppState>(context);
+    final user = store.state.authStore.user;
+    final isOwnMessage = message.senderId == user.userId;
+    final canEdit = isOwnMessage && message.msgtype == 'm.text';
+
+    return PopupMenuButton<String>(
+      onSelected: (value) async {
+        if (value == 'copy') {
+          await Clipboard.setData(ClipboardData(text: message.body ?? ''));
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Message copied to clipboard')),
+            );
+          }
+        } else if (value == 'edit') {
+          final room = store.state.roomStore.rooms[message.roomId];
+          if (room != null) {
+            final result = await showMessageEditDialog(
+              context: context,
+              message: message,
+              room: room,
+            );
+
+            if (result == true && onEditMessage != null) {
+              onEditMessage!(message);
+            }
+          }
+        } else if (value == 'delete') {
+          // Show delete confirmation dialog
+          final confirmed = await showDialog<bool>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Delete Message'),
+              content: const Text('Are you sure you want to delete this message?'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text('CANCEL'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: const Text('DELETE', style: TextStyle(color: Colors.red)),
+                ),
+              ],
+            ),
+          );
+
+          if (confirmed == true && onLongPress != null) {
+            onLongPress!(message);
+          }
+        }
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+        const PopupMenuItem<String>(
+          value: 'copy',
+          child: Text('Copy'),
+        ),
+        if (canEdit)
+          const PopupMenuItem<String>(
+            value: 'edit',
+            child: Text('Edit'),
+          ),
+        if (isOwnMessage)
+          const PopupMenuItem<String>(
+            value: 'delete',
+            child: Text('Delete', style: TextStyle(color: Colors.red)),
+          ),
+      ],
+    );
+  }
+
+  // Add build method to ensure the widget is properly built
+  @override
+  Widget build(BuildContext context) {
+    return _buildMessageWidget(context);
+  }
+
+  Widget buildReactionsInput(
     BuildContext context,
     MainAxisAlignment alignment, {
     bool isUserSent = false,
@@ -102,14 +202,14 @@ class MessageWidget extends StatelessWidget {
           width: 36,
           height: Dimensions.iconSizeLarge,
           decoration: BoxDecoration(
-            color: Color(AppColors.greyDefault),
+            color: const Color(AppColors.greyDefault),
             borderRadius: BorderRadius.circular(Dimensions.iconSizeLarge),
             border: Border.all(
               color: Colors.white,
               width: 1,
             ),
           ),
-          child: Icon(
+          child: const Icon(
             Icons.tag_faces,
             size: 22,
             color: Colors.white,
@@ -131,11 +231,11 @@ class MessageWidget extends StatelessWidget {
     );
   }
 
-  onSwipeMessage(Message message) {
+  void onSwipeMessage(Message message) {
     onSwipe(message);
   }
 
-  onConfirmLink(BuildContext context, String? url) {
+  void onConfirmLink(BuildContext context, String? url) {
     showDialog(
       context: context,
       builder: (dialogContext) => DialogConfirm(
@@ -152,7 +252,7 @@ class MessageWidget extends StatelessWidget {
     );
   }
 
-  onViewFullscreen(
+  void onViewFullscreen(
     BuildContext context, {
     required Uint8List bytes,
     required String? eventId,
@@ -172,8 +272,7 @@ class MessageWidget extends StatelessWidget {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildMessageWidget(BuildContext context) {
     final message = this.message;
     final selected = selectedMessageId != null && selectedMessageId == message.id;
 
@@ -183,11 +282,20 @@ class MessageWidget extends StatelessWidget {
     final showAvatar = !isLastSender && !isUserSent && !messageOnly;
     final body = selectEventBody(message);
     final isMedia = selectIsMedia(message);
+    final isImage = isMedia && (message.msgtype == MatrixMessageTypes.image);
+    final isAudio = isMedia && (message.msgtype == MatrixMessageTypes.audio);
+    final isVideo = isMedia && (message.msgtype == MatrixMessageTypes.video);
+    final isFile = isMedia && (message.msgtype == MatrixMessageTypes.file);
+    final settings = StoreProvider.of<AppState>(context).state.settingsStore;
+    final autoImg = settings.autoDownloadImages;
+    final autoAud = settings.autoDownloadAudio;
+    final autoVid = settings.autoDownloadVideo;
+    final autoFil = settings.autoDownloadFiles;
     final removePadding = isMedia || (isEditing && selected);
 
     var textColor = Colors.white;
     Color anchorColor = Colors.blue;
-    var backgroundColor = Theme.of(context).scaffoldBackgroundColor;
+    final backgroundColor = Theme.of(context).scaffoldBackgroundColor;
     var showSender = !messageOnly && !isUserSent; // nearly always show the sender
     var luminance = this.luminance;
 
@@ -223,12 +331,12 @@ class MessageWidget extends StatelessWidget {
       if (isLastSender) {
         if (isNextSender) {
           // Message in the middle of a sender messages block
-          bubbleMargin = EdgeInsets.symmetric(vertical: MESSAGE_MARGIN_VERTICAL_SMALL);
+          bubbleMargin = const EdgeInsets.symmetric(vertical: MESSAGE_MARGIN_VERTICAL_SMALL);
           bubbleBorder = Styles.bubbleBorderMiddleUser;
           showInfoRow = isNewContext;
         } else {
-          // Message at the beginning of a user sender messages block
-          bubbleMargin = EdgeInsets.only(
+          // Message at the beginning of a sender messages block
+          bubbleMargin = const EdgeInsets.only(
             top: MESSAGE_MARGIN_VERTICAL_LARGE,
             bottom: MESSAGE_MARGIN_VERTICAL_SMALL,
           );
@@ -239,7 +347,7 @@ class MessageWidget extends StatelessWidget {
 
       if (!isLastSender && isNextSender) {
         // End of a sender messages block
-        bubbleMargin = EdgeInsets.only(
+        bubbleMargin = const EdgeInsets.only(
           top: MESSAGE_MARGIN_VERTICAL_SMALL,
           bottom: MESSAGE_MARGIN_VERTICAL_LARGE,
         );
@@ -250,13 +358,13 @@ class MessageWidget extends StatelessWidget {
       if (isLastSender) {
         if (isNextSender) {
           // Message in the middle of a sender messages block
-          bubbleMargin = EdgeInsets.symmetric(vertical: MESSAGE_MARGIN_VERTICAL_SMALL);
+          bubbleMargin = const EdgeInsets.symmetric(vertical: MESSAGE_MARGIN_VERTICAL_SMALL);
           bubbleBorder = Styles.bubbleBorderMiddleSender;
           showSender = false;
           showInfoRow = isNewContext;
         } else {
           // Message at the beginning of a sender messages block
-          bubbleMargin = EdgeInsets.only(top: 8, bottom: MESSAGE_MARGIN_VERTICAL_SMALL);
+          bubbleMargin = const EdgeInsets.only(top: 8, bottom: MESSAGE_MARGIN_VERTICAL_SMALL);
           bubbleBorder = Styles.bubbleBorderTopSender;
           showInfoRow = isNewContext;
         }
@@ -264,7 +372,7 @@ class MessageWidget extends StatelessWidget {
 
       if (!isLastSender && isNextSender) {
         // End of a sender messages block
-        bubbleMargin = EdgeInsets.only(
+        bubbleMargin = const EdgeInsets.only(
           top: MESSAGE_MARGIN_VERTICAL_SMALL,
           bottom: MESSAGE_MARGIN_VERTICAL_LARGE,
         );
@@ -274,10 +382,10 @@ class MessageWidget extends StatelessWidget {
 
     if (isUserSent) {
       if (themeType == ThemeType.Dark) {
-        bubbleColor = Color(AppColors.greyDark);
+        bubbleColor = const Color(AppColors.greyDark);
         luminance = 0.2;
       } else if (themeType != ThemeType.Light) {
-        bubbleColor = Color(AppColors.greyDarkest);
+        bubbleColor = const Color(AppColors.greyDarkest);
         luminance = bubbleColor.computeLuminance();
         luminance = 0.2;
       } else {
@@ -319,7 +427,7 @@ class MessageWidget extends StatelessWidget {
 
     if (message.hasLink) {
       if (bubbleColor.delta(Colors.blue) > 0.85) {
-        anchorColor = Color(AppColors.blueDark);
+        anchorColor = const Color(AppColors.blueDark);
       }
     }
 
@@ -336,7 +444,18 @@ class MessageWidget extends StatelessWidget {
           }
         },
         onLongPress: () {
-          if (onLongPress != null) {
+          if (isUserSent) {
+            showMenu(
+              context: context,
+              position: const RelativeRect.fromLTRB(100, 100, 100, 100), // Position doesn't matter, will be overridden
+              items: [
+                PopupMenuItem(
+                  child: _buildContextMenu(),
+                  onTap: () {},
+                ),
+              ],
+            );
+          } else if (onLongPress != null) {
             HapticFeedback.lightImpact();
             onLongPress!(message);
           }
@@ -371,8 +490,7 @@ class MessageWidget extends StatelessWidget {
                             }
                           },
                           child: Container(
-                            margin: const EdgeInsets.only(right: 8)
-                                .copyWith(bottom: hasReactions ? 16 : 0),
+                            margin: const EdgeInsets.only(right: 8).copyWith(bottom: hasReactions ? 16 : 0),
                             child: Avatar(
                               margin: EdgeInsets.zero,
                               padding: EdgeInsets.zero,
@@ -392,8 +510,7 @@ class MessageWidget extends StatelessWidget {
                             Container(
                               constraints: BoxConstraints(
                                 // NOTE: issue shrinking the message based on width
-                                maxWidth:
-                                    !isMedia ? double.infinity : Dimensions.mediaSizeMaxMessage,
+                                maxWidth: !isMedia ? double.infinity : Dimensions.mediaSizeMaxMessage,
                                 // NOTE: prevents exposing the reply icon
                                 minWidth: 72,
                               ),
@@ -444,33 +561,101 @@ class MessageWidget extends StatelessWidget {
                                   Visibility(
                                     visible: isMedia,
                                     maintainState: false,
-                                    child: ClipRRect(
-                                      borderRadius: showSender
-                                          ? BorderRadius.zero
-                                          : BorderRadius.only(
-                                              topLeft: bubbleBorder.topLeft,
-                                              topRight: bubbleBorder.topRight,
+                                    child: Builder(
+                                      builder: (_) {
+                                        if (isImage) {
+                                          return ClipRRect(
+                                            borderRadius: showSender
+                                                ? BorderRadius.zero
+                                                : BorderRadius.only(
+                                                    topLeft: bubbleBorder.topLeft,
+                                                    topRight: bubbleBorder.topRight,
+                                                  ),
+                                            child: MatrixImage(
+                                              fileName: body,
+                                              mxcUri: message.url,
+                                              thumbnail: false,
+                                              autodownload: autoImg,
+                                              fit: BoxFit.cover,
+                                              rebuild: true,
+                                              onPressImage: (Uint8List bytes) => onViewFullscreen(context,
+                                                  filename: body,
+                                                  bytes: bytes,
+                                                  eventId: message.id,
+                                                  roomId: message.roomId),
+                                              width: Dimensions.mediaSizeMaxMessage,
+                                              height: Dimensions.mediaSizeMaxMessage,
+                                              fallbackColor: Colors.transparent,
+                                              loadingPadding: 32,
                                             ),
-                                      child: MatrixImage(
-                                        fileName: body,
-                                        mxcUri: message.url,
-                                        thumbnail: false,
-                                        autodownload: StoreProvider.of<AppState>(context)
-                                            .state
-                                            .settingsStore
-                                            .autoDownloadEnabled,
-                                        fit: BoxFit.cover,
-                                        rebuild: true,
-                                        onPressImage: (Uint8List bytes) => onViewFullscreen(context,
+                                          );
+                                        }
+
+                                        Future<void> openMxc(String? mxcUri, String? filename) async {
+                                          if (mxcUri == null) return;
+                                          final store = StoreProvider.of<AppState>(context);
+                                          var data = store.state.mediaStore.mediaCache[mxcUri];
+                                          if (data == null) {
+                                            await store.dispatch(fetchMedia(mxcUri: mxcUri));
+                                            data = store.state.mediaStore.mediaCache[mxcUri];
+                                          }
+                                          if (data == null) return;
+                                          final dir = await getTemporaryDirectory();
+                                          final safeName = (filename == null || filename.isEmpty) ? 'media' : filename;
+                                          final filePath = path.join(dir.path, safeName);
+                                          final file = File(filePath);
+                                          await file.writeAsBytes(data, flush: true);
+                                          await OpenFilex.open(file.path);
+                                        }
+
+                                        if (isAudio) {
+                                          return _InlineAudioPlayer(
+                                            mxcUri: message.url,
                                             filename: body,
-                                            bytes: bytes,
-                                            eventId: message.id,
-                                            roomId: message.roomId),
-                                        width: Dimensions.mediaSizeMaxMessage,
-                                        height: Dimensions.mediaSizeMaxMessage,
-                                        fallbackColor: Colors.transparent,
-                                        loadingPadding: 32,
-                                      ),
+                                            textColor: textColor,
+                                            autoload: autoAud,
+                                          );
+                                        }
+                                        if (isVideo) {
+                                          return _InlineVideoPlayer(
+                                            mxcUri: message.url,
+                                            filename: body,
+                                            autoload: autoVid,
+                                          );
+                                        }
+                                        const icon = Icons.insert_drive_file;
+                                        final label = body.isNotEmpty ? body : 'File';
+                                        final isPdf = (message.info?['mimetype'] ?? '').toString().contains('pdf') ||
+                                            (body.toLowerCase().endsWith('.pdf'));
+                                        if (!autoFil) {
+                                          return ListTile(
+                                            contentPadding: EdgeInsets.zero,
+                                            leading: Icon(icon, color: textColor),
+                                            title: Text(
+                                              label,
+                                              style: TextStyle(color: textColor, fontSize: messageSize),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            trailing: TextButton(
+                                              onPressed: () => openMxc(message.url, body),
+                                              child: const Text('Download'),
+                                            ),
+                                          );
+                                        }
+                                        if (isPdf) {
+                                          return _InlinePdfViewer(mxcUri: message.url, filename: body);
+                                        }
+                                        return ListTile(
+                                          contentPadding: EdgeInsets.zero,
+                                          leading: Icon(icon, color: textColor),
+                                          title: Text(
+                                            label,
+                                            style: TextStyle(color: textColor, fontSize: messageSize),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          onTap: () => openMxc(message.url, body),
+                                        );
+                                      },
                                     ),
                                   ),
                                   Container(
@@ -482,48 +667,69 @@ class MessageWidget extends StatelessWidget {
                                     ),
                                     child: AnimatedCrossFade(
                                       duration: const Duration(milliseconds: 150),
-                                      crossFadeState: isEditing && selected
-                                          ? CrossFadeState.showSecond
-                                          : CrossFadeState.showFirst,
-                                      firstChild: MarkdownBody(
-                                        data: body.trim(),
-                                        softLineBreak: true,
-                                        onTapLink: (text, href, title) =>
-                                            onConfirmLink(context, href),
-                                        styleSheet: MarkdownStyleSheet(
-                                          a: TextStyle(color: anchorColor),
-                                          blockquote: TextStyle(
-                                            backgroundColor: bubbleColor,
-                                          ),
-                                          blockquoteDecoration: BoxDecoration(
-                                            color: replyColor,
-                                            borderRadius: const BorderRadius.only(
-                                              //TODO: shape similar to bubbleBorder
-                                              topLeft: Radius.circular(12),
-                                              topRight: Radius.circular(12),
-                                              bottomLeft: Radius.circular(12),
-                                              bottomRight: Radius.circular(12),
+                                      crossFadeState:
+                                          isEditing && selected ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                                      firstChild: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          MarkdownBody(
+                                            data: body.trim(),
+                                            softLineBreak: true,
+                                            onTapLink: (text, href, title) => onConfirmLink(context, href),
+                                            styleSheet: MarkdownStyleSheet(
+                                              a: TextStyle(color: anchorColor),
+                                              blockquote: TextStyle(
+                                                backgroundColor: bubbleColor,
+                                              ),
+                                              blockquoteDecoration: BoxDecoration(
+                                                color: replyColor,
+                                                borderRadius: const BorderRadius.only(
+                                                  topLeft: Radius.circular(12),
+                                                  topRight: Radius.circular(12),
+                                                  bottomLeft: Radius.circular(12),
+                                                  bottomRight: Radius.circular(12),
+                                                ),
+                                              ),
+                                              p: TextStyle(
+                                                color: textColor,
+                                                fontStyle: fontStyle,
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: messageSize,
+                                              ),
+                                              codeblockDecoration: ShapeDecoration(
+                                                color: backgroundColor,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(12),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                          p: TextStyle(
-                                            color: textColor,
-                                            fontStyle: fontStyle,
-                                            fontWeight: FontWeight.w300,
-                                            fontSize: messageSize,
-                                          ),
-                                          codeblockDecoration: ShapeDecoration(
-                                            color: backgroundColor,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(12),
+                                          if (message.hasLink)
+                                            Padding(
+                                              padding: const EdgeInsets.only(top: 6),
+                                              child: AnyLinkPreview(
+                                                link: _firstUrl(body),
+                                                displayDirection: UIDirection.uiDirectionHorizontal,
+                                                bodyMaxLines: 2,
+                                                bodyTextOverflow: TextOverflow.ellipsis,
+                                                titleStyle: TextStyle(fontSize: messageSize, color: textColor),
+                                                bodyStyle:
+                                                    TextStyle(fontSize: messageSize, color: textColor.withOpacity(0.9)),
+                                                backgroundColor: bubbleColor,
+                                                borderRadius: 12,
+                                                errorBody: '',
+                                                errorTitle: '',
+                                                errorWidget: const SizedBox.shrink(),
+                                                cache: const Duration(hours: 24),
+                                              ),
                                             ),
-                                          ),
-                                        ),
+                                        ],
                                       ),
                                       // HACK: to prevent other instantiations overwriting editorController
                                       secondChild: !selected
                                           ? Container()
                                           : Padding(
-                                              padding: EdgeInsets.only(left: 12, right: 12),
+                                              padding: const EdgeInsets.only(left: 12, right: 12),
                                               child: IntrinsicWidth(
                                                 child: TextFieldInline(
                                                   body: body,
@@ -549,12 +755,11 @@ class MessageWidget extends StatelessWidget {
                                         crossAxisAlignment: alignmentMessageText,
                                         children: [
                                           Visibility(
-                                            visible:
-                                                !isUserSent && message.type == EventTypes.encrypted,
+                                            visible: !isUserSent && message.type == EventTypes.encrypted,
                                             child: Container(
                                               width: Dimensions.indicatorSize,
                                               height: Dimensions.indicatorSize,
-                                              margin: EdgeInsets.only(right: 4),
+                                              margin: const EdgeInsets.only(right: 4),
                                               child: Icon(
                                                 Icons.lock,
                                                 color: textColor,
@@ -566,7 +771,7 @@ class MessageWidget extends StatelessWidget {
                                             visible: showStatus,
                                             child: Container(
                                               // timestamp and error message
-                                              margin: EdgeInsets.only(right: 4),
+                                              margin: const EdgeInsets.only(right: 4),
                                               child: Text(
                                                 status,
                                                 style: TextStyle(
@@ -578,12 +783,11 @@ class MessageWidget extends StatelessWidget {
                                             ),
                                           ),
                                           Visibility(
-                                            visible:
-                                                isUserSent && message.type == EventTypes.encrypted,
+                                            visible: isUserSent && message.type == EventTypes.encrypted,
                                             child: Container(
                                               width: Dimensions.indicatorSize,
                                               height: Dimensions.indicatorSize,
-                                              margin: EdgeInsets.only(left: 2),
+                                              margin: const EdgeInsets.only(left: 2),
                                               child: Icon(
                                                 Icons.lock,
                                                 color: textColor,
@@ -596,8 +800,8 @@ class MessageWidget extends StatelessWidget {
                                             child: Container(
                                               width: Dimensions.indicatorSize,
                                               height: Dimensions.indicatorSize,
-                                              margin: EdgeInsets.only(left: 3),
-                                              child: Icon(
+                                              margin: const EdgeInsets.only(left: 3),
+                                              child: const Icon(
                                                 Icons.close,
                                                 color: Colors.redAccent,
                                                 size: Dimensions.indicatorSize,
@@ -613,8 +817,8 @@ class MessageWidget extends StatelessWidget {
                                                   child: Container(
                                                     width: Dimensions.indicatorSize,
                                                     height: Dimensions.indicatorSize,
-                                                    margin: EdgeInsets.only(left: 4),
-                                                    child: CircularProgressIndicator(
+                                                    margin: const EdgeInsets.only(left: 4),
+                                                    child: const CircularProgressIndicator(
                                                       strokeWidth: Dimensions.strokeWidthThin,
                                                     ),
                                                   ),
@@ -624,7 +828,7 @@ class MessageWidget extends StatelessWidget {
                                                   child: Container(
                                                     width: Dimensions.indicatorSize,
                                                     height: Dimensions.indicatorSize,
-                                                    margin: EdgeInsets.only(left: 4),
+                                                    margin: const EdgeInsets.only(left: 4),
                                                     decoration: ShapeDecoration(
                                                       color: indicatorColor,
                                                       shape: CircleBorder(
@@ -646,7 +850,7 @@ class MessageWidget extends StatelessWidget {
                                                   child: Container(
                                                     width: Dimensions.indicatorSize,
                                                     height: Dimensions.indicatorSize,
-                                                    margin: EdgeInsets.only(left: 11),
+                                                    margin: const EdgeInsets.only(left: 11),
                                                     decoration: ShapeDecoration(
                                                       color: indicatorColor,
                                                       shape: CircleBorder(
@@ -703,10 +907,17 @@ class MessageWidget extends StatelessWidget {
                                     key: Key(message.reactions.length.toString()),
                                     reactions: message.reactions,
                                     onToggleReaction: onToggleReaction,
+                                    onEditMessage: onEditMessage,
                                   ),
                                 ),
                               ),
                             ),
+                            if (isUserSent)
+                              Positioned(
+                                top: 0,
+                                right: 0,
+                                child: _buildContextMenu(),
+                              ),
                           ],
                         ),
                       ),
@@ -717,6 +928,317 @@ class MessageWidget extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildContextMenu() {
+    final store = StoreProvider.of<AppState>(context);
+    final user = store.state.authStore.user;
+    final isOwnMessage = message.senderId == user.userId;
+    final canEdit = isOwnMessage && message.msgtype == 'm.text';
+
+    return PopupMenuButton<dynamic>(
+      onSelected: (dynamic value) async {
+        if (value == 'copy') {
+          Clipboard.setData(ClipboardData(text: message.body ?? ''));
+        } else if (value == 'edit') {
+          final room = store.state.roomStore.rooms[message.roomId];
+          if (room != null) {
+            final result = await showMessageEditDialog(
+              context: context,
+              message: message,
+              room: room,
+            );
+
+            if (result == true && onEditMessage != null) {
+              onEditMessage!(message);
+            }
+          }
+        } else if (value == 'reply') {
+          // Handle reply
+        } else if (value == 'react') {
+          // Handle reaction
+        } else if (value == 'delete') {
+          // Handle delete
+        }
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+        const PopupMenuItem(
+          value: 'copy',
+          child: Text('Copy'),
+        ),
+        if (canEdit)
+          const PopupMenuItem(
+            value: 'edit',
+            child: Text('Edit'),
+          ),
+        const PopupMenuItem(
+          value: 'reply',
+          child: Text('Reply'),
+        ),
+        const PopupMenuItem(
+          value: 'react',
+          child: Text('React'),
+        ),
+        if (isOwnMessage)
+          const PopupMenuItem(
+            value: 'delete',
+            child: Text('Delete'),
+          ),
+      ],
+    );
+  }
+}
+
+class _InlineAudioPlayer extends StatefulWidget {
+  final String? mxcUri;
+  final String? filename;
+  final Color textColor;
+  final bool autoload;
+  const _InlineAudioPlayer(
+      {required this.mxcUri, required this.filename, required this.textColor, this.autoload = true});
+  @override
+  State<_InlineAudioPlayer> createState() => _InlineAudioPlayerState();
+}
+
+class _InlineAudioPlayerState extends State<_InlineAudioPlayer> {
+  late AudioPlayer _player;
+  String? _localPath;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _player = AudioPlayer();
+    _prepare();
+  }
+
+  Future<void> _prepare() async {
+    final store = StoreProvider.of<AppState>(context, listen: false);
+    var data = store.state.mediaStore.mediaCache[widget.mxcUri];
+    if (data == null && widget.autoload) {
+      await store.dispatch(fetchMedia(mxcUri: widget.mxcUri));
+      data = store.state.mediaStore.mediaCache[widget.mxcUri];
+    }
+    if (data == null) {
+      setState(() {
+        _loading = false;
+      });
+      return;
+    }
+    final dir = await getTemporaryDirectory();
+    final safeName = (widget.filename == null || widget.filename!.isEmpty) ? 'audio.m4a' : widget.filename!;
+    final filePath = path.join(dir.path, safeName);
+    final file = File(filePath);
+    await file.writeAsBytes(data, flush: true);
+    _localPath = file.path;
+    await _player.setFilePath(_localPath!);
+    setState(() {
+      _loading = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    _player.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_loading) {
+      return Container(
+        padding: const EdgeInsets.all(8),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (widget.autoload)
+              const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2)),
+            const SizedBox(width: 8),
+            Text(widget.filename ?? 'Audio', style: TextStyle(color: widget.textColor)),
+            if (!widget.autoload)
+              TextButton(
+                onPressed: _prepare,
+                child: Text('Load', style: TextStyle(color: widget.textColor)),
+              )
+          ],
+        ),
+      );
+    }
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        StreamBuilder<PlayerState>(
+          stream: _player.playerStateStream,
+          builder: (context, snapshot) {
+            final playing = snapshot.data?.playing ?? false;
+            return IconButton(
+              icon: Icon(playing ? Icons.pause_circle : Icons.play_circle, color: widget.textColor),
+              onPressed: () => playing ? _player.pause() : _player.play(),
+            );
+          },
+        ),
+        Expanded(
+          child: StreamBuilder<Duration?>(
+            stream: _player.durationStream,
+            builder: (context, snapshot) {
+              final duration = snapshot.data ?? Duration.zero;
+              return StreamBuilder<Duration>(
+                stream: _player.positionStream,
+                builder: (context, posSnap) {
+                  final position = posSnap.data ?? Duration.zero;
+                  final value = duration.inMilliseconds == 0 ? 0.0 : position.inMilliseconds / duration.inMilliseconds;
+                  return Slider(
+                    value: value.clamp(0.0, 1.0),
+                    onChanged: (v) {
+                      final newPos = duration * v;
+                      _player.seek(newPos);
+                    },
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _InlineVideoPlayer extends StatefulWidget {
+  final String? mxcUri;
+  final String? filename;
+  final bool autoload;
+  const _InlineVideoPlayer({required this.mxcUri, required this.filename, this.autoload = true});
+  @override
+  State<_InlineVideoPlayer> createState() => _InlineVideoPlayerState();
+}
+
+class _InlineVideoPlayerState extends State<_InlineVideoPlayer> {
+  VideoPlayerController? _controller;
+  ChewieController? _chewie;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _prepare();
+  }
+
+  Future<void> _prepare() async {
+    final store = StoreProvider.of<AppState>(context, listen: false);
+    var data = store.state.mediaStore.mediaCache[widget.mxcUri];
+    if (data == null && widget.autoload) {
+      await store.dispatch(fetchMedia(mxcUri: widget.mxcUri));
+      data = store.state.mediaStore.mediaCache[widget.mxcUri];
+    }
+    if (data == null) {
+      setState(() {
+        _loading = false;
+      });
+      return;
+    }
+    final dir = await getTemporaryDirectory();
+    final safeName = (widget.filename == null || widget.filename!.isEmpty) ? 'video.mp4' : widget.filename!;
+    final filePath = path.join(dir.path, safeName);
+    final file = File(filePath);
+    await file.writeAsBytes(data, flush: true);
+
+    _controller = VideoPlayerController.file(file);
+    await _controller!.initialize();
+    _chewie = ChewieController(videoPlayerController: _controller!, autoInitialize: true);
+    setState(() {
+      _loading = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    _chewie?.dispose();
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_loading) {
+      return Container(
+        padding: const EdgeInsets.all(8),
+        child: widget.autoload
+            ? const SizedBox(width: 40, height: 40, child: CircularProgressIndicator(strokeWidth: 2))
+            : TextButton(onPressed: _prepare, child: const Text('Load')),
+      );
+    }
+    return AspectRatio(
+      aspectRatio: _controller!.value.aspectRatio,
+      child: Chewie(controller: _chewie!),
+    );
+  }
+}
+
+class _InlinePdfViewer extends StatefulWidget {
+  final String? mxcUri;
+  final String filename;
+  const _InlinePdfViewer({required this.mxcUri, required this.filename});
+  @override
+  State<_InlinePdfViewer> createState() => _InlinePdfViewerState();
+}
+
+class _InlinePdfViewerState extends State<_InlinePdfViewer> {
+  PdfController? _controller;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _prepare();
+  }
+
+  Future<void> _prepare() async {
+    final store = StoreProvider.of<AppState>(context, listen: false);
+    var data = store.state.mediaStore.mediaCache[widget.mxcUri];
+    if (data == null) {
+      await store.dispatch(fetchMedia(mxcUri: widget.mxcUri));
+      data = store.state.mediaStore.mediaCache[widget.mxcUri];
+    }
+    if (data == null) {
+      setState(() {
+        _loading = false;
+      });
+      return;
+    }
+    final dir = await getTemporaryDirectory();
+    final filePath = path.join(dir.path, widget.filename.isEmpty ? 'document.pdf' : widget.filename);
+    final file = File(filePath);
+    await file.writeAsBytes(data, flush: true);
+    _controller = PdfController(document: PdfDocument.openFile(file.path));
+    setState(() {
+      _loading = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_loading || _controller == null) {
+      return Container(
+        height: 200,
+        alignment: Alignment.center,
+        child: const SizedBox(width: 32, height: 32, child: CircularProgressIndicator(strokeWidth: 2)),
+      );
+    }
+    return SizedBox(
+      height: 240,
+      child: PdfView(
+        controller: _controller!,
+        scrollDirection: Axis.horizontal,
+        pageSnapping: true,
       ),
     );
   }

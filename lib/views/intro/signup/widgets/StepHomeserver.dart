@@ -1,9 +1,7 @@
 import 'package:equatable/equatable.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
@@ -11,16 +9,17 @@ import 'package:katya/global/libs/matrix/auth.dart';
 import 'package:katya/store/auth/actions.dart';
 import 'package:katya/store/auth/homeserver/model.dart';
 import 'package:katya/store/index.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/intro/search/search-homeserver-screen.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
 import 'package:katya/views/widgets/input/text-field-secure.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
+import 'package:redux/redux.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
-import 'package:katya/utils/theme_compatibility.dart';
 
 class HomeserverStep extends StatefulWidget {
-  const HomeserverStep({Key? key}) : super(key: key);
+  const HomeserverStep({super.key});
 
   @override
   HomeserverStepState createState() => HomeserverStepState();
@@ -39,7 +38,7 @@ class HomeserverStepState extends State<HomeserverStep> with Lifecycle<Homeserve
     homeserverController.text = homeserver.hostname ?? hostname;
   }
 
-  onDidChange(_Props? oldProps, _Props props) {
+  void onDidChange(_Props? oldProps, _Props props) {
     final baseUrlChanged = props.homeserver.hostname != oldProps?.homeserver.hostname;
 
     if (baseUrlChanged) {
@@ -49,7 +48,7 @@ class HomeserverStepState extends State<HomeserverStep> with Lifecycle<Homeserve
     }
   }
 
-  buildContinueSSO(_Props props) => Container(
+  Container buildContinueSSO(_Props props) => Container(
         margin: const EdgeInsets.symmetric(vertical: 8),
         child: ListTile(
           leading: Avatar(
@@ -74,7 +73,7 @@ class HomeserverStepState extends State<HomeserverStep> with Lifecycle<Homeserve
                 arguments: SearchHomeserverArguments(signup: true),
               );
             },
-            child: Icon(
+            child: const Icon(
               Icons.search_rounded,
               size: Dimensions.iconSizeLarge,
             ),
@@ -82,10 +81,10 @@ class HomeserverStepState extends State<HomeserverStep> with Lifecycle<Homeserve
         ),
       );
 
-  buildContinueNormal(_Props props) => Container(
+  Container buildContinueNormal(_Props props) => Container(
         width: Dimensions.contentWidthWide(context),
         height: Dimensions.inputHeight,
-        constraints: BoxConstraints(
+        constraints: const BoxConstraints(
           minWidth: Dimensions.inputWidthMin,
           maxWidth: Dimensions.inputWidthMax,
         ),
@@ -101,7 +100,7 @@ class HomeserverStepState extends State<HomeserverStep> with Lifecycle<Homeserve
             FocusScope.of(context).unfocus();
           },
           suffix: IconButton(
-              icon: Icon(Icons.search),
+              icon: const Icon(Icons.search),
               tooltip: 'Find your homeserver',
               onPressed: () {
                 Navigator.pushNamed(
@@ -113,7 +112,7 @@ class HomeserverStepState extends State<HomeserverStep> with Lifecycle<Homeserve
         ),
       );
 
-  buildContinue(_Props props) {
+  dynamic buildContinue(_Props props) {
     if (props.homeserver.loginTypes.contains(MatrixAuthTypes.SSO) &&
         !props.homeserver.loginTypes.contains(MatrixAuthTypes.PASSWORD)) {
       return buildContinueSSO(props);
@@ -142,7 +141,7 @@ class HomeserverStepState extends State<HomeserverStep> with Lifecycle<Homeserve
                 flex: 2,
                 child: Container(
                   width: Dimensions.contentWidth(context),
-                  constraints: BoxConstraints(
+                  constraints: const BoxConstraints(
                     maxHeight: Dimensions.mediaSizeMax,
                     maxWidth: Dimensions.mediaSizeMax,
                   ),

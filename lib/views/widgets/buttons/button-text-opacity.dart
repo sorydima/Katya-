@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:katya/global/colors.dart';
-import 'package:katya/utils/theme_compatibility.dart';
-
 import 'package:katya/global/dimensions.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class ButtonTextOpacity extends StatefulWidget {
   const ButtonTextOpacity({
-    Key? key,
+    super.key,
     this.text,
     this.textWidget,
     this.loading = false,
     this.disabled = false,
     this.color,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   final bool loading;
   final bool disabled;
@@ -45,11 +44,11 @@ class ButtonTextState extends State<ButtonTextOpacity> {
           }),
           child: widget.loading
               ? Container(
-                  constraints: BoxConstraints(
+                  constraints: const BoxConstraints(
                     maxHeight: 24,
                     maxWidth: 24,
                   ),
-                  child: CircularProgressIndicator(
+                  child: const CircularProgressIndicator(
                     strokeWidth: Dimensions.strokeWidthDefault,
                     backgroundColor: Colors.white,
                     valueColor: AlwaysStoppedAnimation<Color>(
@@ -67,7 +66,7 @@ class ButtonTextState extends State<ButtonTextOpacity> {
                       letterSpacing: 0.8,
                       color: () {
                         if (widget.disabled) {
-                          return Color(AppColors.greyLight);
+                          return const Color(AppColors.greyLight);
                         }
                         if (widget.color != null) {
                           return widget.color;

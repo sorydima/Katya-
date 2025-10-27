@@ -1,6 +1,6 @@
+import 'package:katya/store/index.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
-import 'package:katya/store/index.dart';
 
 class SetKeyBackupLocation {
   final String location;

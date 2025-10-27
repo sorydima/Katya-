@@ -3,8 +3,6 @@ import 'package:katya/context/types.dart';
 import 'package:katya/global/print.dart';
 import 'package:katya/global/values.dart';
 import 'package:katya/storage/converters.dart';
-import 'package:katya/storage/index.dart';
-import 'package:katya/storage/models.dart';
 import 'package:katya/store/auth/schema.dart';
 import 'package:katya/store/crypto/schema.dart';
 import 'package:katya/store/crypto/sessions/schema.dart';
@@ -57,7 +55,7 @@ StorageDatabase openDatabaseThreaded(AppContext context, {String pin = Values.em
 class StorageDatabase extends _$StorageDatabase {
   StorageDatabase(AppContext context, {String pin = ''}) : super(openDatabase(context, pin: pin));
 
-  StorageDatabase.connect(DatabaseConnection connection) : super.connect(connection);
+  StorageDatabase.connect(super.connection) : super.connect();
 
   @override
   int get schemaVersion => 9;

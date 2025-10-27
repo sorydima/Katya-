@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:olm/olm.dart' as olm;
-import 'package:redux/redux.dart';
-import 'package:redux_thunk/redux_thunk.dart';
 import 'package:katya/global/libs/matrix/constants.dart';
 import 'package:katya/global/libs/matrix/encryption.dart';
 import 'package:katya/global/libs/matrix/index.dart';
@@ -18,6 +15,9 @@ import 'package:katya/store/crypto/sessions/actions.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/rooms/room/model.dart';
 import 'package:katya/store/user/model.dart';
+import 'package:olm/olm.dart' as olm;
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
 class SetOlmAccount {
   var olmAccount;

@@ -10,7 +10,7 @@ Device _$DeviceFromJson(Map<String, dynamic> json) => Device(
       deviceId: json['deviceId'] as String?,
       displayName: json['displayName'] as String?,
       lastSeenIp: json['lastSeenIp'] as String?,
-      lastSeenTs: json['lastSeenTs'] as int?,
+      lastSeenTs: (json['lastSeenTs'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$DeviceToJson(Device instance) => <String, dynamic>{

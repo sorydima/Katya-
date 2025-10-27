@@ -2,9 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:canonical_json/canonical_json.dart';
-import 'package:olm/olm.dart' as olm;
-import 'package:redux/redux.dart';
-import 'package:redux_thunk/redux_thunk.dart';
 import 'package:katya/global/libs/matrix/constants.dart';
 import 'package:katya/global/libs/matrix/encryption.dart';
 import 'package:katya/global/print.dart';
@@ -21,6 +18,9 @@ import 'package:katya/store/media/actions.dart';
 import 'package:katya/store/media/encryption.dart';
 import 'package:katya/store/rooms/actions.dart';
 import 'package:katya/store/rooms/room/model.dart';
+import 'package:olm/olm.dart' as olm;
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
 ThunkAction<AppState> encryptMessageContent({
   required String roomId,
@@ -29,8 +29,7 @@ ThunkAction<AppState> encryptMessageContent({
 }) {
   return (Store<AppState> store) async {
     // Load and deserialize session
-    final olm.OutboundGroupSession outboundMessageSession =
-        await store.dispatch(
+    final olm.OutboundGroupSession outboundMessageSession = await store.dispatch(
       loadMessageSessionOutbound(roomId: roomId),
     );
 
@@ -95,11 +94,9 @@ ThunkAction<AppState> backfillDecryptMessages(
       final roomMessages = messages[roomId] ?? [];
       final roomDecrypted = messagesDecrypted[roomId] ?? [];
 
-      final undecryptedOriginal =
-          roomMessages.where((msg) => !roomDecrypted.contains(msg)).toList();
-      final undecryptedErrored = roomDecrypted
-          .where((msg) => (msg.body ?? '').isEmpty && (msg.url ?? '').isEmpty)
-          .toList();
+      final undecryptedOriginal = roomMessages.where((msg) => !roomDecrypted.contains(msg)).toList();
+      final undecryptedErrored =
+          roomDecrypted.where((msg) => (msg.body ?? '').isEmpty && (msg.url ?? '').isEmpty).toList();
 
       final undecrypted = [...undecryptedOriginal, ...undecryptedErrored];
 
@@ -164,7 +161,7 @@ ThunkAction<AppState> decryptMessages(
         return decryptedAll;
       } catch (error) {
         log.error(
-          '[decryptMessage(s)] ${room.name ?? 'Unknown Room'} ${error.toString()}',
+          '[decryptMessage(s)] ${room.name ?? 'Unknown Room'} $error',
         );
       } finally {
         store.dispatch(UpdateRoom(id: room.id, syncing: false));
@@ -204,8 +201,7 @@ ThunkAction<AppState> decryptMessage({
 
     // Decrypt the payload with the session
     final currentIndex = messageSession.index;
-    final session = olm.InboundGroupSession()
-      ..unpickle(roomId, messageSession.serialized);
+    final session = olm.InboundGroupSession()..unpickle(roomId, messageSession.serialized);
 
     final payloadDecrypted = session.decrypt(ciphertext);
     final payloadScrubbed = payloadDecrypted.plaintext
@@ -215,8 +211,7 @@ ThunkAction<AppState> decryptMessage({
     final messageIndexNew = payloadDecrypted.message_index;
 
     // protection against replay attacks
-    if ((messageIndexNew <= currentIndex && currentIndex != 0) &&
-        !forceDecryption) {
+    if ((messageIndexNew <= currentIndex && currentIndex != 0) && !forceDecryption) {
       throw '[decryptMessage] messageIndex invalid $messageIndexNew <= $currentIndex';
     }
 
@@ -227,14 +222,13 @@ ThunkAction<AppState> decryptMessage({
     );
 
     // combine all possible decrypted fields with encrypted version of message
-    var combinedMessage = message.copyWith(
+    var combinedMessage = message.copyMessageWith(
       url: decryptedMessage.url,
       body: decryptedMessage.body,
       format: decryptedMessage.format,
       formattedBody: decryptedMessage.formattedBody,
       msgtype: decryptedMessage.msgtype,
       typeDecrypted: decryptedMessage.type,
-      file: decryptedMessage.file,
       info: decryptedMessage.info,
     );
 
@@ -251,8 +245,8 @@ ThunkAction<AppState> decryptMessage({
       ));
 
       // unfortunately, decrypted images have urls under the file property
-      combinedMessage = combinedMessage.copyWith(
-        url: mxcUri,
+      combinedMessage = combinedMessage.copyMessageWith(
+        url: mxcUri as String?,
       );
     }
 
@@ -278,8 +272,7 @@ ThunkAction<AppState> encryptKeyContent({
     final userCurrent = store.state.authStore.user;
     final deviceId = userCurrent.deviceId!;
     final userOlmAccount = store.state.cryptoStore.olmAccount!;
-    final currentIdentityKeys =
-        await json.decode(userOlmAccount.identity_keys());
+    final currentIdentityKeys = await json.decode(userOlmAccount.identity_keys());
     final currentFingerprint = currentIdentityKeys[Algorithms.ed25519];
 
     // pull recipient key data and id
@@ -438,7 +431,6 @@ ThunkAction<AppState> syncDevice(Map toDeviceRaw) {
               log.error('[decryptKeyEvent] [ERROR] $error');
             }
 
-            break;
           default:
             break;
         }

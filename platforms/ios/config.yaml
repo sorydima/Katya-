@@ -1,0 +1,48 @@
+# iOS Platform Configuration
+
+## Target Platforms
+- iPhone (iOS 14.0+)
+- iPad (iOS 14.0+)
+- iPod Touch (iOS 14.0+)
+
+## Development Requirements
+- Xcode 14.0+
+- Swift 5.7+
+- iOS 14.0+ SDK
+- CocoaPods 1.11.0+
+
+## Build Settings
+- **Minimum iOS Version**: 14.0
+- **Swift Version**: 5.7
+- **Deployment Target**: 14.0
+
+## Capabilities
+- **Push Notifications**: Enabled
+- **Background Refresh**: Enabled
+- **Keychain Access**: Enabled
+- **Camera Access**: Enabled
+- **Microphone Access**: Enabled
+- **Photo Library**: Enabled
+- **Location Services**: Enabled
+- **iCloud Integration**: Enabled
+- **Siri Integration**: Disabled
+- **Apple Pay**: Disabled
+- **Health Kit**: Disabled
+- **ARKit**: Disabled
+
+## App Store Configuration
+- **Bundle Identifier**: com.katya.app
+- **App Group**: group.com.katya.app
+- **Team ID**: YOUR_TEAM_ID
+- **Provisioning Profile**: Katya_Distribution
+
+## Entitlements
+- App Groups
+- Background Processing
+- Push Notifications
+- Keychain Access Groups
+- iCloud (optional)
+- Camera
+- Microphone
+- Photo Library
+- Location (when in use)

@@ -4,28 +4,28 @@ class CustomTheme {
   static ThemeData get lightTheme {
     return ThemeData(
       primaryColor: Colors.blue,
-      accentColor: Colors.orange,
       scaffoldBackgroundColor: Colors.white,
-      textTheme: TextTheme(
-        bodyText1: TextStyle(color: Colors.black),
-        bodyText2: TextStyle(color: Colors.black54),
+      textTheme: const TextTheme(
+        bodyLarge: TextStyle(color: Colors.black),
+        bodyMedium: TextStyle(color: Colors.black54),
       ),
-      appBarTheme: AppBarTheme(
-        color: Colors.blue,
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.blue,
         iconTheme: IconThemeData(color: Colors.white),
       ),
+      colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.orange),
     );
   }
 
   static ThemeData get darkTheme {
     return ThemeData.dark().copyWith(
       primaryColor: Colors.blueGrey,
-      accentColor: Colors.teal,
       scaffoldBackgroundColor: Colors.grey[900],
-      textTheme: TextTheme(
-        bodyText1: TextStyle(color: Colors.white),
-        bodyText2: TextStyle(color: Colors.white70),
+      textTheme: const TextTheme(
+        bodyLarge: TextStyle(color: Colors.white),
+        bodyMedium: TextStyle(color: Colors.white70),
       ),
+      colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.teal),
     );
   }
 }

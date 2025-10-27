@@ -64,6 +64,10 @@ extension MatrixMessageType on MessageType {
         return MatrixMessageTypes.image;
       case MessageType.file:
         return MatrixMessageTypes.file;
+      case MessageType.audio:
+        return MatrixMessageTypes.audio;
+      case MessageType.video:
+        return MatrixMessageTypes.video;
       default:
         return '';
     }

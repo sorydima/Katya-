@@ -1,20 +1,20 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
-import 'package:mime/mime.dart';
-import 'package:redux/redux.dart';
-import 'package:redux_thunk/redux_thunk.dart';
-
 import 'package:katya/global/libs/matrix/index.dart';
 import 'package:katya/global/print.dart';
+import 'package:katya/services/token_gate_service.dart';
 import 'package:katya/storage/index.dart';
-import 'package:katya/store/alerts/actions.dart';
+import 'package:katya/store/auth/actions.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/media/converters.dart';
 import 'package:katya/store/media/encryption.dart';
 import 'package:katya/store/media/model.dart';
 import 'package:katya/store/media/storage.dart';
+import 'package:katya/utils/room_utils.dart';
+import 'package:mime/mime.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
 class LoadMedia {
   final Map<String, Uint8List> mediaMap;
@@ -48,9 +48,28 @@ class UpdateMediaCache {
 ThunkAction<AppState> uploadMedia({
   required File localFile,
   String? mediaName = 'media-default',
+  String? roomId,
 }) {
   return (Store<AppState> store) async {
     try {
+      // Check token gate access if this is a room upload
+      if (roomId != null) {
+        final room = store.state.roomStore.rooms[roomId];
+        if (room?.tokenGateConfig?.isEnabled == true) {
+          final tokenGateService = TokenGateService();
+          final hasAccess = await checkRoomAccess(
+            room: room!,
+            userId: store.state.authStore.user.userId,
+            tokenGateService: tokenGateService,
+          );
+
+          if (!hasAccess) {
+            final errorMessage = getTokenGateErrorMessage(room.tokenGateConfig);
+            throw Exception('Cannot upload files: $errorMessage');
+          }
+        }
+      }
+
       // Extension handling
       final mimeTypeOption = lookupMimeType(localFile.path);
       final mimeType = convertMimeTypes(localFile, mimeTypeOption);
@@ -62,6 +81,29 @@ ThunkAction<AppState> uploadMedia({
       final int fileLength = await localFile.length();
       final Stream<List<int>> fileStream = localFile.openRead();
       final String fileName = '$mediaName.$fileExtension';
+
+      // Check homeserver max upload size
+      try {
+        final cfg = await MatrixApi.checkMaxUploadSize(
+          protocol: store.state.authStore.protocol,
+          accessToken: store.state.authStore.user.accessToken,
+          homeserver: store.state.authStore.currentUser.homeserver,
+        );
+        int? maxBytes;
+        if (cfg != null) {
+          if (cfg is Map) {
+            final configMap = cfg as Map<String, dynamic>;
+            maxBytes = configMap['m.upload.size'] as int?;
+          } else {
+            maxBytes = cfg;
+          }
+        }
+        if (maxBytes != null && fileLength > maxBytes) {
+          throw 'File exceeds homeserver limit (${(maxBytes / (1024 * 1024)).toStringAsFixed(1)} MB)';
+        }
+      } catch (_) {
+        // ignore config errors, proceed with upload
+      }
 
       // Create request vars for upload
       final data = await MatrixApi.uploadMedia(
@@ -83,10 +125,7 @@ ThunkAction<AppState> uploadMedia({
     } catch (error) {
       log.error(error.toString());
 
-      store.dispatch(addAlert(
-        origin: 'uploadMedia',
-        message: error.toString(),
-      ));
+      print('Upload media error: $error');
       return null;
     } finally {
       store.dispatch(SetLoading(loading: false));

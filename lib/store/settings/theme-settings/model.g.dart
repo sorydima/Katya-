@@ -8,10 +8,13 @@ part of 'model.dart';
 
 ThemeSettings _$ThemeSettingsFromJson(Map<String, dynamic> json) =>
     ThemeSettings(
-      primaryColor: json['primaryColor'] as int? ?? AppColors.cyankatya,
-      accentColor: json['accentColor'] as int? ?? AppColors.cyankatya,
-      appBarColor: json['appBarColor'] as int? ?? AppColors.cyankatya,
-      brightness: json['brightness'] as int? ?? 0,
+      primaryColor:
+          (json['primaryColor'] as num?)?.toInt() ?? AppColors.cyankatya,
+      accentColor:
+          (json['accentColor'] as num?)?.toInt() ?? AppColors.cyankatya,
+      appBarColor:
+          (json['appBarColor'] as num?)?.toInt() ?? AppColors.cyankatya,
+      brightness: (json['brightness'] as num?)?.toInt() ?? 0,
       themeType: $enumDecodeNullable(_$ThemeTypeEnumMap, json['themeType']) ??
           ThemeType.Light,
       fontName: $enumDecodeNullable(_$FontNameEnumMap, json['fontName']) ??

@@ -1,0 +1,400 @@
+name: Continuous Deployment
+
+on:
+    push:
+        branches: [main, staging]
+        tags: ["v*"]
+    workflow_dispatch:
+        inputs:
+            environment:
+                description: "Environment to deploy to"
+                required: true
+                default: "staging"
+                type: choice
+                options:
+                    - staging
+                    - production
+
+env:
+    REGISTRY: ghcr.io
+    IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+    # Определение стратегии развертывания
+    determine-strategy:
+        name: Determine Deployment Strategy
+        runs-on: ubuntu-latest
+        outputs:
+            environment: ${{ steps.env.outputs.environment }}
+            deploy-type: ${{ steps.deploy.outputs.type }}
+            version: ${{ steps.version.outputs.version }}
+
+        steps:
+            - name: Determine environment
+              id: env
+              run: |
+                  if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+                    echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
+                  elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+                    echo "environment=production" >> $GITHUB_OUTPUT
+                  elif [[ "${{ github.ref }}" == "refs/heads/staging" ]]; then
+                    echo "environment=staging" >> $GITHUB_OUTPUT
+                  else
+                    echo "environment=development" >> $GITHUB_OUTPUT
+                  fi
+
+            - name: Determine deployment type
+              id: deploy
+              run: |
+                  if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+                    echo "type=release" >> $GITHUB_OUTPUT
+                  elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+                    echo "type=production" >> $GITHUB_OUTPUT
+                  else
+                    echo "type=staging" >> $GITHUB_OUTPUT
+                  fi
+
+            - name: Get version
+              id: version
+              run: |
+                  if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
+                    echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+                  else
+                    echo "version=$(date +%Y%m%d-%H%M%S)-${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+                  fi
+
+    # Подготовка к развертыванию
+    prepare-deployment:
+        name: Prepare Deployment
+        runs-on: ubuntu-latest
+        needs: determine-strategy
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "18.x"
+                  cache: "npm"
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Generate deployment configuration
+              run: |
+                  mkdir -p deployment/configs/${{ needs.determine-strategy.outputs.environment }}
+
+                  # Генерируем конфигурацию для Kubernetes
+                  envsubst < k8s/base/kustomization.yaml.template > k8s/overlays/${{ needs.determine-strategy.outputs.environment }}/kustomization.yaml
+
+                  # Генерируем конфигурацию для Docker Compose
+                  envsubst < docker-compose.override.yml.template > docker-compose.${{ needs.determine-strategy.outputs.environment }}.yml
+
+                  # Генерируем переменные окружения
+                  envsubst < .env.${{ needs.determine-strategy.outputs.environment }}.template > .env.${{ needs.determine-strategy.outputs.environment }}
+
+            - name: Validate deployment configuration
+              run: |
+                  # Проверяем Kubernetes манифесты
+                  kubectl --kubeconfig=${{ secrets.KUBE_CONFIG }} --dry-run=client apply -k k8s/overlays/${{ needs.determine-strategy.outputs.environment }}
+
+                  # Проверяем Docker Compose файл
+                  docker-compose -f docker-compose.yml -f docker-compose.${{ needs.determine-strategy.outputs.environment }}.yml config
+
+            - name: Upload deployment artifacts
+              uses: actions/upload-artifact@v3
+              with:
+                  name: deployment-config-${{ needs.determine-strategy.outputs.environment }}
+                  path: |
+                      k8s/overlays/${{ needs.determine-strategy.outputs.environment }}/
+                      docker-compose.${{ needs.determine-strategy.outputs.environment }}.yml
+                      .env.${{ needs.determine-strategy.outputs.environment }}
+                  retention-days: 30
+
+    # Развертывание в staging
+    deploy-staging:
+        name: Deploy to Staging
+        runs-on: ubuntu-latest
+        needs: [determine-strategy, prepare-deployment]
+        if: needs.determine-strategy.outputs.environment == 'staging'
+        environment: staging
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Download deployment artifacts
+              uses: actions/download-artifact@v3
+              with:
+                  name: deployment-config-staging
+
+            - name: Setup kubectl
+              uses: azure/setup-kubectl@v3
+              with:
+                  version: "v1.28.0"
+
+            - name: Configure kubectl
+              run: |
+                  echo "${{ secrets.KUBE_CONFIG_STAGING }}" | base64 -d > ~/.kube/config
+                  kubectl config use-context staging
+
+            - name: Build and push images
+              run: |
+                  docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:${{ needs.determine-strategy.outputs.version }} ./docker/api
+                  docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/web:${{ needs.determine-strategy.outputs.version }} ./docker/web
+                  docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:${{ needs.determine-strategy.outputs.version }}
+                  docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/web:${{ needs.determine-strategy.outputs.version }}
+
+            - name: Deploy to Kubernetes
+              run: |
+                  # Обновляем образы в kustomization
+                  cd k8s/overlays/staging
+                  kustomize edit set image api=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:${{ needs.determine-strategy.outputs.version }}
+                  kustomize edit set image web=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/web:${{ needs.determine-strategy.outputs.version }}
+
+                  # Применяем изменения
+                  kubectl apply -k .
+
+                  # Ждем готовности
+                  kubectl rollout status deployment/api -n katya-staging --timeout=300s
+                  kubectl rollout status deployment/web -n katya-staging --timeout=300s
+
+            - name: Run smoke tests
+              run: |
+                  # Ждем готовности сервисов
+                  kubectl wait --for=condition=ready pod -l app=api -n katya-staging --timeout=300s
+
+                  # Запускаем smoke тесты
+                  npm run test:smoke -- --base-url=https://staging-api.katya.wtf
+
+            - name: Update deployment status
+              run: |
+                  kubectl annotate deployment/api -n katya-staging deployment.kubernetes.io/revision=${{ needs.determine-strategy.outputs.version }}
+                  kubectl annotate deployment/web -n katya-staging deployment.kubernetes.io/revision=${{ needs.determine-strategy.outputs.version }}
+
+    # Развертывание в production
+    deploy-production:
+        name: Deploy to Production
+        runs-on: ubuntu-latest
+        needs: [determine-strategy, prepare-deployment, deploy-staging]
+        if: needs.determine-strategy.outputs.environment == 'production'
+        environment: production
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Download deployment artifacts
+              uses: actions/download-artifact@v3
+              with:
+                  name: deployment-config-production
+
+            - name: Setup kubectl
+              uses: azure/setup-kubectl@v3
+              with:
+                  version: "v1.28.0"
+
+            - name: Configure kubectl
+              run: |
+                  echo "${{ secrets.KUBE_CONFIG_PRODUCTION }}" | base64 -d > ~/.kube/config
+                  kubectl config use-context production
+
+            - name: Backup current deployment
+              run: |
+                  # Создаем backup текущего состояния
+                  kubectl get all -n katya-production -o yaml > backup-$(date +%Y%m%d-%H%M%S).yaml
+
+                  # Создаем backup базы данных
+                  kubectl exec -n katya-production deployment/postgres -- pg_dump -U katya katya > db-backup-$(date +%Y%m%d-%H%M%S).sql
+
+            - name: Build and push production images
+              run: |
+                  docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:${{ needs.determine-strategy.outputs.version }} ./docker/api
+                  docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/web:${{ needs.determine-strategy.outputs.version }} ./docker/web
+                  docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:${{ needs.determine-strategy.outputs.version }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:latest
+                  docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/web:${{ needs.determine-strategy.outputs.version }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/web:latest
+
+                  docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:${{ needs.determine-strategy.outputs.version }}
+                  docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/web:${{ needs.determine-strategy.outputs.version }}
+                  docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:latest
+                  docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/web:latest
+
+            - name: Deploy with Blue-Green strategy
+              run: |
+                  # Подготавливаем green environment
+                  cd k8s/overlays/production
+                  kustomize edit set image api=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:${{ needs.determine-strategy.outputs.version }}
+                  kustomize edit set image web=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/web:${{ needs.determine-strategy.outputs.version }}
+
+                  # Создаем green deployment
+                  kubectl apply -k . --dry-run=client -o yaml | sed 's/katya-production/katya-production-green/g' | kubectl apply -f -
+
+                  # Ждем готовности green deployment
+                  kubectl rollout status deployment/api -n katya-production-green --timeout=600s
+                  kubectl rollout status deployment/web -n katya-production-green --timeout=600s
+
+            - name: Run comprehensive tests
+              run: |
+                  # Запускаем полный набор тестов на green environment
+                  npm run test:production -- --base-url=https://green-api.katya.wtf
+
+                  # Проверяем производительность
+                  npm run test:performance -- --base-url=https://green-api.katya.wtf
+
+            - name: Switch traffic to green
+              run: |
+                  # Обновляем ingress для переключения трафика
+                  kubectl patch ingress api-ingress -n katya-production -p '{"spec":{"rules":[{"host":"api.katya.wtf","http":{"paths":[{"path":"/","pathType":"Prefix","backend":{"service":{"name":"api-service-green","port":{"number":3000}}}}]}}]}}'
+
+                  # Ждем переключения трафика
+                  sleep 30
+
+                  # Проверяем здоровье нового deployment
+                  kubectl wait --for=condition=ready pod -l app=api -n katya-production-green --timeout=300s
+
+            - name: Cleanup blue environment
+              run: |
+                  # Удаляем старый blue deployment
+                  kubectl delete namespace katya-production-blue --ignore-not-found=true
+
+            - name: Update production deployment
+              run: |
+                  # Обновляем основной namespace
+                  kubectl apply -k k8s/overlays/production
+
+                  # Обновляем аннотации
+                  kubectl annotate deployment/api -n katya-production deployment.kubernetes.io/revision=${{ needs.determine-strategy.outputs.version }}
+                  kubectl annotate deployment/web -n katya-production deployment.kubernetes.io/revision=${{ needs.determine-strategy.outputs.version }}
+
+    # Rollback в случае проблем
+    rollback:
+        name: Rollback Deployment
+        runs-on: ubuntu-latest
+        needs: [determine-strategy, deploy-production]
+        if: failure() && needs.determine-strategy.outputs.environment == 'production'
+        environment: production
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup kubectl
+              uses: azure/setup-kubectl@v3
+              with:
+                  version: "v1.28.0"
+
+            - name: Configure kubectl
+              run: |
+                  echo "${{ secrets.KUBE_CONFIG_PRODUCTION }}" | base64 -d > ~/.kube/config
+                  kubectl config use-context production
+
+            - name: Rollback to previous version
+              run: |
+                  # Откатываем deployment
+                  kubectl rollout undo deployment/api -n katya-production
+                  kubectl rollout undo deployment/web -n katya-production
+
+                  # Ждем завершения отката
+                  kubectl rollout status deployment/api -n katya-production --timeout=300s
+                  kubectl rollout status deployment/web -n katya-production --timeout=300s
+
+            - name: Verify rollback
+              run: |
+                  # Проверяем здоровье после отката
+                  kubectl wait --for=condition=ready pod -l app=api -n katya-production --timeout=300s
+
+                  # Запускаем smoke тесты
+                  npm run test:smoke -- --base-url=https://api.katya.wtf
+
+    # Post-deployment tasks
+    post-deployment:
+        name: Post-Deployment Tasks
+        runs-on: ubuntu-latest
+        needs: [determine-strategy, deploy-staging, deploy-production]
+        if: always() && (needs.deploy-staging.result == 'success' || needs.deploy-production.result == 'success')
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Update monitoring dashboards
+              run: |
+                  # Обновляем конфигурацию мониторинга
+                  kubectl apply -f monitoring/grafana-dashboards.yaml
+                  kubectl apply -f monitoring/prometheus-rules.yaml
+
+            - name: Update status page
+              run: |
+                  # Обновляем статус страницу
+                  curl -X POST https://status.katya.wtf/api/incidents \
+                    -H "Authorization: Bearer ${{ secrets.STATUS_PAGE_TOKEN }}" \
+                    -H "Content-Type: application/json" \
+                    -d '{
+                      "title": "Deployment completed",
+                      "status": "resolved",
+                      "message": "Successfully deployed version ${{ needs.determine-strategy.outputs.version }} to ${{ needs.determine-strategy.outputs.environment }}"
+                    }'
+
+            - name: Send deployment notifications
+              uses: 8398a7/action-slack@v3
+              with:
+                  status: custom
+                  custom_payload: |
+                      {
+                        "channel": "#deployments",
+                        "attachments": [{
+                          "color": "good",
+                          "title": "Deployment Successful",
+                          "fields": [
+                            {
+                              "title": "Environment",
+                              "value": "${{ needs.determine-strategy.outputs.environment }}",
+                              "short": true
+                            },
+                            {
+                              "title": "Version",
+                              "value": "${{ needs.determine-strategy.outputs.version }}",
+                              "short": true
+                            },
+                            {
+                              "title": "Commit",
+                              "value": "${{ github.sha }}",
+                              "short": true
+                            },
+                            {
+                              "title": "Deployed by",
+                              "value": "${{ github.actor }}",
+                              "short": true
+                            }
+                          ],
+                          "footer": "Katya CI/CD",
+                          "ts": ${{ github.event.head_commit.timestamp }}
+                        }]
+                      }
+              env:
+                  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+            - name: Create GitHub release
+              if: needs.determine-strategy.outputs.deploy-type == 'release'
+              uses: actions/create-release@v1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                  tag_name: ${{ needs.determine-strategy.outputs.version }}
+                  release_name: Release ${{ needs.determine-strategy.outputs.version }}
+                  body: |
+                      ## Changes in this Release
+
+                      - Deployed to production environment
+                      - Version: ${{ needs.determine-strategy.outputs.version }}
+                      - Commit: ${{ github.sha }}
+
+                      ## Deployment Details
+
+                      - Environment: ${{ needs.determine-strategy.outputs.environment }}
+                      - Deployed by: ${{ github.actor }}
+                      - Deployment time: ${{ github.event.head_commit.timestamp }}
+                  draft: false
+                  prerelease: false

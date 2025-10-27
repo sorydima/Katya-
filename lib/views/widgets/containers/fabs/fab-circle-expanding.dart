@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/global/assets.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/settings/theme-settings/selectors.dart';
 import 'package:katya/views/navigation.dart';
+import 'package:redux/redux.dart';
 
 class FabCircleExpanding extends StatelessWidget {
   final GlobalKey<FabBarContainerState>? fabKey;
@@ -17,30 +17,30 @@ class FabCircleExpanding extends StatelessWidget {
   final Alignment? alignment;
 
   const FabCircleExpanding({
-    Key? key,
+    super.key,
     this.fabKey,
     this.alignment,
-  }) : super(key: key);
+  });
 
-  onNavigateToPublicSearch(context) {
+  void onNavigateToPublicSearch(context) {
     HapticFeedback.lightImpact();
     fabKey!.currentState!.toggle(open: false);
     Navigator.pushNamed(context, Routes.searchGroups);
   }
 
-  onNavigateToDraft(context) {
+  void onNavigateToDraft(context) {
     HapticFeedback.lightImpact();
     fabKey!.currentState!.toggle(open: false);
     Navigator.pushNamed(context, Routes.searchUsers);
   }
 
-  onNavigateToCreateGroup(context) {
+  void onNavigateToCreateGroup(context) {
     HapticFeedback.lightImpact();
     fabKey!.currentState!.toggle(open: false);
     Navigator.pushNamed(context, Routes.groupCreate);
   }
 
-  onNavigateToCreateGroupPublic(context) {
+  void onNavigateToCreateGroupPublic(context) {
     HapticFeedback.lightImpact();
     fabKey!.currentState!.toggle(open: false);
     Navigator.pushNamed(context, Routes.groupCreatePublic);
@@ -121,12 +121,12 @@ class _Props extends Equatable {
 
 class FabBarContainer extends StatefulWidget {
   const FabBarContainer({
-    Key? key,
+    super.key,
     this.initialOpen,
     this.alignment,
     required this.distance,
     required this.children,
-  }) : super(key: key);
+  });
 
   final bool? initialOpen;
   final Alignment? alignment;
@@ -273,12 +273,11 @@ class FabBarContainerState extends State<FabBarContainer> with SingleTickerProvi
 @immutable
 class _ExpandingActionButton extends StatelessWidget {
   const _ExpandingActionButton({
-    Key? key,
     required this.directionInDegrees,
     required this.maxDistance,
     required this.progress,
     required this.child,
-  }) : super(key: key);
+  });
 
   final double directionInDegrees;
   final double maxDistance;

@@ -3,16 +3,14 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:redux/redux.dart';
-import 'package:katya/global/assets.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/settings/theme-settings/selectors.dart';
 import 'package:katya/views/navigation.dart';
+import 'package:redux/redux.dart';
 
-calculatePosition(int copyLength) => copyLength * 3.4;
+double calculatePosition(int copyLength) => copyLength * 3.4;
 
 class FabRing extends StatelessWidget {
   final bool showLabels;
@@ -20,28 +18,28 @@ class FabRing extends StatelessWidget {
   final GlobalKey? fabKey; // Simplified for compatibility
 
   const FabRing({
-    Key? key,
+    super.key,
     this.fabKey,
     this.alignment = Alignment.bottomRight,
     this.showLabels = false,
-  }) : super(key: key);
+  });
 
-  onNavigateToPublicSearch(context) {
+  void onNavigateToPublicSearch(context) {
     HapticFeedback.lightImpact();
     Navigator.pushNamed(context, Routes.searchGroups);
   }
 
-  onNavigateToDraft(context) {
+  void onNavigateToDraft(context) {
     HapticFeedback.lightImpact();
     Navigator.pushNamed(context, Routes.searchUsers);
   }
 
-  onNavigateToCreateGroup(context) {
+  void onNavigateToCreateGroup(context) {
     HapticFeedback.lightImpact();
     Navigator.pushNamed(context, Routes.groupCreate);
   }
 
-  onNavigateToCreateGroupPublic(context) {
+  void onNavigateToCreateGroupPublic(context) {
     HapticFeedback.lightImpact();
     Navigator.pushNamed(context, Routes.groupCreatePublic);
   }
@@ -70,12 +68,12 @@ class FabRing extends StatelessWidget {
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: Text('Actions'),
+                  title: const Text('Actions'),
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ListTile(
-                        leading: Icon(Icons.public),
+                        leading: const Icon(Icons.public),
                         title: Text(Strings.labelFabCreatePublic),
                         onTap: () {
                           Navigator.pop(context);
@@ -83,24 +81,24 @@ class FabRing extends StatelessWidget {
                         },
                       ),
                       ListTile(
-                        leading: Icon(Icons.group),
-                        title: Text('Create Group'),
+                        leading: const Icon(Icons.group),
+                        title: const Text('Create Group'),
                         onTap: () {
                           Navigator.pop(context);
                           onNavigateToCreateGroup(context);
                         },
                       ),
                       ListTile(
-                        leading: Icon(Icons.search),
-                        title: Text('Search Groups'),
+                        leading: const Icon(Icons.search),
+                        title: const Text('Search Groups'),
                         onTap: () {
                           Navigator.pop(context);
                           onNavigateToPublicSearch(context);
                         },
                       ),
                       ListTile(
-                        leading: Icon(Icons.person_search),
-                        title: Text('Search Users'),
+                        leading: const Icon(Icons.person_search),
+                        title: const Text('Search Users'),
                         onTap: () {
                           Navigator.pop(context);
                           onNavigateToDraft(context);
@@ -111,13 +109,13 @@ class FabRing extends StatelessWidget {
                 ),
               );
             },
-            child: Icon(
+            child: const Icon(
               Icons.bubble_chart,
               size: Dimensions.iconSizeLarge,
               color: Colors.white,
             ),
           );
-              // All FAB actions are now handled in the dialog
+          // All FAB actions are now handled in the dialog
         },
       );
 }

@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:katya/utils/theme_compatibility.dart';
-
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
-
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/widgets/buttons/button-text.dart';
 
 class DialogConfirm extends StatelessWidget {
   const DialogConfirm({
-    Key? key,
+    super.key,
     this.title = '',
     this.content = '',
     this.loading = false,
@@ -18,7 +16,7 @@ class DialogConfirm extends StatelessWidget {
     this.dismissText,
     this.onConfirm,
     this.onDismiss,
-  }) : super(key: key);
+  });
 
   final String title;
   final String content;
@@ -44,7 +42,7 @@ class DialogConfirm extends StatelessWidget {
         children: <Widget>[
           Text(content),
           Container(
-            padding: EdgeInsets.only(top: 8),
+            padding: const EdgeInsets.only(top: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

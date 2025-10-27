@@ -21,7 +21,7 @@ extension AuthQueries on StorageDatabase {
     if (Platform.isLinux) {
       return into(auths).insert(
         AuthsCompanion(
-          id: Value(StorageKeys.AUTH),
+          id: const Value(StorageKeys.AUTH),
           store: Value(storeJson),
         ),
         mode: InsertMode.insertOrReplace,
@@ -29,14 +29,13 @@ extension AuthQueries on StorageDatabase {
     }
 
     return into(auths).insertOnConflictUpdate(AuthsCompanion(
-      id: Value(StorageKeys.AUTH),
+      id: const Value(StorageKeys.AUTH),
       store: Value(storeJson),
     ));
   }
 
   Future<AuthStore?> selectAuthStore() async {
-    final row = await (select(auths)..where((tbl) => tbl.id.isNotNull()))
-        .getSingleOrNull();
+    final row = await (select(auths)..where((tbl) => tbl.id.isNotNull())).getSingleOrNull();
 
     if (row == null) {
       return null;

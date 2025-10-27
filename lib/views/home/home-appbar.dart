@@ -11,12 +11,12 @@ import 'package:katya/store/settings/theme-settings/model.dart';
 import 'package:katya/store/settings/theme-settings/selectors.dart';
 import 'package:katya/store/sync/selectors.dart';
 import 'package:katya/store/user/model.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/home/chat/chat-screen.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/appbars/appbar-avatar.dart';
 import 'package:katya/views/widgets/containers/menu-rounded.dart';
 import 'package:katya/views/widgets/dialogs/dialog-options.dart';
-import 'package:katya/utils/theme_compatibility.dart';
 
 enum Options {
   newGroup,
@@ -29,9 +29,9 @@ enum Options {
 
 class AppBarHome extends HookWidget implements PreferredSizeWidget {
   const AppBarHome({
-    Key? key,
+    super.key,
     this.onToggleSearch,
-  }) : super(key: key);
+  });
 
   final Function? onToggleSearch;
 
@@ -76,12 +76,12 @@ class AppBarHome extends HookWidget implements PreferredSizeWidget {
         builder: (dialogContext) => DialogOptions(
           title: 'How can we help?',
           content: Strings.contentSupportDialog,
-          confirmStyle: TextStyle(color: Colors.grey),
-          dismissStyle: TextStyle(color: Colors.blue),
+          confirmStyle: const TextStyle(color: Colors.grey),
+          dismissStyle: const TextStyle(color: Colors.blue),
           dismissText: 'Join Support chat',
           confirmText: 'Email our team',
           onDismiss: () async {
-            final supportRoom = Room(
+            const supportRoom = Room(
               id: Values.supportChatId,
               alias: Values.supportChatAlias,
             );
@@ -135,7 +135,7 @@ class AppBarHome extends HookWidget implements PreferredSizeWidget {
       actions: <Widget>[
         IconButton(
           color: assetColor,
-          icon: Icon(Icons.search),
+          icon: const Icon(Icons.search),
           tooltip: Strings.tooltipSearchChats,
           onPressed: () => onToggleSearch?.call(),
         ),
@@ -148,16 +148,12 @@ class AppBarHome extends HookWidget implements PreferredSizeWidget {
             switch (result) {
               case Options.newGroup:
                 Navigator.pushNamed(context, Routes.groupCreate);
-                break;
               case Options.markAllRead:
                 onMarkAllRead();
-                break;
               case Options.settings:
                 Navigator.pushNamed(context, Routes.settings);
-                break;
               case Options.help:
                 onSelectHelp();
-                break;
               default:
                 break;
             }

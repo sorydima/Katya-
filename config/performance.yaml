@@ -1,0 +1,298 @@
+# Конфигурация производительности системы Katya
+
+# Настройки кэширования
+cache:
+  # Основной кэш
+  memory:
+    max_size: 10000
+    default_ttl: 3600  # 1 час в секундах
+    cleanup_interval: 600  # 10 минут в секундах
+  
+  # Redis кэш (внешний)
+  redis:
+    enabled: true
+    host: localhost
+    port: 6379
+    password: null
+    database: 0
+    max_connections: 100
+    timeout: 5000  # миллисекунды
+    
+  # Политики записи
+  write_policy: writeThrough  # writeThrough, writeBack, writeAround
+  
+  # Настройки по умолчанию для разных типов данных
+  defaults:
+    reputation_cache_ttl: 1800  # 30 минут
+    blockchain_cache_ttl: 3600  # 1 час
+    analytics_cache_ttl: 900    # 15 минут
+    user_data_cache_ttl: 7200   # 2 часа
+
+# Настройки пакетной обработки
+batch_processing:
+  # Размеры батчей для разных операций
+  batch_sizes:
+    messages: 50
+    analytics: 100
+    notifications: 200
+    database_operations: 500
+    
+  # Таймауты батчей
+  timeouts:
+    messages: 3  # секунды
+    analytics: 60  # секунды
+    notifications: 10  # секунды
+    database_operations: 30  # секунды
+    
+  # Стратегии обработки
+  strategies:
+    messages: hybrid  # sizeBased, timeBased, hybrid
+    analytics: timeBased
+    notifications: sizeBased
+    database_operations: hybrid
+
+# Настройки мемоизации
+memoization:
+  # Общие настройки
+  enabled: true
+  default_ttl: 3600  # 1 час
+  max_cache_size: 1000
+  
+  # Настройки для конкретных функций
+  functions:
+    reputation_calculation:
+      ttl: 1800
+      max_size: 500
+    blockchain_verification:
+      ttl: 7200
+      max_size: 200
+    analytics_processing:
+      ttl: 900
+      max_size: 1000
+
+# Настройки сжатия данных
+compression:
+  # Алгоритмы сжатия
+  algorithms:
+    default: gzip
+    high_performance: lz4
+    high_compression: brotli
+    
+  # Уровни сжатия (1-9)
+  levels:
+    gzip: 6
+    deflate: 6
+    brotli: 4
+    lz4: 1
+    
+  # Пороги для автоматического сжатия
+  auto_compress_threshold: 1024  # байты
+  min_compression_ratio: 0.8
+
+# Настройки мониторинга производительности
+performance_monitoring:
+  # Интервалы сбора метрик
+  collection_intervals:
+    system_metrics: 30  # секунды
+    application_metrics: 60  # секунды
+    custom_metrics: 300  # секунды
+    
+  # Правила алертов
+  alert_rules:
+    # CPU
+    high_cpu_usage:
+      metric: system.cpu_usage
+      condition: greaterThan
+      threshold: 80.0
+      severity: warning
+      evaluation_period: 300  # 5 минут
+      
+    critical_cpu_usage:
+      metric: system.cpu_usage
+      condition: greaterThan
+      threshold: 95.0
+      severity: critical
+      evaluation_period: 60  # 1 минута
+      
+    # Память
+    high_memory_usage:
+      metric: system.memory_usage
+      condition: greaterThan
+      threshold: 6144  # 6GB в MB
+      severity: warning
+      evaluation_period: 300
+      
+    critical_memory_usage:
+      metric: system.memory_usage
+      condition: greaterThan
+      threshold: 7168  # 7GB в MB
+      severity: critical
+      evaluation_period: 60
+      
+    # Диск
+    high_disk_usage:
+      metric: system.disk_usage
+      condition: greaterThan
+      threshold: 85.0
+      severity: warning
+      evaluation_period: 600  # 10 минут
+      
+    # Сеть
+    high_network_io:
+      metric: system.network_io
+      condition: greaterThan
+      threshold: 1000000000  # 1GB в байтах
+      severity: warning
+      evaluation_period: 300
+      
+  # Настройки хранения данных
+  data_retention:
+    metrics: 604800  # 7 дней в секундах
+    events: 259200   # 3 дня в секундах
+    alerts: 1209600  # 14 дней в секундах
+    
+  # Экспорт данных
+  export:
+    enabled: true
+    formats: [json, csv, xml]
+    max_file_size: 10485760  # 10MB в байтах
+
+# Настройки оптимизации базы данных
+database_optimization:
+  # Стратегии оптимизации запросов
+  query_strategies:
+    default: batch
+    analytics: parallel
+    reporting: cached
+    
+  # Настройки соединений
+  connection_pool:
+    min_connections: 5
+    max_connections: 50
+    connection_timeout: 30000  # миллисекунды
+    idle_timeout: 600000  # 10 минут в миллисекундах
+    
+  # Настройки кэширования запросов
+  query_cache:
+    enabled: true
+    ttl: 3600  # 1 час
+    max_size: 1000
+    enabled_for:
+      - SELECT
+      - SELECT COUNT
+      
+  # Настройки индексов
+  indexes:
+    auto_create: true
+    auto_analyze: true
+    maintenance_interval: 86400  # 24 часа в секундах
+
+# Настройки оптимизации сети
+network_optimization:
+  # Настройки HTTP клиента
+  http_client:
+    timeout: 30000  # миллисекунды
+    max_retries: 3
+    retry_delay: 1000  # миллисекунды
+    keep_alive: true
+    connection_pool_size: 100
+    
+  # Настройки WebSocket
+  websocket:
+    ping_interval: 30000  # миллисекунды
+    pong_timeout: 10000   # миллисекунды
+    max_frame_size: 65536  # байты
+    compression: true
+    
+  # Настройки gRPC
+  grpc:
+    max_message_size: 4194304  # 4MB в байтах
+    keep_alive_time: 30000     # миллисекунды
+    keep_alive_timeout: 5000   # миллисекунды
+    max_connection_idle: 300000  # 5 минут в миллисекундах
+
+# Настройки оптимизации памяти
+memory_optimization:
+  # Сборка мусора
+  garbage_collection:
+    enabled: true
+    interval: 300  # 5 минут в секундах
+    threshold: 0.8  # запускать при 80% заполнения
+    
+  # Пулы объектов
+  object_pools:
+    enabled: true
+    initial_size: 100
+    max_size: 1000
+    cleanup_interval: 3600  # 1 час в секундах
+    
+  # Мониторинг утечек памяти
+  leak_detection:
+    enabled: true
+    threshold: 100  # MB
+    check_interval: 1800  # 30 минут в секундах
+
+# Настройки логирования производительности
+performance_logging:
+  # Уровни логирования
+  levels:
+    debug: false
+    info: true
+    warning: true
+    error: true
+    
+  # Формат логов
+  format: json
+  
+  # Настройки ротации
+  rotation:
+    enabled: true
+    max_size: 104857600  # 100MB в байтах
+    max_files: 10
+    compress: true
+    
+  # Метрики для логирования
+  log_metrics:
+    - execution_time
+    - memory_usage
+    - cpu_usage
+    - database_query_time
+    - cache_hit_rate
+    - error_rate
+
+# Настройки профилирования
+profiling:
+  # Включение профилирования
+  enabled: false  # включать только для отладки
+  
+  # Настройки сэмплирования
+  sampling:
+    rate: 0.01  # 1% запросов
+    duration: 60  # секунды
+    
+  # Настройки экспорта профилей
+  export:
+    format: json
+    destination: file
+    path: ./profiles
+    
+# Настройки автоматического масштабирования
+auto_scaling:
+  # Метрики для масштабирования
+  metrics:
+    cpu_threshold: 70.0
+    memory_threshold: 80.0
+    request_rate_threshold: 1000
+    
+  # Настройки масштабирования
+  scaling:
+    min_instances: 1
+    max_instances: 10
+    scale_up_cooldown: 300   # 5 минут в секундах
+    scale_down_cooldown: 600 # 10 минут в секундах
+    
+  # Настройки балансировки нагрузки
+  load_balancing:
+    algorithm: round_robin
+    health_check_interval: 30  # секунды
+    health_check_timeout: 5    # секунды

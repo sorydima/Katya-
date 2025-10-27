@@ -18,7 +18,7 @@ String? selectDirectRoomAvatar(
 
     return avatarUri;
   } catch (error) {
-    log.error('[selectDirectRoomAvatar] ${error.toString()}');
+    log.error('[selectDirectRoomAvatar] $error');
     return null;
   }
 }
@@ -48,7 +48,7 @@ String? selectDirectRoomName(
 
     return roomNameDirect;
   } catch (error) {
-    log.error('[selectDirectRoomName] ${error.toString()}');
+    log.error('[selectDirectRoomName] $error');
     return null;
   }
 }
@@ -63,7 +63,7 @@ bool selectSyncingStatus(AppState state) {
   final lastAttempt = DateTime.fromMillisecondsSinceEpoch(state.syncStore.lastAttempt ?? 0);
 
   // See if the last attempted sy nc is older than 60 seconds
-  final isLastAttemptOld = DateTime.now().difference(lastAttempt).compareTo(Duration(seconds: 90));
+  final isLastAttemptOld = DateTime.now().difference(lastAttempt).compareTo(const Duration(seconds: 90));
 
   // syncing for the first time
   if (syncing && !synced) {

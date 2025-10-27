@@ -98,7 +98,7 @@ void generateIcons(String sourcePath, String outputDir) {
     final outputPath = path.join(outputDir, entry.key);
     final size = entry.value;
 
-    print('🎨 Generating: ${entry.key} (${size}x${size})');
+    print('🎨 Generating: ${entry.key} (${size}x$size)');
 
     // Create directory if it doesn't exist
     final dir = Directory(path.dirname(outputPath));
@@ -115,9 +115,7 @@ void generateIcons(String sourcePath, String outputDir) {
     );
 
     // Save image
-    final outputBytes = entry.key.endsWith('.ico')
-        ? img.encodeIco(resized)
-        : img.encodePng(resized);
+    final outputBytes = entry.key.endsWith('.ico') ? img.encodeIco(resized) : img.encodePng(resized);
 
     File(outputPath).writeAsBytesSync(outputBytes);
   }

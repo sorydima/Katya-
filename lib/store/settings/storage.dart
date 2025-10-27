@@ -21,25 +21,24 @@ extension SettingsQueries on StorageDatabase {
     // HACK: temporary to account for sqlite versions without UPSERT
     if (Platform.isLinux) {
       return into(settings).insert(
-      SettingsCompanion(
-        id: Value(StorageKeys.SETTINGS),
-        store: Value(storeJson),
-      ),
+        SettingsCompanion(
+          id: const Value(StorageKeys.SETTINGS),
+          store: Value(storeJson),
+        ),
         mode: InsertMode.insertOrReplace,
       );
     }
 
     return into(settings).insertOnConflictUpdate(
       SettingsCompanion(
-        id: Value(StorageKeys.SETTINGS),
+        id: const Value(StorageKeys.SETTINGS),
         store: Value(storeJson),
       ),
     );
   }
 
   Future<SettingsStore?> selectSettingStore() async {
-    final row = await (select(settings)..where((tbl) => tbl.id.isNotNull()))
-        .getSingleOrNull();
+    final row = await (select(settings)..where((tbl) => tbl.id.isNotNull())).getSingleOrNull();
 
     if (row == null) {
       return null;
@@ -73,14 +72,12 @@ const TERMS_OF_SERVICE_ACCEPTANCE_KEY = 'TERMS_OF_SERVICE_ACCEPTANCE_KEY';
 final _storage = SecureStorage();
 
 Future<dynamic> saveTermsAgreement({required int timestamp}) async {
-  return _storage.write(
-      key: TERMS_OF_SERVICE_ACCEPTANCE_KEY, value: json.encode(timestamp));
+  return _storage.write(key: TERMS_OF_SERVICE_ACCEPTANCE_KEY, value: json.encode(timestamp));
 }
 
 Future<int> loadTermsAgreement() async {
   try {
-    return int.parse(
-        await _storage.read(key: TERMS_OF_SERVICE_ACCEPTANCE_KEY) ?? '0');
+    return int.parse(await _storage.read(key: TERMS_OF_SERVICE_ACCEPTANCE_KEY) ?? '0');
   } catch (error) {
     log.error(error.toString());
     return 0;

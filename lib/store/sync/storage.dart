@@ -21,7 +21,7 @@ extension SyncQueries on StorageDatabase {
     if (Platform.isLinux) {
       return into(syncs).insert(
         SyncsCompanion(
-          id: Value(StorageKeys.SYNC),
+          id: const Value(StorageKeys.SYNC),
           store: Value(storeJson),
         ),
         mode: InsertMode.insertOrReplace,
@@ -30,15 +30,14 @@ extension SyncQueries on StorageDatabase {
 
     return into(syncs).insertOnConflictUpdate(
       SyncsCompanion(
-        id: Value(StorageKeys.SYNC),
+        id: const Value(StorageKeys.SYNC),
         store: Value(storeJson),
       ),
     );
   }
 
   Future<SyncStore?> selectSyncStore() async {
-    final row = await (select(syncs)..where((tbl) => tbl.id.isNotNull()))
-        .getSingleOrNull();
+    final row = await (select(syncs)..where((tbl) => tbl.id.isNotNull())).getSingleOrNull();
 
     if (row == null) {
       return null;

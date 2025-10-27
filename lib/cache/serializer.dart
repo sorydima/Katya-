@@ -1,9 +1,6 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
-import 'package:redux_persist/redux_persist.dart';
-import 'package:sembast/sembast.dart';
 import 'package:katya/cache/index.dart';
 import 'package:katya/cache/threadables.dart';
 import 'package:katya/global/print.dart';
@@ -22,6 +19,8 @@ import 'package:katya/store/rooms/state.dart';
 import 'package:katya/store/settings/state.dart';
 import 'package:katya/store/sync/state.dart';
 import 'package:katya/store/user/state.dart';
+import 'package:redux_persist/redux_persist.dart';
+import 'package:sembast/sembast.dart';
 
 ///
 /// Cache Serializer
@@ -71,7 +70,7 @@ class CacheSerializer implements StateSerializer<AppState> {
           }
         } catch (error) {
           log.error(
-            '[CacheSerializer|encryption] ${store.runtimeType.toString()} $error',
+            '[CacheSerializer|encryption] ${store.runtimeType} $error',
           );
         }
       }));
@@ -108,28 +107,20 @@ class CacheSerializer implements StateSerializer<AppState> {
         switch (type) {
           case 'AuthStore':
             authStore = AuthStore.fromJson(store as Map<String, dynamic>);
-            break;
           case 'SyncStore':
             syncStore = SyncStore.fromJson(store as Map<String, dynamic>);
-            break;
           case 'CryptoStore':
             cryptoStore = CryptoStore.fromJson(store as Map<String, dynamic>);
-            break;
           case 'MediaStore':
             mediaStore = MediaStore.fromJson(store as Map<String, dynamic>);
-            break;
           case 'SettingsStore':
             settingsStore = SettingsStore.fromJson(store as Map<String, dynamic>);
-            break;
           case 'UserStore':
             userStore = UserStore.fromJson(store as Map<String, dynamic>);
-            break;
           case 'EventStore':
             eventStore = EventStore.fromJson(store as Map<String, dynamic>);
-            break;
           case 'RoomStore':
             roomStore = RoomStore.fromJson(store as Map<String, dynamic>);
-            break;
           default:
             break;
         }
@@ -138,33 +129,36 @@ class CacheSerializer implements StateSerializer<AppState> {
       }
     });
 
-    final cryptoState =
-        cryptoStore ?? preloaded[StorageKeys.CRYPTO] as CryptoStore? ?? CryptoStore();
+    final cryptoState = cryptoStore ?? preloaded[StorageKeys.CRYPTO] as CryptoStore? ?? const CryptoStore();
 
-    final messageSessionsLoaded =
-        (preloaded[StorageKeys.MESSAGE_SESSIONS] ?? <String, Map<String, List<MessageSession>>>{})
-            as Map<String, Map<String, List<MessageSession>>>;
+    final messageSessionsLoaded = (preloaded[StorageKeys.MESSAGE_SESSIONS] ??
+        <String, Map<String, List<MessageSession>>>{}) as Map<String, Map<String, List<MessageSession>>>;
 
     return AppState(
       loading: false,
-      authStore: authStore ?? preloaded[StorageKeys.AUTH] ?? AuthStore(),
+      authStore: authStore ?? (preloaded[StorageKeys.AUTH] as AuthStore?) ?? const AuthStore(),
       cryptoStore: messageSessionsLoaded.isEmpty
           ? cryptoState
           : cryptoState.copyWith(
               messageSessionsInbound: messageSessionsLoaded,
             ),
-      settingsStore: preloaded[StorageKeys.SETTINGS] ?? settingsStore ?? SettingsStore(),
-      syncStore: syncStore ?? SyncStore(),
-      mediaStore: mediaStore ?? MediaStore().copyWith(mediaCache: preloaded[StorageKeys.MEDIA]),
-      roomStore: roomStore ?? RoomStore().copyWith(rooms: preloaded[StorageKeys.ROOMS] ?? {}),
-      userStore: userStore ?? UserStore().copyWith(users: preloaded[StorageKeys.USERS] ?? {}),
+      settingsStore: (preloaded[StorageKeys.SETTINGS] as SettingsStore?) ?? settingsStore ?? const SettingsStore(),
+      syncStore: syncStore ?? const SyncStore(),
+      mediaStore: mediaStore ??
+          const MediaStore().copyWith(mediaCache: preloaded[StorageKeys.MEDIA] as Map<String, Uint8List>?),
+      roomStore:
+          roomStore ?? const RoomStore().copyWith(rooms: (preloaded[StorageKeys.ROOMS] as Map<String, Room>?) ?? {}),
+      userStore:
+          userStore ?? const UserStore().copyWith(users: (preloaded[StorageKeys.USERS] as Map<String, User>?) ?? {}),
       eventStore: eventStore ??
-          EventStore().copyWith(
-            messages: preloaded[StorageKeys.MESSAGES] ?? <String, List<Message>>{},
-            messagesDecrypted: preloaded[StorageKeys.DECRYPTED] ?? <String, List<Message>>{},
-            reactions: preloaded[StorageKeys.REACTIONS] ?? <String, List<Reaction>>{},
-            redactions: preloaded[StorageKeys.REDACTIONS] ?? <String, Redaction>{},
-            receipts: preloaded[StorageKeys.RECEIPTS] ?? <String, Map<String, Receipt>>{},
+          const EventStore().copyWith(
+            messages: (preloaded[StorageKeys.MESSAGES] as Map<String, List<Message>>?) ?? <String, List<Message>>{},
+            messagesDecrypted:
+                (preloaded[StorageKeys.DECRYPTED] as Map<String, List<Message>>?) ?? <String, List<Message>>{},
+            reactions: (preloaded[StorageKeys.REACTIONS] as Map<String, List<Reaction>>?) ?? <String, List<Reaction>>{},
+            redactions: (preloaded[StorageKeys.REDACTIONS] as Map<String, Redaction>?) ?? <String, Redaction>{},
+            receipts: (preloaded[StorageKeys.RECEIPTS] as Map<String, Map<String, Receipt>>?) ??
+                <String, Map<String, Receipt>>{},
           ),
     );
   }

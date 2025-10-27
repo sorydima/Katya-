@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:katya/utils/theme_compatibility.dart';
-
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class DialogEncryption extends StatelessWidget {
   const DialogEncryption({
-    Key? key,
+    super.key,
     this.content,
     this.onAccept,
-  }) : super(key: key);
+  });
 
   final String? content;
   final Function? onAccept;
@@ -31,7 +30,7 @@ class DialogEncryption extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             SimpleDialogOption(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 12,
                 vertical: 12,
               ),
@@ -44,7 +43,7 @@ class DialogEncryption extends StatelessWidget {
               ),
             ),
             SimpleDialogOption(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 12,
                 vertical: 8,
               ),

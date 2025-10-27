@@ -2,9 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:katya/utils/theme_compatibility.dart';
-
 import 'package:katya/global/dimensions.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 const DEFAULT_BORDER_WIDTH = 1.2;
 
@@ -17,7 +16,7 @@ const DEFAULT_BORDER_WIDTH = 1.2;
 ///
 class TextFieldSecure extends StatelessWidget {
   const TextFieldSecure({
-    Key? key,
+    super.key,
     this.label,
     this.hint,
     this.suffix,
@@ -41,8 +40,8 @@ class TextFieldSecure extends StatelessWidget {
     this.onTap,
     this.textInputAction,
     this.autofillHints,
-    this.mouseCursor = MaterialStateMouseCursor.textable,
-  }) : super(key: key);
+    this.mouseCursor = WidgetStateMouseCursor.textable,
+  });
 
   final bool valid;
   final bool dirty;
@@ -70,9 +69,9 @@ class TextFieldSecure extends StatelessWidget {
   final Function? onEditingComplete;
   final Function? onTap;
   final Iterable<String>? autofillHints;
-  final MaterialStateMouseCursor? mouseCursor;
+  final WidgetStateMouseCursor? mouseCursor;
 
-  buildBorderColorFocused(BuildContext context) {
+  BorderSide buildBorderColorFocused(BuildContext context) {
     if (disabled) {
       return BorderSide(
         color: Theme.of(context).disabledColor,
@@ -92,7 +91,7 @@ class TextFieldSecure extends StatelessWidget {
     );
   }
 
-  buildBorderColor(BuildContext context) {
+  BorderSide buildBorderColor(BuildContext context) {
     if (disabled) {
       return BorderSide(
         color: Theme.of(context).disabledColor,
@@ -115,7 +114,7 @@ class TextFieldSecure extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         height: Dimensions.inputHeight,
-        constraints: BoxConstraints(
+        constraints: const BoxConstraints(
           minWidth: Dimensions.inputWidthMin,
           maxWidth: Dimensions.inputWidthMax,
         ),

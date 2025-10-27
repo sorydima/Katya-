@@ -1,22 +1,22 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/user/model.dart';
 import 'package:katya/store/user/selectors.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/widgets/appbars/appbar-normal.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
 import 'package:katya/views/widgets/containers/card-section.dart';
 import 'package:katya/views/widgets/loader/index.dart';
 import 'package:katya/views/widgets/modals/modal-user-details.dart';
-import 'package:katya/utils/theme_compatibility.dart';
+import 'package:redux/redux.dart';
 
 class BlockedScreen extends StatefulWidget {
-  const BlockedScreen({Key? key}) : super(key: key);
+  const BlockedScreen({super.key});
 
   @override
   BlockedScreenState createState() => BlockedScreenState();
@@ -33,7 +33,7 @@ class BlockedScreenState extends State<BlockedScreen> {
     super.didChangeDependencies();
   }
 
-  onShowUserDetails({
+  Future<void> onShowUserDetails({
     required BuildContext context,
     String? userId,
   }) async {
@@ -78,7 +78,7 @@ class BlockedScreenState extends State<BlockedScreen> {
                   user.userId!,
                   style: Theme.of(context).textTheme.caption!.merge(
                         TextStyle(
-                          color: props.loading ? Color(AppColors.greyDisabled) : null,
+                          color: props.loading ? const Color(AppColors.greyDisabled) : null,
                         ),
                       ),
                 ),
@@ -129,7 +129,6 @@ class _Props extends Equatable {
 
   static _Props mapStateToProps(Store<AppState> store) => _Props(
         loading: store.state.roomStore.loading,
-        usersBlocked:
-            store.state.userStore.blocked.map((id) => store.state.userStore.users[id]).toList(),
+        usersBlocked: store.state.userStore.blocked.map((id) => store.state.userStore.users[id]).toList(),
       );
 }

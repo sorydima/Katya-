@@ -2,20 +2,20 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/store/auth/actions.dart';
 import 'package:katya/store/index.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/behaviors.dart';
 import 'package:katya/views/widgets/buttons/button-solid.dart';
 import 'package:katya/views/widgets/buttons/button-text.dart';
 import 'package:katya/views/widgets/dialogs/dialog-explaination.dart';
-import 'package:katya/utils/theme_compatibility.dart';
+import 'package:redux/redux.dart';
 
 class VerificationScreen extends StatefulWidget {
-  const VerificationScreen({Key? key}) : super(key: key);
+  const VerificationScreen({super.key});
 
   @override
   VerificationScreenState createState() => VerificationScreenState();
@@ -57,7 +57,6 @@ class VerificationScreenState extends State<VerificationScreen> with WidgetsBind
             success = result;
           });
         }
-        break;
       default:
         break;
     }
@@ -91,14 +90,13 @@ class VerificationScreenState extends State<VerificationScreen> with WidgetsBind
                           flex: 2,
                           child: Container(
                             width: Dimensions.contentWidth(context),
-                            constraints: BoxConstraints(
+                            constraints: const BoxConstraints(
                               maxHeight: Dimensions.mediaSizeMax,
                               maxWidth: Dimensions.mediaSizeMax,
                             ),
                             child: SvgPicture.asset(
                               Assets.heroSignupVerificationView,
-                              semanticsLabel:
-                                  'Letter in envelop floating upward with attached balloons',
+                              semanticsLabel: 'Letter in envelop floating upward with attached balloons',
                             ),
                           ),
                         ),
@@ -107,7 +105,7 @@ class VerificationScreenState extends State<VerificationScreen> with WidgetsBind
                             direction: Axis.vertical,
                             children: <Widget>[
                               Container(
-                                padding: EdgeInsets.only(bottom: 8, top: 8),
+                                padding: const EdgeInsets.only(bottom: 8, top: 8),
                                 child: Text(
                                   'Check your email and click the verification\nlink to finish account creation.',
                                   textAlign: TextAlign.center,
@@ -118,7 +116,7 @@ class VerificationScreenState extends State<VerificationScreen> with WidgetsBind
                                 clipBehavior: Clip.none,
                                 children: <Widget>[
                                   Container(
-                                    padding: EdgeInsets.symmetric(
+                                    padding: const EdgeInsets.symmetric(
                                       vertical: 8,
                                       horizontal: 24,
                                     ),
@@ -169,7 +167,7 @@ class VerificationScreenState extends State<VerificationScreen> with WidgetsBind
                                 width: Dimensions.contentWidth(context),
                                 margin: EdgeInsets.only(top: height * 0.01),
                                 height: Dimensions.inputHeight,
-                                constraints: BoxConstraints(
+                                constraints: const BoxConstraints(
                                   minWidth: Dimensions.buttonWidthMin,
                                   maxWidth: Dimensions.buttonWidthMax,
                                 ),
@@ -189,7 +187,7 @@ class VerificationScreenState extends State<VerificationScreen> with WidgetsBind
                                 width: Dimensions.contentWidth(context),
                                 margin: EdgeInsets.only(top: height * 0.01),
                                 height: Dimensions.inputHeight,
-                                constraints: BoxConstraints(
+                                constraints: const BoxConstraints(
                                   minWidth: Dimensions.buttonWidthMin,
                                   maxWidth: Dimensions.buttonWidthMax,
                                 ),

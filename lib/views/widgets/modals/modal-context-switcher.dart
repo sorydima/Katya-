@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/context/auth.dart';
 import 'package:katya/context/storage.dart';
 import 'package:katya/context/types.dart';
@@ -11,15 +10,16 @@ import 'package:katya/global/strings.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/settings/theme-settings/model.dart';
 import 'package:katya/store/user/model.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/behaviors.dart';
 import 'package:katya/views/intro/login/login-screen.dart';
-import 'package:katya/views/navigation.dart';
 import 'package:katya/views/katya.dart';
+import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/lists/list-item-account.dart';
-import 'package:katya/utils/theme_compatibility.dart';
+import 'package:redux/redux.dart';
 
 class ModalContextSwitcher extends StatelessWidget {
-  onNavigateToMultiLogin({required BuildContext context, required _Props props}) async {
+  Future<void> onNavigateToMultiLogin({required BuildContext context, required _Props props}) async {
     Navigator.pushNamed(
       context,
       Routes.login,
@@ -29,12 +29,12 @@ class ModalContextSwitcher extends StatelessWidget {
     );
   }
 
-  onSwitchUser({required User user, required BuildContext context, required _Props props}) async {
+  Future<void> onSwitchUser({required User user, required BuildContext context, required _Props props}) async {
     props.onSwitchUser(user);
     Navigator.pop(context);
   }
 
-  onSwitchContext({
+  void onSwitchContext({
     required AppContext appContext,
     required BuildContext buildContext,
     required _Props props,
@@ -43,28 +43,24 @@ class ModalContextSwitcher extends StatelessWidget {
     Navigator.pop(buildContext);
   }
 
-  buildContextList(BuildContext buildContext, _Props props) => FutureBuilder<AppContext>(
+  FutureBuilder<AppContext> buildContextList(BuildContext buildContext, _Props props) => FutureBuilder<AppContext>(
       future: props.currentContext, // async work
       builder: (context, currentContextData) => FutureBuilder<List<AppContext>>(
             future: props.availableContext, // async work
             builder: (context, contextsAllData) {
-              final knownUsers =
-                  props.availableUsers.map((u) => generateContextId_DEPRECATED(id: u.userId!));
-              final contextCurrent = currentContextData.data ?? AppContext();
+              final knownUsers = props.availableUsers.map((u) => generateContextId_DEPRECATED(id: u.userId!));
+              final contextCurrent = currentContextData.data ?? const AppContext();
               final contextsAll = contextsAllData.data ?? [];
 
-              final contextsUnknown = contextsAll
-                  .where((c) => c.id != contextCurrent.id && !knownUsers.contains(c.id))
-                  .toList();
+              final contextsUnknown =
+                  contextsAll.where((c) => c.id != contextCurrent.id && !knownUsers.contains(c.id)).toList();
 
               return ListView.builder(
                   shrinkWrap: true,
                   padding: EdgeInsets.zero,
                   physics: const NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,
-                  itemCount: props.availableUsers.length >= contextsAll.length
-                      ? 0
-                      : contextsUnknown.length,
+                  itemCount: props.availableUsers.length >= contextsAll.length ? 0 : contextsUnknown.length,
                   itemBuilder: (BuildContext context, int index) {
                     final context = contextsUnknown[index];
 
@@ -87,7 +83,7 @@ class ModalContextSwitcher extends StatelessWidget {
             },
           ));
 
-  buildUserList(BuildContext context, _Props props) => ListView.builder(
+  ListView buildUserList(BuildContext context, _Props props) => ListView.builder(
       shrinkWrap: true,
       padding: EdgeInsets.zero,
       physics: const NeverScrollableScrollPhysics(),
@@ -110,14 +106,14 @@ class ModalContextSwitcher extends StatelessWidget {
       distinct: true,
       converter: (Store<AppState> store) => _Props.mapStateToProps(store),
       builder: (context, props) => Container(
-            constraints: BoxConstraints(
+            constraints: const BoxConstraints(
               maxHeight: Dimensions.modalHeightMax,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     vertical: Dimensions.paddingContainer,
                     horizontal: Dimensions.paddingLarge,
                   ),
@@ -127,8 +123,8 @@ class ModalContextSwitcher extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline5?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: Theme.of(context).brightness == Brightness.light
-                              ? Color(AppColors.greyDark)
-                              : Color(AppColors.whiteDefault),
+                              ? const Color(AppColors.greyDark)
+                              : const Color(AppColors.whiteDefault),
                         ),
                   ),
                 ),
@@ -150,7 +146,7 @@ class ModalContextSwitcher extends StatelessWidget {
                               context: context,
                               props: props,
                             ),
-                            contentPadding: EdgeInsets.symmetric(
+                            contentPadding: const EdgeInsets.symmetric(
                               horizontal: Dimensions.paddingContainer,
                             ),
                             title: Text(
@@ -160,8 +156,8 @@ class ModalContextSwitcher extends StatelessWidget {
                             leading: Container(
                               height: Dimensions.avatarSizeMin,
                               width: Dimensions.avatarSizeMin,
-                              padding: EdgeInsets.symmetric(horizontal: 4),
-                              child: Icon(
+                              padding: const EdgeInsets.symmetric(horizontal: 4),
+                              child: const Icon(
                                 Icons.add_circle_outline,
                                 size: Dimensions.iconSize,
                               ),

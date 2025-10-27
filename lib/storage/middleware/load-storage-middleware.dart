@@ -1,9 +1,9 @@
-import 'package:redux/redux.dart';
 import 'package:katya/global/print.dart';
 import 'package:katya/storage/database.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/user/actions.dart';
 import 'package:katya/store/user/storage.dart';
+import 'package:redux/redux.dart';
 
 ///
 /// Load Storage Middleware
@@ -11,7 +11,8 @@ import 'package:katya/store/user/storage.dart';
 /// Loads storage data from cold storage
 /// based  on which redux actions are fired.
 ///
-loadStorageMiddleware(StorageDatabase? storage) {
+Future<void> Function(Store<AppState> store, dynamic action, NextDispatcher next) loadStorageMiddleware(
+    StorageDatabase? storage) {
   return (
     Store<AppState> store,
     dynamic action,
@@ -28,20 +29,19 @@ loadStorageMiddleware(StorageDatabase? storage) {
 
       switch (action.runtimeType) {
         case LoadUsers:
-          final _action = action as LoadUsers;
-          _loadUserAsync() async {
-            final loadedUsers = await loadUsers(storage: storage, ids: _action.userIds ?? []);
+          final action = action as LoadUsers;
+          loadUserAsync() async {
+            final loadedUsers = await loadUsers(storage: storage, ids: action.userIds ?? []);
 
             store.dispatch(SetUsers(users: loadedUsers));
           }
 
-          _loadUserAsync();
-          break;
+          loadUserAsync();
         default:
           break;
       }
     } catch (error) {
-      log.error('[loadStorageMiddleware] ${error.toString()}');
+      log.error('[loadStorageMiddleware] $error');
     }
 
     next(action);

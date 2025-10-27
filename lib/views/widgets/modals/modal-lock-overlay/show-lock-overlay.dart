@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:katya/utils/theme_compatibility.dart';
-import 'package:katya/views/widgets/modals/modal-lock-overlay/input-secrets-config.dart';
 import 'package:katya/views/widgets/modals/modal-lock-overlay/lock-controller.dart';
 import 'package:katya/views/widgets/modals/modal-lock-overlay/lock-overlay.dart';
 

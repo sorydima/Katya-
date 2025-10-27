@@ -163,33 +163,25 @@ class Sync {
     if (json['state'] != null) {
       final List<dynamic> stateEventsRaw = json['state']['events'];
 
-      stateEvents = stateEventsRaw
-          .map((event) => Event.fromMatrix(event, roomId: roomId))
-          .toList();
+      stateEvents = stateEventsRaw.map((event) => Event.fromMatrix(event, roomId: roomId)).toList();
     }
 
     if (json['invite_state'] != null) {
       final List<dynamic> stateEventsRaw = json['invite_state']['events'];
 
-      stateEvents = stateEventsRaw
-          .map((event) => Event.fromMatrix(event, roomId: roomId))
-          .toList();
+      stateEvents = stateEventsRaw.map((event) => Event.fromMatrix(event, roomId: roomId)).toList();
     }
 
     if (json['account_data'] != null) {
       final List<dynamic> accountEventsRaw = json['account_data']['events'];
 
-      accountEvents = accountEventsRaw
-          .map((event) => Event.fromMatrix(event, roomId: roomId))
-          .toList();
+      accountEvents = accountEventsRaw.map((event) => Event.fromMatrix(event, roomId: roomId)).toList();
     }
 
     if (json['ephemeral'] != null) {
       final List<dynamic> ephemeralEventsRaw = json['ephemeral']['events'];
 
-      ephemeralEvents = ephemeralEventsRaw
-          .map((event) => Event.fromMatrix(event, roomId: roomId))
-          .toList();
+      ephemeralEvents = ephemeralEventsRaw.map((event) => Event.fromMatrix(event, roomId: roomId)).toList();
     }
 
     if (json['timeline'] != null) {
@@ -211,16 +203,12 @@ class Sync {
           case EventTypes.message:
           case EventTypes.encrypted:
             messageEvents.add(Message.fromEvent(event));
-            break;
           case EventTypes.reaction:
             reactionEvents.add(Reaction.fromEvent(event));
-            break;
           case EventTypes.redaction:
             redactionEvents.add(Redaction.fromEvent(event));
-            break;
           default:
             stateEvents.add(event);
-            break;
         }
       }
     }
@@ -249,7 +237,6 @@ class Sync {
         switch (event.type) {
           case 'm.direct':
             isDirectNew = true;
-            break;
           default:
             break;
         }
@@ -306,32 +293,26 @@ class Sync {
               namePriority = 1;
               roomNameNew = event.content['name'];
             }
-            break;
           case 'm.room.topic':
             topicNew = event.content['topic'];
-            break;
 
           case 'm.room.join_rules':
             joinRuleNew = event.content['join_rule'];
-            break;
 
           case 'm.room.canonical_alias':
             if (namePriority > 2) {
               namePriority = 2;
               roomNameNew = event.content['alias'];
             }
-            break;
           case 'm.room.aliases':
             if (namePriority > 3) {
               namePriority = 3;
               roomNameNew = event.content['aliases'][0];
             }
-            break;
           case 'm.room.avatar':
             if (avatarUriNew == null) {
               avatarUriNew = event.content['url'];
             }
-            break;
 
           case 'm.room.member':
             final membership = event.content['membership'];
@@ -355,7 +336,6 @@ class Sync {
                 if (event.stateKey == currentUser.userId) {
                   leaveTimestamp = null;
                 }
-                break;
               case 'ban':
               case 'leave':
                 userIdsRemove.add(event.stateKey!);
@@ -363,15 +343,12 @@ class Sync {
                 if (event.stateKey == currentUser.userId) {
                   leaveTimestamp = event.timestamp;
                 }
-                break;
               default:
                 break;
             }
 
-            break;
           case 'm.room.encryption':
             encryptionEnabledNew = true;
-            break;
           case 'm.room.encrypted':
             break;
           default:
@@ -391,8 +368,7 @@ class Sync {
       // checks to make sure someone didn't name the room after the authed user
       final badRoomName = roomNameNew != null &&
           currentUser.userId != null &&
-          (roomNameNew == currentUser.displayName ||
-              roomNameNew == currentUser.userId);
+          (roomNameNew == currentUser.displayName || roomNameNew == currentUser.userId);
 
       final isNameDefault = namePriority == 4 && usersAdd.isNotEmpty;
 
@@ -403,8 +379,7 @@ class Sync {
         );
 
         if (otherUsers.isNotEmpty) {
-          roomNameNew =
-              selectDirectRoomName(currentUser, otherUsers, userIdsNew.length);
+          roomNameNew = selectDirectRoomName(currentUser, otherUsers, userIdsNew.length);
           avatarUriNew = selectDirectRoomAvatar(room, avatarUriNew, otherUsers);
         }
       }
@@ -543,7 +518,6 @@ class Sync {
               (user) => currentUser.userId == user,
             );
             userTypingUpdated = usersTypingUpdated.isNotEmpty;
-            break;
           case 'm.receipt':
             final Map<String, dynamic> receiptEventIds = event.content;
 
@@ -557,12 +531,9 @@ class Sync {
                 readReceiptsNew[eventId] = receiptsNew;
               } else {
                 // otherwise, add the usersRead to the existing reads
-                readReceiptsNew[eventId]!
-                    .userReads
-                    .addAll(receiptsNew.userReads);
+                readReceiptsNew[eventId]!.userReads.addAll(receiptsNew.userReads);
               }
             });
-            break;
           default:
             break;
         }
@@ -578,7 +549,7 @@ class Sync {
         }
       });
     } catch (error) {
-      log.error('[parseEphemerals] ${error.toString()}');
+      log.error('[parseEphemerals] $error');
     }
 
     return this.copyWith(

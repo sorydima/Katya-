@@ -7,6 +7,37 @@ import 'package:katya/global/values.dart';
 import 'package:katya/store/settings/proxy-settings/model.dart';
 
 class MatrixMedia {
+  /// Check the maximum upload size allowed by the homeserver
+  /// Returns the maximum upload size in bytes, or null if not specified
+  static Future<int?> checkMaxUploadSize({
+    String? protocol = Values.DEFAULT_PROTOCOL,
+    String? homeserver = Values.homeserverDefault,
+    String? accessToken,
+    ProxySettings? proxySettings,
+  }) async {
+    try {
+      final client = createClient(proxySettings: proxySettings);
+      
+      final response = await client.get(
+        Uri.parse('$protocol$homeserver/_matrix/media/r0/config'),
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return data['m.upload.size']?['max_file_size'] as int?;
+      }
+      
+      return null;
+    } catch (error) {
+      print('Error checking max upload size: $error');
+      return null;
+    }
+  }
+
   static Future<dynamic> fetchThumbnailThreaded(Map params) async {
     final String? protocol = params['protocol'];
     final String? homeserver = params['homeserver'];
@@ -119,28 +150,6 @@ class MatrixMedia {
     return {'bodyBytes': response.bodyBytes};
   }
 
-  static Future<dynamic> checkMaxUploadSize({
-    String? protocol = Values.DEFAULT_PROTOCOL,
-    String? homeserver = Values.homeserverDefault,
-    String? accessToken,
-    String? fileName,
-    String fileType = 'application/jpeg', // Content-Type: application/pdf
-    required Stream<List<int>> fileStream,
-    int? fileLength,
-  }) async {
-    final url = '$protocol$homeserver/_matrix/media/r0/config';
-
-    final Map<String, String> headers = {
-      ...Values.defaultHeaders,
-    };
-
-    final response = await httpClient.get(
-      Uri.parse(url),
-      headers: headers,
-    );
-
-    return json.decode(response.body);
-  }
 
   static Future<dynamic> uploadMedia({
     String? protocol = Values.DEFAULT_PROTOCOL,

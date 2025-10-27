@@ -1,11 +1,9 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
@@ -20,6 +18,7 @@ import 'package:katya/store/settings/theme-settings/model.dart';
 import 'package:katya/store/user/actions.dart';
 import 'package:katya/store/user/model.dart';
 import 'package:katya/store/user/selectors.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/appbars/appbar-search.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
@@ -29,7 +28,7 @@ import 'package:katya/views/widgets/lifecycle.dart';
 import 'package:katya/views/widgets/lists/list-item-user.dart';
 import 'package:katya/views/widgets/loader/index.dart';
 import 'package:katya/views/widgets/modals/modal-user-details.dart';
-import 'package:katya/utils/theme_compatibility.dart';
+import 'package:redux/redux.dart';
 
 class InviteUsersArguments {
   final String? roomId;
@@ -38,7 +37,7 @@ class InviteUsersArguments {
 }
 
 class InviteUsersScreen extends StatefulWidget {
-  const InviteUsersScreen({Key? key}) : super(key: key);
+  const InviteUsersScreen({super.key});
 
   @override
   InviteUsersState createState() => InviteUsersState();
@@ -78,7 +77,7 @@ class InviteUsersState extends State<InviteUsersScreen> with Lifecycle<InviteUse
     super.dispose();
   }
 
-  onShowUserDetails({required BuildContext context, User? user}) async {
+  Future<void> onShowUserDetails({required BuildContext context, User? user}) async {
     await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -95,7 +94,7 @@ class InviteUsersState extends State<InviteUsersScreen> with Lifecycle<InviteUse
   ///
   /// add/remove user to invite list
   ///
-  onToggleInvite({User? user}) async {
+  Future<void> onToggleInvite({User? user}) async {
     final List<User?> invitesUpdated = List.from(invites);
     final userIndex = invitesUpdated.indexWhere((u) => u!.userId == user!.userId);
 
@@ -113,7 +112,7 @@ class InviteUsersState extends State<InviteUsersScreen> with Lifecycle<InviteUse
       WidgetsBinding.instance.addPostFrameCallback((_) {
         avatarScrollController.animateTo(
           avatarScrollController.position.maxScrollExtent,
-          duration: Duration(milliseconds: Values.animationDurationDefaultFast),
+          duration: const Duration(milliseconds: Values.animationDurationDefaultFast),
           curve: Curves.easeInOut,
         );
       });
@@ -125,7 +124,7 @@ class InviteUsersState extends State<InviteUsersScreen> with Lifecycle<InviteUse
   ///
   /// attempt chating with a user by the name searched
   ///
-  onAttemptInvite({required BuildContext context, _Props? props, User? user}) async {
+  Future<Future> onAttemptInvite({required BuildContext context, _Props? props, User? user}) async {
     return showDialog(
       context: context,
       builder: (BuildContext context) => DialogStartChat(
@@ -146,7 +145,7 @@ class InviteUsersState extends State<InviteUsersScreen> with Lifecycle<InviteUse
   ///
   /// also attempts to invite users directly if a room id already exists
   ///
-  onConfirmInvites(_Props props) async {
+  Future<void> onConfirmInvites(_Props props) async {
     final arguments = useScreenArguments<InviteUsersArguments>(context);
     final roomId = arguments?.roomId;
 
@@ -161,7 +160,7 @@ class InviteUsersState extends State<InviteUsersScreen> with Lifecycle<InviteUse
   ///
   /// Actually send invites to all listed users
   ///
-  onSendInvites(_Props props) async {
+  Future<Future> onSendInvites(_Props props) async {
     FocusScope.of(context).unfocus();
     final arguments = useScreenArguments<InviteUsersArguments>(context);
     final store = StoreProvider.of<AppState>(context);
@@ -214,7 +213,7 @@ class InviteUsersState extends State<InviteUsersScreen> with Lifecycle<InviteUse
                 right: index == invites.length - 1 ? 12 : 4,
               ),
               child: Chip(
-                labelPadding: EdgeInsets.only(left: 8),
+                labelPadding: const EdgeInsets.only(left: 8),
                 padding: EdgeInsets.zero,
                 visualDensity: VisualDensity.comfortable,
                 avatar: Avatar(
@@ -264,8 +263,7 @@ class InviteUsersState extends State<InviteUsersScreen> with Lifecycle<InviteUse
 
         final showManualUser = searchable.isNotEmpty && foundResult < 0 && !props.loading;
         final usersList = searchable.isEmpty ? props.usersRecent : props.searchResults;
-        final usersListLabel =
-            searchable.isEmpty ? Strings.labelUsersRecent : Strings.labelUsersResults;
+        final usersListLabel = searchable.isEmpty ? Strings.labelUsersRecent : Strings.labelUsersResults;
 
         return Scaffold(
           appBar: AppBarSearch(
@@ -289,7 +287,7 @@ class InviteUsersState extends State<InviteUsersScreen> with Lifecycle<InviteUse
               backgroundColor: Theme.of(context).colorScheme.secondary,
               onPressed: () => onConfirmInvites(props),
               child: Container(
-                padding: EdgeInsets.only(left: 2),
+                padding: const EdgeInsets.only(left: 2),
                 child: SvgPicture.asset(
                   Assets.iconChevronsRightBeing,
                   color: Colors.white,
@@ -308,7 +306,7 @@ class InviteUsersState extends State<InviteUsersScreen> with Lifecycle<InviteUse
                   child: Container(
                     width: width,
                     height: Dimensions.listAvatarHeighttMax,
-                    padding: EdgeInsets.only(top: 8),
+                    padding: const EdgeInsets.only(top: 8),
                     constraints: BoxConstraints(
                       maxWidth: width,
                       maxHeight: Dimensions.listAvatarHeighttMax,
@@ -323,7 +321,7 @@ class InviteUsersState extends State<InviteUsersScreen> with Lifecycle<InviteUse
                         shrinkWrap: true,
                         children: [
                           Container(
-                            padding: EdgeInsets.only(left: 20, right: 20, top: 16),
+                            padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
                             child: Row(
                               children: [
                                 Text(
@@ -337,8 +335,7 @@ class InviteUsersState extends State<InviteUsersScreen> with Lifecycle<InviteUse
                           Visibility(
                             visible: showManualUser,
                             child: ListItemUser(
-                              onPress: () => onAttemptInvite(
-                                  props: props, context: context, user: attemptableUser),
+                              onPress: () => onAttemptInvite(props: props, context: context, user: attemptableUser),
                               type: ListItemUserType.Selectable,
                               user: attemptableUser,
                               enabled: creatingRoomDisplayName != searchable,
@@ -361,8 +358,7 @@ class InviteUsersState extends State<InviteUsersScreen> with Lifecycle<InviteUse
                                 selected: invites.contains(user),
                                 loading: props.loading,
                                 onPress: () => onToggleInvite(user: user),
-                                onPressAvatar: () =>
-                                    onShowUserDetails(context: context, user: user),
+                                onPressAvatar: () => onShowUserDetails(context: context, user: user),
                               );
                             },
                           )

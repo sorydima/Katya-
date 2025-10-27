@@ -1,8 +1,8 @@
-import 'package:redux/redux.dart';
 import 'package:katya/global/libs/matrix/errors.dart';
 import 'package:katya/global/weburl.dart';
 import 'package:katya/store/alerts/actions.dart';
 import 'package:katya/store/index.dart';
+import 'package:redux/redux.dart';
 
 dynamic alertMiddleware<State>(
   Store<AppState> store,
@@ -22,7 +22,6 @@ dynamic alertMiddleware<State>(
         await launchUrl(termsUrlFormatted);
       }
 
-      break;
     default:
       break;
   }

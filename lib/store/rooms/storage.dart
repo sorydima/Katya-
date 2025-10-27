@@ -43,8 +43,7 @@ extension RoomQueries on StorageDatabase {
         .getSingle();
   }
 
-  Future<List<Room>> selectRooms(List<String> ids,
-      {int offset = 0, int limit = 0}) {
+  Future<List<Room>> selectRooms(List<String> ids, {int offset = 0, int limit = 0}) {
     return (select(rooms)
           ..where((tbl) => tbl.id.isIn(ids))
           ..limit(limit, offset: offset))
@@ -91,7 +90,7 @@ Future<Map<String, Room>> loadRooms({
 
   try {
     final loaded = await storage.selectRoomsAll();
-    log.info('[rooms] loaded ${loaded.length.toString()}');
+    log.info('[rooms] loaded ${loaded.length}');
 
     rooms = Map<String, Room>.fromIterable(
       loaded,

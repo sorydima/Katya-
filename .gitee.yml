@@ -1,0 +1,40 @@
+# Gitee CI Configuration for Chinese Git hosting
+# This file configures CI/CD for Gitee (Chinese GitHub alternative)
+
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  FLUTTER_VERSION: "3.35.0"
+  DART_VERSION: "3.0.0"
+
+build_job:
+  stage: build
+  script:
+    - flutter pub get
+    - flutter pub run build_runner build --delete-conflicting-outputs
+    - flutter build apk --release
+  only:
+    - master
+    - develop
+
+test_job:
+  stage: test
+  script:
+    - flutter test
+  only:
+    - master
+    - develop
+
+deploy_job:
+  stage: deploy
+  script:
+    - echo "Deploy to Gitee Pages or other services"
+  only:
+    - master
+
+# Gitee specific settings
+gitee:
+  url: https://gitee.com/sorydima/katya

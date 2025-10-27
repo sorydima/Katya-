@@ -1,9 +1,7 @@
 import 'package:equatable/equatable.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
@@ -17,13 +15,14 @@ import 'package:katya/store/settings/chat-settings/selectors.dart';
 import 'package:katya/store/settings/theme-settings/model.dart';
 import 'package:katya/store/user/model.dart';
 import 'package:katya/store/user/selectors.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/appbars/appbar-search.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
 import 'package:katya/views/widgets/dialogs/dialog-start-chat.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
 import 'package:katya/views/widgets/loader/index.dart';
-import 'package:katya/utils/theme_compatibility.dart';
+import 'package:redux/redux.dart';
 
 class ChatSearchArguments {
   User? user;
@@ -31,7 +30,7 @@ class ChatSearchArguments {
 }
 
 class ChatSearchScreen extends StatefulWidget {
-  const ChatSearchScreen({Key? key}) : super(key: key);
+  const ChatSearchScreen({super.key});
 
   @override
   ChatSearchState createState() => ChatSearchState();
@@ -97,7 +96,7 @@ class ChatSearchState extends State<ChatSearchScreen> with Lifecycle<ChatSearchS
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Container(
-            constraints: BoxConstraints(
+            constraints: const BoxConstraints(
               minWidth: Dimensions.mediaSizeMin,
               maxWidth: Dimensions.mediaSizeMax,
               maxHeight: Dimensions.mediaSizeMin,
@@ -109,8 +108,8 @@ class ChatSearchState extends State<ChatSearchScreen> with Lifecycle<ChatSearchS
           ),
           GestureDetector(
             child: Container(
-              margin: EdgeInsets.only(bottom: 48),
-              padding: EdgeInsets.only(top: 16),
+              margin: const EdgeInsets.only(bottom: 48),
+              padding: const EdgeInsets.only(top: 16),
               child: Text(
                 Strings.labelMessagesEmpty,
                 style: Theme.of(context).textTheme.headline6,
@@ -133,7 +132,7 @@ class ChatSearchState extends State<ChatSearchScreen> with Lifecycle<ChatSearchS
 
         if (preview == null || preview.isEmpty) {
           preview = 'No Description';
-          previewStyle = TextStyle(fontStyle: FontStyle.italic);
+          previewStyle = const TextStyle(fontStyle: FontStyle.italic);
         }
 
         // GestureDetector w/ animation
@@ -169,7 +168,7 @@ class ChatSearchState extends State<ChatSearchScreen> with Lifecycle<ChatSearchS
                                 width: Dimensions.badgeAvatarSize,
                                 height: Dimensions.badgeAvatarSize,
                                 color: Colors.green,
-                                child: Icon(
+                                child: const Icon(
                                   Icons.lock,
                                   color: Colors.white,
                                   size: Dimensions.iconSizeMini,
@@ -188,7 +187,7 @@ class ChatSearchState extends State<ChatSearchScreen> with Lifecycle<ChatSearchS
                               width: Dimensions.badgeAvatarSize,
                               height: Dimensions.badgeAvatarSize,
                               color: Colors.grey,
-                              child: Icon(
+                              child: const Icon(
                                 Icons.mail_outline,
                                 color: Colors.white,
                                 size: Dimensions.iconSizeMini,

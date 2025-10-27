@@ -103,3 +103,14 @@ List<Room> selectHomeChats(AppState state) {
     ),
   );
 }
+
+bool selectIsRoomEncrypted(AppState state, String roomId) {
+  final room = state.roomStore.rooms[roomId];
+  return room?.encryptionEnabled ?? false;
+}
+
+bool selectIsRoomVerified(AppState state, String roomId) {
+  // TODO: Implement proper room verification check
+  // For now, return false as a placeholder
+  return false;
+}

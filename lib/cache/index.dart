@@ -1,15 +1,14 @@
 import 'dart:io';
 
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:sembast/sembast.dart';
-import 'package:sembast/sembast_io.dart';
-import 'package:sembast_sqflite/sembast_sqflite.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart' as sqflite_ffi;
 import 'package:katya/context/types.dart';
 import 'package:katya/global/libs/storage/key-storage.dart';
 import 'package:katya/global/print.dart';
 import 'package:katya/global/values.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:sembast/sembast_io.dart';
+import 'package:sembast_sqflite/sembast_sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart' as sqflite_ffi;
 
 class Cache {
   // cache key identifiers
@@ -73,14 +72,14 @@ Future<Database?> initCache({AppContext context = const AppContext()}) async {
     log.info('[initCache] $cacheLocation $cacheKey');
 
     Cache.cacheKey = cacheKey;
-    return await cacheFactory.openDatabase(cacheLocation);
+    return await cacheFactory.openDatabase(cacheLocation) as Database?;
   } catch (error) {
     log.error('[initCache] $error');
     return null;
   }
 }
 
-deleteCache({AppContext context = const AppContext()}) async {
+Future<void> deleteCache({AppContext context = const AppContext()}) async {
   try {
     late var cacheFactory;
     final contextId = context.id;
@@ -114,7 +113,7 @@ deleteCache({AppContext context = const AppContext()}) async {
 }
 
 // Closes and saves storage
-closeCache(Database? cache) async {
+Future<void> closeCache(Database? cache) async {
   if (cache != null) {
     cache.close();
   }

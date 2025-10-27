@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katya Dashboard - System Monitoring</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Katya Dashboard</span>
+                </div>
+                <nav class="main-nav">
+                    <a href="#overview" class="nav-item active">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Overview
+                    </a>
+                    <a href="#metrics" class="nav-item">
+                        <i class="fas fa-chart-line"></i>
+                        Metrics
+                    </a>
+                    <a href="#alerts" class="nav-item">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Alerts
+                    </a>
+                    <a href="#logs" class="nav-item">
+                        <i class="fas fa-file-alt"></i>
+                        Logs
+                    </a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search metrics, alerts...">
+                </div>
+                <div class="user-menu">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-info">
+                        <span class="username">Admin User</span>
+                        <span class="role">Administrator</span>
+                    </div>
+                    <div class="dropdown">
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Sidebar -->
+            <aside class="dashboard-sidebar">
+                <div class="sidebar-section">
+                    <h3>System Overview</h3>
+                    <div class="system-status">
+                        <div class="status-item">
+                            <span class="status-label">Overall Status</span>
+                            <span class="status-value status-healthy">
+                                <i class="fas fa-check-circle"></i>
+                                Healthy
+                            </span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Uptime</span>
+                            <span class="status-value">99.9%</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Active Users</span>
+                            <span class="status-value">1,234</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>Quick Actions</h3>
+                    <div class="quick-actions">
+                        <button class="action-btn" onclick="refreshAllWidgets()">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh All
+                        </button>
+                        <button class="action-btn" onclick="exportDashboard()">
+                            <i class="fas fa-download"></i>
+                            Export
+                        </button>
+                        <button class="action-btn" onclick="toggleTheme()">
+                            <i class="fas fa-moon"></i>
+                            Dark Mode
+                        </button>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>Active Alerts</h3>
+                    <div class="alerts-summary" id="alertsSummary">
+                        <div class="alert-item critical">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <span>High CPU Usage</span>
+                        </div>
+                        <div class="alert-item warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>Memory Warning</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-content">
+                <div class="dashboard-grid" id="dashboardGrid">
+                    <!-- CPU Usage Widget -->
+                    <div class="widget metric-card" id="cpu_metric">
+                        <div class="widget-header">
+                            <h3>CPU Usage</h3>
+                            <div class="widget-actions">
+                                <button class="widget-action" onclick="refreshWidget('cpu_metric')">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                                <button class="widget-action" onclick="configureWidget('cpu_metric')">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="metric-value">
+                                <span class="value">45.2</span>
+                                <span class="unit">%</span>
+                            </div>
+                            <div class="metric-change">
+                                <span class="change positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    2.1%
+                                </span>
+                                <span class="change-label">vs last hour</span>
+                            </div>
+                            <div class="metric-chart">
+                                <canvas id="cpuChart" width="200" height="60"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Memory Usage Widget -->
+                    <div class="widget metric-card" id="memory_metric">
+                        <div class="widget-header">
+                            <h3>Memory Usage</h3>
+                            <div class="widget-actions">
+                                <button class="widget-action" onclick="refreshWidget('memory_metric')">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                                <button class="widget-action" onclick="configureWidget('memory_metric')">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="metric-value">
+                                <span class="value">67.8</span>
+                                <span class="unit">%</span>
+                            </div>
+                            <div class="metric-change">
+                                <span class="change negative">
+                                    <i class="fas fa-arrow-down"></i>
+                                    1.5%
+                                </span>
+                                <span class="change-label">vs last hour</span>
+                            </div>
+                            <div class="metric-chart">
+                                <canvas id="memoryChart" width="200" height="60"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Performance Chart Widget -->
+                    <div class="widget chart-widget" id="performance_chart">
+                        <div class="widget-header">
+                            <h3>System Performance</h3>
+                            <div class="widget-actions">
+                                <button class="widget-action" onclick="refreshWidget('performance_chart')">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                                <button class="widget-action" onclick="configureWidget('performance_chart')">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="chart-container">
+                                <canvas id="performanceChart" width="600" height="250"></canvas>
+                            </div>
+                            <div class="chart-legend">
+                                <div class="legend-item">
+                                    <span class="legend-color cpu"></span>
+                                    <span class="legend-label">CPU</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color memory"></span>
+                                    <span class="legend-label">Memory</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color disk"></span>
+                                    <span class="legend-label">Disk</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color network"></span>
+                                    <span class="legend-label">Network</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alerts List Widget -->
+                    <div class="widget alerts-widget" id="alerts_list">
+                        <div class="widget-header">
+                            <h3>Active Alerts</h3>
+                            <div class="widget-actions">
+                                <button class="widget-action" onclick="refreshWidget('alerts_list')">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                                <button class="widget-action" onclick="configureWidget('alerts_list')">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="alerts-list">
+                                <div class="alert-item critical">
+                                    <div class="alert-icon">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                    </div>
+                                    <div class="alert-content">
+                                        <div class="alert-title">High CPU Usage</div>
+                                        <div class="alert-message">CPU usage is at 85.2%</div>
+                                        <div class="alert-time">2 minutes ago</div>
+                                    </div>
+                                    <div class="alert-actions">
+                                        <button class="alert-action" onclick="acknowledgeAlert('alert_1')">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="alert-item warning">
+                                    <div class="alert-icon">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                    <div class="alert-content">
+                                        <div class="alert-title">Memory Warning</div>
+                                        <div class="alert-message">Memory usage is at 78.5%</div>
+                                        <div class="alert-time">5 minutes ago</div>
+                                    </div>
+                                    <div class="alert-actions">
+                                        <button class="alert-action" onclick="acknowledgeAlert('alert_2')">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="alert-item info">
+                                    <div class="alert-icon">
+                                        <i class="fas fa-info-circle"></i>
+                                    </div>
+                                    <div class="alert-content">
+                                        <div class="alert-title">System Update</div>
+                                        <div class="alert-message">System update completed successfully</div>
+                                        <div class="alert-time">1 hour ago</div>
+                                    </div>
+                                    <div class="alert-actions">
+                                        <button class="alert-action" onclick="acknowledgeAlert('alert_3')">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- System Status Widget -->
+                    <div class="widget status-widget" id="system_status">
+                        <div class="widget-header">
+                            <h3>System Status</h3>
+                            <div class="widget-actions">
+                                <button class="widget-action" onclick="refreshWidget('system_status')">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                                <button class="widget-action" onclick="configureWidget('system_status')">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="status-list">
+                                <div class="status-item">
+                                    <div class="status-icon healthy">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div class="status-info">
+                                        <div class="status-name">Database</div>
+                                        <div class="status-detail">99.9% uptime</div>
+                                    </div>
+                                </div>
+                                <div class="status-item">
+                                    <div class="status-icon healthy">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div class="status-info">
+                                        <div class="status-name">Cache</div>
+                                        <div class="status-detail">99.8% uptime</div>
+                                    </div>
+                                </div>
+                                <div class="status-item">
+                                    <div class="status-icon healthy">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div class="status-info">
+                                        <div class="status-name">API</div>
+                                        <div class="status-detail">99.7% uptime</div>
+                                    </div>
+                                </div>
+                                <div class="status-item">
+                                    <div class="status-icon warning">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                    <div class="status-info">
+                                        <div class="status-name">WebSocket</div>
+                                        <div class="status-detail">98.5% uptime</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- User Activity Widget -->
+                    <div class="widget activity-widget" id="user_activity">
+                        <div class="widget-header">
+                            <h3>User Activity</h3>
+                            <div class="widget-actions">
+                                <button class="widget-action" onclick="refreshWidget('user_activity')">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                                <button class="widget-action" onclick="configureWidget('user_activity')">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="widget-content">
+                            <div class="activity-list">
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-user-plus"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">User Registration</div>
+                                        <div class="activity-detail">New user john.doe@example.com registered</div>
+                                        <div class="activity-time">2 minutes ago</div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-comment"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">Message Sent</div>
+                                        <div class="activity-detail">User sent message in room #general</div>
+                                        <div class="activity-time">5 minutes ago</div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-upload"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">File Upload</div>
+                                        <div class="activity-detail">User uploaded document.pdf</div>
+                                        <div class="activity-time">10 minutes ago</div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-download"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">File Download</div>
+                                        <div class="activity-detail">User downloaded report.xlsx</div>
+                                        <div class="activity-time">15 minutes ago</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <div class="footer-left">
+                <span>&copy; 2024 Katya Dashboard. All rights reserved.</span>
+            </div>
+            <div class="footer-right">
+                <span>Last updated: <span id="lastUpdated">Loading...</span></span>
+                <span>Version: 1.0.0</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modals -->
+    <div id="widgetConfigModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Configure Widget</h3>
+                <button class="modal-close" onclick="closeModal('widgetConfigModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="widgetConfigForm">
+                    <div class="form-group">
+                        <label for="widgetTitle">Widget Title</label>
+                        <input type="text" id="widgetTitle" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="refreshInterval">Refresh Interval (seconds)</label>
+                        <input type="number" id="refreshInterval" name="refreshInterval" min="10" max="3600" value="30">
+                    </div>
+                    <div class="form-group">
+                        <label for="widgetSize">Widget Size</label>
+                        <select id="widgetSize" name="size">
+                            <option value="small">Small (300x150)</option>
+                            <option value="medium">Medium (400x200)</option>
+                            <option value="large">Large (600x300)</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="widgetVisible" name="visible" checked>
+                            Widget Visible
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('widgetConfigModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveWidgetConfig()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>

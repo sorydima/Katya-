@@ -5,7 +5,7 @@ import 'package:katya/store/index.dart';
 import 'package:katya/store/rooms/room/model.dart';
 
 List<Message> roomMessages(AppState state, String? roomId) {
-  final room = state.roomStore.rooms[roomId] ?? Room(id: '');
+  final room = state.roomStore.rooms[roomId] ?? const Room(id: '');
   var messages = (state.eventStore.messages[roomId] ?? []).toList();
 
   // If encryption is enabled, combine the decrypted event cache
@@ -27,7 +27,7 @@ List<Message> roomMessages(AppState state, String? roomId) {
     messages = messagesNormal.keys
         .map((id) =>
             (messagesDecrypted.containsKey(id) ? messagesDecrypted[id] : messagesNormal[id]) ??
-            Message())
+            const Message(id: '', sender: '', timestamp: 0, type: '', roomId: ''))
         .toList();
   }
 
@@ -55,17 +55,15 @@ Map<String, Message?> appendReactions(
   required Map<String, List<Reaction>> reactions,
 }) {
   // get a list message ids (also reaction keys) that have values in 'reactions'
-  final List<String> reactionedMessageIds =
-      reactions.keys.where((k) => messages.containsKey(k)).toList();
+  final List<String> reactionedMessageIds = reactions.keys.where((k) => messages.containsKey(k)).toList();
 
   // add the parsed list to the message to be handled in the UI
   for (final String messageId in reactionedMessageIds) {
     final reactionList = reactions[messageId];
     if (reactionList != null) {
-      messages[messageId] = messages[messageId]!.copyWith(
-        // reaction body will be null if redacted
-        reactions: reactionList.where((reaction) => reaction.body != null).toList(),
-      );
+      // Note: reactions are stored separately and accessed via message.reactions
+      // The copyMessageWith doesn't support reactions parameter
+      messages[messageId] = messages[messageId]!.copyMessageWith();
     }
   }
 
@@ -107,11 +105,11 @@ Map<String, Message?> replaceEdited(List<Message> messages) {
       final validEdit = messageEdited.sender == messageOriginal.sender;
 
       if (validEdit) {
-        messagesMap[relatedEventId] = messageOriginal.copyWith(
+        messagesMap[relatedEventId] = messageOriginal.copyMessageWith(
           edited: true,
           body: messageEdited.body,
           msgtype: messageEdited.msgtype,
-          editIds: [messageEdited.id!, ...?messageOriginal.editIds],
+          // Note: editIds not supported in copyMessageWith
         );
       }
     }

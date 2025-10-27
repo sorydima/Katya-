@@ -1,0 +1,347 @@
+# iOS Fastlane Configuration
+# Complete automation for iOS builds, testing, and deployment
+
+default_platform(:ios)
+
+# Import required plugins
+import("fastlane/plugin/sigh")
+import("fastlane/plugin/match")
+import("fastlane/plugin/gym")
+import("fastlane/plugin/testflight")
+import("fastlane/plugin/app_store")
+
+platform :ios do
+  desc "Build and sign the iOS app for development"
+  lane :development do
+    setup_ci if is_ci
+
+    # Sync certificates and provisioning profiles
+    match(
+      type: "development",
+      app_identifier: "com.katya.app",
+      readonly: is_ci,
+      force: !is_ci
+    )
+
+    # Build the app
+    gym(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      configuration: "Debug",
+      export_method: "development",
+      output_directory: "build/ios/development",
+      output_name: "Katya-Development.ipa",
+      clean: true,
+      include_bitcode: false,
+      include_symbols: true,
+      xcargs: "DEBUG_INFORMATION_FORMAT=dwarf"
+    )
+  end
+
+  desc "Build and sign the iOS app for ad-hoc distribution"
+  lane :adhoc do
+    setup_ci if is_ci
+
+    # Sync certificates and provisioning profiles
+    match(
+      type: "adhoc",
+      app_identifier: "com.katya.app",
+      readonly: is_ci,
+      force: !is_ci
+    )
+
+    # Build the app
+    gym(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      configuration: "Release",
+      export_method: "ad-hoc",
+      output_directory: "build/ios/adhoc",
+      output_name: "Katya-AdHoc.ipa",
+      clean: true,
+      include_bitcode: true,
+      include_symbols: false,
+      xcargs: "BITCODE_GENERATION_MODE=bitcode"
+    )
+  end
+
+  desc "Build and deploy to TestFlight"
+  lane :beta do
+    setup_ci if is_ci
+
+    # Sync certificates and provisioning profiles
+    match(
+      type: "appstore",
+      app_identifier: "com.katya.app",
+      readonly: is_ci,
+      force: !is_ci
+    )
+
+    # Build the app
+    gym(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      configuration: "Release",
+      export_method: "app-store",
+      output_directory: "build/ios/testflight",
+      output_name: "Katya-TestFlight.ipa",
+      clean: true,
+      include_bitcode: true,
+      include_symbols: true,
+      xcargs: "BITCODE_GENERATION_MODE=bitcode"
+    )
+
+    # Upload to TestFlight
+    testflight(
+      app_identifier: "com.katya.app",
+      beta_app_description: "Katya Messenger Beta - Enhanced messaging with trust network and blockchain integration",
+      beta_app_feedback_email: "beta@katya.im",
+      changelog: File.read("../CHANGELOG.md"),
+      demo_account_required: false,
+      notify_external_testers: true,
+      groups: ["Internal Testers", "External Beta Testers"],
+      distribute_external: true,
+      reject_build_waiting_for_review: false
+    )
+  end
+
+  desc "Build and deploy to App Store"
+  lane :release do
+    setup_ci if is_ci
+
+    # Sync certificates and provisioning profiles
+    match(
+      type: "appstore",
+      app_identifier: "com.katya.app",
+      readonly: is_ci,
+      force: !is_ci
+    )
+
+    # Increment build number
+    increment_build_number(
+      build_number: latest_testflight_build_number + 1,
+      xcodeproj: "Runner.xcodeproj"
+    )
+
+    # Build the app
+    gym(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      configuration: "Release",
+      export_method: "app-store",
+      output_directory: "build/ios/appstore",
+      output_name: "Katya-AppStore.ipa",
+      clean: true,
+      include_bitcode: true,
+      include_symbols: true,
+      xcargs: "BITCODE_GENERATION_MODE=bitcode"
+    )
+
+    # Upload to App Store
+    deliver(
+      app_identifier: "com.katya.app",
+      app_version: get_version_number(xcodeproj: "Runner.xcodeproj"),
+      build_number: get_build_number(xcodeproj: "Runner.xcodeproj"),
+      ipa: "build/ios/appstore/Katya-AppStore.ipa",
+      metadata_path: "fastlane/metadata",
+      screenshots_path: "fastlane/screenshots",
+      app_icon: "fastlane/app_icon.png",
+      apple_id: "developer@katya.im",
+      team_id: "TEAM_ID",
+      itc_provider: "TEAM_ID",
+      submit_for_review: true,
+      automatic_release: false,
+      force: true,
+      skip_metadata: false,
+      skip_screenshots: false,
+      skip_binary_upload: false,
+      overwrite_screenshots: true,
+      run_precheck_before_submit: true,
+      precheck_default_rule_level: :error,
+      reject_if_possible: false
+    )
+  end
+
+  desc "Run iOS tests"
+  lane :test do
+    setup_ci if is_ci
+
+    # Run unit tests
+    scan(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      device: "iPhone 14",
+      clean: true,
+      code_coverage: true,
+      output_directory: "build/ios/test-results",
+      output_types: "html,junit",
+      xcargs: "DEBUG_INFORMATION_FORMAT=dwarf"
+    )
+  end
+
+  desc "Run performance tests"
+  lane :performance_test do
+    setup_ci if is_ci
+
+    scan(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      device: "iPhone 14",
+      testplan: "PerformanceTests",
+      clean: true,
+      output_directory: "build/ios/performance-results"
+    )
+  end
+
+  desc "Generate code coverage report"
+  lane :coverage do
+    setup_ci if is_ci
+
+    scan(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      device: "iPhone 14",
+      code_coverage: true,
+      output_directory: "build/ios/coverage"
+    )
+
+    # Generate coverage report
+    slather(
+      workspace: "Runner.xcworkspace",
+      proj: "Runner.xcodeproj",
+      scheme: "Runner",
+      output_directory: "build/ios/coverage",
+      html: true,
+      show: true
+    )
+  end
+
+  desc "Clean up build artifacts and caches"
+  lane :clean do
+    # Clean Flutter cache
+    sh("flutter clean")
+
+    # Clean iOS build
+    sh("rm -rf build/ios")
+    sh("rm -rf ios/build")
+
+    # Clean CocoaPods cache
+    sh("cd ios && pod cache clean --all")
+
+    # Clean Fastlane artifacts
+    sh("rm -rf fastlane/build")
+    sh("rm -rf fastlane/report.xml")
+  end
+
+  desc "Setup CI environment"
+  private_lane :setup_ci do
+    # Create temporary keychain for CI
+    create_keychain(
+      name: "fastlane",
+      password: "temp_password",
+      default_keychain: true,
+      unlock: true,
+      timeout: 3600,
+      lock_when_sleeps: false
+    )
+
+    # Import certificates
+    import_certificate(
+      certificate_path: "fastlane/certificates/distribution.p12",
+      certificate_password: ENV["CERTIFICATE_PASSWORD"],
+      keychain_name: "fastlane",
+      keychain_password: "temp_password"
+    )
+
+    # Import provisioning profiles
+    sh("mkdir -p ~/Library/MobileDevice/Provisioning\\ Profiles")
+    sh("cp fastlane/profiles/*.mobileprovision ~/Library/MobileDevice/Provisioning\\ Profiles/")
+  end
+
+  desc "Validate app for App Store submission"
+  lane :validate do
+    setup_ci if is_ci
+
+    # Validate with App Store Connect
+    validate_app_file(
+      app_identifier: "com.katya.app",
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      configuration: "Release",
+      export_method: "app-store",
+      validate: true
+    )
+  end
+
+  desc "Upload dSYMs for crash reporting"
+  lane :upload_dsyms do
+    # Upload dSYMs to crash reporting services
+    download_dsyms(
+      app_identifier: "com.katya.app",
+      version: get_version_number(xcodeproj: "Runner.xcodeproj"),
+      build_number: get_build_number(xcodeproj: "Runner.xcodeproj")
+    )
+
+    # Upload to Firebase Crashlytics (if configured)
+    # crashlytics(
+    #   dsym_path: "Runner.app.dSYM.zip",
+    #   app_identifier: "com.katya.app",
+    #   build_secret: ENV["CRASHLYTICS_BUILD_SECRET"]
+    # )
+  end
+
+  desc "Generate changelog from git commits"
+  private_lane :generate_changelog do
+    changelog = changelog_from_git_commits(
+      commits_count: 10,
+      pretty: "- %s",
+      date_format: "short",
+      match_lightweight_tag: false,
+      merge_commit_filtering: "exclude_merges"
+    )
+
+    File.write("../CHANGELOG.md", changelog)
+  end
+
+  desc "Update version number"
+  private_lane :increment_version do |options|
+    increment_version_number(
+      version_number: options[:version] || prompt(text: "Enter version number:"),
+      xcodeproj: "Runner.xcodeproj"
+    )
+  end
+
+  desc "Update build number"
+  private_lane :increment_build do |options|
+    increment_build_number(
+      build_number: options[:build] || (latest_testflight_build_number + 1),
+      xcodeproj: "Runner.xcodeproj"
+    )
+  end
+
+  # Error handling
+  error do |lane, exception, options|
+    # Notify team about build failure
+    slack(
+      message: "iOS build failed: #{exception.message}",
+      success: false,
+      slack_url: ENV["SLACK_WEBHOOK_URL"]
+    ) if ENV["SLACK_WEBHOOK_URL"]
+
+    # Clean up on error
+    clean
+  end
+
+  # Success handling
+  after_all do |lane|
+    # Notify team about successful build
+    slack(
+      message: "iOS build completed successfully for lane: #{lane}",
+      success: true,
+      slack_url: ENV["SLACK_WEBHOOK_URL"]
+    ) if ENV["SLACK_WEBHOOK_URL"]
+
+    # Clean up temporary files
+    clean_keychain(name: "fastlane") if is_ci
+  end
+end

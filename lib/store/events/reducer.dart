@@ -9,31 +9,26 @@ import 'package:katya/store/events/redaction/model.dart';
 import './actions.dart';
 import './state.dart';
 
-EventStore eventReducer(
-    [EventStore state = const EventStore(), dynamic action]) {
+EventStore eventReducer([EventStore state = const EventStore(), dynamic action]) {
   switch (action.runtimeType) {
     case AddReactions:
-      final _action = action as AddReactions;
+      final action0 = action as AddReactions;
       final reactionsUpdated = Map<String, List<Reaction>>.from(
         state.reactions,
       );
 
-      for (final Reaction reaction in _action.reactions ?? []) {
+      for (final Reaction reaction in action0.reactions ?? []) {
         final reactionEventId = reaction.relEventId;
         final hasReactions = reactionsUpdated.containsKey(reactionEventId);
 
         if (hasReactions) {
           final reactions = reactionsUpdated[reactionEventId]!;
-          final reactionIndex =
-              reactions.indexWhere((value) => value.id == reaction.id);
+          final reactionIndex = reactions.indexWhere((value) => value.id == reaction.id);
 
           if (reactionIndex == -1) {
             reactionsUpdated[reactionEventId!] = [...reactions, reaction];
           } else {
-            reactionsUpdated[reactionEventId!] = [
-              ...reactions.where((r) => r.id != reaction.id).toList(),
-              reaction
-            ];
+            reactionsUpdated[reactionEventId!] = [...reactions.where((r) => r.id != reaction.id), reaction];
           }
         } else if (reactionEventId != null) {
           reactionsUpdated[reactionEventId] = [reaction];
@@ -45,9 +40,9 @@ EventStore eventReducer(
     // set the messages map to exactly what's passed in
     // helps with message revisions after lazy loads
     case SetMessages:
-      final _action = action as SetMessages;
+      final action0 = action as SetMessages;
 
-      final messagesAll = _action.all;
+      final messagesAll = action0.all;
       final existingAll = state.messages;
 
       final combinedAll = Map<String, List<Message>>.from(existingAll);
@@ -78,9 +73,9 @@ EventStore eventReducer(
     // set the decrypted map to exactly what's passed in
     // helps with message revisions after lazy loads
     case SetMessagesDecrypted:
-      final _action = action as SetMessagesDecrypted;
+      final action0 = action as SetMessagesDecrypted;
 
-      final messagesAll = _action.all;
+      final messagesAll = action0.all;
       final existingAll = state.messagesDecrypted;
 
       final combinedAll = Map<String, List<Message>>.from(existingAll);
@@ -108,16 +103,16 @@ EventStore eventReducer(
 
       return state.copyWith(messagesDecrypted: combinedAll);
     case AddMessages:
-      final _action = action as AddMessages;
-      if (_action.messages.isEmpty) {
+      final action0 = action as AddMessages;
+      if (action0.messages.isEmpty) {
         return state;
       }
 
-      final roomId = _action.roomId;
+      final roomId = action0.roomId;
 
       // convert to map to merge old and new messages based on ids
       // ignore previous messages and only save the newest to local state if "clear"ing
-      final messagesOld = _action.clear
+      final messagesOld = action0.clear
           ? <String, Message>{}
           : Map<String, Message>.fromIterable(
               state.messages[roomId] ?? [],
@@ -141,8 +136,7 @@ EventStore eventReducer(
       messages[roomId] = messagesAll.values.toList();
 
       // remove locally saved outbox messages if they've now been received from a server
-      if (state.outbox.containsKey(roomId) &&
-          state.outbox[roomId]!.isNotEmpty) {
+      if (state.outbox.containsKey(roomId) && state.outbox[roomId]!.isNotEmpty) {
         final outbox = Map<String, Message>.from(state.outbox[roomId] ?? {});
 
         // removed based on eventId, not tempId
@@ -161,10 +155,10 @@ EventStore eventReducer(
       return state.copyWith(messages: messages);
 
     case AddMessagesDecrypted:
-      final _action = action as AddMessagesDecrypted;
-      final roomId = _action.roomId;
+      final action0 = action as AddMessagesDecrypted;
+      final roomId = action0.roomId;
 
-      if (_action.messages.isEmpty) {
+      if (action0.messages.isEmpty) {
         return state;
       }
 
@@ -224,8 +218,8 @@ EventStore eventReducer(
       return state;
 
     case SaveRedactions:
-      final _action = action as SaveRedactions;
-      if (_action.redactions == null || _action.redactions!.isEmpty) {
+      final action0 = action as SaveRedactions;
+      if (action0.redactions == null || action0.redactions!.isEmpty) {
         return state;
       }
 
@@ -264,7 +258,7 @@ EventStore eventReducer(
     case LoadReceipts:
       return state.copyWith(receipts: action.receiptsMap);
     case ResetEvents:
-      return EventStore();
+      return const EventStore();
     default:
       return state;
   }

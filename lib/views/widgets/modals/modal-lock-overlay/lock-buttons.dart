@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screen_lock/flutter_screen_lock.dart';
 
 /// [OutlinedButton] based button.
 class LockButton extends StatelessWidget {
   const LockButton({
-    Key? key,
+    super.key,
     this.disabled = false,
     this.config = const Object(), // Simplified for compatibility
     required this.child,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   final bool disabled;
   final Widget child;
@@ -63,8 +62,8 @@ class LockButton extends StatelessWidget {
       child: OutlinedButton(
         onPressed: disabled ? null : onPressed,
         style: OutlinedButton.styleFrom().copyWith(
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
-            ),
+          backgroundColor: WidgetStateProperty.all<Color>(Colors.transparent),
+        ),
         child: child,
       ),
     );

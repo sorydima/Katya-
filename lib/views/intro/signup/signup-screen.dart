@@ -1,9 +1,6 @@
 import 'package:equatable/equatable.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/libs/matrix/auth.dart';
 import 'package:katya/global/strings.dart';
@@ -23,17 +20,19 @@ import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/buttons/button-outline.dart';
 import 'package:katya/views/widgets/buttons/button-solid.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
+import 'package:redux/redux.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'widgets/StepHomeserver.dart';
 import 'widgets/StepPassword.dart';
 import 'widgets/StepUsername.dart';
 
-final Duration nextAnimationDuration = Duration(
+const Duration nextAnimationDuration = Duration(
   milliseconds: Values.animationDurationDefault,
 );
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+  const SignupScreen({super.key});
 
   @override
   SignupScreenState createState() => SignupScreenState();
@@ -41,9 +40,9 @@ class SignupScreen extends StatefulWidget {
 
 class SignupScreenState extends State<SignupScreen> with Lifecycle<SignupScreen> {
   final sectionsPassword = [
-    HomeserverStep(),
-    UsernameStep(),
-    PasswordStep(),
+    const HomeserverStep(),
+    const UsernameStep(),
+    const PasswordStep(),
   ];
 
   int currentStep = 0;
@@ -52,12 +51,12 @@ class SignupScreenState extends State<SignupScreen> with Lifecycle<SignupScreen>
   PageController? pageController;
 
   List<Widget> sections = [
-    HomeserverStep(),
-    UsernameStep(),
-    PasswordStep(),
-    CaptchaStep(),
+    const HomeserverStep(),
+    const UsernameStep(),
+    const PasswordStep(),
+    const CaptchaStep(),
     TermsStep(),
-    EmailStep(),
+    const EmailStep(),
   ];
 
   SignupScreenState();
@@ -78,7 +77,7 @@ class SignupScreenState extends State<SignupScreen> with Lifecycle<SignupScreen>
   /// Update the stages and overall flow of signup
   /// based on the requirements of the homeserver selected
   ///
-  onUpdateFlows(_Props props) {
+  void onUpdateFlows(_Props props) {
     final signupTypes = props.homeserver.signupTypes;
 
     if (props.isPasswordLoginAvailable) {
@@ -89,7 +88,7 @@ class SignupScreenState extends State<SignupScreen> with Lifecycle<SignupScreen>
 
     if (props.isSSOLoginAvailable && !props.isPasswordLoginAvailable) {
       setState(() {
-        sections = [HomeserverStep()];
+        sections = [const HomeserverStep()];
       });
     }
 
@@ -100,14 +99,11 @@ class SignupScreenState extends State<SignupScreen> with Lifecycle<SignupScreen>
 
       switch (stage) {
         case MatrixAuthTypes.EMAIL:
-          stageNew = EmailStep();
-          break;
+          stageNew = const EmailStep();
         case MatrixAuthTypes.RECAPTCHA:
-          stageNew = CaptchaStep();
-          break;
+          stageNew = const CaptchaStep();
         case MatrixAuthTypes.TERMS:
           stageNew = TermsStep();
-          break;
         default:
           break;
       }
@@ -140,10 +136,9 @@ class SignupScreenState extends State<SignupScreen> with Lifecycle<SignupScreen>
     super.dispose();
   }
 
-  onDidChange(_Props? oldProps, _Props props) {
+  void onDidChange(_Props? oldProps, _Props props) {
     final ssoLoginChanged = props.isSSOLoginAvailable != oldProps?.isSSOLoginAvailable;
-    final passwordLoginChanged =
-        props.isPasswordLoginAvailable != oldProps?.isPasswordLoginAvailable;
+    final passwordLoginChanged = props.isPasswordLoginAvailable != oldProps?.isPasswordLoginAvailable;
 
     final signupTypesChanged = props.homeserver.signupTypes != oldProps?.homeserver.signupTypes;
 
@@ -152,7 +147,7 @@ class SignupScreenState extends State<SignupScreen> with Lifecycle<SignupScreen>
     }
   }
 
-  onBackStep(BuildContext context) {
+  void onBackStep(BuildContext context) {
     if (currentStep < 1) {
       return Navigator.pop(context, false);
     }
@@ -163,12 +158,12 @@ class SignupScreenState extends State<SignupScreen> with Lifecycle<SignupScreen>
 
     pageController!.animateToPage(
       currentStep,
-      duration: Duration(milliseconds: 275),
+      duration: const Duration(milliseconds: 275),
       curve: Curves.easeInOut,
     );
   }
 
-  onCheckStepValid(_Props props, PageController? controller) {
+  bool? onCheckStepValid(_Props props, PageController? controller) {
     final currentSection = sections[currentStep];
 
     switch (currentSection.runtimeType) {
@@ -189,14 +184,14 @@ class SignupScreenState extends State<SignupScreen> with Lifecycle<SignupScreen>
     }
   }
 
-  onNavigateNextPage(PageController? controller) {
+  void onNavigateNextPage(PageController? controller) {
     controller!.nextPage(
       duration: nextAnimationDuration,
       curve: Curves.ease,
     );
   }
 
-  onCompleteStep(_Props props, PageController? controller, {bool usingSSO = false}) {
+  Future<Object?>? Function()? onCompleteStep(_Props props, PageController? controller, {bool usingSSO = false}) {
     final store = StoreProvider.of<AppState>(context);
     final currentSection = sections[currentStep];
     final lastStep = (sections.length - 1) == currentStep;
@@ -210,9 +205,8 @@ class SignupScreenState extends State<SignupScreen> with Lifecycle<SignupScreen>
             valid = await props.onSelectHomeserver(props.hostname);
           }
 
-          final _homeserver = store.state.authStore.homeserver;
-          if (_homeserver.signupTypes.isEmpty &&
-              !_homeserver.loginTypes.contains(MatrixAuthTypes.SSO)) {
+          final homeserver = store.state.authStore.homeserver;
+          if (homeserver.signupTypes.isEmpty && !homeserver.loginTypes.contains(MatrixAuthTypes.SSO)) {
             store.dispatch(addInfo(
               origin: 'selectHomeserver',
               message: 'No new signups allowed on this server, try another if creating an account',
@@ -228,10 +222,12 @@ class SignupScreenState extends State<SignupScreen> with Lifecycle<SignupScreen>
             props.onClearCompleted();
             onNavigateNextPage(controller);
           }
+          return null;
         };
       case UsernameStep:
         return () {
           onNavigateNextPage(controller);
+          return null;
         };
       case PasswordStep:
         return () async {
@@ -253,6 +249,7 @@ class SignupScreenState extends State<SignupScreen> with Lifecycle<SignupScreen>
           if (!result!) {
             onNavigateNextPage(controller);
           }
+          return null;
         };
       case TermsStep:
         return () async {
@@ -268,6 +265,7 @@ class SignupScreenState extends State<SignupScreen> with Lifecycle<SignupScreen>
             await props.onResetCredential();
             props.onCreateUser();
           }
+          return;
         };
       case EmailStep:
         return () async {
@@ -293,13 +291,14 @@ class SignupScreenState extends State<SignupScreen> with Lifecycle<SignupScreen>
             // or continue if not the last step
             onNavigateNextPage(controller);
           }
+          return null;
         };
       default:
         return null;
     }
   }
 
-  buildButtonString(_Props props) {
+  String buildButtonString(_Props props) {
     if (currentStep == sections.length - 1) {
       return Strings.buttonFinish;
     }
@@ -310,8 +309,7 @@ class SignupScreenState extends State<SignupScreen> with Lifecycle<SignupScreen>
   @override
   Widget build(BuildContext context) => StoreConnector<AppState, _Props>(
         distinct: true,
-        onWillChange:
-            onDidChange, // NOTE: bug / issue where onDidChange doesn't show correct oldProps
+        onWillChange: onDidChange, // NOTE: bug / issue where onDidChange doesn't show correct oldProps
         converter: (Store<AppState> store) => _Props.mapStateToProps(store),
         builder: (context, props) {
           final double width = MediaQuery.of(context).size.width;
@@ -353,7 +351,7 @@ class SignupScreenState extends State<SignupScreen> with Lifecycle<SignupScreen>
                           children: <Widget>[
                             Container(
                               width: width,
-                              constraints: BoxConstraints(
+                              constraints: const BoxConstraints(
                                 minHeight: Dimensions.pageViewerHeightMin,
                                 maxHeight: Dimensions.pageViewerHeightMax,
                               ),
@@ -361,7 +359,7 @@ class SignupScreenState extends State<SignupScreen> with Lifecycle<SignupScreen>
                                 pageSnapping: true,
                                 allowImplicitScrolling: false,
                                 controller: pageController,
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 onPageChanged: (index) {
                                   setState(() {
                                     currentStep = index;
@@ -381,8 +379,7 @@ class SignupScreenState extends State<SignupScreen> with Lifecycle<SignupScreen>
                           direction: Axis.vertical,
                           children: <Widget>[
                             Visibility(
-                              visible:
-                                  !(!props.isPasswordLoginAvailable && props.isSSOLoginAvailable),
+                              visible: !(!props.isPasswordLoginAvailable && props.isSSOLoginAvailable),
                               child: Container(
                                 padding: const EdgeInsets.only(top: 12, bottom: 12),
                                 child: ButtonSolid(
@@ -435,8 +432,8 @@ class SignupScreenState extends State<SignupScreen> with Lifecycle<SignupScreen>
                           direction: Axis.vertical,
                           children: <Widget>[
                             Container(
-                              margin: EdgeInsets.symmetric(vertical: 12),
-                              constraints: BoxConstraints(
+                              margin: const EdgeInsets.symmetric(vertical: 12),
+                              constraints: const BoxConstraints(
                                 minHeight: Dimensions.buttonHeightMin,
                               ),
                               child: Flex(

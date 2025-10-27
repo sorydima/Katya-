@@ -3,11 +3,12 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:katya/global/libs/matrix/auth.dart';
-
 import 'package:katya/global/values.dart';
+import 'package:katya/services/encryption/encryption_manager.dart';
 import 'package:katya/store/auth/credential/model.dart';
 import 'package:katya/store/auth/homeserver/model.dart';
 import 'package:katya/store/user/model.dart';
+import 'package:matrix/matrix.dart' hide User;
 
 part 'state.g.dart';
 
@@ -33,6 +34,12 @@ class AuthStore extends Equatable {
 
   final StreamController<User?>? authObserver;
   final StreamController<User?>? contextObserver;
+
+  // Matrix client instance
+  final Client? client;
+
+  // Encryption manager instance
+  final EncryptionManager? encryptionManager;
 
   User get currentUser => user;
 
@@ -79,6 +86,8 @@ class AuthStore extends Equatable {
     this.clientSecret,
     this.authObserver,
     this.contextObserver,
+    this.client,
+    this.encryptionManager,
     this.protocol = Values.DEFAULT_PROTOCOL,
     this.email = '',
     this.msisdn = 0, //invalid number, can't use null
@@ -122,6 +131,8 @@ class AuthStore extends Equatable {
         clientSecret,
         authObserver,
         contextObserver,
+        client,
+        encryptionManager,
         username,
         password,
         passwordConfirm,
@@ -153,6 +164,8 @@ class AuthStore extends Equatable {
     String? clientSecret,
     String? protocol,
     bool? verified,
+    Client? client,
+    EncryptionManager? encryptionManager,
     email,
     msisdn,
     loading,
@@ -187,6 +200,8 @@ class AuthStore extends Equatable {
         clientSecret: clientSecret ?? this.clientSecret,
         protocol: protocol ?? this.protocol,
         verified: verified ?? this.verified,
+        client: client ?? this.client,
+        encryptionManager: encryptionManager ?? this.encryptionManager,
         email: email ?? this.email,
         msisdn: msisdn ?? this.msisdn,
         loading: loading ?? this.loading,

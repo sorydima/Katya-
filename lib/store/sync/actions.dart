@@ -1,14 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:redux/redux.dart';
-import 'package:redux_thunk/redux_thunk.dart';
 import 'package:katya/global/algos.dart';
 import 'package:katya/global/connectivity.dart';
+import 'package:katya/global/libs/matrix/constants.dart';
 import 'package:katya/global/libs/matrix/errors.dart';
 import 'package:katya/global/libs/matrix/index.dart';
 import 'package:katya/global/print.dart';
 import 'package:katya/global/values.dart';
+import 'package:katya/navigation/routes.dart';
+import 'package:katya/navigation/service.dart';
+import 'package:katya/store/call/session_bus.dart';
 import 'package:katya/store/crypto/events/actions.dart';
 import 'package:katya/store/crypto/keys/actions.dart';
 import 'package:katya/store/events/actions.dart';
@@ -24,6 +26,8 @@ import 'package:katya/store/rooms/room/model.dart';
 import 'package:katya/store/sync/parsers/parsers.dart';
 import 'package:katya/store/sync/service/storage.dart';
 import 'package:katya/store/user/actions.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
 class SetBackoff {
   final int? backoff;
@@ -148,8 +152,7 @@ ThunkAction<AppState> startSyncObserver() {
     if (syncObserver == null || !syncObserver.isActive) {
       store.dispatch(
         SetSyncObserver(
-          syncObserver:
-              Timer.periodic(Duration(milliseconds: interval), onSync),
+          syncObserver: Timer.periodic(Duration(milliseconds: interval), onSync),
         ),
       );
     }
@@ -244,8 +247,7 @@ ThunkAction<AppState> fetchSync({String? since, bool forceFull = false}) {
       final String nextBatch = data['next_batch'];
       final Map<String, dynamic> roomJson = data['rooms'] ?? {};
       final Map<String, dynamic> toDeviceJson = data['to_device'] ?? {};
-      final Map<String, dynamic> oneTimeKeyCount =
-          data['device_one_time_keys_count'] ?? {};
+      final Map<String, dynamic> oneTimeKeyCount = data['device_one_time_keys_count'] ?? {};
 
       // Updates for device specific data (mostly room encryption)
       if (toDeviceJson.isNotEmpty) {
@@ -286,7 +288,7 @@ ThunkAction<AppState> fetchSync({String? since, bool forceFull = false}) {
         log.info('[fetchSync] *** full sync completed ***');
       }
     } catch (error) {
-      log.error('[fetchSync] ${error.toString()}');
+      log.error('[fetchSync] $error');
 
       final backoff = store.state.syncStore.backoff;
       final nextBackoff = backoff != 0 ? backoff + 1 : 5;
@@ -343,13 +345,11 @@ ThunkAction<AppState> syncRoom(String id, Map<String, dynamic> json) {
 
       // update various message mutations and meta data
       await store.dispatch(setUsers(sync.users));
-      await store
-          .dispatch(setReceipts(room: room, receipts: sync.readReceipts));
+      await store.dispatch(setReceipts(room: room, receipts: sync.readReceipts));
       await store.dispatch(addReactions(reactions: events.reactions));
 
       // redact events (reactions and messages) through cache and cold storage
-      await store
-          .dispatch(redactEvents(room: room, redactions: events.redactions));
+      await store.dispatch(redactEvents(room: room, redactions: events.redactions));
 
       // handles editing newly fetched messages
       final messages = await store.dispatch(
@@ -395,6 +395,41 @@ ThunkAction<AppState> syncRoom(String id, Map<String, dynamic> json) {
         ),
       );
 
+      // Handle incoming call events in state events
+      for (final event in sync.events.state) {
+        try {
+          switch (event.type) {
+            case EventTypes.callInvite:
+              // payload: { call_id, offer:{sdp,type}, lifetime, version }
+              final callId = event.content?['call_id'];
+              final offer = event.content?['offer'] ?? {};
+              final sdp = offer['sdp'];
+              final type = (offer['type'] ?? 'offer').toString();
+              const video = true; // TODO: infer from context/room or content
+              // Navigate to incoming call UI
+              NavigationService.navigatorKey.currentState?.pushNamed(
+                Routes.callIncoming,
+                arguments: {
+                  'roomId': room.id,
+                  'callId': callId,
+                  'sdp': sdp,
+                  'type': type,
+                  'video': video,
+                },
+              );
+            case EventTypes.callCandidates:
+              final callId = event.content?['call_id'];
+              final candidates = event.content?['candidates'] ?? [];
+              CallSessionBus().publishCandidates(callId: callId, candidates: candidates);
+            case EventTypes.callHangup:
+              final callId = event.content?['call_id'];
+              CallSessionBus().publishHangup(callId: callId);
+            default:
+              break;
+          }
+        } catch (_) {}
+      }
+
       if (DEBUG_MODE && DEBUG_PAYLOADS_MODE) {
         log.jsonDebug({
           'room': room,
@@ -429,7 +464,7 @@ ThunkAction<AppState> syncRoom(String id, Map<String, dynamic> json) {
         ));
       }
     } catch (error) {
-      log.error('[syncRoom] $id ${error.toString()}');
+      log.error('[syncRoom] $id $error');
 
       // prevents against recursive backfill from bombing attempts at fetching messages
       final roomExisting = rooms.containsKey(id) ? rooms[id]! : Room(id: id);

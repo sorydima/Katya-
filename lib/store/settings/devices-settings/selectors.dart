@@ -1,6 +1,6 @@
-import 'package:redux/redux.dart';
 import 'package:katya/global/values.dart';
 import 'package:katya/store/index.dart';
+import 'package:redux/redux.dart';
 
 String selectCurrentDeviceName(Store<AppState> store) {
   final currentSessionId = store.state.authStore.user.deviceId;

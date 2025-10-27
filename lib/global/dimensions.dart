@@ -108,14 +108,14 @@ class Dimensions {
     vertical: 4,
   );
 
-  static listPaddingDynamic({double width = 500}) => EdgeInsets.only(
+  static EdgeInsets listPaddingDynamic({double width = 500}) => EdgeInsets.only(
         left: width * 0.04,
         right: width * 0.04,
         top: 4,
         bottom: 8,
       );
 
-  static listTitlePaddingDynamic({double width = 500}) => EdgeInsets.only(
+  static EdgeInsets listTitlePaddingDynamic({double width = 500}) => EdgeInsets.only(
         left: width * 0.04,
         right: width * 0.04,
         top: 6,
@@ -181,4 +181,9 @@ class Dimensions {
 
   // * Device Specific *
   static const buttonlessHeightiOS = 736;
+
+  // Border radius values
+  static const double borderRadiusSmall = 8.0;
+  static const double borderRadius = 12.0;
+  static const double borderRadiusLarge = 16.0;
 }

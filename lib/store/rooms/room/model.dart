@@ -2,6 +2,7 @@
 
 import 'package:drift/drift.dart' as drift;
 import 'package:json_annotation/json_annotation.dart';
+import 'package:katya/models/token_gate_config.dart';
 import 'package:katya/storage/database.dart';
 import 'package:katya/store/events/messages/model.dart';
 import 'package:katya/store/user/model.dart';
@@ -66,6 +67,9 @@ class Room implements drift.Insertable<Room> {
   @JsonKey(ignore: true)
   final bool syncing;
 
+  // Token gating
+  final TokenGateConfig? tokenGateConfig;
+
   @JsonKey(ignore: true)
   String get type {
     if (invite) {
@@ -114,6 +118,7 @@ class Room implements drift.Insertable<Room> {
     this.lastBatch,
     this.nextBatch,
     this.prevBatch,
+    this.tokenGateConfig,
   });
 
   Room copyWith({
@@ -146,6 +151,7 @@ class Room implements drift.Insertable<Room> {
     String? lastBatch,
     String? prevBatch,
     String? nextBatch,
+    TokenGateConfig? tokenGateConfig,
   }) =>
       Room(
         id: id ?? this.id,
@@ -177,6 +183,7 @@ class Room implements drift.Insertable<Room> {
         lastBatch: lastBatch ?? this.lastBatch,
         prevBatch: prevBatch ?? this.prevBatch,
         nextBatch: nextBatch ?? this.nextBatch,
+        tokenGateConfig: tokenGateConfig ?? this.tokenGateConfig,
       );
 
   Map<String, dynamic> toJson() => _$RoomToJson(this);

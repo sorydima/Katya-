@@ -10,8 +10,8 @@ SyncStore _$SyncStoreFromJson(Map<String, dynamic> json) => SyncStore(
       synced: json['synced'] as bool? ?? false,
       offline: json['offline'] as bool? ?? false,
       backgrounded: json['backgrounded'] as bool? ?? false,
-      lastUpdate: json['lastUpdate'] as int? ?? 0,
-      lastAttempt: json['lastAttempt'] as int? ?? 0,
+      lastUpdate: (json['lastUpdate'] as num?)?.toInt() ?? 0,
+      lastAttempt: (json['lastAttempt'] as num?)?.toInt() ?? 0,
       lastSince: json['lastSince'] as String?,
     );
 

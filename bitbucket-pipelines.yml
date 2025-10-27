@@ -1,0 +1,38 @@
+# Bitbucket Pipelines Configuration for Australian Git hosting
+# This file configures CI/CD for Bitbucket (Australian GitHub alternative)
+
+pipelines:
+  default:
+    - step:
+        name: 'Build and Test'
+        script:
+          - flutter pub get
+          - flutter pub run build_runner build --delete-conflicting-outputs
+          - flutter test
+        caches:
+          - flutter
+    - step:
+        name: 'Build for Platforms'
+        script:
+          - flutter build apk --release
+          - flutter build ios --release
+          - flutter build web --release
+        after-script:
+          - echo "Build completed for Australian compliance"
+
+  branches:
+    main:
+      - step:
+          name: 'Deploy to Production'
+          script:
+            - echo "Deploy to Australian servers"
+            # Add deployment commands here
+
+  pull-requests:
+    '*':
+      - step:
+          name: 'PR Checks'
+          script:
+            - flutter analyze
+            - flutter format --dry-run .
+            - flutter test

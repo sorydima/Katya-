@@ -8,7 +8,7 @@ part of 'model.dart';
 
 Receipt _$ReceiptFromJson(Map<String, dynamic> json) => Receipt(
       eventId: json['eventId'] as String? ?? '',
-      latestRead: json['latestRead'] as int? ?? 0,
+      latestRead: (json['latestRead'] as num?)?.toInt() ?? 0,
       userReadsMapped:
           json['userReadsMapped'] as Map<String, dynamic>? ?? const {},
     );

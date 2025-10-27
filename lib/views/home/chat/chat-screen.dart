@@ -5,10 +5,9 @@ import 'package:crypto/crypto.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:path/path.dart' as path;
-import 'package:redux/redux.dart';
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
@@ -34,18 +33,20 @@ import 'package:katya/store/settings/chat-settings/selectors.dart';
 import 'package:katya/store/settings/theme-settings/model.dart';
 import 'package:katya/store/user/model.dart';
 import 'package:katya/store/user/selectors.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/home/chat/media-preview-screen.dart';
 import 'package:katya/views/home/chat/widgets/chat-input.dart';
 import 'package:katya/views/home/chat/widgets/dialog-encryption.dart';
 import 'package:katya/views/home/chat/widgets/dialog-invite.dart';
-import 'package:katya/views/home/chat/widgets/message-list.dart';
+import 'package:katya/views/home/chat/widgets/enhanced_message_list.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/appbars/appbar-chat.dart';
 import 'package:katya/views/widgets/appbars/appbar-options-message.dart';
 import 'package:katya/views/widgets/loader/index.dart';
 import 'package:katya/views/widgets/modals/modal-user-details.dart';
-import 'package:flutter/material.dart';
-import 'package:katya/utils/theme_compatibility.dart';
+import 'package:path/path.dart' as path;
+import 'package:redux/redux.dart';
+import 'package:uuid/uuid.dart';
 
 class ChatScreenArguments {
   final String? roomId;
@@ -56,16 +57,22 @@ class ChatScreenArguments {
 }
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  final String roomId;
+
+  const ChatScreen({super.key, required this.roomId});
 
   @override
   ChatScreenState createState() => ChatScreenState();
 }
 
 class ChatScreenState extends State<ChatScreen> {
+  final uuid = const Uuid();
+
   bool sending = false;
   bool loadMore = false;
   bool editing = false;
+
+  Message? _replyingTo;
 
   Message? selectedMessage;
   Map<String, Color>? senderColors;
@@ -85,7 +92,67 @@ class ChatScreenState extends State<ChatScreen> {
     super.dispose();
   }
 
-  onMounted(_Props props) async {
+  Widget _buildMessageList(_Props props, List<Message> messages) {
+    // Get messages for the current room
+    final messagesFiltered = messages.whereType<Message>().map((event) => event).toList();
+
+    return EnhancedMessageList(
+      roomId: props.room.id,
+      messages: messages,
+      showAvatars: props.showAvatars,
+      selectedMessage: selectedMessage,
+      onToggleSelectedMessage: (message) {
+        setState(() {
+          selectedMessage = message;
+        });
+      },
+      onViewUserDetails: onViewUserDetails,
+      onEdit: (message, newText) {
+        // Handle message edit
+        props.onSendMessage(
+          body: newText,
+          edit: true,
+          related: message,
+        );
+      },
+      onDelete: (message) {
+        // Handle message deletion
+        props.onDeleteMessage(
+          room: props.room,
+          message: message,
+        );
+      },
+      onReply: (message) {
+        // Handle reply
+        setState(() {
+          _replyingTo = message;
+          inputController.text = '';
+          inputFieldNode.requestFocus();
+        });
+      },
+      onCopy: (message) {
+        // Handle copy to clipboard
+        Clipboard.setData(ClipboardData(text: message.body ?? ''));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Message copied to clipboard')),
+        );
+      },
+      onShare: (message) {
+        // Handle share functionality
+        // This would typically use the share_plus package
+        // Share.share(message.body ?? '');
+      },
+      onReaction: (message, reaction) {
+        // Handle reaction
+        props.onToggleReaction(
+          emoji: reaction,
+          message: message,
+        );
+      },
+    );
+  }
+
+  Future<void> onMounted(_Props props) async {
     final draft = props.room.draft;
 
     // only marked if read receipts are enabled
@@ -151,7 +218,7 @@ class ChatScreenState extends State<ChatScreen> {
     });
   }
 
-  onCheatCode(_Props props) async {
+  Future<void> onCheatCode(_Props props) async {
     final store = StoreProvider.of<AppState>(context);
 
     try {
@@ -165,7 +232,7 @@ class ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  onAttemptDecryption(_Props props) async {
+  Future<void> onAttemptDecryption(_Props props) async {
     final store = StoreProvider.of<AppState>(context);
     final room = props.room;
 
@@ -199,7 +266,7 @@ class ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  onDidChange(_Props? propsOld, _Props props) {
+  void onDidChange(_Props? propsOld, _Props props) {
     if (props.room.encryptionEnabled && mediumType != MediumType.encryption) {
       setState(() {
         mediumType = MediumType.encryption;
@@ -209,7 +276,7 @@ class ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  onViewUserDetails({Message? message, String? userId, User? user}) {
+  void onViewUserDetails({Message? message, String? userId, User? user}) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -221,7 +288,7 @@ class ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  onToggleEdit() {
+  void onToggleEdit() {
     if (selectedMessage == null) return;
 
     setState(() {
@@ -229,7 +296,7 @@ class ChatScreenState extends State<ChatScreen> {
     });
   }
 
-  onSendEdit(
+  Future<void> onSendEdit(
     _Props props, {
     String? text,
     String? type = MatrixMessageTypes.text,
@@ -257,7 +324,7 @@ class ChatScreenState extends State<ChatScreen> {
     });
   }
 
-  onSendMessage(_Props props) async {
+  Future<void> onSendMessage(_Props props) async {
     setState(() {
       sending = true;
     });
@@ -278,7 +345,7 @@ class ChatScreenState extends State<ChatScreen> {
     });
   }
 
-  onSendMedia(File rawFile, MessageType type, _Props props) async {
+  Future<void> onSendMedia(File rawFile, MessageType type, _Props props) async {
     final store = StoreProvider.of<AppState>(context);
     final encryptionEnabled = props.room.encryptionEnabled;
 
@@ -337,9 +404,15 @@ class ChatScreenState extends State<ChatScreen> {
     }
 
     final message = Message(
-      url: mxcUri,
+      id: const Uuid().v4(),
+      sender: props.currentUser.userId ?? '',
+      timestamp: DateTime.now().millisecondsSinceEpoch,
       type: type.value,
-      body: path.basename(file.path),
+      roomId: widget.roomId,
+      content: {
+        'url': mxcUri,
+        'body': path.basename(file.path),
+      },
     );
 
     if (props.room.encryptionEnabled) {
@@ -372,11 +445,19 @@ class ChatScreenState extends State<ChatScreen> {
     });
   }
 
-  onFocusChatInput() {
+  void onFocusChatInput() {
     inputFieldNode.requestFocus();
   }
 
-  onAddMedia(File file, MessageType type, _Props props) async {
+  void onStartVoiceCall(_Props props) {
+    Navigator.pushNamed(context, Routes.call, arguments: {'roomId': props.room.id, 'video': false});
+  }
+
+  void onStartVideoCall(_Props props) {
+    Navigator.pushNamed(context, Routes.call, arguments: {'roomId': props.room.id, 'video': true});
+  }
+
+  Future<void> onAddMedia(File file, MessageType type, _Props props) async {
     await Navigator.pushNamed(
       context,
       Routes.chatMediaPreview,
@@ -388,7 +469,7 @@ class ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  onToggleSelectedMessage(Message? message) {
+  void onToggleSelectedMessage(Message? message) {
     setState(() {
       selectedMessage = message;
     });
@@ -400,7 +481,7 @@ class ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  onChangeMediumType({String? newMediumType, _Props? props}) {
+  Future<void> onChangeMediumType({String? newMediumType, _Props? props}) async {
     // noop
     if (mediumType == newMediumType) {
       return;
@@ -441,7 +522,7 @@ class ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  onInputReaction({Message? message, _Props? props}) async {
+  Future<void> onInputReaction({Message? message, _Props? props}) async {
     final height = MediaQuery.of(context).size.height;
     await showModalBottomSheet(
       context: context,
@@ -449,12 +530,12 @@ class ChatScreenState extends State<ChatScreen> {
       backgroundColor: Colors.transparent,
       builder: (context) => Container(
         height: height / 2.2,
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           vertical: 12,
         ),
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(16),
             topRight: Radius.circular(16),
           ),
@@ -475,7 +556,7 @@ class ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  onShowMediumMenu(context, _Props props) async {
+  Future<void> onShowMediumMenu(context, _Props props) async {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
 
@@ -504,11 +585,11 @@ class ChatScreenState extends State<ChatScreen> {
               );
             },
             child: Container(
-              padding: EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.symmetric(vertical: 8),
               child: Row(
                 children: [
                   Container(
-                    padding: EdgeInsets.only(right: 8),
+                    padding: const EdgeInsets.only(right: 8),
                     child: CircleAvatar(
                       backgroundColor: const Color(AppColors.greyDisabled),
                       child: SvgPicture.asset(
@@ -518,7 +599,7 @@ class ChatScreenState extends State<ChatScreen> {
                       ),
                     ),
                   ),
-                  Text('Unencrypted'),
+                  const Text('Unencrypted'),
                 ],
               ),
             ),
@@ -537,11 +618,11 @@ class ChatScreenState extends State<ChatScreen> {
                     );
                   },
             child: Container(
-              padding: EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.symmetric(vertical: 8),
               child: Row(
                 children: [
                   Container(
-                    padding: EdgeInsets.only(right: 8),
+                    padding: const EdgeInsets.only(right: 8),
                     child: CircleAvatar(
                       backgroundColor: Theme.of(context).primaryColor,
                       child: SvgPicture.asset(
@@ -551,7 +632,7 @@ class ChatScreenState extends State<ChatScreen> {
                       ),
                     ),
                   ),
-                  Text('Encrypted'),
+                  const Text('Encrypted'),
                 ],
               ),
             ),
@@ -571,6 +652,8 @@ class ChatScreenState extends State<ChatScreen> {
           useScreenArguments<ChatScreenArguments>(context)?.roomId,
         ),
         builder: (context, props) {
+          final messages = StoreProvider.of<AppState>(context).state.eventStore.messages[props.room.id] ?? [];
+
           final height = MediaQuery.of(context).size.height;
           final viewInsets = EdgeInsets.fromWindowPadding(
             WidgetsBinding.instance.window.viewInsets,
@@ -581,42 +664,14 @@ class ChatScreenState extends State<ChatScreen> {
               !inputFieldNode.hasFocus && Platform.isIOS && Dimensions.buttonlessHeightiOS < height;
           final isScrolling = messagesController.hasClients && messagesController.offset != 0;
 
-          var inputContainerColor = Colors.white;
+          const inputContainerColor = Colors.white;
           var backgroundColor = Theme.of(context).scaffoldBackgroundColor;
-
-          if (Theme.of(context).brightness == Brightness.dark) {
-            inputContainerColor = Theme.of(context).scaffoldBackgroundColor;
-          }
-
-          Widget appBar = AppBarChat(
-            room: props.room,
-            color: props.chatColorPrimary,
-            badgesEnabled: props.roomTypeBadgesEnabled,
-            onDebug: () {
-              onCheatCode(props);
-            },
-            onBack: () {
-              if (inputController.text.isNotEmpty) {
-                props.onSaveDraftMessage(
-                  body: inputController.text,
-                  type: MatrixMessageTypes.text,
-                );
-              } else if (props.room.draft != null) {
-                props.onClearDraftMessage();
-              }
-
-              Navigator.pop(context, false);
-            },
-          );
-
+          PreferredSizeWidget? appBar;
           if (selectedMessage != null) {
             final isUserSent = props.currentUser.userId == (selectedMessage?.sender ?? '');
             final backgroundColorDark = HSLColor.fromColor(backgroundColor);
-
-            final backgroundLightness =
-                backgroundColorDark.lightness > 0.2 ? backgroundColorDark.lightness : 0.2;
+            final backgroundLightness = backgroundColorDark.lightness > 0.2 ? backgroundColorDark.lightness : 0.2;
             backgroundColor = backgroundColorDark.withLightness(backgroundLightness - 0.2).toColor();
-
             appBar = AppBarMessageOptions(
               user: props.currentUser,
               room: props.room,
@@ -629,6 +684,30 @@ class ChatScreenState extends State<ChatScreen> {
                 room: props.room,
                 message: selectedMessage,
               ),
+            );
+          } else {
+            appBar = AppBarChat(
+              room: props.room,
+              color: props.chatColorPrimary,
+              badgesEnabled: props.roomTypeBadgesEnabled,
+              onBack: () {
+                if (inputController.text.isNotEmpty) {
+                  props.onSaveDraftMessage(
+                    body: inputController.text,
+                    type: MatrixMessageTypes.text,
+                  );
+                } else if (props.room.draft != null) {
+                  props.onClearDraftMessage();
+                }
+                Navigator.pop(context, false);
+              },
+              // onToggleSettings: () => Navigator.pushNamed(
+              //   context,
+              //   Routes.chatSettings,
+              //   arguments: {'roomId': props.room.id},
+              // ),
+              // onStartVoiceCall: () => onStartVoiceCall(props),
+              // onStartVideoCall: () => onStartVideoCall(props),
             );
           }
 
@@ -649,22 +728,7 @@ class ChatScreenState extends State<ChatScreen> {
                       },
                       child: Stack(
                         children: [
-                          MessageList(
-                            roomId: props.room.id,
-                            editing: editing,
-                            editorController: editorController,
-                            showAvatars: props.showAvatars,
-                            selectedMessage: selectedMessage,
-                            scrollController: messagesController,
-                            onSendEdit: (text, related) => onSendEdit(
-                              props,
-                              text: text,
-                              related: related,
-                            ),
-                            onSelectReply: props.onSelectReply,
-                            onViewUserDetails: onViewUserDetails,
-                            onToggleSelectedMessage: onToggleSelectedMessage,
-                          ),
+                          _buildMessageList(props, messages),
                           Positioned(
                             child: Loader(
                               loading: props.loading,
@@ -696,11 +760,11 @@ class ChatScreenState extends State<ChatScreen> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.only(left: 8, right: 8, top: 12, bottom: 12),
+                    padding: const EdgeInsets.only(left: 8, right: 8, top: 12, bottom: 12),
                     decoration: BoxDecoration(
                       color: inputContainerColor,
                       boxShadow: isScrolling
-                          ? [BoxShadow(blurRadius: 6, offset: Offset(0, -4), color: Colors.black12)]
+                          ? [const BoxShadow(blurRadius: 6, offset: Offset(0, -4), color: Colors.black12)]
                           : [],
                     ),
                     child: AnimatedPadding(
@@ -726,10 +790,9 @@ class ChatScreenState extends State<ChatScreen> {
                             : () => onSendEdit(
                                   props,
                                   text: editorController.text,
-                                  related: selectedMessage,
+                                  related: null,
                                 ),
-                        onAddMedia: ({required File file, required MessageType type}) =>
-                            onAddMedia(file, type, props),
+                        onAddMedia: ({required File file, required MessageType type}) => onAddMedia(file, type, props),
                       ),
                     ),
                   ),
@@ -858,8 +921,12 @@ class _Props extends Equatable {
           final room = store.state.roomStore.rooms[roomId]!;
 
           final message = Message(
-            body: body,
+            id: const Uuid().v4(),
+            sender: store.state.authStore.currentUser.userId ?? '',
+            timestamp: DateTime.now().millisecondsSinceEpoch,
             type: type,
+            roomId: roomId,
+            content: {'body': body},
           );
 
           if (room.encryptionEnabled) {
@@ -932,7 +999,9 @@ class _Props extends Equatable {
 
           // TODO: need to account for 25 reactions, for example. "Messages" are different to spec
           final messages = store.state.eventStore.messages[room.id] ?? [];
-          final oldest = messages.isNotEmpty ? selectOldestMessage(messages) ?? Message() : Message();
+          final oldest = messages.isNotEmpty
+              ? selectOldestMessage(messages) ?? const Message(id: '', sender: '', timestamp: 0, type: '', roomId: '')
+              : const Message(id: '', sender: '', timestamp: 0, type: '', roomId: '');
 
           // fetch messages from the oldest cached batch
           final messagesNew = await store.dispatch(

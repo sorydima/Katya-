@@ -1,35 +1,409 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  katya-web:
-    build: .
-    ports:
-      - "8080:80"
-    environment:
-      - FLUTTER_WEB_PORT=8080
-    volumes:
-      - .:/app
-      - /app/pub
-    command: nginx -g 'daemon off;'
-
-  # Optional: Add a development service
-  katya-dev:
-    build: .
+  # API Service
+  api:
+    build:
+      context: .
+      dockerfile: docker/api/Dockerfile
+    container_name: katya-api
     ports:
       - "3000:3000"
     environment:
-      - FLUTTER_WEB_PORT=3000
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://katya:katya@postgres:5432/katya
+      - REDIS_URL=redis://redis:6379
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - JWT_SECRET=your-jwt-secret-here
+      - API_KEY_SECRET=your-api-key-secret-here
     volumes:
-      - .:/app
-    command: flutter run --web-port=3000
-    profiles:
-      - dev
+      - ./lib:/app/lib
+      - ./config:/app/config
+      - ./logs:/app/logs
+    depends_on:
+      - postgres
+      - redis
+      - elasticsearch
+    networks:
+      - katya-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
-  # Optional: Add a testing service
-  katya-test:
-    build: .
+  # Web Frontend
+  web:
+    build:
+      context: .
+      dockerfile: docker/web/Dockerfile
+    container_name: katya-web
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_API_URL=http://localhost:3000
+      - REACT_APP_WS_URL=ws://localhost:3000
     volumes:
-      - .:/app
-    command: flutter test
-    profiles:
-      - test
+      - ./lib:/app/lib
+      - ./web:/app/web
+    depends_on:
+      - api
+    networks:
+      - katya-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: katya-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=katya
+      - POSTGRES_USER=katya
+      - POSTGRES_PASSWORD=katya
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - katya-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U katya"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: katya-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+      - ./config/redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - katya-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Elasticsearch
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
+    container_name: katya-elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - katya-network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Kibana (для анализа логов)
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.8.0
+    container_name: katya-kibana
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    networks:
+      - katya-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5601/api/status || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: katya-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+      - ./nginx/logs:/var/log/nginx
+    depends_on:
+      - api
+      - web
+    networks:
+      - katya-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Monitoring - Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: katya-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./monitoring/rules:/etc/prometheus/rules
+      - prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/etc/prometheus/console_libraries"
+      - "--web.console.templates=/etc/prometheus/consoles"
+      - "--storage.tsdb.retention.time=200h"
+      - "--web.enable-lifecycle"
+    networks:
+      - katya-network
+    restart: unless-stopped
+
+  # Monitoring - Grafana
+  grafana:
+    image: grafana/grafana:latest
+    container_name: katya-grafana
+    ports:
+      - "3002:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources
+    depends_on:
+      - prometheus
+    networks:
+      - katya-network
+    restart: unless-stopped
+
+  # Log Aggregation - Fluentd
+  fluentd:
+    image: fluent/fluentd:v1.16-debian-1
+    container_name: katya-fluentd
+    volumes:
+      - ./logging/fluentd.conf:/fluentd/etc/fluent.conf
+      - ./logs:/var/log/katya
+    depends_on:
+      - elasticsearch
+    networks:
+      - katya-network
+    restart: unless-stopped
+
+  # Message Queue - RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: katya-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=katya
+      - RABBITMQ_DEFAULT_PASS=katya
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - katya-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Background Jobs - Celery Worker
+  celery-worker:
+    build:
+      context: .
+      dockerfile: docker/celery/Dockerfile
+    container_name: katya-celery-worker
+    environment:
+      - CELERY_BROKER_URL=amqp://katya:katya@rabbitmq:5672//
+      - DATABASE_URL=postgresql://katya:katya@postgres:5432/katya
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./lib:/app/lib
+      - ./config:/app/config
+    depends_on:
+      - rabbitmq
+      - postgres
+      - redis
+    networks:
+      - katya-network
+    restart: unless-stopped
+
+  # Background Jobs - Celery Beat (Scheduler)
+  celery-beat:
+    build:
+      context: .
+      dockerfile: docker/celery/Dockerfile
+    container_name: katya-celery-beat
+    environment:
+      - CELERY_BROKER_URL=amqp://katya:katya@rabbitmq:5672//
+      - DATABASE_URL=postgresql://katya:katya@postgres:5432/katya
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./lib:/app/lib
+      - ./config:/app/config
+    command: celery -A app.celery beat --loglevel=info
+    depends_on:
+      - rabbitmq
+      - postgres
+      - redis
+    networks:
+      - katya-network
+    restart: unless-stopped
+
+  # Security Scanner
+  security-scanner:
+    build:
+      context: .
+      dockerfile: docker/security/Dockerfile
+    container_name: katya-security-scanner
+    environment:
+      - DATABASE_URL=postgresql://katya:katya@postgres:5432/katya
+      - REDIS_URL=redis://redis:6379
+      - SCANNER_SCHEDULE=0 2 * * * # Каждый день в 2:00
+    volumes:
+      - ./lib:/app/lib
+      - ./config:/app/config
+      - ./security/reports:/app/reports
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - katya-network
+    restart: unless-stopped
+
+  # Analytics Service
+  analytics:
+    build:
+      context: .
+      dockerfile: docker/analytics/Dockerfile
+    container_name: katya-analytics
+    ports:
+      - "3003:3003"
+    environment:
+      - DATABASE_URL=postgresql://katya:katya@postgres:5432/katya
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./lib:/app/lib
+      - ./config:/app/config
+      - ./analytics/reports:/app/reports
+    depends_on:
+      - postgres
+      - elasticsearch
+      - redis
+    networks:
+      - katya-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3003/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Mobile API Gateway
+  mobile-gateway:
+    build:
+      context: .
+      dockerfile: docker/mobile-gateway/Dockerfile
+    container_name: katya-mobile-gateway
+    ports:
+      - "3004:3004"
+    environment:
+      - API_URL=http://api:3000
+      - REDIS_URL=redis://redis:6379
+      - PUSH_NOTIFICATION_KEY=your-push-key
+    volumes:
+      - ./lib:/app/lib
+      - ./config:/app/config
+    depends_on:
+      - api
+      - redis
+    networks:
+      - katya-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3004/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # WebSocket Service
+  websocket:
+    build:
+      context: .
+      dockerfile: docker/websocket/Dockerfile
+    container_name: katya-websocket
+    ports:
+      - "3005:3005"
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - RABBITMQ_URL=amqp://katya:katya@rabbitmq:5672//
+      - JWT_SECRET=your-jwt-secret-here
+    volumes:
+      - ./lib:/app/lib
+      - ./config:/app/config
+    depends_on:
+      - redis
+      - rabbitmq
+    networks:
+      - katya-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3005/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  rabbitmq_data:
+    driver: local
+
+networks:
+  katya-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

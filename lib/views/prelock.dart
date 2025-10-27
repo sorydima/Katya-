@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:redux/redux.dart';
-import 'package:sembast/sembast.dart';
 import 'package:katya/cache/index.dart';
 import 'package:katya/context/storage.dart';
 import 'package:katya/context/types.dart';
@@ -15,9 +13,11 @@ import 'package:katya/storage/index.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/views/intro/lock-screen.dart';
 import 'package:katya/views/intro/signup/loading-screen.dart';
-import 'package:katya/views/navigation.dart';
 import 'package:katya/views/katya.dart';
+import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
+import 'package:redux/redux.dart';
+import 'package:sembast/sembast.dart';
 
 class PrelockRoutes {
   static const root = '/';
@@ -45,14 +45,12 @@ class Prelock extends StatefulWidget {
     this.backgroundLockLatency = Duration.zero,
   });
 
-  static restart(BuildContext context) {
+  static void restart(BuildContext context) {
     context.findAncestorStateOfType<_PrelockState>()!.restart();
   }
 
   static Future? toggleLocked(BuildContext context, String pin, {bool? override}) {
-    return context
-        .findAncestorStateOfType<_PrelockState>()!
-        .toggleLocked(pin: pin, override: override);
+    return context.findAncestorStateOfType<_PrelockState>()!.toggleLocked(pin: pin, override: override);
   }
 
   @override
@@ -94,7 +92,7 @@ class _PrelockState extends State<Prelock> with WidgetsBindingObserver, Lifecycl
       _navigatorKey.currentState?.pushReplacement(
         PageRouteBuilder(
           pageBuilder: (context, animation1, animation2) => buildkatya(),
-          transitionDuration: Duration(seconds: 200),
+          transitionDuration: const Duration(seconds: 200),
         ),
       );
     }
@@ -126,7 +124,7 @@ class _PrelockState extends State<Prelock> with WidgetsBindingObserver, Lifecycl
     super.dispose();
   }
 
-  _onLoadStorage({String pin = Values.empty}) async {
+  Future<void> _onLoadStorage({String pin = Values.empty}) async {
     final context = appContext ?? widget.appContext;
 
     // init hot caches
@@ -148,7 +146,7 @@ class _PrelockState extends State<Prelock> with WidgetsBindingObserver, Lifecycl
     });
   }
 
-  showLockScreen() async {
+  Future<void> showLockScreen() async {
     locked = true;
 
     if (_navigatorKey.currentState == null) return;
@@ -156,12 +154,12 @@ class _PrelockState extends State<Prelock> with WidgetsBindingObserver, Lifecycl
     _navigatorKey.currentState?.pushReplacement(
       PageRouteBuilder(
         pageBuilder: (context, animation1, animation2) => buildLockScreen(),
-        transitionDuration: Duration(seconds: 200),
+        transitionDuration: const Duration(seconds: 200),
       ),
     );
   }
 
-  restart() async {
+  Future<void> restart() async {
     final appContextNew = await loadContextCurrent();
 
     final isLocked = appContextNew.id.isNotEmpty && appContextNew.pinHash.isNotEmpty;
@@ -169,7 +167,7 @@ class _PrelockState extends State<Prelock> with WidgetsBindingObserver, Lifecycl
     await _navigatorKey.currentState?.pushAndRemoveUntil(
       PageRouteBuilder(
         pageBuilder: (context, animation1, animation2) => buildLoadingScreen(),
-        transitionDuration: Duration(seconds: 200),
+        transitionDuration: const Duration(seconds: 200),
       ),
       ModalRoute.withName(PrelockRoutes.root),
     );
@@ -192,14 +190,14 @@ class _PrelockState extends State<Prelock> with WidgetsBindingObserver, Lifecycl
       _navigatorKey.currentState?.pushAndRemoveUntil(
         PageRouteBuilder(
           pageBuilder: (context, animation1, animation2) => buildkatya(),
-          transitionDuration: Duration(seconds: 200),
+          transitionDuration: const Duration(seconds: 200),
         ),
         ModalRoute.withName(PrelockRoutes.root),
       );
     }
   }
 
-  toggleLocked({required String pin, bool? override}) async {
+  Future<void> toggleLocked({required String pin, bool? override}) async {
     final lockedNew = override ?? !locked;
 
     if (!lockedNew) {
@@ -212,7 +210,7 @@ class _PrelockState extends State<Prelock> with WidgetsBindingObserver, Lifecycl
       _navigatorKey.currentState?.pushAndRemoveUntil(
         PageRouteBuilder(
           pageBuilder: (context, animation1, animation2) => buildkatya(),
-          transitionDuration: Duration(seconds: 200),
+          transitionDuration: const Duration(seconds: 200),
         ),
         ModalRoute.withName(PrelockRoutes.root),
       );
@@ -233,15 +231,15 @@ class _PrelockState extends State<Prelock> with WidgetsBindingObserver, Lifecycl
     }
   }
 
-  buildLoadingScreen() => LoadingScreen(
+  LoadingScreen buildLoadingScreen() => LoadingScreen(
         dark: Platform.isAndroid,
       );
 
-  buildLockScreen() => LockScreen(
+  LockScreen buildLockScreen() => LockScreen(
         appContext: appContext ?? widget.appContext,
       );
 
-  buildkatya() => WillPopScope(
+  WillPopScope buildkatya() => WillPopScope(
         onWillPop: () => NavigationService.goBack(),
         child: katya(
           cache,
@@ -250,7 +248,7 @@ class _PrelockState extends State<Prelock> with WidgetsBindingObserver, Lifecycl
         ),
       );
 
-  buildHome() {
+  dynamic buildHome() {
     if (enabled) {
       return buildLockScreen();
     }

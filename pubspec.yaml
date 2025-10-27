@@ -18,7 +18,13 @@ scripts:
 
   build-release-ios: flutter build ipa  --release # open under xcworkspace, not xcodeproj
   build-release-macos: flutter pub run build_runner build --delete-conflicting-outputs && flutter build macos --release
-  build-release-android: flutter pub run build_runner build --delete-conflicting-outputs && flutter build apk --release
+  build-release-tvos: flutter pub run build_runner build --delete-conflicting-outputs && flutter build tvos --release
+  build-release-wearos: flutter pub run build_runner build --delete-conflicting-outputs && flutter build wearos --release
+  build-release-freebsd: flutter pub run build_runner build --delete-conflicting-outputs && flutter build freebsd --release
+  build-release-fuchsia: flutter pub run build_runner build --delete-conflicting-outputs && flutter build fuchsia --release
+  build-release-harmonyos: flutter pub run build_runner build --delete-conflicting-outputs && flutter build harmonyos --release
+  build-release-tizen: flutter pub run build_runner build --delete-conflicting-outputs && flutter build tizen --release
+  build-release-aurora: flutter pub run build_runner build --delete-conflicting-outputs && flutter build linux --release # Aurora uses similar to Linux
 
   # mobile development commands
   setup-ios: pod install && flutter precache --ios
@@ -37,7 +43,7 @@ scripts:
   cache-clean: pub cache repair && flutter pub cache repair
   upgrade-deps: flutter pub upgrade --major-versions
   init-platform-dirs: flutter create --com com.katya.wtf
-  enable-desktop: flutter config --enable-macos-desktop --enable-linux-desktop # --no-enable-<type>-desktop
+  enable-desktop: flutter config --enable-macos-desktop --enable-linux-desktop --enable-windows-desktop --enable-winuwp --enable-aurora # --no-enable-<type>-desktop
 
 dependencies:
   flutter:
@@ -45,11 +51,25 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  ### Web3 & Wallet Integration
+  web3dart: ^2.7.3
+  web3modal_flutter: ^3.3.4
+  # wallet_connect_dart: ^2.7.0
+  url_launcher: ^6.1.5
+  web_socket_channel: ^2.4.0
+  http: ^1.2.1
+  # web3dart_ethereum: ^1.0.0
+  shared_preferences: ^2.2.0
+  bip39: ^1.0.6
+  encrypt: ^5.0.1
+  pointycastle: ^3.6.2
+  eth_sig_util: ^0.0.4
+
   ### state
   equatable: ^2.0.0
   expandable: ^5.0.1
   convert: ^3.0.0
-  device_info_plus: ^11.5.0
+  device_info_plus: ^12.1.0
   redux: ^5.0.0
   redux_thunk: ^0.4.0
   redux_persist: ^0.9.0
@@ -58,12 +78,11 @@ dependencies:
   mime: ^2.0.0
   path: ^1.8.0
   path_provider: ^2.0.14
-  package_info_plus: ^8.3.1
+  package_info_plus: ^7.0.0
 
   ### encryption
   olm: ^3.1.0
   crypto: ^3.0.1
-  encrypt: ^5.0.0
   cryptography: ^2.0.5
   canonical_json: ^1.1.1
 
@@ -77,16 +96,21 @@ dependencies:
   flutter_secure_storage: ^9.2.4
   drift: ^2.4.2
 
+  ### Matrix
+  matrix: ^3.0.0
+  # For end-to-end encryption (required for Matrix)
+  flutter_vodozemac: ^0.3.0
+  flutter_openssl_crypto: ^0.5.0
+  
   ### services
   platform: ^3.1.0
-  http: ^1.5.0
   html: ^0.15.0
   intl: ^0.20.2
   connectivity_plus: ^6.1.5
   http_parser: ^4.0.0
   easy_localization: ^3.0.0
   flutter_dotenv: ^6.0.0
-  android_alarm_manager_plus: ^4.0.8
+  android_alarm_manager_plus: ^5.0.0
   # workmanager: 0.5.0 # Temporarily disabled due to AndroidManifest.xml compatibility issues
   # background_fetch: 1.1.0
   app_links: ^6.4.1
@@ -95,7 +119,6 @@ dependencies:
   ### ui
   # swipeable: ^1.1.0 # Temporarily disabled for compatibility
   cupertino_icons: ^1.0.2
-  url_launcher: ^6.0.3
   flutter_svg: ^2.2.1
   flutter_keyboard_visibility: ^6.0.0
   flutter_markdown: ^0.7.0
@@ -122,7 +145,19 @@ dependencies:
   permission_handler: ^12.0.1
   # local_image_provider: ^4.3.0 # Disabled due to compatibility issues
   flutter_image_compress: ^2.3.0
-  share_plus: ^11.1.0
+  share_plus: ^12.0.0
+  just_audio: ^0.10.5
+  audio_session: ^0.2.2
+  record: ^6.1.2
+  video_player: ^2.9.2
+  chewie: ^1.8.5
+  open_filex: ^4.6.0
+  video_thumbnail: ^0.5.3
+  any_link_preview: ^3.0.2
+  giphy_get: ^3.3.1
+  flutter_webrtc: ^1.2.0
+  qr_code_scanner: ^1.0.1
+  pdfx: ^2.5.0
 
   ### data
   uuid: ^4.5.1
@@ -133,7 +168,7 @@ dependencies:
   sqlite3: ^2.9.0
   path_provider_linux: ^2.1.5
   camera: ^0.11.2
-  win32: 5.14.0
+  win32: ^5.15.0
 
 dev_dependencies:
   build_config: ^1.0.0
@@ -150,6 +185,7 @@ dependency_overrides:
     git:
       url: https://github.com/sorydima/Flutter-Workmanager.git
       ref: 78fcb2a443149f89fbbaf051fc11f894ed94e626
+  web: ^0.5.1
   # swipeable: # TODO: null saftey version - temporarily disabled for compatibility
   #   git:
   #     url: https://github.com/sorydima/Swipeable.git
@@ -167,9 +203,34 @@ dependency_overrides:
 flutter_icons:
   android: true
   ios: true
+  web: true
+  windows: true
+  macos: true
+  linux: true
   image_path: "assets/icons/current/app_icon_ios.png"
   adaptive_icon_background: "#34C7B5"
   adaptive_icon_foreground: "assets/icons/current/app_icon_foreground.png"
+  # Platform-specific icons
+  android_icon: "assets/icons/current/app_icon_android.png"
+  ios_icon: "assets/icons/current/app_icon_ios.png"
+  web_icon: "assets/icons/current/app_icon_cyan.png"
+  windows_icon: "assets/icons/current/app_icon_desktop.png"
+  macos_icon: "assets/icons/current/app_icon_macos.png"
+  linux_icon: "assets/icons/current/app_icon_desktop.png"
+  # For WinUWP and Aurora, use Windows and a generic icon
+  # Note: WinUWP might need manual setup, Aurora uses similar to Linux
+  # WinUWP icon: assets/icons/current/winuwp/app_icon_winuwp.png
+  # Aurora icon: assets/icons/current/aurora/app_icon_aurora.png
+  # Additional platforms
+  tizen_icon: "assets/icons/current/app_icon_desktop.png"
+  fuchsia_icon: "assets/icons/current/app_icon_cyan.png"
+  harmonyos_icon: "assets/icons/current/app_icon_android.png"
+  wearos_icon: "assets/icons/current/app_icon_desktop.png"
+  tvos_icon: "assets/icons/current/app_icon_desktop.png"
+  freebsd_icon: "assets/icons/current/app_icon_desktop.png"
+  embedded_icon: "assets/icons/current/app_icon_cyan.png"
+  winuwp_icon: "assets/icons/current/winuwp/app_icon_winuwp.png"
+  aurora_icon: "assets/icons/current/aurora/app_icon_aurora.png"
 
 # The following section is specific to Flutter localization
 # It tells Flutter where to find the localization files
@@ -185,6 +246,7 @@ localization:
 
 # The following section is specific to Flutter.
 flutter:
+  generate: true
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -252,4 +314,5 @@ flutter:
     - assets/icons/global/being-send-lock-solid.svg
     - assets/icons/global/being-send-unlock.svg
     - assets/icons/global/being-chevrons-right.svg
-    - assets/icons/global/feather-message-circle.svg
+    - assets/icons/current/winuwp/app_icon_winuwp.png
+    - assets/icons/current/aurora/app_icon_aurora.png

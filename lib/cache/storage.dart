@@ -1,8 +1,4 @@
-import 'dart:typed_data';
-
 import 'package:flutter/foundation.dart';
-import 'package:redux_persist/redux_persist.dart';
-import 'package:sembast/sembast.dart';
 import 'package:katya/cache/index.dart';
 import 'package:katya/cache/threadables.dart';
 import 'package:katya/global/print.dart';
@@ -10,6 +6,8 @@ import 'package:katya/store/auth/state.dart';
 import 'package:katya/store/crypto/state.dart';
 import 'package:katya/store/rooms/state.dart';
 import 'package:katya/store/sync/state.dart';
+import 'package:redux_persist/redux_persist.dart';
+import 'package:sembast/sembast.dart';
 
 class CacheStorage implements StorageEngine {
   final Database? cache;
@@ -19,10 +17,10 @@ class CacheStorage implements StorageEngine {
   @override
   Future<Uint8List> load() async {
     final List<Object> stores = [
-      AuthStore(),
-      SyncStore(),
-      CryptoStore(),
-      RoomStore(),
+      const AuthStore(),
+      const SyncStore(),
+      const CryptoStore(),
+      const RoomStore(),
     ];
 
     await Future.wait(stores.map((store) async {
@@ -45,7 +43,7 @@ class CacheStorage implements StorageEngine {
         );
 
         // Load for CacheSerializer to use later
-        Cache.cacheStores[type] = jsonDecoded;
+        Cache.cacheStores[type] = jsonDecoded as Map<dynamic, dynamic>?;
       } catch (error) {
         log.error(error.toString(), title: 'CacheStorage|$type');
       }

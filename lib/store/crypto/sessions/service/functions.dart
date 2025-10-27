@@ -1,14 +1,14 @@
 import 'dart:io';
 
 import 'package:intl/intl.dart';
-import 'package:olm/olm.dart' as olm;
-import 'package:path_provider/path_provider.dart';
 import 'package:katya/global/libs/matrix/encryption.dart';
 import 'package:katya/global/print.dart';
 import 'package:katya/global/values.dart';
 import 'package:katya/store/crypto/keys/models.dart';
 import 'package:katya/store/crypto/sessions/converters.dart';
 import 'package:katya/store/crypto/sessions/model.dart';
+import 'package:olm/olm.dart' as olm;
+import 'package:path_provider/path_provider.dart';
 
 Future<bool> backupSessionKeysThreaded(Map params) {
   final String directory = params['directory'];
@@ -34,9 +34,7 @@ Future<String> resolveBackupDirectory({
   var directory = await getApplicationDocumentsDirectory();
 
   if (Platform.isAndroid) {
-    directory = path.isEmpty
-        ? Directory(Values.ANDROID_DEFAULT_DIRECTORY)
-        : Directory(path);
+    directory = path.isEmpty ? Directory(Values.ANDROID_DEFAULT_DIRECTORY) : Directory(path);
   }
 
   if (Platform.isIOS) {
@@ -67,8 +65,7 @@ Future<bool> backupSessionKeys({
 
   final deviceKeysByDeviceId = deviceKeys.values
       .toList()
-      .fold<Map<String, DeviceKey>>(<String, DeviceKey>{},
-          (previous, current) => previous..addAll(current));
+      .fold<Map<String, DeviceKey>>(<String, DeviceKey>{}, (previous, current) => previous..addAll(current));
 
   final deviceKeyIdentities = Map.fromIterable(
     deviceKeysByDeviceId.values,
@@ -92,8 +89,7 @@ Future<bool> backupSessionKeys({
         final messageIndex = session.index;
 
         // attempt to decrypt with any existing sessions
-        final inboundSession = olm.InboundGroupSession()
-          ..unpickle(roomId, session.serialized);
+        final inboundSession = olm.InboundGroupSession()..unpickle(roomId, session.serialized);
 
         // session
         final sessionId = inboundSession.session_id();
@@ -129,10 +125,8 @@ Future<bool> backupSessionKeys({
   );
 
   final currentTime = DateTime.now();
-  final formattedTime =
-      DateFormat('MMM_dd_yyyy_hh_mm_aa').format(currentTime).toLowerCase();
-  final fileName =
-      '${Values.appName}_key_backup_$formattedTime.txt'.toLowerCase();
+  final formattedTime = DateFormat('MMM_dd_yyyy_hh_mm_aa').format(currentTime).toLowerCase();
+  final fileName = '${Values.appName}_key_backup_$formattedTime.txt'.toLowerCase();
 
   final file = File('$directory/$fileName');
 

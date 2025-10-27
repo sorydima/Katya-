@@ -10,7 +10,8 @@ ChatSetting _$ChatSettingFromJson(Map<String, dynamic> json) => ChatSetting(
       roomId: json['roomId'] as String,
       language: json['language'] as String? ?? 'English',
       smsEnabled: json['smsEnabled'] as bool? ?? false,
-      primaryColor: json['primaryColor'] as int? ?? AppColors.greyDefault,
+      primaryColor:
+          (json['primaryColor'] as num?)?.toInt() ?? AppColors.greyDefault,
       notificationOptions: json['notificationOptions'] == null
           ? null
           : NotificationOptions.fromJson(

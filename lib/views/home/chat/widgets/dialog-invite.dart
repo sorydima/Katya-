@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:katya/utils/theme_compatibility.dart';
-
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class DialogInvite extends StatelessWidget {
   const DialogInvite({
-    Key? key,
+    super.key,
     this.onAccept,
     this.onReject,
     this.onCancel,
-  }) : super(key: key);
+  });
 
   final Function? onAccept;
   final Function? onReject;
@@ -35,7 +34,7 @@ class DialogInvite extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SimpleDialogOption(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: 12,
                   vertical: 12,
                 ),
@@ -47,12 +46,12 @@ class DialogInvite extends StatelessWidget {
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
               ),
-              Spacer(flex: 1),
+              const Spacer(flex: 1),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   SimpleDialogOption(
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 12,
                     ),
@@ -65,7 +64,7 @@ class DialogInvite extends StatelessWidget {
                     ),
                   ),
                   SimpleDialogOption(
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 12,
                       vertical: 8,
                     ),

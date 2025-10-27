@@ -33,7 +33,7 @@
 		"project_id":"388421841222298503",
 		"app_id":"111150881",
 		"api_key":"DQEDAJrN9BhLpwjfgFpz6lgffs8wLMTLBtbK5SxeYcYbgv2kBy8o/on4vDzi2A1FuIUqwyaQvvREpX6Asf+5CCJISO39mHX2xOFOxg==",
-		"package_name":"com.katya.wtf"
+		"package_name":"com.katya.wtf.debug"
 	},
 	"oauth_client":{
 		"client_id":"111150881",
@@ -41,7 +41,7 @@
 	},
 	"app_info":{
 		"app_id":"111150881",
-		"package_name":"com.katya.wtf"
+		"package_name":"com.katya.wtf.debug"
 	},
 	"service":{
 		"analytics":{
@@ -79,12 +79,12 @@
 	"configuration_version":"3.0",
 	"appInfos":[
 		{
-			"package_name":"com.katya.wtf",
+			"package_name":"com.katya.wtf.debug",
 			"client":{
 				"app_id":"111150881"
 			},
 			"app_info":{
-				"package_name":"com.katya.wtf",
+				"package_name":"com.katya.wtf.debug",
 				"app_id":"111150881"
 			},
 			"oauth_client":{

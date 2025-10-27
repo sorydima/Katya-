@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:katya/cache/codec.dart';
 
-Future<String> encryptJsonBackground(Map params) async {
+String encryptJsonBackground(Map params) {
   final String json = params['json'];
   final String cacheKey = params['cacheKey'];
 

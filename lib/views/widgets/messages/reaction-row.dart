@@ -3,8 +3,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/store/events/reactions/model.dart';
 import 'package:katya/store/index.dart';
-import 'package:katya/views/widgets/lifecycle.dart';
 import 'package:katya/utils/theme_compatibility.dart';
+import 'package:katya/views/widgets/lifecycle.dart';
 
 class ReactionRow extends StatefulWidget {
   final String currentUserId;
@@ -13,11 +13,11 @@ class ReactionRow extends StatefulWidget {
   final Function? onToggleReaction;
 
   const ReactionRow({
-    Key? key,
+    super.key,
     this.reactions = const [],
     this.currentUserId = '',
     this.onToggleReaction,
-  }) : super(key: key);
+  });
 
   @override
   State<ReactionRow> createState() => _ReactionRowState();
@@ -58,7 +58,7 @@ class _ReactionRowState extends State<ReactionRow> with Lifecycle<ReactionRow> {
 
     return ListView.builder(
       shrinkWrap: true,
-      physics: ClampingScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
       itemCount: reactionKeys.length,
       scrollDirection: Axis.horizontal,
       clipBehavior: Clip.antiAlias,
@@ -73,13 +73,10 @@ class _ReactionRowState extends State<ReactionRow> with Lifecycle<ReactionRow> {
             width: reactionCount > 1 ? 48 : 32,
             height: 48,
             decoration: BoxDecoration(
-              color: isUserReaction
-                  ? Theme.of(context).primaryColorDark
-                  : Theme.of(context).dialogBackgroundColor,
+              color: isUserReaction ? Theme.of(context).primaryColorDark : Theme.of(context).dialogBackgroundColor,
               borderRadius: BorderRadius.circular(Dimensions.iconSize),
               border: Border.all(
-                color:
-                    Theme.of(context).brightness == Brightness.light ? Colors.grey : Colors.white,
+                color: Theme.of(context).brightness == Brightness.light ? Colors.grey : Colors.white,
                 width: 0.8,
               ),
             ),
@@ -97,7 +94,7 @@ class _ReactionRowState extends State<ReactionRow> with Lifecycle<ReactionRow> {
                 Visibility(
                   visible: reactionCount > 1,
                   child: Container(
-                    padding: EdgeInsets.only(left: 3),
+                    padding: const EdgeInsets.only(left: 3),
                     child: Text(
                       reactionCount.toString(),
                       textAlign: TextAlign.center,

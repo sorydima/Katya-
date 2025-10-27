@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:mime/mime.dart';
 import 'package:katya/global/libs/matrix/constants.dart';
 import 'package:katya/store/events/messages/model.dart';
 import 'package:katya/store/media/converters.dart';
 import 'package:katya/store/media/encryption.dart';
 import 'package:katya/store/rooms/room/model.dart';
+import 'package:mime/mime.dart';
 
 Future<Message> formatMessageContent({
   required String tempId,
@@ -97,8 +97,7 @@ Future<Message> formatMessageContent({
 
           // Top level content data is fundamentally different
           // with encrypted messages
-          return formatted.copyWith(
-            file: fileContent,
+          return formatted.copyMessageWith(
             content: {
               'body': message.body,
               'msgtype': message.type,
@@ -114,7 +113,7 @@ Future<Message> formatMessageContent({
           );
         }
 
-        return formatted.copyWith(content: {
+        return formatted.copyMessageWith(content: {
           'url': message.url,
           'body': message.body,
           'msgtype': message.type,
@@ -126,11 +125,178 @@ Future<Message> formatMessageContent({
           },
         });
       }
+    case MatrixMessageTypes.file:
+      {
+        final fileLength = await file!.length();
+        final mimeTypeOption = lookupMimeType(file.path);
+        final mimeType = convertMimeTypes(file, mimeTypeOption);
+
+        if (room.encryptionEnabled) {
+          if (info!.key == null || info.iv == null) {
+            throw 'Cannot send encrypted file message without providing decryption info';
+          }
+
+          final iv = info.iv!.replaceAll('=', '');
+          final shasum = info.shasum?.replaceAll('=', '');
+          final key = base64Url.encode(info.keyToBytes()).replaceAll('=', '');
+
+          final fileContent = {
+            'url': message.url,
+            'mimetype': mimeType,
+            'v': 'v2',
+            'key': {
+              'alg': 'A256CTR',
+              'ext': true,
+              'k': key,
+              'key_ops': ['encrypt', 'decrypt'],
+              'kty': 'oct'
+            },
+            'iv': iv,
+            'hashes': {
+              'sha256': shasum,
+            }
+          };
+
+          return formatted.copyMessageWith(
+            content: {
+              'body': message.body,
+              'msgtype': MatrixMessageTypes.file,
+              'filename': message.body,
+              'file': fileContent,
+              'info': {
+                'size': fileLength,
+                'mimetype': mimeType,
+              }
+            },
+          );
+        }
+
+        return formatted.copyMessageWith(content: {
+          'url': message.url,
+          'body': message.body,
+          'msgtype': MatrixMessageTypes.file,
+          'filename': message.body,
+          'info': {
+            'size': fileLength,
+            'mimetype': mimeType,
+          },
+        });
+      }
+    case MatrixMessageTypes.audio:
+      {
+        final fileLength = await file!.length();
+        final mimeTypeOption = lookupMimeType(file.path);
+        final mimeType = convertMimeTypes(file, mimeTypeOption);
+
+        if (room.encryptionEnabled) {
+          if (info!.key == null || info.iv == null) {
+            throw 'Cannot send encrypted audio without decryption info';
+          }
+
+          final iv = info.iv!.replaceAll('=', '');
+          final shasum = info.shasum?.replaceAll('=', '');
+          final key = base64Url.encode(info.keyToBytes()).replaceAll('=', '');
+
+          final fileContent = {
+            'url': message.url,
+            'mimetype': mimeType,
+            'v': 'v2',
+            'key': {
+              'alg': 'A256CTR',
+              'ext': true,
+              'k': key,
+              'key_ops': ['encrypt', 'decrypt'],
+              'kty': 'oct'
+            },
+            'iv': iv,
+            'hashes': {
+              'sha256': shasum,
+            }
+          };
+
+          return formatted.copyMessageWith(
+            content: {
+              'body': message.body,
+              'msgtype': MatrixMessageTypes.audio,
+              'file': fileContent,
+              'info': {
+                'size': fileLength,
+                'mimetype': mimeType,
+              }
+            },
+          );
+        }
+
+        return formatted.copyMessageWith(content: {
+          'url': message.url,
+          'body': message.body,
+          'msgtype': MatrixMessageTypes.audio,
+          'info': {
+            'size': fileLength,
+            'mimetype': mimeType,
+          },
+        });
+      }
+    case MatrixMessageTypes.video:
+      {
+        final fileLength = await file!.length();
+        final mimeTypeOption = lookupMimeType(file.path);
+        final mimeType = convertMimeTypes(file, mimeTypeOption);
+
+        if (room.encryptionEnabled) {
+          if (info!.key == null || info.iv == null) {
+            throw 'Cannot send encrypted video without decryption info';
+          }
+
+          final iv = info.iv!.replaceAll('=', '');
+          final shasum = info.shasum?.replaceAll('=', '');
+          final key = base64Url.encode(info.keyToBytes()).replaceAll('=', '');
+
+          final fileContent = {
+            'url': message.url,
+            'mimetype': mimeType,
+            'v': 'v2',
+            'key': {
+              'alg': 'A256CTR',
+              'ext': true,
+              'k': key,
+              'key_ops': ['encrypt', 'decrypt'],
+              'kty': 'oct'
+            },
+            'iv': iv,
+            'hashes': {
+              'sha256': shasum,
+            }
+          };
+
+          return formatted.copyMessageWith(
+            content: {
+              'body': message.body,
+              'msgtype': MatrixMessageTypes.video,
+              'file': fileContent,
+              'info': {
+                'size': fileLength,
+                'mimetype': mimeType,
+              }
+            },
+          );
+        }
+
+        return formatted.copyMessageWith(content: {
+          'url': message.url,
+          'body': message.body,
+          'msgtype': MatrixMessageTypes.video,
+          'info': {
+            'size': fileLength,
+            'mimetype': mimeType,
+          },
+        });
+      }
     case MatrixMessageTypes.text:
     default:
       {
         if (edit && related != null) {
-          return formatted.copyWith(content: {
+          return formatted.copyMessageWith(content: {
             'body': '* ${message.body}',
             'msgtype': message.type ?? MatrixMessageTypes.text,
             'm.new_content': {
@@ -144,7 +310,7 @@ Future<Message> formatMessageContent({
           });
         }
 
-        return formatted.copyWith(content: {
+        return formatted.copyMessageWith(content: {
           'body': message.body,
           'msgtype': message.type ?? MatrixMessageTypes.text,
         });
@@ -162,7 +328,7 @@ Message formatMessageReply(
     final formattedBody =
         '''<mx-reply><blockquote><a href="https://matrix.to/#/${room.id}/${reply.id}">In reply to</a><a href="https://matrix.to/#/${reply.sender}">${reply.sender}</a><br />${reply.formattedBody ?? reply.body}</blockquote></mx-reply>${message.formattedBody ?? message.body}''';
 
-    return message.copyWith(
+    return message.copyMessageWith(
       body: body,
       format: 'org.matrix.custom.html',
       formattedBody: formattedBody,

@@ -1,16 +1,16 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:camera/camera.dart';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:giphy_get/giphy_get.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/global/algos.dart';
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/colors.dart';
@@ -27,11 +27,15 @@ import 'package:katya/store/settings/theme-settings/selectors.dart';
 import 'package:katya/views/home/chat/camera_screen.dart';
 import 'package:katya/views/widgets/buttons/button-text.dart';
 import 'package:katya/views/widgets/containers/media-card.dart';
-import 'package:katya/views/widgets/lists/list-local-images.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:record/record.dart';
+import 'package:redux/redux.dart';
 
 const DEFAULT_BORDER_RADIUS = 24.0;
 
-_empty({
+void _empty({
   required File file,
   required MessageType type,
 }) {}
@@ -58,7 +62,7 @@ class ChatInput extends StatefulWidget {
   }) onAddMedia;
 
   const ChatInput({
-    Key? key,
+    super.key,
     required this.roomId,
     required this.focusNode,
     required this.controller,
@@ -74,7 +78,7 @@ class ChatInput extends StatefulWidget {
     this.onSubmitMessage,
     this.onCancelReply,
     this.onAddMedia = _empty,
-  }) : super(key: key);
+  });
 
   @override
   ChatInputState createState() => ChatInputState();
@@ -85,6 +89,8 @@ class ChatInputState extends State<ChatInput> {
 
   bool sendable = false;
   bool showAttachments = false;
+  bool isRecording = false;
+  final AudioRecorder _recorder = AudioRecorder();
 
   double keyboardHeight = 0;
 
@@ -93,7 +99,7 @@ class ChatInputState extends State<ChatInput> {
 
   String hintText = Strings.placeholderMatrixUnencrypted;
 
-  onMounted(_Props props) {
+  void onMounted(_Props props) {
     final draft = props.room.draft;
 
     if (draft != null && draft.type == MatrixMessageTypes.text) {
@@ -140,7 +146,7 @@ class ChatInputState extends State<ChatInput> {
     }
   }
 
-  onUpdate(String text, {_Props? props}) {
+  void onUpdate(String text, {_Props? props}) {
     setState(() {
       sendable = text.trim().isNotEmpty;
     });
@@ -150,7 +156,7 @@ class ChatInputState extends State<ChatInput> {
       props!.onSendTyping(typing: true, roomId: props.room.id);
       setState(() {
         typingNotifier = Timer.periodic(
-          Duration(milliseconds: 4000),
+          const Duration(milliseconds: 4000),
           (timer) => props.onSendTyping(typing: true, roomId: props.room.id),
         );
       });
@@ -163,7 +169,7 @@ class ChatInputState extends State<ChatInput> {
       }
 
       setState(() {
-        typingNotifierTimeout = Timer(Duration(milliseconds: 4000), () {
+        typingNotifierTimeout = Timer(const Duration(milliseconds: 4000), () {
           if (typingNotifier != null) {
             typingNotifier!.cancel();
             setState(() {
@@ -179,7 +185,7 @@ class ChatInputState extends State<ChatInput> {
     widget.onUpdateMessage?.call(text);
   }
 
-  onToggleMediaOptions() {
+  Future<void> onToggleMediaOptions() async {
     // HACK: if nothing is focused yet, just open the media options
     if (!widget.focusNode.hasFocus && !showAttachments) {
       return onFocusSafe(
@@ -199,23 +205,23 @@ class ChatInputState extends State<ChatInput> {
     });
   }
 
-  onSubmit() {
+  void onSubmit() {
     setState(() {
       sendable = false;
     });
     widget.onSubmitMessage?.call();
   }
 
-  onCancelReply() {
+  void onCancelReply() {
     widget.onCancelReply?.call();
   }
 
-  onAddInProgress() {
+  void onAddInProgress() {
     final store = StoreProvider.of<AppState>(context);
     store.dispatch(addInProgress());
   }
 
-  onAddPhoto() async {
+  Future<void> onAddPhoto() async {
     // TODO: has bug with file path
     // final pickerResult = await ImagePicker().pickImage(
     //   source: ImageSource.gallery,
@@ -234,34 +240,48 @@ class ChatInputState extends State<ChatInput> {
     onToggleMediaOptions();
   }
 
-  showDialogForPhotoPermission(BuildContext context){
+  Future<void> onAddVideo() async {
+    final pickerResult = await ImagePicker().pickVideo(
+      source: ImageSource.gallery,
+    );
+
+    if (pickerResult == null) return;
+
+    final file = File(pickerResult.path);
+    widget.onAddMedia(file: file, type: MessageType.video);
+
+    onToggleMediaOptions();
+  }
+
+  void showDialogForPhotoPermission(BuildContext context) {
     showDialog(
       context: context,
-      builder: (ctx) =>
-          AlertDialog(
-            title: Text(Strings.titleDialogPhotoPermission,
-              style: TextStyle(fontWeight: FontWeight.w600),),
-            content: Text(Strings.contentPhotoPermission),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(ctx).pop();
-                },
-                child: Text(Strings.buttonCancel),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(ctx).pop();
-                  openAppSettings();
-                },
-                child: Text(Strings.buttonNext),
-              ),
-            ],
+      builder: (ctx) => AlertDialog(
+        title: Text(
+          Strings.titleDialogPhotoPermission,
+          style: const TextStyle(fontWeight: FontWeight.w600),
+        ),
+        content: Text(Strings.contentPhotoPermission),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+            child: Text(Strings.buttonCancel),
           ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+              openAppSettings();
+            },
+            child: Text(Strings.buttonNext),
+          ),
+        ],
+      ),
     );
   }
 
-  onAddFile() async {
+  Future<void> onAddFile() async {
     final pickerResult = await FilePicker.platform.pickFiles(
       type: FileType.any,
       allowMultiple: false,
@@ -269,17 +289,80 @@ class ChatInputState extends State<ChatInput> {
 
     if (pickerResult == null) return;
 
-    final file = File(pickerResult.paths[0]!);
+    final filePath = pickerResult.paths[0];
+    if (filePath == null) return;
+
+    final file = File(filePath);
     widget.onAddMedia(file: file, type: MessageType.file);
+  }
+
+  Future<void> onToggleRecordAudio() async {
+    if (!isRecording) {
+      final hasPermission = await _recorder.hasPermission();
+      if (!hasPermission) {
+        return;
+      }
+
+      final tempDir = await getTemporaryDirectory();
+      final path = '${tempDir.path}/audio_${DateTime.now().millisecondsSinceEpoch}.m4a';
+
+      await _recorder.start(
+        const RecordConfig(
+          encoder: AudioEncoder.aacLc,
+          bitRate: 128000,
+          sampleRate: 44100,
+        ),
+        path: path,
+      );
+
+      setState(() {
+        isRecording = true;
+      });
+    } else {
+      final recording = await _recorder.stop();
+      setState(() {
+        isRecording = false;
+      });
+
+      if (recording == null) return;
+      final file = File(recording);
+      widget.onAddMedia(file: file, type: MessageType.audio);
+      onToggleMediaOptions();
+    }
+  }
+
+  Future<void> onAddGif() async {
+    try {
+      final gif = await GiphyGet.getGif(
+        context: context,
+        apiKey: const String.fromEnvironment('GIPHY_API_KEY', defaultValue: ''),
+        lang: GiphyLanguage.russian,
+        randomID: 'katya',
+        tabColor: Theme.of(context).primaryColor,
+      );
+      if (gif == null) return;
+      final url = gif.images?.original?.url;
+      if (url == null) return;
+      final resp = await http.get(Uri.parse(url));
+      if (resp.statusCode != 200) return;
+      final dir = await getTemporaryDirectory();
+      final filePath = path.join(dir.path, 'giphy_${gif.id}.gif');
+      final file = File(filePath);
+      await file.writeAsBytes(resp.bodyBytes, flush: true);
+      widget.onAddMedia(file: file, type: MessageType.image);
+      onToggleMediaOptions();
+    } catch (_) {}
   }
 
   Future<void> openCamera() async {
     final cameras = await availableCameras();
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) =>
-          CameraScreen(onAddMedia: widget.onAddMedia, cameras: cameras,)
-      ),
+      MaterialPageRoute(
+          builder: (context) => CameraScreen(
+                onAddMedia: widget.onAddMedia,
+                cameras: cameras,
+              )),
     );
   }
 
@@ -300,8 +383,7 @@ class ChatInputState extends State<ChatInput> {
           final double maxInputHeight = replying ? height * 0.45 : height * 0.65;
           final double maxMediaHeight = keyboardHeight > 0 ? keyboardHeight : height * 0.38;
 
-          final imageHeight =
-              keyboardHeight > 0 ? maxMediaHeight * 0.65 : imageWidth; // 2 images in view
+          final imageHeight = keyboardHeight > 0 ? maxMediaHeight * 0.65 : imageWidth; // 2 images in view
 
           final isSendable = (sendable && !widget.sending) ||
               // account for if editing
@@ -311,7 +393,7 @@ class ChatInputState extends State<ChatInput> {
 
           if (widget.mediumType == MediumType.plaintext) {
             hintText = Strings.placeholderMatrixUnencrypted;
-            sendButtonColor = Color(AppColors.greyDark);
+            sendButtonColor = const Color(AppColors.greyDark);
           }
 
           if (widget.mediumType == MediumType.encryption) {
@@ -321,7 +403,7 @@ class ChatInputState extends State<ChatInput> {
 
           // if the button is disabled, make it more transparent to indicate that
           if (widget.sending) {
-            sendButtonColor = Color(AppColors.greyDisabled);
+            sendButtonColor = const Color(AppColors.greyDisabled);
           }
 
           var sendButton = Semantics(
@@ -335,7 +417,7 @@ class ChatInputState extends State<ChatInput> {
               child: CircleAvatar(
                 backgroundColor: sendButtonColor,
                 child: Container(
-                  margin: EdgeInsets.only(left: 2, top: 3),
+                  margin: const EdgeInsets.only(left: 2, top: 3),
                   child: SvgPicture.asset(
                     Assets.iconSendUnlockBeing,
                     color: Colors.white,
@@ -352,13 +434,16 @@ class ChatInputState extends State<ChatInput> {
             // label: Strings.labelSendUnencrypted,
             child: InkWell(
               borderRadius: BorderRadius.circular(48),
-              onTap:(){
+              onTap: () {
                 // print("Hi");
                 openCamera();
               },
               child: CircleAvatar(
                 backgroundColor: sendButtonColor,
-                child: Icon(Icons.camera_alt, color: Colors.white,),
+                child: const Icon(
+                  Icons.camera_alt,
+                  color: Colors.white,
+                ),
               ),
             ),
           );
@@ -375,7 +460,7 @@ class ChatInputState extends State<ChatInput> {
                 child: CircleAvatar(
                   backgroundColor: sendButtonColor,
                   child: Container(
-                    margin: EdgeInsets.only(left: 2, top: 3),
+                    margin: const EdgeInsets.only(left: 2, top: 3),
                     child: SvgPicture.asset(
                       Assets.iconSendLockSolidBeing,
                       color: Colors.white,
@@ -399,7 +484,7 @@ class ChatInputState extends State<ChatInput> {
                 child: CircleAvatar(
                   backgroundColor: sendButtonColor,
                   child: Container(
-                    margin: EdgeInsets.only(left: 2, top: 3),
+                    margin: const EdgeInsets.only(left: 2, top: 3),
                     child: SvgPicture.asset(
                       Assets.iconSendLockSolidBeing,
                       color: Colors.white,
@@ -421,7 +506,7 @@ class ChatInputState extends State<ChatInput> {
                 onTap: widget.sending ? null : onToggleMediaOptions,
                 child: CircleAvatar(
                   backgroundColor: sendButtonColor,
-                  child: Icon(
+                  child: const Icon(
                     Icons.add,
                     color: Colors.white,
                     size: Dimensions.iconSizeLarge,
@@ -469,8 +554,8 @@ class ChatInputState extends State<ChatInput> {
                                   width: 1,
                                 ),
                                 borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(24),
-                                  topRight: Radius.circular(24),
+                                  topLeft: const Radius.circular(24),
+                                  topRight: const Radius.circular(24),
                                   bottomLeft: Radius.circular(!replying ? 24 : 0),
                                   bottomRight: Radius.circular(!replying ? 24 : 0),
                                 ),
@@ -481,8 +566,8 @@ class ChatInputState extends State<ChatInput> {
                                   width: 1,
                                 ),
                                 borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(24),
-                                  topRight: Radius.circular(24),
+                                  topLeft: const Radius.circular(24),
+                                  topRight: const Radius.circular(24),
                                   bottomLeft: Radius.circular(!replying ? 24 : 0),
                                   bottomRight: Radius.circular(!replying ? 24 : 0),
                                 ),
@@ -496,7 +581,7 @@ class ChatInputState extends State<ChatInput> {
                           bottom: 0,
                           child: IconButton(
                             onPressed: () => onCancelReply(),
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.close,
                               size: Dimensions.iconSize,
                             ),
@@ -545,8 +630,7 @@ class ChatInputState extends State<ChatInput> {
                               enableSuggestions: props.suggestionsEnabled,
                               textCapitalization: props.textCapitalization,
                               keyboardType: TextInputType.multiline,
-                              textInputAction:
-                                  widget.enterSend ? TextInputAction.send : TextInputAction.newline,
+                              textInputAction: widget.enterSend ? TextInputAction.send : TextInputAction.newline,
                               cursorColor: props.inputCursorColor,
                               focusNode: widget.focusNode,
                               controller: widget.controller,
@@ -564,7 +648,7 @@ class ChatInputState extends State<ChatInput> {
                                   child: IconButton(
                                     color: Theme.of(context).iconTheme.color,
                                     onPressed: () => onToggleMediaOptions(),
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.add,
                                       size: Dimensions.iconSizeLarge,
                                     ),
@@ -579,10 +663,9 @@ class ChatInputState extends State<ChatInput> {
                                     ),
                                     borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(!replying ? DEFAULT_BORDER_RADIUS : 0),
-                                      topRight:
-                                          Radius.circular(!replying ? DEFAULT_BORDER_RADIUS : 0),
-                                      bottomLeft: Radius.circular(DEFAULT_BORDER_RADIUS),
-                                      bottomRight: Radius.circular(DEFAULT_BORDER_RADIUS),
+                                      topRight: Radius.circular(!replying ? DEFAULT_BORDER_RADIUS : 0),
+                                      bottomLeft: const Radius.circular(DEFAULT_BORDER_RADIUS),
+                                      bottomRight: const Radius.circular(DEFAULT_BORDER_RADIUS),
                                     )),
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -591,10 +674,9 @@ class ChatInputState extends State<ChatInput> {
                                     ),
                                     borderRadius: BorderRadius.only(
                                       topLeft: Radius.circular(!replying ? DEFAULT_BORDER_RADIUS : 0),
-                                      topRight:
-                                          Radius.circular(!replying ? DEFAULT_BORDER_RADIUS : 0),
-                                      bottomLeft: Radius.circular(DEFAULT_BORDER_RADIUS),
-                                      bottomRight: Radius.circular(DEFAULT_BORDER_RADIUS),
+                                      topRight: Radius.circular(!replying ? DEFAULT_BORDER_RADIUS : 0),
+                                      bottomLeft: const Radius.circular(DEFAULT_BORDER_RADIUS),
+                                      bottomRight: const Radius.circular(DEFAULT_BORDER_RADIUS),
                                     )),
                               ),
                             ),
@@ -607,13 +689,13 @@ class ChatInputState extends State<ChatInput> {
                     visible: showAttachments,
                     child: Container(
                       width: Dimensions.buttonSendSize,
-                      padding: EdgeInsets.symmetric(vertical: 4),
+                      padding: const EdgeInsets.symmetric(vertical: 4),
                       child: takePictureButton,
                     ),
                   ),
                   Container(
                     width: Dimensions.buttonSendSize,
-                    padding: EdgeInsets.symmetric(vertical: 4),
+                    padding: const EdgeInsets.symmetric(vertical: 4),
                     child: sendButton,
                   ),
                 ],
@@ -625,7 +707,7 @@ class ChatInputState extends State<ChatInput> {
                 maintainState: false,
                 maintainAnimation: false,
                 child: Container(
-                  padding: EdgeInsets.only(top: 4),
+                  padding: const EdgeInsets.only(top: 4),
                   constraints: BoxConstraints(
                     maxHeight: maxMediaHeight, // whole media field max height
                   ),
@@ -640,44 +722,60 @@ class ChatInputState extends State<ChatInput> {
                         ),
                         child: Container(
                           // ListLocalImages temporarily disabled for compatibility
-                          child: Text('Image picker disabled'),
+                          child: const Text('Image picker disabled'),
                         ),
                       ),
                       Row(children: [
                         Padding(
-                          padding: EdgeInsets.only(right: 2),
+                          padding: const EdgeInsets.only(right: 2),
                           child: MediaCard(
                             text: Strings.buttonGallery,
                             icon: Icons.photo,
-                            onPress: () async{
+                            onPress: () async {
                               const photosPermission = Permission.photos;
                               final status = await photosPermission.status;
-                              if(!status.isGranted){
+                              if (!status.isGranted) {
                                 showDialogForPhotoPermission(context);
-                              }else{
+                              } else {
                                 onAddPhoto();
                               }
                             },
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 2),
+                          padding: const EdgeInsets.symmetric(horizontal: 2),
+                          child: MediaCard(
+                            text: 'Video',
+                            icon: Icons.video_library,
+                            onPress: () => onAddVideo(),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 2),
+                          child: MediaCard(
+                            text: 'GIF',
+                            icon: Icons.gif_box_outlined,
+                            onPress: () => onAddGif(),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 2),
                           child: MediaCard(
                             text: Strings.buttonFile,
                             icon: Icons.note_add,
-                            onPress: () => onAddInProgress(),
+                            onPress: () => onAddFile(),
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 2),
+                          padding: const EdgeInsets.symmetric(horizontal: 2),
                           child: MediaCard(
-                            text: Strings.buttonContact,
-                            icon: Icons.person,
-                            onPress: () => onAddInProgress(),
+                            text: isRecording ? 'Stop' : 'Voice',
+                            icon: isRecording ? Icons.stop_circle : Icons.mic,
+                            onPress: () => onToggleRecordAudio(),
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 2),
+                          padding: const EdgeInsets.symmetric(horizontal: 2),
                           child: MediaCard(
                             text: Strings.buttonLocation,
                             icon: Icons.near_me_rounded,
@@ -729,8 +827,7 @@ class _Props extends Equatable {
         room: selectRoom(id: roomId, state: store.state),
         inputTextColor: selectInputTextColor(store.state.settingsStore.themeSettings.themeType),
         inputCursorColor: selectCursorColor(store.state.settingsStore.themeSettings.themeType),
-        inputColorBackground:
-            selectInputBackgroundColor(store.state.settingsStore.themeSettings.themeType),
+        inputColorBackground: selectInputBackgroundColor(store.state.settingsStore.themeSettings.themeType),
         enterSendEnabled: store.state.settingsStore.enterSendEnabled,
         autocorrectEnabled: store.state.settingsStore.autocorrectEnabled,
         suggestionsEnabled: store.state.settingsStore.suggestionsEnabled,

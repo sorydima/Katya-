@@ -4,40 +4,40 @@ import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/settings/theme-settings/selectors.dart';
 import 'package:katya/views/navigation.dart';
+import 'package:redux/redux.dart';
 
 class FabBarExpanding extends StatelessWidget {
   final bool showLabels;
   final Alignment? alignment;
 
   const FabBarExpanding({
-    Key? key,
+    super.key,
     this.alignment,
     this.showLabels = false,
-  }) : super(key: key);
+  });
 
-  onNavigateToPublicSearch(context) {
+  void onNavigateToPublicSearch(context) {
     HapticFeedback.lightImpact();
     Navigator.pushNamed(context, Routes.searchGroups);
   }
 
-  onNavigateToDraft(context) {
+  void onNavigateToDraft(context) {
     HapticFeedback.lightImpact();
     Navigator.pushNamed(context, Routes.searchUsers);
   }
 
-  onNavigateToCreateGroup(context) {
+  void onNavigateToCreateGroup(context) {
     HapticFeedback.lightImpact();
     Navigator.pushNamed(context, Routes.groupCreate);
   }
 
-  onNavigateToCreateGroupPublic(context) {
+  void onNavigateToCreateGroupPublic(context) {
     HapticFeedback.lightImpact();
     Navigator.pushNamed(context, Routes.groupCreatePublic);
   }
@@ -49,7 +49,7 @@ class FabBarExpanding extends StatelessWidget {
         builder: (context, props) => SpeedDial(
           overlayOpacity: 0.4,
           switchLabelPosition: alignment == Alignment.bottomLeft,
-          childMargin: EdgeInsets.symmetric(vertical: 16),
+          childMargin: const EdgeInsets.symmetric(vertical: 16),
           spacing: 8,
           children: <SpeedDialChild>[
             SpeedDialChild(

@@ -1,9 +1,9 @@
-import 'package:redux/redux.dart';
 import 'package:katya/global/libs/matrix/encryption.dart';
 import 'package:katya/global/values.dart';
 import 'package:katya/store/crypto/keys/models.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/rooms/room/model.dart';
+import 'package:redux/redux.dart';
 
 extension Chunked on String {
   String chunk(int size) {

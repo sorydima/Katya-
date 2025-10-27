@@ -1,8 +1,6 @@
 import 'package:equatable/equatable.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/store/auth/actions.dart';
@@ -12,9 +10,10 @@ import 'package:katya/views/behaviors.dart';
 import 'package:katya/views/intro/login/forgot/widgets/PagePasswordReset.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/buttons/button-solid.dart';
+import 'package:redux/redux.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
-  const ResetPasswordScreen({Key? key}) : super(key: key);
+  const ResetPasswordScreen({super.key});
 
   @override
   PasswordResetState createState() => PasswordResetState();
@@ -28,7 +27,7 @@ class PasswordResetState extends State<ResetPasswordScreen> {
   PageController? pageController;
 
   var sections = [
-    PasswordResetStep(),
+    const PasswordResetStep(),
   ];
 
   PasswordResetState();
@@ -87,7 +86,7 @@ class PasswordResetState extends State<ResetPasswordScreen> {
                           children: <Widget>[
                             Container(
                               width: width,
-                              constraints: BoxConstraints(
+                              constraints: const BoxConstraints(
                                 minHeight: Dimensions.pageViewerHeightMin,
                                 maxHeight: Dimensions.heightMax * 0.5,
                               ),
@@ -95,7 +94,7 @@ class PasswordResetState extends State<ResetPasswordScreen> {
                                 pageSnapping: true,
                                 allowImplicitScrolling: false,
                                 controller: pageController,
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 onPageChanged: (index) {
                                   setState(() {
                                     currentStep = index;
@@ -117,7 +116,7 @@ class PasswordResetState extends State<ResetPasswordScreen> {
                             Container(
                               width: width * 0.66,
                               height: Dimensions.inputHeight,
-                              constraints: BoxConstraints(
+                              constraints: const BoxConstraints(
                                 minWidth: Dimensions.buttonWidthMin,
                                 maxWidth: Dimensions.buttonWidthMax,
                               ),

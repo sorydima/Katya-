@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screen_lock/flutter_screen_lock.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/views/widgets/modals/modal-lock-overlay/lock-buttons.dart';
 import 'package:katya/views/widgets/modals/modal-lock-overlay/lock-controller.dart';
@@ -10,7 +9,7 @@ import 'package:katya/views/widgets/modals/modal-lock-overlay/lock-controller.da
 /// which makes it difficult to specify the size intuitively.
 class KeyPad extends StatelessWidget {
   const KeyPad({
-    Key? key,
+    super.key,
     required this.lockController,
     required this.canCancel,
     this.inputButtonConfig = const Object(),
@@ -18,7 +17,7 @@ class KeyPad extends StatelessWidget {
     this.onLeftButtonTap,
     this.deleteButton,
     this.cancelButton,
-  }) : super(key: key);
+  });
 
   final LockController lockController;
   final bool canCancel;
@@ -87,8 +86,8 @@ class KeyPad extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(3, (index) {
         final number = (rowNumber - 1) * 3 + index + 1;
-        final input = '${number}'; // Simplified for compatibility
-        final display = '${number}'; // Simplified for compatibility
+        final input = '$number'; // Simplified for compatibility
+        final display = '$number'; // Simplified for compatibility
 
         return Container(
           child: TextButton(
@@ -101,8 +100,8 @@ class KeyPad extends StatelessWidget {
   }
 
   Widget _generateLastRow(BuildContext context) {
-    final input = '0'; // Simplified for compatibility
-    final display = '0'; // Simplified for compatibility
+    const input = '0'; // Simplified for compatibility
+    const display = '0'; // Simplified for compatibility
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -111,7 +110,7 @@ class KeyPad extends StatelessWidget {
         Container(
           child: TextButton(
             onPressed: () => lockController.addCharacter(input),
-            child: Text(display),
+            child: const Text(display),
           ),
         ),
         _buildRightSideButton(),

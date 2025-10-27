@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
@@ -19,6 +18,7 @@ import 'package:katya/store/settings/notification-settings/options/types.dart';
 import 'package:katya/store/user/actions.dart';
 import 'package:katya/store/user/model.dart';
 import 'package:katya/store/user/selectors.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/home/chat/chat-detail-all-users-screen.dart';
 import 'package:katya/views/navigation.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
@@ -27,9 +27,8 @@ import 'package:katya/views/widgets/dialogs/dialog-color-picker.dart';
 import 'package:katya/views/widgets/dialogs/dialog-confirm.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
 import 'package:katya/views/widgets/lists/list-user-bubbles.dart';
+import 'package:redux/redux.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
-import 'package:flutter/material.dart';
-import 'package:katya/utils/theme_compatibility.dart';
 
 class ChatDetailsArguments {
   final String? roomId;
@@ -42,7 +41,7 @@ class ChatDetailsArguments {
 }
 
 class ChatSettingsScreen extends StatefulWidget {
-  const ChatSettingsScreen({Key? key}) : super(key: key);
+  const ChatSettingsScreen({super.key});
 
   @override
   ChatSettingsState createState() => ChatSettingsState();
@@ -107,7 +106,7 @@ class ChatSettingsState extends State<ChatSettingsScreen> with Lifecycle<ChatSet
     scrollController.dispose();
   }
 
-  onBlockUser({required BuildContext context, required _Props props}) async {
+  Future<Future> onBlockUser({required BuildContext context, required _Props props}) async {
     final user = props.users.firstWhere(
       (user) => user!.userId != props.currentUser.userId,
     );
@@ -126,7 +125,7 @@ class ChatSettingsState extends State<ChatSettingsScreen> with Lifecycle<ChatSet
     );
   }
 
-  onShowColorPicker({
+  Future<Future> onShowColorPicker({
     required BuildContext context,
     required int originalColor,
     required Function onSelectColor,
@@ -140,13 +139,13 @@ class ChatSettingsState extends State<ChatSettingsScreen> with Lifecycle<ChatSet
         ),
       );
 
-  onLeaveChat(_Props props) async {
+  Future<void> onLeaveChat(_Props props) async {
     showDialog(
       context: context,
       builder: (dialogContext) => DialogConfirm(
         title: Strings.buttonLeaveChat.capitalize(),
         confirmText: Strings.buttonLeaveChat.capitalize(),
-        confirmStyle: TextStyle(color: Colors.red),
+        confirmStyle: const TextStyle(color: Colors.red),
         content: Strings.confirmLeaveRooms(rooms: [props.room]),
         onDismiss: () => Navigator.pop(dialogContext),
         onConfirm: () async {
@@ -167,11 +166,10 @@ class ChatSettingsState extends State<ChatSettingsScreen> with Lifecycle<ChatSet
     final titlePadding = Dimensions.listTitlePaddingDynamic(width: width);
     final contentPadding = Dimensions.listPaddingDynamic(width: width);
 
-    final ChatDetailsArguments? arguments =
-        ModalRoute.of(context)!.settings.arguments as ChatDetailsArguments?;
+    final ChatDetailsArguments? arguments = ModalRoute.of(context)!.settings.arguments as ChatDetailsArguments?;
 
     final scaffordBackgroundColor = Theme.of(context).brightness == Brightness.light
-        ? Color(AppColors.greyLightest)
+        ? const Color(AppColors.greyLightest)
         : Theme.of(context).scaffoldBackgroundColor;
 
     return StoreConnector<AppState, _Props>(
@@ -247,12 +245,12 @@ class ChatSettingsState extends State<ChatSettingsScreen> with Lifecycle<ChatSet
               SliverList(
                   delegate: SliverChildListDelegate([
                 Container(
-                  padding: EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.only(bottom: 12),
                   child: Column(
                     children: <Widget>[
                       CardSection(
-                        padding: EdgeInsets.symmetric(vertical: 12),
-                        margin: EdgeInsets.only(bottom: 4),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        margin: const EdgeInsets.only(bottom: 4),
                         child: Column(
                           children: [
                             Container(
@@ -312,7 +310,7 @@ class ChatSettingsState extends State<ChatSettingsScreen> with Lifecycle<ChatSet
                         ),
                       ),
                       CardSection(
-                        padding: EdgeInsets.symmetric(vertical: 12),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -346,13 +344,12 @@ class ChatSettingsState extends State<ChatSettingsScreen> with Lifecycle<ChatSet
                                     style: Theme.of(context).textTheme.caption,
                                   ),
                                   Visibility(
-                                    visible:
-                                        props.room.topic != null && props.room.topic!.isNotEmpty,
+                                    visible: props.room.topic != null && props.room.topic!.isNotEmpty,
                                     child: Container(
-                                      padding: EdgeInsets.only(top: 12),
+                                      padding: const EdgeInsets.only(top: 12),
                                       child: Text(
                                         props.room.topic!,
-                                        style: TextStyle(fontSize: 16),
+                                        style: const TextStyle(fontSize: 16),
                                       ),
                                     ),
                                   ),
@@ -363,7 +360,7 @@ class ChatSettingsState extends State<ChatSettingsScreen> with Lifecycle<ChatSet
                         ),
                       ),
                       CardSection(
-                        padding: EdgeInsets.symmetric(vertical: 12),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
                         child: Column(
                           children: [
                             Container(
@@ -382,7 +379,7 @@ class ChatSettingsState extends State<ChatSettingsScreen> with Lifecycle<ChatSet
                                 style: Theme.of(context).textTheme.subtitle1,
                               ),
                               trailing: Container(
-                                padding: EdgeInsets.only(right: 8),
+                                padding: const EdgeInsets.only(right: 8),
                                 child: CircleAvatar(
                                   radius: 16,
                                   backgroundColor: props.chatColorPrimary,
@@ -415,7 +412,7 @@ class ChatSettingsState extends State<ChatSettingsScreen> with Lifecycle<ChatSet
                         ),
                       ),
                       CardSection(
-                        padding: EdgeInsets.symmetric(vertical: 12),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
                         child: Column(
                           children: [
                             Container(
@@ -445,13 +442,10 @@ class ChatSettingsState extends State<ChatSettingsScreen> with Lifecycle<ChatSet
                                 Strings.listItemChatDetailVibrate,
                               ),
                               trailing: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 8),
+                                padding: const EdgeInsets.symmetric(horizontal: 8),
                                 child: Text(
                                   Strings.labelDefault,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .subtitle1!
-                                      .copyWith(color: Colors.grey),
+                                  style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.grey),
                                 ),
                               ),
                             ),
@@ -462,13 +456,10 @@ class ChatSettingsState extends State<ChatSettingsScreen> with Lifecycle<ChatSet
                                 Strings.listItemChatDetailNotificationSound,
                               ),
                               trailing: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 8),
+                                padding: const EdgeInsets.symmetric(horizontal: 8),
                                 child: Text(
                                   Strings.placeholderDefaultRoomNotification,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .subtitle1!
-                                      .copyWith(color: Colors.grey),
+                                  style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.grey),
                                 ),
                               ),
                             ),
@@ -589,8 +580,7 @@ class _Props extends Equatable {
   static _Props mapStateToProps(Store<AppState> store, String? roomId) => _Props(
       loading: store.state.roomStore.loading,
       notificationSettings: store.state.settingsStore.notificationSettings,
-      notificationOptions:
-          store.state.settingsStore.notificationSettings.notificationOptions[roomId],
+      notificationOptions: store.state.settingsStore.notificationSettings.notificationOptions[roomId],
       room: selectRoom(id: roomId, state: store.state),
       users: roomUsers(store.state, roomId),
       usersTotal: selectRoom(id: roomId, state: store.state).totalJoinedUsers > 0
@@ -615,7 +605,7 @@ class _Props extends Equatable {
       onSelectPrimaryColor: (color) {
         store.dispatch(updateRoomPrimaryColor(
           roomId: roomId,
-          color: color,
+          color: color as int?,
         ));
       },
       onToggleDirectRoom: () {

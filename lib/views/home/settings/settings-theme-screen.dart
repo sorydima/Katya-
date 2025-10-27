@@ -1,29 +1,28 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/store/index.dart';
-import 'package:katya/store/settings/actions.dart';
 import 'package:katya/store/settings/theme-settings/actions.dart';
 import 'package:katya/store/settings/theme-settings/selectors.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/widgets/appbars/appbar-normal.dart';
 import 'package:katya/views/widgets/containers/card-section.dart';
 import 'package:katya/views/widgets/dialogs/dialog-color-picker.dart';
 import 'package:katya/views/widgets/dialogs/dialog-confirm.dart';
-import 'package:katya/utils/theme_compatibility.dart';
+import 'package:redux/redux.dart';
 
 class ThemeSettingsScreen extends StatefulWidget {
-  const ThemeSettingsScreen({Key? key}) : super(key: key);
+  const ThemeSettingsScreen({super.key});
 
   @override
   _ThemeSettingsScreenState createState() => _ThemeSettingsScreenState();
 }
 
 class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
-  onToggleAdvancedColors(BuildContext context, Function onAdvanced) async {
+  Future<void> onToggleAdvancedColors(BuildContext context, Function onAdvanced) async {
     await showDialog(
       context: context,
       barrierDismissible: true,
@@ -40,7 +39,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
     );
   }
 
-  onToggleColorType({
+  Future<void> onToggleColorType({
     required String title,
     required int currentColor,
     required Function onSelectColor,
@@ -68,17 +67,17 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
 
   // NOTE: example of calling actions without mapping dispatch
   // NOTE: example of calling actions using Store.of(context)
-  onIncrementFabType() {
+  void onIncrementFabType() {
     final store = StoreProvider.of<AppState>(context);
     store.dispatch(incrementFabType());
   }
 
-  onIncrementFabLocation() {
+  void onIncrementFabLocation() {
     final store = StoreProvider.of<AppState>(context);
     store.dispatch(incrementFabLocation());
   }
 
-  onIncrementFabLabels() {
+  void onIncrementFabLabels() {
     final store = StoreProvider.of<AppState>(context);
     store.dispatch(incrementFabLabels());
   }
@@ -191,9 +190,8 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                           ),
                           trailing: Switch(
                             value: props.roomTypeBadgesEnabled,
-                            onChanged: (value) =>
-                                props.onToggleRoomTypeBadges(),
-                            activeColor: Color(props.primaryColor),
+                            onChanged: (value) => props.onToggleRoomTypeBadges(),
+                            activeThumbColor: Color(props.primaryColor),
                           ),
                           onTap: () => props.onToggleRoomTypeBadges(),
                         ),
@@ -370,23 +368,16 @@ class _Props extends Equatable {
         primaryColor: store.state.settingsStore.themeSettings.primaryColor,
         accentColor: store.state.settingsStore.themeSettings.accentColor,
         appBarColor: store.state.settingsStore.themeSettings.appBarColor,
-        themeType: selectThemeTypeString(
-            store.state.settingsStore.themeSettings.themeType),
+        themeType: selectThemeTypeString(store.state.settingsStore.themeSettings.themeType),
         language: store.state.settingsStore.language,
-        fontName: selectFontNameString(
-            store.state.settingsStore.themeSettings.fontName),
-        fontSize: selectFontSizeString(
-            store.state.settingsStore.themeSettings.fontSize),
-        messageSize: selectMessageSizeString(
-            store.state.settingsStore.themeSettings.messageSize),
-        avatarShape: selectAvatarShapeString(
-            store.state.settingsStore.themeSettings.avatarShape),
+        fontName: selectFontNameString(store.state.settingsStore.themeSettings.fontName),
+        fontSize: selectFontSizeString(store.state.settingsStore.themeSettings.fontSize),
+        messageSize: selectMessageSizeString(store.state.settingsStore.themeSettings.messageSize),
+        avatarShape: selectAvatarShapeString(store.state.settingsStore.themeSettings.avatarShape),
         roomTypeBadgesEnabled: store.state.settingsStore.roomTypeBadgesEnabled,
         mainFabType: selectMainFabType(store.state.settingsStore.themeSettings),
-        mainFabLabel:
-            selectMainFabLabels(store.state.settingsStore.themeSettings),
-        mainFabLocation:
-            selectMainFabLocation(store.state.settingsStore.themeSettings),
+        mainFabLabel: selectMainFabLabels(store.state.settingsStore.themeSettings),
+        mainFabLocation: selectMainFabLocation(store.state.settingsStore.themeSettings),
         onToggleRoomTypeBadges: () => store.dispatch(
           toggleRoomTypeBadges(),
         ),

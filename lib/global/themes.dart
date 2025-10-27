@@ -55,12 +55,11 @@ ThemeData? setupTheme(ThemeSettings appTheme, {bool generateThemeData = false}) 
       // Core UI
       appBarTheme: AppBarTheme(
         elevation: appBarElevation,
-        color: Color(appTheme.appBarColor),
+        backgroundColor: Color(appTheme.appBarColor),
         systemOverlayStyle: Color(appTheme.appBarColor).computeLuminance() < 0.5
             ? SystemUiOverlayStyle.light
             : SystemUiOverlayStyle.dark,
       ),
-      dialogBackgroundColor: dialogBackgroundColor,
       focusColor: primaryColor,
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: primaryColor,
@@ -69,8 +68,7 @@ ThemeData? setupTheme(ThemeSettings appTheme, {bool generateThemeData = false}) 
       ),
       // selectedRowColor: Color(selectedRowColor), // Removed - use colorScheme instead
       iconTheme: IconThemeData(color: iconColor),
-      scaffoldBackgroundColor:
-          scaffoldBackgroundColor != null ? Color(scaffoldBackgroundColor) : null,
+      scaffoldBackgroundColor: scaffoldBackgroundColor != null ? Color(scaffoldBackgroundColor) : null,
       inputDecorationTheme: InputDecorationTheme(
         helperStyle: TextStyle(
           color: invertedPrimaryColor,
@@ -140,6 +138,7 @@ ThemeData? setupTheme(ThemeSettings appTheme, {bool generateThemeData = false}) 
             brightness: brightness,
           )
           .copyWith(secondary: secondaryColor),
+      dialogTheme: DialogThemeData(backgroundColor: dialogBackgroundColor),
     );
   }
   return null;

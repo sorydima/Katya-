@@ -1,0 +1,95 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: katya-staging
+  namespace: katya-staging
+
+namespace: katya-staging
+
+resources:
+  - ../../base
+  - namespace.yaml
+  - configmap-staging.yaml
+  - secret-staging.yaml
+  - ingress-staging.yaml
+  - networkpolicy-staging.yaml
+
+patchesStrategicMerge:
+  - deployment-api-staging.yaml
+  - deployment-web-staging.yaml
+  - deployment-analytics-staging.yaml
+  - deployment-websocket-staging.yaml
+  - deployment-celery-staging.yaml
+  - service-staging.yaml
+
+patchesJson6902:
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: api
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 2
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: "250m"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: "512Mi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: "1"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: "1Gi"
+
+images:
+  - name: katya/api
+    newTag: staging-latest
+  - name: katya/web
+    newTag: staging-latest
+  - name: katya/analytics
+    newTag: staging-latest
+  - name: katya/websocket
+    newTag: staging-latest
+  - name: katya/celery
+    newTag: staging-latest
+
+commonLabels:
+  app.kubernetes.io/name: katya
+  app.kubernetes.io/version: "1.0.0"
+  app.kubernetes.io/environment: "staging"
+  app.kubernetes.io/managed-by: kustomize
+
+commonAnnotations:
+  deployment.kubernetes.io/revision: "staging-1"
+  kubernetes.io/change-cause: "Staging deployment"
+
+configMapGenerator:
+  - name: katya-config
+    literals:
+      - NODE_ENV=staging
+      - LOG_LEVEL=debug
+      - MAX_CONNECTIONS=500
+      - REQUEST_TIMEOUT=30000
+      - CACHE_TTL=1800
+      - RATE_LIMIT_ENABLED=true
+      - SECURITY_SCAN_INTERVAL=7200
+      - BACKUP_SCHEDULE="0 3 * * *"
+      - MONITORING_ENABLED=true
+      - ALERTING_ENABLED=false
+
+secretGenerator:
+  - name: katya-secrets
+    literals:
+      - database-url=postgresql://katya:${POSTGRES_PASSWORD}@postgres:5432/katya_staging
+      - redis-url=redis://redis:6379
+      - elasticsearch-url=http://elasticsearch:9200
+      - jwt-secret=${JWT_SECRET_STAGING}
+      - api-key-secret=${API_KEY_SECRET_STAGING}
+      - elastic-password=${ELASTIC_PASSWORD_STAGING}
+      - rabbitmq-password=${RABBITMQ_PASSWORD_STAGING}
+      - grafana-admin-password=${GRAFANA_ADMIN_PASSWORD_STAGING}

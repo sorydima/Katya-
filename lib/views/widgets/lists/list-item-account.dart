@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:katya/utils/theme_compatibility.dart';
-
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/store/user/model.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
 
 enum ListItemUserType {
@@ -21,7 +20,7 @@ enum ListItemUserType {
 ///
 class ListItemAccount extends StatelessWidget {
   const ListItemAccount({
-    Key? key,
+    super.key,
     required this.user,
     this.type = ListItemUserType.Selectable,
     this.enabled = false,
@@ -30,7 +29,7 @@ class ListItemAccount extends StatelessWidget {
     this.real = true,
     this.onPress,
     this.onPressAvatar,
-  }) : super(key: key);
+  });
 
   final User user;
   final bool loading;
@@ -67,7 +66,7 @@ class ListItemAccount extends StatelessWidget {
             enabled: enabled,
             selected: selected,
             onTap: onPress != null && enabled ? () => onPress!() : null,
-            contentPadding: EdgeInsets.symmetric(
+            contentPadding: const EdgeInsets.symmetric(
               vertical: Dimensions.paddingMin,
               horizontal: Dimensions.paddingContainer,
             ),

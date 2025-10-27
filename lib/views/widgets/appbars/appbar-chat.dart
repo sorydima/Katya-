@@ -2,19 +2,18 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:katya/utils/theme_compatibility.dart';
-
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 import 'package:katya/global/dimensions.dart';
 import 'package:katya/global/strings.dart';
 import 'package:katya/global/values.dart';
+import 'package:katya/providers/web3_provider.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/rooms/room/model.dart';
 import 'package:katya/store/rooms/room/selectors.dart';
 import 'package:katya/store/settings/notification-settings/actions.dart';
 import 'package:katya/store/user/actions.dart';
 import 'package:katya/store/user/model.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/home/chat/chat-detail-screen.dart';
 import 'package:katya/views/home/groups/invite-users-screen.dart';
 import 'package:katya/views/navigation.dart';
@@ -23,6 +22,9 @@ import 'package:katya/views/widgets/containers/menu-rounded.dart';
 import 'package:katya/views/widgets/dialogs/dialog-confirm.dart';
 import 'package:katya/views/widgets/dialogs/dialog-rounded.dart';
 import 'package:katya/views/widgets/lifecycle.dart';
+import 'package:katya/views/widgets/wallet/wallet_connect_button.dart';
+import 'package:provider/provider.dart';
+import 'package:redux/redux.dart';
 
 enum ChatOptions {
   search,
@@ -39,7 +41,7 @@ class AppBarChat extends StatefulWidget implements PreferredSizeWidget {
   final bool badgesEnabled;
   final Room room;
   final Color? color;
-  final String title;
+  final Widget title;
   final String label;
   final String tooltip;
   final double? elevation;
@@ -52,8 +54,8 @@ class AppBarChat extends StatefulWidget implements PreferredSizeWidget {
   final Function? onToggleSearch;
 
   const AppBarChat({
-    Key? key,
-    this.title = 'title:',
+    super.key,
+    this.title = const Text('title:'),
     this.label = 'label:',
     this.tooltip = 'tooltip:',
     this.room = const Room(id: 'temp'),
@@ -68,7 +70,7 @@ class AppBarChat extends StatefulWidget implements PreferredSizeWidget {
     this.badgesEnabled = true,
     this.forceFocus = false,
     this.loading = false,
-  }) : super(key: key);
+  });
 
   @override
   AppBarChatState createState() => AppBarChatState();
@@ -90,7 +92,7 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
     }
   }
 
-  onBack() {
+  void onBack() {
     if (widget.onBack != null) {
       widget.onBack!();
     } else {
@@ -98,7 +100,7 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
     }
   }
 
-  onBlockUser({required BuildContext context, required _Props props}) {
+  void onBlockUser({required BuildContext context, required _Props props}) {
     final user = props.roomUsers.firstWhere(
       (user) => user!.userId != props.currentUser.userId,
     );
@@ -118,13 +120,13 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
     );
   }
 
-  onToggleSearch({BuildContext? context}) {
+  void onToggleSearch({BuildContext? context}) {
     setState(() {
       searching = !searching;
     });
     if (searching) {
       Timer(
-        Duration(milliseconds: 5), // hack to focus after visibility change
+        const Duration(milliseconds: 5), // hack to focus after visibility change
         () => FocusScope.of(
           context!,
         ).requestFocus(
@@ -136,8 +138,8 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
     }
   }
 
-  onOpenMuteDialog(BuildContext context, _Props props) {
-    final defaultPadding = EdgeInsets.symmetric(horizontal: 10);
+  void onOpenMuteDialog(BuildContext context, _Props props) {
+    const defaultPadding = EdgeInsets.symmetric(horizontal: 10);
     showDialog(
       context: context,
       builder: (BuildContext context) => DialogRounded(
@@ -151,7 +153,7 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
                   style: Theme.of(context).textTheme.subtitle1,
                 )),
             onTap: () {
-              props.onMuteNotifications(Duration(hours: 1));
+              props.onMuteNotifications(const Duration(hours: 1));
               Navigator.pop(context);
             },
           ),
@@ -164,7 +166,7 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
               ),
             ),
             onTap: () {
-              props.onMuteNotifications(Duration(hours: 8));
+              props.onMuteNotifications(const Duration(hours: 8));
               Navigator.pop(context);
             },
           ),
@@ -177,7 +179,7 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
               ),
             ),
             onTap: () {
-              props.onMuteNotifications(Duration(days: 1));
+              props.onMuteNotifications(const Duration(days: 1));
               Navigator.pop(context);
             },
           ),
@@ -190,7 +192,7 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
               ),
             ),
             onTap: () {
-              props.onMuteNotifications(Duration(days: 7));
+              props.onMuteNotifications(const Duration(days: 7));
               Navigator.pop(context);
             },
           ),
@@ -215,209 +217,222 @@ class AppBarChatState extends State<AppBarChat> with Lifecycle<AppBarChat> {
   @override
   Widget build(BuildContext context) => StoreConnector<AppState, _Props>(
         distinct: true,
-        converter: (Store<AppState> store) =>
-            _Props.mapStateToProps(store, widget.room.id),
+        converter: (store) => _Props.mapStateToProps(store, widget.room.id),
         builder: (context, props) => AppBar(
-          titleSpacing: 0.0,
-          automaticallyImplyLeading: false,
-          systemOverlayStyle: Theme.of(context).appBarTheme.systemOverlayStyle,
           title: Row(
-            children: <Widget>[
+            children: [
               Container(
-                margin: EdgeInsets.only(left: 8),
-                child: IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.white),
-                  onPressed: () => widget.onBack!(),
-                  tooltip: Strings.labelBack,
+                margin: const EdgeInsets.only(right: 12),
+                child: Stack(
+                  children: [
+                    Hero(
+                      tag: 'ChatAvatar',
+                      child: Avatar(
+                        uri: widget.room.avatarUri,
+                        size: Dimensions.avatarSizeMin,
+                        alt: formatRoomInitials(room: widget.room),
+                        background: widget.color,
+                      ),
+                    ),
+                    Visibility(
+                      visible: !widget.room.encryptionEnabled,
+                      child: Positioned(
+                        right: 0,
+                        bottom: 0,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                            Dimensions.badgeAvatarSize,
+                          ),
+                          child: Container(
+                            width: Dimensions.badgeAvatarSize,
+                            height: Dimensions.badgeAvatarSize,
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            child: Icon(
+                              Icons.lock_open,
+                              color: Theme.of(context).iconTheme.color,
+                              size: Dimensions.iconSizeMini,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Visibility(
+                      visible: widget.badgesEnabled && widget.room.type == 'group' && !widget.room.invite,
+                      child: Positioned(
+                        right: 0,
+                        bottom: 0,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Container(
+                            width: Dimensions.badgeAvatarSize,
+                            height: Dimensions.badgeAvatarSize,
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            child: Icon(
+                              Icons.group,
+                              color: Theme.of(context).iconTheme.color,
+                              size: Dimensions.badgeAvatarSizeSmall,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Visibility(
+                      visible: widget.badgesEnabled && widget.room.type == 'public' && !widget.room.invite,
+                      child: Positioned(
+                        right: 0,
+                        bottom: 0,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Container(
+                            width: Dimensions.badgeAvatarSize,
+                            height: Dimensions.badgeAvatarSize,
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            child: Icon(
+                              Icons.public,
+                              color: Theme.of(context).iconTheme.color,
+                              size: Dimensions.badgeAvatarSize,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(
+              Expanded(
+                child: GestureDetector(
+                  onTap: () => Navigator.pushNamed(
                     context,
                     Routes.chatSettings,
                     arguments: ChatDetailsArguments(
                       roomId: widget.room.id,
                       title: widget.room.name,
                     ),
-                  );
-                },
-                child: Container(
-                  margin: const EdgeInsets.only(right: 12),
-                  child: Stack(
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Hero(
-                        tag: 'ChatAvatar',
-                        child: Avatar(
-                          uri: widget.room.avatarUri,
-                          size: Dimensions.avatarSizeMin,
-                          alt: formatRoomInitials(room: widget.room),
-                          background: widget.color,
+                      Text(
+                        widget.room.name ?? 'Chat',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      Visibility(
-                        visible: !widget.room.encryptionEnabled,
-                        child: Positioned(
-                          right: 0,
-                          bottom: 0,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                              Dimensions.badgeAvatarSize,
-                            ),
-                            child: Container(
-                              width: Dimensions.badgeAvatarSize,
-                              height: Dimensions.badgeAvatarSize,
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                              child: Icon(
-                                Icons.lock_open,
-                                color: Theme.of(context).iconTheme.color,
-                                size: Dimensions.iconSizeMini,
-                              ),
-                            ),
+                      if (widget.room.topic?.isNotEmpty ?? false)
+                        Text(
+                          widget.room.topic!,
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 12,
                           ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      Visibility(
-                        visible: widget.badgesEnabled &&
-                            widget.room.type == 'group' &&
-                            !widget.room.invite,
-                        child: Positioned(
-                          right: 0,
-                          bottom: 0,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: Container(
-                              width: Dimensions.badgeAvatarSize,
-                              height: Dimensions.badgeAvatarSize,
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                              child: Icon(
-                                Icons.group,
-                                color: Theme.of(context).iconTheme.color,
-                                size: Dimensions.badgeAvatarSizeSmall,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Visibility(
-                        visible: widget.badgesEnabled &&
-                            widget.room.type == 'public' &&
-                            !widget.room.invite,
-                        child: Positioned(
-                          right: 0,
-                          bottom: 0,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: Container(
-                              width: Dimensions.badgeAvatarSize,
-                              height: Dimensions.badgeAvatarSize,
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                              child: Icon(
-                                Icons.public,
-                                color: Theme.of(context).iconTheme.color,
-                                size: Dimensions.badgeAvatarSize,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),
               ),
-              Flexible(
-                child: Text(
-                  widget.room.name!,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1!
-                      .copyWith(color: Colors.white),
-                ),
-              ),
             ],
           ),
-          actions: <Widget>[
-            Visibility(
-              visible: DEBUG_MODE,
-              child: IconButton(
-                icon: Icon(Icons.gamepad),
+          actions: [
+            Consumer<Web3Provider>(
+              builder: (context, web3Provider, _) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: WalletConnectButton(
+                    onConnected: () {
+                      // Refresh the UI when wallet is connected
+                      setState(() {});
+                    },
+                    onDisconnected: () {
+                      // Refresh the UI when wallet is disconnected
+                      setState(() {});
+                    },
+                    showAddress: true,
+                    showBalance: true,
+                    textColor: Colors.white,
+                  ),
+                );
+              },
+            ),
+            if (DEBUG_MODE)
+              IconButton(
+                icon: const Icon(Icons.gamepad),
                 iconSize: Dimensions.buttonAppBarSize,
                 tooltip: 'Debug Room Function',
                 color: Colors.white,
                 onPressed: () {
-                  widget.onDebug!();
+                  widget.onDebug?.call();
                 },
               ),
-            ),
             RoundedPopupMenu<ChatOptions>(
-                onSelected: (ChatOptions result) {
-                  switch (result) {
-                    case ChatOptions.inviteFriends:
-                      Navigator.pushNamed(
-                        context,
-                        Routes.userInvite,
-                        arguments: InviteUsersArguments(
-                          roomId: widget.room.id,
-                        ),
-                      );
-                      break;
-                    case ChatOptions.chatSettings:
-                      Navigator.pushNamed(
-                        context,
-                        Routes.chatSettings,
-                        arguments: ChatDetailsArguments(
-                          roomId: widget.room.id,
-                          title: widget.room.name,
-                        ),
-                      );
-                      break;
-                    case ChatOptions.blockUser:
-                      onBlockUser(context: context, props: props);
-                      break;
-                    case ChatOptions.muteNotifications:
-                      onOpenMuteDialog(context, props);
-                      break;
-                    default:
-                      break;
-                  }
-                },
-                icon: Icon(Icons.more_vert, color: Colors.white),
-                itemBuilder: (BuildContext context) {
-                  final menu = <PopupMenuEntry<ChatOptions>>[
-                    const PopupMenuItem<ChatOptions>(
-                      enabled: false,
-                      value: ChatOptions.search,
-                      child: Text('Search'), //TODO i18n
-                    ),
-                    const PopupMenuItem<ChatOptions>(
-                      enabled: false,
-                      value: ChatOptions.allMedia,
-                      child: Text('All Media'), //TODO i18n
-                    ),
-                    const PopupMenuItem<ChatOptions>(
-                      value: ChatOptions.chatSettings,
-                      child: Text('Chat Settings'), //TODO i18n
-                    ),
-                    const PopupMenuItem<ChatOptions>(
-                      value: ChatOptions.inviteFriends,
-                      child: Text('Invite Friends'), //TODO i18n
-                    ),
-                    const PopupMenuItem<ChatOptions>(
-                      value: ChatOptions.muteNotifications,
-                      child: Text('Mute Notifications'), //TODO i18n
-                    ),
-                  ];
+              onSelected: (ChatOptions result) {
+                switch (result) {
+                  case ChatOptions.inviteFriends:
+                    Navigator.pushNamed(
+                      context,
+                      Routes.userInvite,
+                      arguments: InviteUsersArguments(
+                        roomId: widget.room.id,
+                      ),
+                    );
+                  case ChatOptions.chatSettings:
+                    Navigator.pushNamed(
+                      context,
+                      Routes.chatSettings,
+                      arguments: ChatDetailsArguments(
+                        roomId: widget.room.id,
+                        title: widget.room.name,
+                      ),
+                    );
+                  case ChatOptions.blockUser:
+                    onBlockUser(context: context, props: props);
+                  case ChatOptions.muteNotifications:
+                    onOpenMuteDialog(context, props);
+                  default:
+                    break;
+                }
+              },
+              icon: const Icon(Icons.more_vert, color: Colors.white),
+              itemBuilder: (BuildContext context) {
+                final menu = <PopupMenuEntry<ChatOptions>>[
+                  const PopupMenuItem<ChatOptions>(
+                    enabled: false,
+                    value: ChatOptions.search,
+                    child: Text('Search'), //TODO i18n
+                  ),
+                  const PopupMenuItem<ChatOptions>(
+                    enabled: false,
+                    value: ChatOptions.allMedia,
+                    child: Text('All Media'), //TODO i18n
+                  ),
+                  const PopupMenuItem<ChatOptions>(
+                    value: ChatOptions.chatSettings,
+                    child: Text('Chat Settings'), //TODO i18n
+                  ),
+                  const PopupMenuItem<ChatOptions>(
+                    value: ChatOptions.inviteFriends,
+                    child: Text('Invite Friends'), //TODO i18n
+                  ),
+                  const PopupMenuItem<ChatOptions>(
+                    value: ChatOptions.muteNotifications,
+                    child: Text('Mute Notifications'), //TODO i18n
+                  ),
+                ];
 
-                  if (widget.room.direct) {
-                    menu.add(const PopupMenuItem<ChatOptions>(
-                      value: ChatOptions.blockUser,
-                      child: Text('Block User'), //TODO i18n
-                    ));
-                  }
+                if (widget.room.direct) {
+                  menu.add(const PopupMenuItem<ChatOptions>(
+                    value: ChatOptions.blockUser,
+                    child: Text('Block User'), //TODO i18n
+                  ));
+                }
 
-                  return menu;
-                })
+                return menu;
+              },
+            ),
           ],
         ),
       );
@@ -442,12 +457,10 @@ class _Props extends Equatable {
   @override
   List<Object> get props => [];
 
-  static _Props mapStateToProps(Store<AppState> store, String? roomId) =>
-      _Props(
+  static _Props mapStateToProps(Store<AppState> store, String? roomId) => _Props(
         currentUser: store.state.authStore.user,
-        roomUsers: (store.state.roomStore.rooms[roomId]?.userIds ?? [])
-            .map((id) => store.state.userStore.users[id])
-            .toList(),
+        roomUsers:
+            (store.state.roomStore.rooms[roomId]?.userIds ?? []).map((id) => store.state.userStore.users[id]).toList(),
         onBlockUser: (String userId) async {
           final user = store.state.userStore.users[userId];
           return await store.dispatch(toggleBlockUser(user: user));
@@ -459,8 +472,7 @@ class _Props extends Equatable {
           ));
         },
         onToggleNotifications: () {
-          store.dispatch(
-              toggleChatNotifications(roomId: roomId!, enabled: false));
+          store.dispatch(toggleChatNotifications(roomId: roomId!, enabled: false));
         },
       );
 }

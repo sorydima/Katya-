@@ -1,0 +1,47 @@
+# iOS Debug Configuration
+# Optimized settings for development builds
+
+#include "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"
+
+# Flutter Configuration
+FLUTTER_FRAMEWORK_DIR = $(FLUTTER_ROOT)/bin/cache/artifacts/engine/ios
+FLUTTER_BUILD_NAME = 1.0.0
+FLUTTER_BUILD_NUMBER = 1
+
+# iOS Deployment Target
+IPHONEOS_DEPLOYMENT_TARGET = 14.0
+
+# Architecture Settings
+ONLY_ACTIVE_ARCH = YES
+VALID_ARCHS = arm64 armv7
+
+# Debug Information
+DEBUG_INFORMATION_FORMAT = dwarf
+GCC_PREPROCESSOR_DEFINITIONS = DEBUG=1 $(inherited)
+
+# Optimization
+GCC_OPTIMIZATION_LEVEL = 0
+LLVM_OPTIMIZATION_LEVEL = 0
+
+# Swift Compiler
+SWIFT_OPTIMIZATION_LEVEL = -Onone
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG
+
+# Linker Settings
+DEAD_CODE_STRIPPING = NO
+LINK_TIME_OPTIMIZATION = NO
+
+# Code Signing
+CODE_SIGN_IDENTITY = iPhone Developer
+DEVELOPMENT_TEAM = $(inherited)
+CODE_SIGN_STYLE = Automatic
+
+# Build Settings
+BUILD_LIBRARY_FOR_DISTRIBUTION = NO
+SKIP_INSTALL = YES
+
+# Enable Testability
+ENABLE_TESTABILITY = YES
+
+# Performance Monitoring
+CLANG_ENABLE_CODE_COVERAGE = YES

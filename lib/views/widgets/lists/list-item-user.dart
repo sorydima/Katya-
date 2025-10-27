@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:katya/global/assets.dart';
-
 import 'package:katya/global/colors.dart';
 import 'package:katya/global/dimensions.dart';
-
 import 'package:katya/store/user/model.dart';
 import 'package:katya/store/user/selectors.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 import 'package:katya/views/widgets/avatars/avatar.dart';
 import 'package:katya/views/widgets/containers/card-section.dart';
-import 'package:katya/utils/theme_compatibility.dart';
 
 enum ListItemUserType {
   Selectable,
@@ -24,7 +22,7 @@ enum ListItemUserType {
 ///
 class ListItemUser extends StatelessWidget {
   const ListItemUser({
-    Key? key,
+    super.key,
     required this.user,
     this.type = ListItemUserType.Pressable,
     this.enabled = false,
@@ -33,7 +31,7 @@ class ListItemUser extends StatelessWidget {
     this.real = true,
     this.onPress,
     this.onPressAvatar,
-  }) : super(key: key);
+  });
 
   final User user;
   final bool loading;
@@ -59,7 +57,7 @@ class ListItemUser extends StatelessWidget {
               child: Container(
                 width: Dimensions.iconSizeLite,
                 height: Dimensions.iconSizeLite,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(
                     Radius.circular(Dimensions.avatarSize),
                   ),
@@ -126,7 +124,7 @@ class ListItemUser extends StatelessWidget {
               user.userId!,
               style: Theme.of(context).textTheme.caption!.merge(
                     TextStyle(
-                      color: loading ? Color(AppColors.greyDisabled) : null,
+                      color: loading ? const Color(AppColors.greyDisabled) : null,
                     ),
                   ),
             ),

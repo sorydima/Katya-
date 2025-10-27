@@ -3,8 +3,6 @@ import 'dart:convert';
 
 import 'package:canonical_json/canonical_json.dart';
 import 'package:crypto/crypto.dart';
-import 'package:redux/redux.dart';
-import 'package:redux_thunk/redux_thunk.dart';
 import 'package:katya/global/libs/matrix/encryption.dart';
 import 'package:katya/global/libs/matrix/index.dart';
 import 'package:katya/global/print.dart';
@@ -16,6 +14,8 @@ import 'package:katya/store/events/messages/model.dart';
 import 'package:katya/store/index.dart';
 import 'package:katya/store/rooms/room/model.dart';
 import 'package:katya/store/user/model.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
 class SetDeviceKeys {
   var deviceKeys;
@@ -231,13 +231,11 @@ ThunkAction<AppState> signOneTimeKeys(Map? oneTimeKeys) {
 /// *** Dendrite *** does not return current key counts
 /// through /sync _unless_ they change
 ///
-ThunkAction<AppState> updateOneTimeKeyCounts(
-    Map<String, int> oneTimeKeyCounts) {
+ThunkAction<AppState> updateOneTimeKeyCounts(Map<String, int> oneTimeKeyCounts) {
   return (Store<AppState> store) async {
     final currentKeyCounts = store.state.cryptoStore.oneTimeKeysCounts;
 
-    log.info(
-        '[updateOneTimeKeyCounts] $oneTimeKeyCounts, current $currentKeyCounts');
+    log.info('[updateOneTimeKeyCounts] $oneTimeKeyCounts, current $currentKeyCounts');
 
     // Confirm user has access token
     final accessToken = store.state.authStore.user.accessToken;
@@ -336,8 +334,7 @@ ThunkAction<AppState> updateOneTimeKeys({type = Algorithms.signedcurve25519}) {
     } catch (error) {
       store.dispatch(addAlert(
           error: error,
-          message:
-              'Failed to update one time keys, please, let us know at https://katya.wtf',
+          message: 'Failed to update one time keys, please, let us know at https://katya.wtf',
           origin: 'updateOneTimeKeys'));
     }
   };
@@ -362,8 +359,7 @@ ThunkAction<AppState> claimOneTimeKeys({
           }
 
           // add device ID to userID claims
-          claims[deviceKey.userId][deviceKey.deviceId] =
-              Algorithms.signedcurve25519;
+          claims[deviceKey.userId][deviceKey.deviceId] = Algorithms.signedcurve25519;
 
           return claims;
         },
@@ -387,8 +383,7 @@ ThunkAction<AppState> claimOneTimeKeys({
         oneTimeKeys: claimKeysPayload,
       );
 
-      if (claimKeysResponse['errcode'] != null ||
-          claimKeysResponse['failures'].isNotEmpty) {
+      if (claimKeysResponse['errcode'] != null || claimKeysResponse['failures'].isNotEmpty) {
         log.json({
           'error': claimKeysResponse,
         });
@@ -427,8 +422,7 @@ ThunkAction<AppState> claimOneTimeKeys({
         if (oneTimeKey == null) return;
 
         final userId = oneTimeKey.userId;
-        final deviceKey =
-            store.state.cryptoStore.deviceKeys[userId!]![deviceId]!;
+        final deviceKey = store.state.cryptoStore.deviceKeys[userId!]![deviceId]!;
         final identityKeyId = Keys.identityKeyId(deviceId: deviceKey.deviceId);
         final identityKey = deviceKey.keys![identityKeyId];
 

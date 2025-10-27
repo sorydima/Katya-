@@ -31,6 +31,10 @@ class SettingsStore extends Equatable {
   final bool timeFormat24Enabled;
   final bool dismissKeyboardEnabled;
   final bool autoDownloadEnabled;
+  final bool autoDownloadImages;
+  final bool autoDownloadAudio;
+  final bool autoDownloadVideo;
+  final bool autoDownloadFiles;
 
   final int syncInterval;
   final int syncPollTimeout;
@@ -66,6 +70,10 @@ class SettingsStore extends Equatable {
     this.timeFormat24Enabled = false,
     this.dismissKeyboardEnabled = false,
     this.autoDownloadEnabled = false,
+    this.autoDownloadImages = true,
+    this.autoDownloadAudio = false,
+    this.autoDownloadVideo = false,
+    this.autoDownloadFiles = false,
     this.chatSettings = const <String, ChatSetting>{},
     this.devices = const [],
     this.loading = false,
@@ -91,6 +99,10 @@ class SettingsStore extends Equatable {
         timeFormat24Enabled,
         dismissKeyboardEnabled,
         autoDownloadEnabled,
+        autoDownloadImages,
+        autoDownloadAudio,
+        autoDownloadVideo,
+        autoDownloadFiles,
         chatSettings,
         chatLists,
         devices,
@@ -115,6 +127,10 @@ class SettingsStore extends Equatable {
     bool? timeFormat24Enabled,
     bool? dismissKeyboardEnabled,
     bool? autoDownloadEnabled,
+    bool? autoDownloadImages,
+    bool? autoDownloadAudio,
+    bool? autoDownloadVideo,
+    bool? autoDownloadFiles,
     int? syncInterval,
     int? syncPollTimeout,
     bool? loading,
@@ -146,6 +162,10 @@ class SettingsStore extends Equatable {
         roomTypeBadgesEnabled:
             roomTypeBadgesEnabled ?? this.roomTypeBadgesEnabled,
         autoDownloadEnabled: autoDownloadEnabled ?? this.autoDownloadEnabled,
+        autoDownloadImages: autoDownloadImages ?? this.autoDownloadImages,
+        autoDownloadAudio: autoDownloadAudio ?? this.autoDownloadAudio,
+        autoDownloadVideo: autoDownloadVideo ?? this.autoDownloadVideo,
+        autoDownloadFiles: autoDownloadFiles ?? this.autoDownloadFiles,
         syncInterval: syncInterval ?? this.syncInterval,
         syncPollTimeout: syncPollTimeout ?? this.syncPollTimeout,
         chatLists: chatLists ?? this.chatLists,

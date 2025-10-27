@@ -11,11 +11,11 @@ class LoadingScreen extends StatelessWidget {
   final bool dark;
 
   const LoadingScreen({
-    Key? key,
+    super.key,
     this.dark = false,
-  }) : super(key: key);
+  });
 
-  buildLoadingLight(BuildContext context) {
+  Scaffold buildLoadingLight(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -27,7 +27,7 @@ class LoadingScreen extends StatelessWidget {
           child: Container(
             height: height,
             width: width,
-            color: Color(AppColors.whiteDefault),
+            color: const Color(AppColors.whiteDefault),
             child: Flex(
               direction: Axis.vertical,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -47,7 +47,7 @@ class LoadingScreen extends StatelessWidget {
     );
   }
 
-  buildLoadingDark(BuildContext context) {
+  Scaffold buildLoadingDark(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
 
@@ -60,7 +60,7 @@ class LoadingScreen extends StatelessWidget {
           child: Container(
             height: height,
             width: width,
-            color: Color(AppColors.cyankatya),
+            color: const Color(AppColors.cyankatya),
             child: Flex(
               direction: Axis.vertical,
               mainAxisAlignment: MainAxisAlignment.center,

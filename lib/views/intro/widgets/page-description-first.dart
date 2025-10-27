@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:katya/utils/theme_compatibility.dart';
-
 import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:katya/global/assets.dart';
 import 'package:katya/global/strings.dart';
+import 'package:katya/utils/theme_compatibility.dart';
 
 class FirstDescriptionPage extends StatelessWidget {
-  const FirstDescriptionPage({Key? key, this.title}) : super(key: key);
+  const FirstDescriptionPage({super.key, this.title});
 
   final String? title;
 
