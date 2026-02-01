@@ -171,11 +171,11 @@ class IntroScreenState extends State<IntroScreen> with Lifecycle<IntroScreen> {
   String buildButtonString() {
     switch (currentStep) {
       case 0:
-        return 'let\'s go';
+        return Strings.buttonNext;
       case 4:
-        return 'count me in';
+        return Strings.buttonFinish;
       default:
-        return 'next';
+        return Strings.buttonNext;
     }
   }
 

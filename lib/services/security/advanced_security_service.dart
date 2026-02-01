@@ -799,7 +799,18 @@ class SecurityRule extends Equatable {
   final List<RuleAction> actions;
 
   const SecurityRule({
-    required this.ruleIdclass ThreatDetection extends Equatable {
+    required this.ruleId,
+    required this.name,
+    required this.type,
+    required this.conditions,
+    required this.actions,
+  });
+
+  @override
+  List<Object?> get props => [ruleId, name, type, conditions, actions];
+}
+
+class ThreatDetection extends Equatable {
   final String detectionId;
   final String sourceId;
   final ThreatType threatType;

@@ -129,6 +129,21 @@ dependencies:
   json_annotation: ^4.0.0
   collection: ^1.15.0-nullsafety.4
 
+  ### missing dependencies needed for build
+  provider: ^6.1.0
+  web3dart: ^2.7.1
+  bip39: ^1.0.6
+  cached_network_image: ^3.2.1
+  flutter_webrtc: ^0.9.28
+  giphy_get: ^3.1.0
+  web3modal_flutter: ^1.0.0
+  qr_code_scanner: ^1.0.1
+  record: ^4.4.4
+  
+  
+
+  matrix: ^6.0.0
+  
   # TODO: potential overrides
   sqlite3: ^2.9.0
   path_provider_linux: ^2.1.5
@@ -174,7 +189,6 @@ flutter_icons:
 # The following section is specific to Flutter localization
 # It tells Flutter where to find the localization files
 # and which locales to support.
-generate: true
 localization:
   arb-dir: lib/l10n
   template-arb-file: app_en.arb
@@ -189,6 +203,8 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  
+  generate: true
 
   # see https://flutter.dev/custom-fonts/#from-packages
   fonts:

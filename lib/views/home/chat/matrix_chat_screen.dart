@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/matrix_message_provider.dart';
@@ -24,6 +25,9 @@ class _MatrixChatScreenState extends State<MatrixChatScreen> {
   final _messageController = TextEditingController();
   final _scrollController = ScrollController();
   late final MatrixMessageProvider _messageProvider;
+  final _searchController = TextEditingController();
+  bool _isSearchMode = false;
+  bool _canSend = false;
 
   @override
   void initState() {
@@ -48,6 +52,7 @@ class _MatrixChatScreenState extends State<MatrixChatScreen> {
     _scrollController.dispose();
     _messageProvider.removeListener(_onNewMessages);
     _messageProvider.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -69,14 +74,19 @@ class _MatrixChatScreenState extends State<MatrixChatScreen> {
     if (text.isEmpty) return;
 
     _messageController.clear();
+    setState(() {
+      _canSend = false;
+    });
 
     try {
       await _messageProvider.sendMessage(text);
-    } catch (e) {
-      // Show error message
+    } catch (e, st) {
+      // Log the underlying error for debugging while showing a friendly message to the user
+      // ignore: avoid_print
+      print('Matrix send message error: $e\n$st');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to send message: $e')),
+          SnackBar(content: Text('messages.messageFailed'.tr())),
         );
       }
     }
@@ -88,8 +98,8 @@ class _MatrixChatScreenState extends State<MatrixChatScreen> {
     final room = matrixProvider.getRoom(widget.roomId);
 
     if (room == null) {
-      return const Scaffold(
-        body: Center(child: Text('Room not found')),
+      return Scaffold(
+        body: Center(child: Text('errors.notFound'.tr())),
       );
     }
 
@@ -102,18 +112,100 @@ class _MatrixChatScreenState extends State<MatrixChatScreen> {
             // Room info button
             IconButton(
               icon: const Icon(Icons.info_outline),
-              onPressed: () {
-                // TODO: Show room info
-              },
+              onPressed: () => _showRoomInfo(room),
             ),
-            // Search button
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {
-                // TODO: Implement search
+            Consumer<MatrixMessageProvider>(
+              builder: (context, provider, _) {
+                if (_isSearchMode) {
+                  return Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_upward),
+                        tooltip: 'common.previous'.tr(),
+                        onPressed:
+                            provider.hasSearchResults ? provider.navigateToPreviousSearchResult : null,
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.arrow_downward),
+                        tooltip: 'common.next'.tr(),
+                        onPressed: provider.hasSearchResults ? provider.navigateToNextSearchResult : null,
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        tooltip: 'common.close'.tr(),
+                        onPressed: () {
+                          setState(() {
+                            _isSearchMode = false;
+                          });
+                          _searchController.clear();
+                          provider.clearSearch();
+                        },
+                      ),
+                    ],
+                  );
+                }
+
+                return IconButton(
+                  icon: const Icon(Icons.search),
+                  tooltip: 'common.search'.tr(),
+                  onPressed: () {
+                    setState(() {
+                      _isSearchMode = true;
+                    });
+                  },
+                );
               },
             ),
           ],
+          bottom: _isSearchMode
+              ? PreferredSize(
+                  preferredSize: const Size.fromHeight(56),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                    child: Consumer<MatrixMessageProvider>(
+                      builder: (context, provider, _) {
+                        final resultsCount = provider.searchResults.length;
+                        final currentIndex = provider.currentSearchIndex;
+
+                        return TextField(
+                          controller: _searchController,
+                          decoration: InputDecoration(
+                            hintText: 'common.search'.tr(),
+                            prefixIcon: const Icon(Icons.search),
+                            suffixIcon: resultsCount > 0 && currentIndex >= 0
+                                ? Padding(
+                                    padding: const EdgeInsets.only(right: 8),
+                                    child: Center(
+                                      widthFactor: 1,
+                                      child: Text(
+                                        '${currentIndex + 1}/$resultsCount',
+                                        style: Theme.of(context).textTheme.bodySmall,
+                                      ),
+                                    ),
+                                  )
+                                : null,
+                            border: const OutlineInputBorder(),
+                            isDense: true,
+                          ),
+                          textInputAction: TextInputAction.search,
+                          onChanged: (value) {
+                            provider.searchMessages(value.trim());
+                            if (provider.hasSearchResults) {
+                              provider.navigateToSearchResult(provider.currentSearchIndex);
+                            }
+                          },
+                          onSubmitted: (value) {
+                            provider.searchMessages(value.trim());
+                            if (provider.hasSearchResults) {
+                              provider.navigateToSearchResult(provider.currentSearchIndex);
+                            }
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                )
+              : null,
         ),
         body: Column(
           children: [
@@ -123,6 +215,31 @@ class _MatrixChatScreenState extends State<MatrixChatScreen> {
                 builder: (context, provider, _) {
                   if (provider.isLoading && provider.messages.isEmpty) {
                     return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (provider.messages.isEmpty) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.chat_bubble_outline,
+                            size: 64,
+                            color: Colors.grey,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'messages.conversation'.tr(),
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'messages.startConversation'.tr(),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    );
                   }
 
                   return ListView.builder(
@@ -206,7 +323,7 @@ class _MatrixChatScreenState extends State<MatrixChatScreen> {
             child: TextField(
               controller: _messageController,
               decoration: InputDecoration(
-                hintText: 'Type a message...',
+                hintText: 'messages.messageContent'.tr(),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(24),
                   borderSide: BorderSide.none,
@@ -219,6 +336,11 @@ class _MatrixChatScreenState extends State<MatrixChatScreen> {
               ),
               maxLines: 5,
               minLines: 1,
+              onChanged: (value) {
+                setState(() {
+                  _canSend = value.trim().isNotEmpty;
+                });
+              },
               onSubmitted: (_) => _sendMessage(),
             ),
           ),
@@ -226,10 +348,55 @@ class _MatrixChatScreenState extends State<MatrixChatScreen> {
           // Send button
           IconButton(
             icon: const Icon(Icons.send),
-            onPressed: _sendMessage,
+            onPressed: _canSend ? _sendMessage : null,
           ),
         ],
       ),
+    );
+  }
+
+  void _showRoomInfo(dynamic room) {
+    showModalBottomSheet<void>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'protocols.matrix'.tr(),
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text('messages.conversation'.tr()),
+                subtitle: Text(room.displayname ?? ''),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text('messages.roomIdOrAlias'.tr()),
+                subtitle: Text(room.id?.toString() ?? ''),
+              ),
+              const SizedBox(height: 8),
+            ],
+          ),
+        );
+      },
     );
   }
 

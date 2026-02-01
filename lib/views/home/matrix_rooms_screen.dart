@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/matrix_provider.dart';
@@ -39,9 +40,9 @@ class _MatrixRoomsScreenState extends State<MatrixRoomsScreen> {
 
       // The rooms are automatically loaded when the client initializes
       // and when new rooms are received via sync
-    } catch (e) {
+    } catch (_) {
       setState(() {
-        _error = 'Failed to load rooms: $e';
+        _error = 'errors.unknownError'.tr();
       });
     } finally {
       if (mounted) {
@@ -88,13 +89,13 @@ class _MatrixRoomsScreenState extends State<MatrixRoomsScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Room created successfully')),
+          SnackBar(content: Text('common.success'.tr())),
         );
       }
-    } catch (e) {
+    } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to create room: $e')),
+          SnackBar(content: Text('errors.unknownError'.tr())),
         );
       }
     } finally {
@@ -130,13 +131,13 @@ class _MatrixRoomsScreenState extends State<MatrixRoomsScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Successfully joined room')),
+          SnackBar(content: Text('common.success'.tr())),
         );
       }
-    } catch (e) {
+    } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to join room: $e')),
+          SnackBar(content: Text('errors.unknownError'.tr())),
         );
       }
     } finally {
@@ -152,7 +153,7 @@ class _MatrixRoomsScreenState extends State<MatrixRoomsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Rooms'),
+        title: Text('messages.title'.tr()),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -168,7 +169,18 @@ class _MatrixRoomsScreenState extends State<MatrixRoomsScreen> {
           ),
         ],
       ),
-      body: _buildBody(),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final maxWidth = constraints.maxWidth > 900 ? 720.0 : constraints.maxWidth;
+
+          return Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: maxWidth),
+              child: _buildBody(),
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -183,7 +195,7 @@ class _MatrixRoomsScreenState extends State<MatrixRoomsScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Error loading rooms',
+              'common.error'.tr(),
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
@@ -197,7 +209,7 @@ class _MatrixRoomsScreenState extends State<MatrixRoomsScreen> {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _loadRooms,
-              child: const Text('Retry'),
+              child: Text('common.retry'.tr()),
             ),
           ],
         ),
@@ -220,11 +232,14 @@ class _MatrixRoomsScreenState extends State<MatrixRoomsScreen> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'No rooms yet',
+                  'messages.conversations'.tr(),
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const SizedBox(height: 8),
-                const Text('Tap + to create or join a room'),
+                Text(
+                  'messages.startConversation'.tr(),
+                  textAlign: TextAlign.center,
+                ),
               ],
             ),
           );
@@ -257,7 +272,7 @@ class _MatrixRoomsScreenState extends State<MatrixRoomsScreen> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     )
-                  : const Text('No messages yet'),
+                  : Text('messages.newMessage'.tr()),
               trailing: room.notificationCount > 0
                   ? CircleAvatar(
                       radius: 12,
@@ -309,7 +324,7 @@ class _CreateRoomDialogState extends State<_CreateRoomDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Create New Room'),
+      title: Text('common.create'.tr()),
       content: Form(
         key: _formKey,
         child: Column(
@@ -318,21 +333,21 @@ class _CreateRoomDialogState extends State<_CreateRoomDialog> {
           children: [
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Room Name',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: 'messages.conversation'.tr(),
+                border: const OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a room name';
+                  return 'validation.required'.tr();
                 }
                 return null;
               },
             ),
             const SizedBox(height: 16),
             SwitchListTile(
-              title: const Text('End-to-end Encryption'),
-              subtitle: const Text('Encrypt messages for all participants'),
+              title: Text('protocols.matrix'.tr()),
+              subtitle: Text('protocols.blockchainVerification'.tr()),
               value: _isEncrypted,
               onChanged: (value) {
                 setState(() {
@@ -341,8 +356,8 @@ class _CreateRoomDialogState extends State<_CreateRoomDialog> {
               },
             ),
             SwitchListTile(
-              title: const Text('Direct Message'),
-              subtitle: const Text('Create a 1:1 chat'),
+              title: Text('messages.conversation'.tr()),
+              subtitle: Text('messages.newMessage'.tr()),
               value: _isDirect,
               onChanged: (value) {
                 setState(() {
@@ -356,7 +371,7 @@ class _CreateRoomDialogState extends State<_CreateRoomDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('CANCEL'),
+          child: Text('common.cancel'.tr()),
         ),
         ElevatedButton(
           onPressed: () {
@@ -368,7 +383,7 @@ class _CreateRoomDialogState extends State<_CreateRoomDialog> {
               });
             }
           },
-          child: const Text('CREATE'),
+          child: Text('common.create'.tr()),
         ),
       ],
     );
@@ -393,7 +408,7 @@ class _JoinRoomDialogState extends State<_JoinRoomDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Join Room'),
+      title: Text('messages.startConversation'.tr()),
       content: Form(
         key: _formKey,
         child: Column(
@@ -401,14 +416,14 @@ class _JoinRoomDialogState extends State<_JoinRoomDialog> {
           children: [
             TextFormField(
               controller: _roomIdController,
-              decoration: const InputDecoration(
-                labelText: 'Room ID or Alias',
-                hintText: '!room:example.com or #room:example.com',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: 'messages.roomIdOrAlias'.tr(),
+                hintText: 'messages.roomIdOrAliasHint'.tr(),
+                border: const OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter a room ID or alias';
+                  return 'validation.required'.tr();
                 }
                 return null;
               },
@@ -419,7 +434,7 @@ class _JoinRoomDialogState extends State<_JoinRoomDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('CANCEL'),
+          child: Text('common.cancel'.tr()),
         ),
         ElevatedButton(
           onPressed: () {
@@ -427,7 +442,7 @@ class _JoinRoomDialogState extends State<_JoinRoomDialog> {
               Navigator.of(context).pop(_roomIdController.text.trim());
             }
           },
-          child: const Text('JOIN'),
+          child: Text('common.ok'.tr()),
         ),
       ],
     );

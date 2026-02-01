@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:katya/providers/matrix_provider.dart';
 import 'package:katya/widgets/admin/admin_dashboard.dart';
 import 'package:katya/widgets/backup/backup_dashboard.dart';
@@ -16,7 +17,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text('settings.title'.tr()),
       ),
       body: ListView(
         children: [
@@ -24,11 +25,11 @@ class SettingsScreen extends StatelessWidget {
           _buildUserProfileSection(context),
 
           // Account settings
-          _buildSectionHeader('Account'),
+          _buildSectionHeader('settings.account'.tr()),
           _buildListTile(
             context,
             icon: Icons.person_outline,
-            title: 'Profile',
+            title: 'navigation.profile'.tr(),
             onTap: () {
               // TODO: Navigate to profile screen
             },
@@ -36,7 +37,7 @@ class SettingsScreen extends StatelessWidget {
           _buildListTile(
             context,
             icon: Icons.notifications_outlined,
-            title: 'Notifications',
+            title: 'settings.notifications'.tr(),
             onTap: () {
               // TODO: Navigate to notifications settings
             },
@@ -44,18 +45,18 @@ class SettingsScreen extends StatelessWidget {
           _buildListTile(
             context,
             icon: Icons.lock_outline,
-            title: 'Privacy & Security',
+            title: '${'settings.privacy'.tr()} & ${'settings.security'.tr()}',
             onTap: () {
               // TODO: Navigate to privacy settings
             },
           ),
 
           // App settings
-          _buildSectionHeader('App Settings'),
+          _buildSectionHeader('settings.general'.tr()),
           _buildListTile(
             context,
             icon: Icons.color_lens_outlined,
-            title: 'Theme',
+            title: 'settings.theme'.tr(),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
               // TODO: Show theme picker
@@ -64,7 +65,7 @@ class SettingsScreen extends StatelessWidget {
           _buildListTile(
             context,
             icon: Icons.language_outlined,
-            title: 'Language & Region',
+            title: '${'settings.language'.tr()} & ${'settings.region'.tr()}',
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
               Navigator.of(context).push(
@@ -76,11 +77,11 @@ class SettingsScreen extends StatelessWidget {
           ),
 
           // Performance & Analytics
-          _buildSectionHeader('Performance & Analytics'),
+          _buildSectionHeader('analytics.title'.tr()),
           _buildListTile(
             context,
             icon: Icons.analytics_outlined,
-            title: 'Performance Analytics',
+            title: 'analytics.performance'.tr(),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
               Navigator.of(context).push(
@@ -93,7 +94,7 @@ class SettingsScreen extends StatelessWidget {
           _buildListTile(
             context,
             icon: Icons.monitor_outlined,
-            title: 'Performance Monitoring',
+            title: 'analytics.overview'.tr(),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
               Navigator.of(context).push(
@@ -105,11 +106,11 @@ class SettingsScreen extends StatelessWidget {
           ),
 
           // Data Management
-          _buildSectionHeader('Data Management'),
+          _buildSectionHeader('common.update'.tr()),
           _buildListTile(
             context,
             icon: Icons.backup_outlined,
-            title: 'Backup & Recovery',
+            title: 'settings.backupCodes'.tr(),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
               Navigator.of(context).push(
@@ -122,7 +123,7 @@ class SettingsScreen extends StatelessWidget {
           _buildListTile(
             context,
             icon: Icons.import_export_outlined,
-            title: 'Data Export/Import',
+            title: '${'settings.dataExport'.tr()} / ${'settings.dataImport'.tr()}',
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
               Navigator.of(context).push(
@@ -134,11 +135,11 @@ class SettingsScreen extends StatelessWidget {
           ),
 
           // Administration
-          _buildSectionHeader('Administration'),
+          _buildSectionHeader('navigation.dashboard'.tr()),
           _buildListTile(
             context,
             icon: Icons.admin_panel_settings_outlined,
-            title: 'Admin Dashboard',
+            title: 'navigation.dashboard'.tr(),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
               Navigator.of(context).push(
@@ -151,7 +152,7 @@ class SettingsScreen extends StatelessWidget {
           _buildListTile(
             context,
             icon: Icons.health_and_safety_outlined,
-            title: 'System Health',
+            title: 'analytics.systemHealth'.tr(),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
               Navigator.of(context).push(
@@ -163,11 +164,11 @@ class SettingsScreen extends StatelessWidget {
           ),
 
           // About
-          _buildSectionHeader('About'),
+          _buildSectionHeader('navigation.about'.tr()),
           _buildListTile(
             context,
             icon: Icons.info_outline,
-            title: 'About Katya',
+            title: 'navigation.about'.tr(),
             onTap: () {
               // TODO: Show about dialog
             },
@@ -175,7 +176,7 @@ class SettingsScreen extends StatelessWidget {
           _buildListTile(
             context,
             icon: Icons.help_outline,
-            title: 'Help & Support',
+            title: 'navigation.help'.tr(),
             onTap: () {
               // TODO: Show help & support
             },
@@ -191,19 +192,19 @@ class SettingsScreen extends StatelessWidget {
                     final confirmed = await showDialog<bool>(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: const Text('Logout'),
-                        content: const Text('Are you sure you want to log out?'),
+                        title: Text('navigation.logout'.tr()),
+                        content: Text('auth.logoutSuccess'.tr()),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.of(context).pop(false),
-                            child: const Text('CANCEL'),
+                            child: Text('common.cancel'.tr()),
                           ),
                           TextButton(
                             onPressed: () => Navigator.of(context).pop(true),
                             style: TextButton.styleFrom(
                               foregroundColor: Theme.of(context).colorScheme.error,
                             ),
-                            child: const Text('LOGOUT'),
+                            child: Text('auth.logout'.tr()),
                           ),
                         ],
                       ),
@@ -224,7 +225,7 @@ class SettingsScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: const Text('Logout'),
+                  child: Text('navigation.logout'.tr()),
                 );
               },
             ),
@@ -234,7 +235,7 @@ class SettingsScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              'Katya v1.0.0',
+              '${'app.name'.tr()} v${'app.version'.tr()}',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/matrix_provider.dart';
+import '../main_app_screen.dart';
 
 class MatrixLoginScreen extends StatefulWidget {
   const MatrixLoginScreen({super.key});
@@ -52,13 +54,16 @@ class _MatrixLoginScreenState extends State<MatrixLoginScreen> {
         password: _passwordController.text,
       );
 
-      // If successful, navigate to the chat screen
+      // If successful, navigate to the main app
       if (mounted) {
-        Navigator.of(context).pushReplacementNamed('/chat');
+        Navigator.of(context).pushReplacementNamed('/home');
       }
-    } catch (e) {
+    } catch (e, st) {
+      // Log the underlying error for debugging while showing a friendly message to the user
+      // ignore: avoid_print
+      print('Matrix login error: $e\n$st');
       setState(() {
-        _error = e.toString();
+        _error = 'auth.loginError'.tr();
       });
     } finally {
       if (mounted) {
@@ -75,149 +80,150 @@ class _MatrixLoginScreenState extends State<MatrixLoginScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Matrix Login'),
+        title: Text('navigation.login'.tr()),
         elevation: 0,
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Logo or header
-                const SizedBox(height: 32),
-                Icon(
-                  Icons.chat_bubble_outline,
-                  size: 80,
-                  color: theme.colorScheme.primary,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'Sign in to Matrix',
-                  style: theme.textTheme.headlineSmall,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 32),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final maxWidth = constraints.maxWidth > 600 ? 420.0 : constraints.maxWidth;
 
-                // Error message
-                if (_error != null) ...[
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.errorContainer,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      _error!,
-                      style: TextStyle(color: theme.colorScheme.onErrorContainer),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                ],
+            return Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: maxWidth),
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const SizedBox(height: 32),
+                        Icon(
+                          Icons.chat_bubble_outline,
+                          size: 80,
+                          color: theme.colorScheme.primary,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'auth.login'.tr(),
+                          style: theme.textTheme.headlineSmall,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 32),
 
-                // Homeserver field
-                TextFormField(
-                  controller: _homeserverController,
-                  decoration: const InputDecoration(
-                    labelText: 'Homeserver',
-                    prefixIcon: Icon(Icons.dns_outlined),
-                    border: OutlineInputBorder(),
-                  ),
-                  keyboardType: TextInputType.url,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a homeserver URL';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-
-                // Username field
-                TextFormField(
-                  controller: _usernameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Username',
-                    prefixIcon: Icon(Icons.person_outline),
-                    border: OutlineInputBorder(),
-                    hintText: '@username:example.com',
-                  ),
-                  keyboardType: TextInputType.text,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your username';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-
-                // Password field
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: const InputDecoration(
-                    labelText: 'Password',
-                    prefixIcon: Icon(Icons.lock_outline),
-                    border: OutlineInputBorder(),
-                  ),
-                  obscureText: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 24),
-
-                // Login button
-                ElevatedButton(
-                  onPressed: _isLoading ? null : _login,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: _isLoading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        if (_error != null) ...[
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.errorContainer,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              _error!,
+                              style: TextStyle(color: theme.colorScheme.onErrorContainer),
+                            ),
                           ),
-                        )
-                      : const Text('Sign In'),
-                ),
-                const SizedBox(height: 16),
+                          const SizedBox(height: 16),
+                        ],
 
-                // Register link
-                TextButton(
-                  onPressed: () {
-                    // TODO: Implement registration flow
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Registration not implemented yet')),
-                    );
-                  },
-                  child: const Text('Create an account'),
-                ),
+                        TextFormField(
+                          controller: _homeserverController,
+                          decoration: InputDecoration(
+                            labelText: 'protocols.matrix'.tr(),
+                            prefixIcon: const Icon(Icons.dns_outlined),
+                            border: const OutlineInputBorder(),
+                          ),
+                          keyboardType: TextInputType.url,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'validation.url'.tr();
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 16),
 
-                // Forgot password link
-                TextButton(
-                  onPressed: () {
-                    // TODO: Implement password reset flow
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Password reset not implemented yet')),
-                    );
-                  },
-                  child: const Text('Forgot password?'),
+                        TextFormField(
+                          controller: _usernameController,
+                          decoration: InputDecoration(
+                            labelText: 'auth.email'.tr(),
+                            prefixIcon: const Icon(Icons.person_outline),
+                            border: const OutlineInputBorder(),
+                            hintText: '@user:matrix.org',
+                          ),
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'validation.required'.tr();
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 16),
+
+                        TextFormField(
+                          controller: _passwordController,
+                          decoration: InputDecoration(
+                            labelText: 'auth.password'.tr(),
+                            prefixIcon: const Icon(Icons.lock_outline),
+                            border: const OutlineInputBorder(),
+                          ),
+                          obscureText: true,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'auth.passwordRequired'.tr();
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 24),
+
+                        ElevatedButton(
+                          onPressed: _isLoading ? null : _login,
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: _isLoading
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                  ),
+                                )
+                              : Text('auth.login'.tr()),
+                        ),
+                        const SizedBox(height: 16),
+
+                        TextButton(
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('auth.registerError'.tr())),
+                            );
+                          },
+                          child: Text('navigation.register'.tr()),
+                        ),
+
+                        TextButton(
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('errors.unknownError'.tr())),
+                            );
+                          },
+                          child: Text('auth.forgotPassword'.tr()),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

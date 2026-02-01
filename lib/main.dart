@@ -12,6 +12,7 @@ import 'package:katya/views/home/chat/matrix_chat_screen.dart';
 import 'package:katya/views/home/matrix_rooms_screen.dart';
 import 'package:katya/views/main_app_screen.dart';
 import 'package:katya/views/prelock.dart';
+import 'package:katya/theme/theme.dart';
 import 'package:provider/provider.dart';
 
 // ignore: avoid_void_async
@@ -74,15 +75,9 @@ class KatyaApp extends StatelessWidget {
     return MaterialApp(
       title: 'Katya',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        useMaterial3: true,
-        appBarTheme: const AppBarTheme(
-          elevation: 0,
-          centerTitle: true,
-        ),
-      ),
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
       home: Consumer<MatrixProvider>(
         builder: (context, matrixProvider, _) {
           // Show loading indicator while initializing
@@ -104,6 +99,7 @@ class KatyaApp extends StatelessWidget {
       routes: {
         '/login': (context) => const MatrixLoginScreen(),
         '/rooms': (context) => const MatrixRoomsScreen(),
+        '/home': (context) => const MainAppScreen(),
       },
       onGenerateRoute: (settings) {
         // Handle dynamic routes like /chat/:roomId
